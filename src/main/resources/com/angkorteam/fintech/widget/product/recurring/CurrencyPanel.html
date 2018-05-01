@@ -8,38 +8,38 @@
 			<div class="box-primary">
 
 				<div class="box-body">
-					<!-- Row -->
-					<div wicket:id="currencyCodeBlock" class="form-group">
-						<wicket:container wicket:id="currencyCodeIContainer">
-							<label wicket:for="currencyCodeField">Currency</label>
-							<select wicket:id="currencyCodeField" class="form-control"></select>
-							<span wicket:id="currencyCodeFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="currencyDecimalPlaceBlock" class="form-group">
-						<wicket:container wicket:id="currencyDecimalPlaceIContainer">
-							<label wicket:for="currencyDecimalPlaceField">Decimal
-								Places</label>
-							<input wicket:id="currencyDecimalPlaceField" type="text"
-								class="form-control" />
-							<span wicket:id="currencyDecimalPlaceFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="currencyMultipleOfBlock" class="form-group">
-						<wicket:container wicket:id="currencyMultipleOfIContainer">
-							<label wicket:for="currencyMultipleOfField">Multiple of</label>
-							<input wicket:id="currencyMultipleOfField" type="text"
-								class="form-control" />
-							<span wicket:id="currencyMultipleOfFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row1">
+						<div wicket:id="currencyCodeBlock" class="form-group">
+							<wicket:container wicket:id="currencyCodeIContainer">
+								<label wicket:for="currencyCodeField">Currency</label>
+								<select wicket:id="currencyCodeField" class="form-control"></select>
+								<span wicket:id="currencyCodeFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="currencyDecimalPlaceBlock" class="form-group">
+							<wicket:container wicket:id="currencyDecimalPlaceIContainer">
+								<label wicket:for="currencyDecimalPlaceField">Decimal
+									Places</label>
+								<input wicket:id="currencyDecimalPlaceField" type="text"
+									class="form-control" />
+								<span wicket:id="currencyDecimalPlaceFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+					<div wicket:id="row2">
+						<div wicket:id="currencyMultipleOfBlock" class="form-group">
+							<wicket:container wicket:id="currencyMultipleOfIContainer">
+								<label wicket:for="currencyMultipleOfField">Multiple of</label>
+								<input wicket:id="currencyMultipleOfField" type="text"
+									class="form-control" />
+								<span wicket:id="currencyMultipleOfFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="row2Block1" class="form-group"></div>
 					</div>
-					<div class="clearfix"></div>
 
 				</div>
 

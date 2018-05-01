@@ -1,18 +1,18 @@
 package com.angkorteam.fintech.widget.product.recurring;
 
 import org.apache.wicket.Page;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.product.recurring.RecurringBrowsePage;
 import com.angkorteam.fintech.pages.product.recurring.RecurringCreatePage;
 import com.angkorteam.fintech.widget.Panel;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -30,20 +30,23 @@ public class DetailsPanel extends Panel {
 
     // Detail
 
-    protected WebMarkupBlock detailProductNameBlock;
-    protected WebMarkupContainer detailProductNameIContainer;
+    protected UIRow row1;
+
+    protected UIBlock detailProductNameBlock;
+    protected UIContainer detailProductNameIContainer;
     protected TextField<String> detailProductNameField;
-    protected TextFeedbackPanel detailProductNameFeedback;
 
-    protected WebMarkupBlock detailShortNameBlock;
-    protected WebMarkupContainer detailShortNameIContainer;
+    protected UIBlock detailShortNameBlock;
+    protected UIContainer detailShortNameIContainer;
     protected TextField<String> detailShortNameField;
-    protected TextFeedbackPanel detailShortNameFeedback;
 
-    protected WebMarkupBlock detailDescriptionBlock;
-    protected WebMarkupContainer detailDescriptionIContainer;
+    protected UIRow row2;
+
+    protected UIBlock detailDescriptionBlock;
+    protected UIContainer detailDescriptionIContainer;
     protected TextField<String> detailDescriptionField;
-    protected TextFeedbackPanel detailDescriptionFeedback;
+
+    protected UIBlock row2Block1;
 
     public DetailsPanel(String id, Page itemPage) {
         super(id);
@@ -69,39 +72,40 @@ public class DetailsPanel extends Panel {
         this.closeLink = new BookmarkablePageLink<>("closeLink", RecurringBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Six_6);
-        this.form.add(this.detailDescriptionBlock);
-        this.detailDescriptionIContainer = new WebMarkupContainer("detailDescriptionIContainer");
-        this.detailDescriptionBlock.add(this.detailDescriptionIContainer);
-        this.detailDescriptionField = new TextField<>("detailDescriptionField", new PropertyModel<>(this.itemPage, "detailDescriptionValue"));
-        this.detailDescriptionField.setLabel(Model.of("Description"));
-        this.detailDescriptionIContainer.add(this.detailDescriptionField);
-        this.detailDescriptionFeedback = new TextFeedbackPanel("detailDescriptionFeedback", this.detailDescriptionField);
-        this.detailDescriptionIContainer.add(this.detailDescriptionFeedback);
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
-        this.form.add(this.detailShortNameBlock);
-        this.detailShortNameIContainer = new WebMarkupContainer("detailShortNameIContainer");
-        this.detailShortNameBlock.add(this.detailShortNameIContainer);
+        this.detailShortNameBlock = this.row1.newUIBlock("detailShortNameBlock", Size.Six_6);
+        this.detailShortNameIContainer = this.detailShortNameBlock.newUIContainer("detailShortNameIContainer");
         this.detailShortNameField = new TextField<>("detailShortNameField", new PropertyModel<>(this.itemPage, "detailShortNameValue"));
-        this.detailShortNameField.setLabel(Model.of("Short Name"));
         this.detailShortNameIContainer.add(this.detailShortNameField);
-        this.detailShortNameFeedback = new TextFeedbackPanel("detailShortNameFeedback", this.detailShortNameField);
-        this.detailShortNameIContainer.add(this.detailShortNameFeedback);
+        this.detailShortNameIContainer.newFeedback("detailShortNameFeedback", this.detailShortNameField);
 
-        this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
-        this.form.add(this.detailProductNameBlock);
-        this.detailProductNameIContainer = new WebMarkupContainer("detailProductNameIContainer");
-        this.detailProductNameBlock.add(this.detailProductNameIContainer);
+        this.detailProductNameBlock = this.row1.newUIBlock("detailProductNameBlock", Size.Six_6);
+        this.detailProductNameIContainer = this.detailProductNameBlock.newUIContainer("detailProductNameIContainer");
         this.detailProductNameField = new TextField<>("detailProductNameField", new PropertyModel<>(this.itemPage, "detailProductNameValue"));
-        this.detailProductNameField.setLabel(Model.of("Product Name"));
         this.detailProductNameIContainer.add(this.detailProductNameField);
-        this.detailProductNameFeedback = new TextFeedbackPanel("detailProductNameFeedback", this.detailProductNameField);
-        this.detailProductNameIContainer.add(this.detailProductNameFeedback);
+        this.detailProductNameIContainer.newFeedback("detailProductNameFeedback", this.detailProductNameField);
+
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.detailDescriptionBlock = this.row2.newUIBlock("detailDescriptionBlock", Size.Six_6);
+        this.detailDescriptionIContainer = this.detailDescriptionBlock.newUIContainer("detailDescriptionIContainer");
+        this.detailDescriptionField = new TextField<>("detailDescriptionField", new PropertyModel<>(this.itemPage, "detailDescriptionValue"));
+        this.detailDescriptionIContainer.add(this.detailDescriptionField);
+        this.detailDescriptionIContainer.newFeedback("detailDescriptionFeedback", this.detailDescriptionField);
+
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Six_6);
+
     }
 
     @Override
     protected void configureMetaData() {
+        this.detailDescriptionField.setLabel(Model.of("Description"));
+
+        this.detailProductNameField.setLabel(Model.of("Product Name"));
+
+        this.detailShortNameField.setLabel(Model.of("Short Name"));
+
         this.detailProductNameField.setRequired(true);
         this.detailShortNameField.setRequired(true);
         this.detailDescriptionField.setRequired(true);

@@ -9,7 +9,6 @@ import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -17,6 +16,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.product.recurring.RecurringBrowsePage;
 import com.angkorteam.fintech.pages.product.recurring.RecurringCreatePage;
 import com.angkorteam.fintech.popup.IncentivePopup;
@@ -24,7 +26,6 @@ import com.angkorteam.fintech.popup.InterestRateChartPopup;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
@@ -62,24 +63,32 @@ public class InterestRateChartPanel extends Panel {
 
     // Interest Rate Chart
 
-    protected WebMarkupBlock interestRateValidFromDateBlock;
-    protected WebMarkupContainer interestRateValidFromDateIContainer;
+    protected UIRow row1;
+
+    protected UIBlock interestRateValidFromDateBlock;
+    protected UIContainer interestRateValidFromDateIContainer;
     protected DateTextField interestRateValidFromDateField;
     protected TextFeedbackPanel interestRateValidFromDateFeedback;
 
-    protected WebMarkupBlock interestRateValidEndDateBlock;
-    protected WebMarkupContainer interestRateValidEndDateIContainer;
+    protected UIBlock interestRateValidEndDateBlock;
+    protected UIContainer interestRateValidEndDateIContainer;
     protected DateTextField interestRateValidEndDateField;
     protected TextFeedbackPanel interestRateValidEndDateFeedback;
 
-    protected WebMarkupBlock interestRatePrimaryGroupingByAmountBlock;
-    protected WebMarkupContainer interestRatePrimaryGroupingByAmountIContainer;
+    protected UIRow row2;
+
+    protected UIBlock interestRatePrimaryGroupingByAmountBlock;
+    protected UIContainer interestRatePrimaryGroupingByAmountIContainer;
     protected CheckBox interestRatePrimaryGroupingByAmountField;
     protected TextFeedbackPanel interestRatePrimaryGroupingByAmountFeedback;
 
+    protected UIBlock row2Block1;
+
+    protected UIRow row3;
+
     protected List<IColumn<Map<String, Object>, String>> interestRateChartColumn;
-    protected WebMarkupBlock interestRateChartBlock;
-    protected WebMarkupContainer interestRateChartIContainer;
+    protected UIBlock interestRateChartBlock;
+    protected UIContainer interestRateChartIContainer;
     protected DataTable<Map<String, Object>, String> interestRateChartTable;
     protected ListDataProvider interestRateChartProvider;
     protected AjaxLink<Void> interestRateChartAddLink;
@@ -128,42 +137,34 @@ public class InterestRateChartPanel extends Panel {
         add(this.modalWindow);
         this.modalWindow.setOnClose(this::modalWindowClose);
 
-        this.interestRateValidFromDateBlock = new WebMarkupBlock("interestRateValidFromDateBlock", Size.Six_6);
-        this.form.add(this.interestRateValidFromDateBlock);
-        this.interestRateValidFromDateIContainer = new WebMarkupContainer("interestRateValidFromDateIContainer");
-        this.interestRateValidFromDateBlock.add(this.interestRateValidFromDateIContainer);
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.interestRateValidFromDateBlock = this.row1.newUIBlock("interestRateValidFromDateBlock", Size.Six_6);
+        this.interestRateValidFromDateIContainer = this.interestRateValidFromDateBlock.newUIContainer("interestRateValidFromDateIContainer");
         this.interestRateValidFromDateField = new DateTextField("interestRateValidFromDateField", new PropertyModel<>(this.itemPage, "interestRateValidFromDateValue"));
-        this.interestRateValidFromDateField.setLabel(Model.of("Valid From Date"));
-        this.interestRateValidFromDateField.add(new OnChangeAjaxBehavior());
         this.interestRateValidFromDateIContainer.add(this.interestRateValidFromDateField);
-        this.interestRateValidFromDateFeedback = new TextFeedbackPanel("interestRateValidFromDateFeedback", this.interestRateValidFromDateField);
-        this.interestRateValidFromDateIContainer.add(this.interestRateValidFromDateFeedback);
+        this.interestRateValidFromDateIContainer.newFeedback("interestRateValidFromDateFeedback", this.interestRateValidFromDateField);
 
-        this.interestRateValidEndDateBlock = new WebMarkupBlock("interestRateValidEndDateBlock", Size.Six_6);
-        this.form.add(this.interestRateValidEndDateBlock);
-        this.interestRateValidEndDateIContainer = new WebMarkupContainer("interestRateValidEndDateIContainer");
-        this.interestRateValidEndDateBlock.add(this.interestRateValidEndDateIContainer);
+        this.interestRateValidEndDateBlock = this.row1.newUIBlock("interestRateValidEndDateBlock", Size.Six_6);
+        this.interestRateValidEndDateIContainer = this.interestRateValidEndDateBlock.newUIContainer("interestRateValidEndDateIContainer");
         this.interestRateValidEndDateField = new DateTextField("interestRateValidEndDateField", new PropertyModel<>(this.itemPage, "interestRateValidEndDateValue"));
-        this.interestRateValidEndDateField.setLabel(Model.of("End Date"));
-        this.interestRateValidEndDateField.add(new OnChangeAjaxBehavior());
         this.interestRateValidEndDateIContainer.add(this.interestRateValidEndDateField);
-        this.interestRateValidEndDateFeedback = new TextFeedbackPanel("interestRateValidEndDateFeedback", this.interestRateValidEndDateField);
-        this.interestRateValidEndDateIContainer.add(this.interestRateValidEndDateFeedback);
+        this.interestRateValidEndDateIContainer.newFeedback("interestRateValidEndDateFeedback", this.interestRateValidEndDateField);
 
-        this.interestRatePrimaryGroupingByAmountBlock = new WebMarkupBlock("interestRatePrimaryGroupingByAmountBlock", Size.Six_6);
-        this.form.add(this.interestRatePrimaryGroupingByAmountBlock);
-        this.interestRatePrimaryGroupingByAmountIContainer = new WebMarkupContainer("interestRatePrimaryGroupingByAmountIContainer");
-        this.interestRatePrimaryGroupingByAmountBlock.add(this.interestRatePrimaryGroupingByAmountIContainer);
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.interestRatePrimaryGroupingByAmountBlock = this.row2.newUIBlock("interestRatePrimaryGroupingByAmountBlock", Size.Six_6);
+        this.interestRatePrimaryGroupingByAmountIContainer = this.interestRatePrimaryGroupingByAmountBlock.newUIContainer("interestRatePrimaryGroupingByAmountIContainer");
         this.interestRatePrimaryGroupingByAmountField = new CheckBox("interestRatePrimaryGroupingByAmountField", new PropertyModel<>(this.itemPage, "interestRatePrimaryGroupingByAmountValue"));
-        this.interestRatePrimaryGroupingByAmountField.add(new OnChangeAjaxBehavior());
         this.interestRatePrimaryGroupingByAmountIContainer.add(this.interestRatePrimaryGroupingByAmountField);
-        this.interestRatePrimaryGroupingByAmountFeedback = new TextFeedbackPanel("interestRatePrimaryGroupingByAmountFeedback", this.interestRatePrimaryGroupingByAmountField);
-        this.interestRatePrimaryGroupingByAmountIContainer.add(this.interestRatePrimaryGroupingByAmountFeedback);
+        this.interestRatePrimaryGroupingByAmountIContainer.newFeedback("interestRatePrimaryGroupingByAmountFeedback", this.interestRatePrimaryGroupingByAmountField);
 
-        this.interestRateChartBlock = new WebMarkupBlock("interestRateChartBlock", Size.Twelve_12);
-        this.form.add(this.interestRateChartBlock);
-        this.interestRateChartIContainer = new WebMarkupContainer("interestRateChartIContainer");
-        this.interestRateChartBlock.add(this.interestRateChartIContainer);
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Six_6);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.interestRateChartBlock = this.row3.newUIBlock("interestRateChartBlock", Size.Twelve_12);
+        this.interestRateChartIContainer = this.interestRateChartBlock.newUIContainer("interestRateChartIContainer");
         this.interestRateChartTable = new DataTable<>("interestRateChartTable", interestRateChartColumn, this.interestRateChartProvider, 20);
         this.interestRateChartIContainer.add(this.interestRateChartTable);
         this.interestRateChartTable.addTopToolbar(new HeadersToolbar<>(this.interestRateChartTable, this.interestRateChartProvider));
@@ -175,6 +176,14 @@ public class InterestRateChartPanel extends Panel {
 
     @Override
     protected void configureMetaData() {
+        this.interestRatePrimaryGroupingByAmountField.add(new OnChangeAjaxBehavior());
+
+        this.interestRateValidFromDateField.setLabel(Model.of("Valid From Date"));
+        this.interestRateValidFromDateField.add(new OnChangeAjaxBehavior());
+
+        this.interestRateValidEndDateField.setLabel(Model.of("End Date"));
+        this.interestRateValidEndDateField.add(new OnChangeAjaxBehavior());
+
     }
 
     protected void modalWindowClose(String popupName, String signalId, AjaxRequestTarget target) {
