@@ -8,7 +8,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -21,14 +20,15 @@ import com.angkorteam.fintech.ddl.MHookTemplates;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.HookHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -52,22 +52,26 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class HookBrowsePage extends Page {
 
-    protected WebMarkupBlock dataBlock;
-    protected WebMarkupContainer dataIContainer;
-    protected DataTable<Map<String, Object>, String> dataTable;
-    protected JdbcProvider dataProvider;
-    protected List<IColumn<Map<String, Object>, String>> dataColumn;
-    protected FilterForm<Map<String, String>> dataFilterForm;
+    protected Form<Void> form1;
+    protected Button createButton;
 
-    protected WebMarkupBlock templateBlock;
-    protected WebMarkupContainer templateIContainer;
+    protected UIRow row1;
+
+    protected UIBlock templateBlock;
+    protected UIContainer templateIContainer;
     protected SingleChoiceProvider templateProvider;
     protected Option templateValue;
     protected Select2SingleChoice<Option> templateField;
-    protected TextFeedbackPanel templateFeedback;
 
-    protected Form<Void> form;
-    protected Button createButton;
+    protected FilterForm<Map<String, String>> form2;
+
+    protected UIRow row2;
+
+    protected UIBlock dataBlock;
+    protected UIContainer dataIContainer;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -93,47 +97,14 @@ public class HookBrowsePage extends Page {
 
     @Override
     protected void initData() {
-    }
-
-    @Override
-    protected void initComponent() {
-        initDataBlock();
-
-        this.form = new Form<>("form");
-        add(this.form);
-
-        this.createButton = new Button("createButton");
-        this.createButton.setOnSubmit(this::createButtonSubmit);
-        this.form.add(this.createButton);
-
-        initTemplateBlock();
-    }
-
-    protected void initTemplateBlock() {
-        this.templateBlock = new WebMarkupBlock("templateBlock", Size.Twelve_12);
-        this.form.add(this.templateBlock);
-        this.templateIContainer = new WebMarkupContainer("templateIContainer");
-        this.templateBlock.add(this.templateIContainer);
         this.templateProvider = new SingleChoiceProvider(MHookTemplates.NAME, MHookTemplates.Field.ID, MHookTemplates.Field.NAME);
-        this.templateField = new Select2SingleChoice<>("templateField", new PropertyModel<>(this, "templateValue"), this.templateProvider);
-        this.templateField.setRequired(true);
-        this.templateIContainer.add(this.templateField);
-        this.templateFeedback = new TextFeedbackPanel("templateFeedback", this.templateField);
-        this.templateIContainer.add(this.templateFeedback);
-    }
 
-    protected void initDataBlock() {
-        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
-        add(this.dataBlock);
-        this.dataIContainer = new WebMarkupContainer("dataIContainer");
-        this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider(MHook.NAME);
         this.dataProvider.applyJoin("m_hook_templates", "LEFT JOIN " + MHookTemplates.NAME + " ON " + MHook.NAME + "." + MHook.Field.TEMPLATE_ID + " = " + MHookTemplates.NAME + "." + MHookTemplates.Field.ID);
         this.dataProvider.boardField(MHook.NAME + "." + MHook.Field.ID, "id", Long.class);
         this.dataProvider.boardField(MHook.NAME + "." + MHook.Field.NAME, "name", String.class);
         this.dataProvider.boardField(MHookTemplates.NAME + "." + MHookTemplates.Field.NAME, "template", String.class);
         this.dataProvider.boardField(MHook.NAME + "." + MHook.Field.IS_ACTIVE, "active", Long.class);
-
         this.dataProvider.selectField("id", Long.class);
 
         this.dataColumn = Lists.newArrayList();
@@ -142,16 +113,40 @@ public class HookBrowsePage extends Page {
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Is Active ?"), "active", "active", this::dataColumn));
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
-        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        this.dataIContainer.add(this.dataFilterForm);
+    }
 
+    @Override
+    protected void initComponent() {
+
+        this.form1 = new Form<>("form1");
+        add(this.form1);
+
+        this.createButton = new Button("createButton");
+        this.createButton.setOnSubmit(this::createButtonSubmit);
+        this.form1.add(this.createButton);
+
+        this.row1 = UIRow.newUIRow("row1", this.form1);
+
+        this.templateBlock = this.row1.newUIBlock("templateBlock", Size.Twelve_12);
+        this.templateIContainer = this.templateBlock.newUIContainer("templateIContainer");
+        this.templateField = new Select2SingleChoice<>("templateField", new PropertyModel<>(this, "templateValue"), this.templateProvider);
+        this.templateIContainer.add(this.templateField);
+        this.templateIContainer.newFeedback("templateFeedback", this.templateField);
+
+        this.form2 = new FilterForm<>("form1", this.dataProvider);
+        add(this.form2);
+
+        this.row2 = UIRow.newUIRow("row2", this.form2);
+        this.dataBlock = this.row2.newUIBlock("dataBlock", Size.Twelve_12);
+        this.dataIContainer = this.dataBlock.newUIContainer("dataIContainer");
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
-        this.dataFilterForm.add(this.dataTable);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.form2));
+        this.dataIContainer.add(this.dataTable);
     }
 
     @Override
     protected void configureMetaData() {
+        this.templateField.setRequired(true);
     }
 
     protected void dataClick(String s, Map<String, Object> model, AjaxRequestTarget target) {

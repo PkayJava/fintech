@@ -7,7 +7,6 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.TextField;
@@ -26,13 +25,14 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.HookBuilder;
 import com.angkorteam.fintech.helper.HookHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.HookFieldWidget;
 import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -55,6 +55,7 @@ import com.angkorteam.framework.wicket.markup.html.form.OptionChoiceRenderer;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -63,61 +64,64 @@ import io.github.openunirest.http.JsonNode;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class HookCreatePage extends Page {
 
-    protected WebMarkupBlock groupingBlock;
-    protected WebMarkupContainer groupingIContainer;
+    protected String templateId;
+
+    protected Form<Void> form1;
+    protected AjaxButton addButton;
+
+    protected UIRow row1;
+
+    protected UIBlock groupingBlock;
+    protected UIContainer groupingIContainer;
     protected List<Option> groupingProvider;
     protected Option groupingValue;
     protected DropDownChoice<Option> groupingField;
-    protected TextFeedbackPanel groupingFeedback;
 
-    protected WebMarkupBlock entityNameBlock;
-    protected WebMarkupContainer entityNameIContainer;
+    protected UIBlock entityNameBlock;
+    protected UIContainer entityNameIContainer;
     protected List<Option> entityNameProvider;
     protected Option entityNameValue;
     protected DropDownChoice<Option> entityNameField;
-    protected TextFeedbackPanel entityNameFeedback;
 
-    protected WebMarkupBlock actionNameBlock;
-    protected WebMarkupContainer actionNameIContainer;
+    protected UIBlock actionNameBlock;
+    protected UIContainer actionNameIContainer;
     protected List<Option> actionNameProvider;
     protected Option actionNameValue;
     protected DropDownChoice<Option> actionNameField;
-    protected TextFeedbackPanel actionNameFeedback;
 
-    protected Form<Void> form;
-    protected AjaxButton addButton;
+    protected Form<Void> form2;
+    protected Button saveButton;
 
-    protected String templateId;
+    protected UIRow row2;
 
-    protected WebMarkupBlock templateBlock;
-    protected WebMarkupContainer templateVContainer;
+    protected UIBlock templateBlock;
+    protected UIContainer templateVContainer;
     protected String templateValue;
     protected ReadOnlyView templateView;
 
-    protected WebMarkupBlock nameBlock;
-    protected WebMarkupContainer nameIContainer;
+    protected UIBlock nameBlock;
+    protected UIContainer nameIContainer;
     protected String nameValue;
     protected TextField<String> nameField;
-    protected TextFeedbackPanel nameFeedback;
 
-    protected WebMarkupBlock activeBlock;
-    protected WebMarkupContainer activeIContainer;
+    protected UIRow row3;
+
+    protected UIBlock activeBlock;
+    protected UIContainer activeIContainer;
     protected Boolean activeValue;
     protected CheckBox activeField;
-    protected TextFeedbackPanel activeFeedback;
 
     protected Map<String, String> configValue;
     protected RepeatingView configField;
 
-    protected WebMarkupBlock dataBlock;
-    protected WebMarkupContainer dataIContainer;
+    protected UIRow row4;
+
+    protected UIBlock dataBlock;
+    protected UIContainer dataIContainer;
     protected ListDataProvider dataProvider;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected List<Map<String, Object>> dataValue;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
-
-    protected Form<Void> hookForm;
-    protected Button createButton;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -149,46 +153,94 @@ public class HookCreatePage extends Page {
 
     @Override
     protected void initData() {
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
         this.configValue = Maps.newHashMap();
         PageParameters parameters = getPageParameters();
         this.templateId = parameters.get("templateId").toString("");
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.templateValue = jdbcTemplate.queryForObject("SELECT " + MHookTemplates.Field.NAME + " from " + MHookTemplates.NAME + " where " + MHookTemplates.Field.ID + " = ?", String.class, this.templateId);
+
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MPermission.NAME);
+        selectQuery.addGroupBy(MPermission.Field.GROUPING);
+        selectQuery.addField("max(" + MPermission.Field.GROUPING + ") as id");
+        selectQuery.addField("max(" + MPermission.Field.GROUPING + ") as text");
+        this.groupingProvider = named.query(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
+        this.entityNameProvider = Lists.newArrayList();
+        this.actionNameProvider = Lists.newArrayList();
+
         this.dataValue = Lists.newArrayList();
+        this.dataProvider = new ListDataProvider(this.dataValue);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextColumn(Model.of("Entity Name"), "entity_name", "entity_name", this::dataColumn));
+        this.dataColumn.add(new TextColumn(Model.of("Action Name"), "action_name", "action_name", this::dataColumn));
+        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
     }
 
     @Override
     protected void initComponent() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        this.form = new Form<>("form");
-        add(this.form);
-
-        initGroupingBlock();
-
-        initEntityNameBlock();
-
-        initActionNameBlock();
+        this.form1 = new Form<>("form1");
+        add(this.form1);
 
         this.addButton = new AjaxButton("addButton");
         this.addButton.setOnSubmit(this::addButtonSubmit);
-        this.form.add(this.addButton);
+        this.form1.add(this.addButton);
 
-        this.hookForm = new Form<>("hookForm");
-        add(this.hookForm);
+        this.row1 = UIRow.newUIRow("row1", this.form1);
 
-        this.createButton = new Button("createButton");
-        this.createButton.setOnSubmit(this::createButtonSubmit);
-        this.hookForm.add(this.createButton);
+        this.groupingBlock = this.row1.newUIBlock("groupingBlock", Size.Four_4);
+        this.groupingIContainer = this.groupingBlock.newUIContainer("groupingIContainer");
+        this.groupingField = new DropDownChoice<>("groupingField", new PropertyModel<>(this, "groupingValue"), new PropertyModel<>(this, "groupingProvider"), new OptionChoiceRenderer());
+        this.groupingIContainer.add(this.groupingField);
+        this.groupingIContainer.newFeedback("groupingFeedback", this.groupingField);
 
-        initTemplateBlock();
+        this.entityNameBlock = this.row1.newUIBlock("entityNameBlock", Size.Four_4);
+        this.entityNameIContainer = this.entityNameBlock.newUIContainer("entityNameIContainer");
+        this.entityNameField = new DropDownChoice<>("entityNameField", new PropertyModel<>(this, "entityNameValue"), new PropertyModel<>(this, "entityNameProvider"), new OptionChoiceRenderer());
+        this.entityNameIContainer.add(this.entityNameField);
+        this.entityNameIContainer.newFeedback("entityNameFeedback", this.entityNameField);
 
-        initNameBlock();
+        this.actionNameBlock = this.row1.newUIBlock("actionNameBlock", Size.Four_4);
+        this.actionNameIContainer = this.actionNameBlock.newUIContainer("actionNameIContainer");
+        this.actionNameField = new DropDownChoice<>("actionNameField", new PropertyModel<>(this, "actionNameValue"), new PropertyModel<>(this, "actionNameProvider"), new OptionChoiceRenderer());
+        this.actionNameIContainer.add(this.actionNameField);
+        this.actionNameIContainer.newFeedback("actionNameFeedback", this.actionNameField);
 
-        initActiveBlock();
+        this.form2 = new Form<>("form2");
+        add(this.form2);
+
+        this.saveButton = new Button("saveButton");
+        this.saveButton.setOnSubmit(this::saveButtonSubmit);
+        this.form2.add(this.saveButton);
+
+        this.row2 = UIRow.newUIRow("row2", this.form2);
+
+        this.templateBlock = this.row2.newUIBlock("templateBlock", Size.Six_6);
+        this.templateVContainer = this.templateBlock.newUIContainer("templateVContainer");
+        this.templateView = new ReadOnlyView("templateView", new PropertyModel<>(this, "templateValue"));
+        this.templateVContainer.add(this.templateView);
+
+        this.nameBlock = this.row2.newUIBlock("nameBlock", Size.Six_6);
+        this.nameIContainer = this.nameBlock.newUIContainer("nameIContainer");
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameIContainer.add(this.nameField);
+        this.nameIContainer.newFeedback("nameFeedback", this.nameField);
+
+        this.row3 = UIRow.newUIRow("row3", this.form2);
+
+        this.activeBlock = this.row3.newUIBlock("activeBlock", Size.Twelve_12);
+        this.activeIContainer = this.activeBlock.newUIContainer("activeIContainer");
+        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
+        this.activeIContainer.add(this.activeField);
+        this.activeIContainer.newFeedback("activeFeedback", this.activeField);
 
         this.configField = new RepeatingView("configField");
-        this.hookForm.add(this.configField);
+        this.form2.add(this.configField);
         List<Map<String, Object>> temps = jdbcTemplate.queryForList("select " + MHookSchema.Field.FIELD_NAME + " from " + MHookSchema.NAME + " where " + MHookSchema.Field.HOOK_TEMPLATE_ID + " = ?", this.templateId);
         for (Map<String, Object> temp : temps) {
             String id = this.configField.newChildId();
@@ -196,110 +248,29 @@ public class HookCreatePage extends Page {
             this.configField.add(field);
         }
 
-        initDataBlock();
-    }
+        this.row4 = UIRow.newUIRow("row4", this.form2);
 
-    @Override
-    protected void configureMetaData() {
-    }
-
-    protected void initActionNameBlock() {
-        this.actionNameBlock = new WebMarkupBlock("actionNameBlock", Size.Four_4);
-        this.form.add(this.actionNameBlock);
-        this.actionNameIContainer = new WebMarkupContainer("actionNameIContainer");
-        this.actionNameBlock.add(this.actionNameIContainer);
-        this.actionNameProvider = Lists.newArrayList();
-        this.actionNameField = new DropDownChoice<>("actionNameField", new PropertyModel<>(this, "actionNameValue"), new PropertyModel<>(this, "actionNameProvider"), new OptionChoiceRenderer());
-        this.actionNameField.setRequired(true);
-        this.actionNameIContainer.add(this.actionNameField);
-        this.actionNameFeedback = new TextFeedbackPanel("actionNameFeedback", this.actionNameField);
-        this.actionNameIContainer.add(this.actionNameFeedback);
-    }
-
-    protected void initEntityNameBlock() {
-        this.entityNameBlock = new WebMarkupBlock("entityNameBlock", Size.Four_4);
-        this.form.add(this.entityNameBlock);
-        this.entityNameIContainer = new WebMarkupContainer("entityNameIContainer");
-        this.entityNameBlock.add(this.entityNameIContainer);
-        this.entityNameProvider = Lists.newArrayList();
-        this.entityNameField = new DropDownChoice<>("entityNameField", new PropertyModel<>(this, "entityNameValue"), new PropertyModel<>(this, "entityNameProvider"), new OptionChoiceRenderer());
-        this.entityNameField.setRequired(true);
-        this.entityNameField.add(new OnChangeAjaxBehavior(this::entityNameFieldUpdate));
-        this.entityNameIContainer.add(this.entityNameField);
-        this.entityNameFeedback = new TextFeedbackPanel("entityNameFeedback", this.entityNameField);
-        this.entityNameIContainer.add(this.entityNameFeedback);
-    }
-
-    protected void initGroupingBlock() {
-        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
-        this.groupingBlock = new WebMarkupBlock("groupingBlock", Size.Four_4);
-        this.form.add(this.groupingBlock);
-        this.groupingIContainer = new WebMarkupContainer("groupingIContainer");
-        this.groupingBlock.add(this.groupingIContainer);
-        SelectQuery selectQuery = null;
-        selectQuery = new SelectQuery(MPermission.NAME);
-        selectQuery.addGroupBy(MPermission.Field.GROUPING);
-        selectQuery.addField("max(" + MPermission.Field.GROUPING + ") as id");
-        selectQuery.addField("max(" + MPermission.Field.GROUPING + ") as text");
-        this.groupingProvider = named.query(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
-        this.groupingField = new DropDownChoice<>("groupingField", new PropertyModel<>(this, "groupingValue"), new PropertyModel<>(this, "groupingProvider"), new OptionChoiceRenderer());
-        this.groupingField.setRequired(true);
-        this.groupingField.add(new OnChangeAjaxBehavior(this::groupingFieldUpdate));
-        this.groupingIContainer.add(this.groupingField);
-        this.groupingFeedback = new TextFeedbackPanel("groupingFeedback", this.groupingField);
-        this.groupingIContainer.add(this.groupingFeedback);
-    }
-
-    protected void initDataBlock() {
-        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
-        this.hookForm.add(this.dataBlock);
-        this.dataIContainer = new WebMarkupContainer("dataIContainer");
-        this.dataBlock.add(this.dataIContainer);
-
-        this.dataProvider = new ListDataProvider(this.dataValue);
-
-        this.dataColumn = Lists.newArrayList();
-        this.dataColumn.add(new TextColumn(Model.of("Entity Name"), "entity_name", "entity_name", this::dataColumn));
-        this.dataColumn.add(new TextColumn(Model.of("Action Name"), "action_name", "action_name", this::dataColumn));
-        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
-
+        this.dataBlock = this.row4.newUIBlock("dataBlock", Size.Twelve_12);
+        this.dataIContainer = this.dataBlock.newUIContainer("dataIContainer");
         this.dataTable = new DataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataIContainer.add(this.dataTable);
         this.dataTable.addTopToolbar(new HeadersToolbar<>(this.dataTable, this.dataProvider));
         this.dataTable.addBottomToolbar(new NoRecordsToolbar(this.dataTable));
     }
 
-    protected void initActiveBlock() {
-        this.activeBlock = new WebMarkupBlock("activeBlock", Size.Twelve_12);
-        this.hookForm.add(this.activeBlock);
-        this.activeIContainer = new WebMarkupContainer("activeIContainer");
-        this.activeBlock.add(this.activeIContainer);
-        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
+    @Override
+    protected void configureMetaData() {
         this.activeField.setRequired(true);
-        this.activeIContainer.add(this.activeField);
-        this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
-        this.activeIContainer.add(this.activeFeedback);
-    }
 
-    protected void initTemplateBlock() {
-        this.templateBlock = new WebMarkupBlock("templateBlock", Size.Six_6);
-        this.hookForm.add(this.templateBlock);
-        this.templateVContainer = new WebMarkupContainer("templateVContainer");
-        this.templateBlock.add(this.templateVContainer);
-        this.templateView = new ReadOnlyView("templateView", new PropertyModel<>(this, "templateValue"));
-        this.templateVContainer.add(this.templateView);
-    }
-
-    protected void initNameBlock() {
-        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
-        this.hookForm.add(this.nameBlock);
-        this.nameIContainer = new WebMarkupContainer("nameIContainer");
-        this.nameBlock.add(this.nameIContainer);
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameField.setRequired(true);
-        this.nameIContainer.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.nameIContainer.add(this.nameFeedback);
+
+        this.actionNameField.setRequired(true);
+
+        this.entityNameField.setRequired(true);
+        this.entityNameField.add(new OnChangeAjaxBehavior(this::entityNameFieldUpdate));
+
+        this.groupingField.setRequired(true);
+        this.groupingField.add(new OnChangeAjaxBehavior(this::groupingFieldUpdate));
     }
 
     protected boolean entityNameFieldUpdate(AjaxRequestTarget target) {
@@ -317,7 +288,7 @@ public class HookCreatePage extends Page {
                 this.actionNameProvider.clear();
             }
         }
-        target.add(this.form);
+        target.add(this.form1);
         return false;
     }
 
@@ -339,7 +310,7 @@ public class HookCreatePage extends Page {
                 this.actionNameProvider.clear();
             }
         }
-        target.add(this.form);
+        target.add(this.form1);
         return false;
     }
 
@@ -362,7 +333,7 @@ public class HookCreatePage extends Page {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void createButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         HookBuilder builder = new HookBuilder();
         builder.withName(this.templateValue);
         builder.withDisplayName(this.nameValue);
@@ -395,7 +366,7 @@ public class HookCreatePage extends Page {
         this.dataValue.add(event);
         this.entityNameValue = null;
         this.actionNameValue = null;
-        target.add(this.form);
+        target.add(this.form1);
         target.add(this.dataTable);
         return false;
     }

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
@@ -18,10 +17,11 @@ import com.angkorteam.fintech.dto.builder.HolidayBuilder;
 import com.angkorteam.fintech.dto.enums.ReschedulingType;
 import com.angkorteam.fintech.helper.HolidayHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.MultipleChoiceProvider;
 import com.angkorteam.fintech.provider.ReschedulingTypeProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
@@ -29,6 +29,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -37,56 +38,59 @@ import io.github.openunirest.http.JsonNode;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class HolidayCreatePage extends Page {
 
-    protected WebMarkupBlock nameBlock;
-    protected WebMarkupContainer nameIContainer;
-    protected String nameValue;
-    protected TextField<String> nameField;
-    protected TextFeedbackPanel nameFeedback;
-
-    protected WebMarkupBlock descriptionBlock;
-    protected WebMarkupContainer descriptionIContainer;
-    protected String descriptionValue;
-    protected TextField<String> descriptionField;
-    protected TextFeedbackPanel descriptionFeedback;
-
-    protected WebMarkupBlock officeBlock;
-    protected WebMarkupContainer officeIContainer;
-    protected MultipleChoiceProvider officeProvider;
-    protected List<Option> officeValue;
-    protected Select2MultipleChoice<Option> officeField;
-    protected TextFeedbackPanel officeFeedback;
-
-    protected WebMarkupBlock fromDateBlock;
-    protected WebMarkupContainer fromDateIContainer;
-    protected Date fromDateValue;
-    protected DateTextField fromDateField;
-    protected TextFeedbackPanel fromDateFeedback;
-
-    protected WebMarkupBlock toDateBlock;
-    protected WebMarkupContainer toDateIContainer;
-    protected Date toDateValue;
-    protected DateTextField toDateField;
-    protected TextFeedbackPanel toDateFeedback;
-
-    protected WebMarkupBlock repaymentsRescheduledToBlock;
-    protected WebMarkupContainer repaymentsRescheduledToIContainer;
-    protected Date repaymentsRescheduledToValue;
-    protected DateTextField repaymentsRescheduledToField;
-    protected TextFeedbackPanel repaymentsRescheduledToFeedback;
-
-    protected WebMarkupBlock reschedulingTypeBlock;
-    protected WebMarkupContainer reschedulingTypeIContainer;
-    protected ReschedulingTypeProvider reschedulingTypeProvider;
-    protected Option reschedulingTypeValue;
-    protected Select2SingleChoice<Option> reschedulingTypeField;
-    protected TextFeedbackPanel reschedulingTypeFeedback;
-
     protected Form<Void> form;
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
+    protected UIRow row1;
+
+    protected UIBlock officeBlock;
+    protected UIContainer officeIContainer;
+    protected MultipleChoiceProvider officeProvider;
+    protected List<Option> officeValue;
+    protected Select2MultipleChoice<Option> officeField;
+
+    protected UIRow row2;
+
+    protected UIBlock nameBlock;
+    protected UIContainer nameIContainer;
+    protected String nameValue;
+    protected TextField<String> nameField;
+
+    protected UIBlock descriptionBlock;
+    protected UIContainer descriptionIContainer;
+    protected String descriptionValue;
+    protected TextField<String> descriptionField;
+
+    protected UIRow row3;
+
+    protected UIBlock fromDateBlock;
+    protected UIContainer fromDateIContainer;
+    protected Date fromDateValue;
+    protected DateTextField fromDateField;
+
+    protected UIBlock toDateBlock;
+    protected UIContainer toDateIContainer;
+    protected Date toDateValue;
+    protected DateTextField toDateField;
+
+    protected UIRow row4;
+
+    protected UIBlock repaymentsRescheduledToBlock;
+    protected UIContainer repaymentsRescheduledToIContainer;
+    protected Date repaymentsRescheduledToValue;
+    protected DateTextField repaymentsRescheduledToField;
+
+    protected UIBlock reschedulingTypeBlock;
+    protected UIContainer reschedulingTypeIContainer;
+    protected ReschedulingTypeProvider reschedulingTypeProvider;
+    protected Option reschedulingTypeValue;
+    protected Select2SingleChoice<Option> reschedulingTypeField;
+
     @Override
     protected void initData() {
+        this.officeProvider = new MultipleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
+        this.reschedulingTypeProvider = new ReschedulingTypeProvider();
     }
 
     @Override
@@ -101,112 +105,68 @@ public class HolidayCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", HolidayBrowsePage.class);
         this.form.add(this.closeLink);
 
-        initNameBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initDescriptionBlock();
+        this.officeBlock = this.row1.newUIBlock("officeBlock", Size.Twelve_12);
+        this.officeIContainer = this.officeBlock.newUIContainer("officeIContainer");
+        this.officeField = new Select2MultipleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
+        this.officeIContainer.add(this.officeField);
+        this.officeIContainer.newFeedback("officeFeedback", this.officeField);
 
-        initFromDateBlock();
+        this.row2 = UIRow.newUIRow("row2", this.form);
 
-        initToDateBlock();
+        this.nameBlock = this.row2.newUIBlock("nameBlock", Size.Six_6);
+        this.nameIContainer = this.nameBlock.newUIContainer("nameIContainer");
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameIContainer.add(this.nameField);
+        this.nameIContainer.newFeedback("nameFeedback", this.nameField);
 
-        initReschedulingTypeBlock();
+        this.descriptionBlock = this.row2.newUIBlock("descriptionBlock", Size.Six_6);
+        this.descriptionIContainer = this.descriptionBlock.newUIContainer("descriptionIContainer");
+        this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
+        this.descriptionIContainer.add(this.descriptionField);
+        this.descriptionIContainer.newFeedback("descriptionFeedback", this.descriptionField);
 
-        initRepaymentsRescheduledToBlock();
+        this.row3 = UIRow.newUIRow("row3", this.form);
 
-        initOfficeBlock();
+        this.fromDateBlock = this.row3.newUIBlock("fromDateBlock", Size.Six_6);
+        this.fromDateIContainer = this.fromDateBlock.newUIContainer("fromDateIContainer");
+        this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this, "fromDateValue"));
+        this.fromDateIContainer.add(this.fromDateField);
+        this.fromDateIContainer.newFeedback("fromDateFeedback", this.fromDateField);
+
+        this.toDateBlock = this.row3.newUIBlock("toDateBlock", Size.Six_6);
+        this.toDateIContainer = this.toDateBlock.newUIContainer("toDateIContainer");
+        this.toDateField = new DateTextField("toDateField", new PropertyModel<>(this, "toDateValue"));
+        this.toDateIContainer.add(this.toDateField);
+        this.toDateIContainer.newFeedback("toDateFeedback", this.toDateField);
+
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.reschedulingTypeBlock = this.row4.newUIBlock("reschedulingTypeBlock", Size.Six_6);
+        this.reschedulingTypeIContainer = this.reschedulingTypeBlock.newUIContainer("reschedulingTypeIContainer");
+        this.reschedulingTypeField = new Select2SingleChoice<>("reschedulingTypeField", new PropertyModel<>(this, "reschedulingTypeValue"), this.reschedulingTypeProvider);
+        this.reschedulingTypeIContainer.add(this.reschedulingTypeField);
+        this.reschedulingTypeIContainer.newFeedback("reschedulingTypeFeedback", this.reschedulingTypeField);
+
+        this.repaymentsRescheduledToBlock = this.row4.newUIBlock("repaymentsRescheduledToBlock", Size.Six_6);
+        this.repaymentsRescheduledToIContainer = this.repaymentsRescheduledToBlock.newUIContainer("repaymentsRescheduledToIContainer");
+        this.repaymentsRescheduledToField = new DateTextField("repaymentsRescheduledToField", new PropertyModel<>(this, "repaymentsRescheduledToValue"));
+        this.repaymentsRescheduledToIContainer.add(this.repaymentsRescheduledToField);
+        this.repaymentsRescheduledToIContainer.newFeedback("repaymentsRescheduledToFeedback", this.repaymentsRescheduledToField);
     }
 
     @Override
     protected void configureMetaData() {
-        reschedulingTypeFieldUpdate(null);
-    }
-
-    protected void initOfficeBlock() {
-        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Twelve_12);
-        this.form.add(this.officeBlock);
-        this.officeIContainer = new WebMarkupContainer("officeIContainer");
-        this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new MultipleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
-        this.officeField = new Select2MultipleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
-        this.officeField.setRequired(true);
-        this.officeIContainer.add(this.officeField);
-        this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
-        this.officeIContainer.add(this.officeFeedback);
-    }
-
-    protected void initRepaymentsRescheduledToBlock() {
-        this.repaymentsRescheduledToBlock = new WebMarkupBlock("repaymentsRescheduledToBlock", Size.Six_6);
-        this.form.add(this.repaymentsRescheduledToBlock);
-        this.repaymentsRescheduledToIContainer = new WebMarkupContainer("repaymentsRescheduledToIContainer");
-        this.repaymentsRescheduledToBlock.add(this.repaymentsRescheduledToIContainer);
-        this.repaymentsRescheduledToBlock.add(this.repaymentsRescheduledToIContainer);
-        this.repaymentsRescheduledToField = new DateTextField("repaymentsRescheduledToField", new PropertyModel<>(this, "repaymentsRescheduledToValue"));
         this.repaymentsRescheduledToField.setRequired(true);
-        this.repaymentsRescheduledToIContainer.add(this.repaymentsRescheduledToField);
-        this.repaymentsRescheduledToFeedback = new TextFeedbackPanel("repaymentsRescheduledToFeedback", this.repaymentsRescheduledToField);
-        this.repaymentsRescheduledToIContainer.add(this.repaymentsRescheduledToFeedback);
-    }
-
-    protected void initReschedulingTypeBlock() {
-        this.reschedulingTypeBlock = new WebMarkupBlock("reschedulingTypeBlock", Size.Six_6);
-        this.form.add(this.reschedulingTypeBlock);
-        this.reschedulingTypeIContainer = new WebMarkupContainer("reschedulingTypeIContainer");
-        this.reschedulingTypeBlock.add(this.reschedulingTypeIContainer);
-        this.reschedulingTypeProvider = new ReschedulingTypeProvider();
-        this.reschedulingTypeField = new Select2SingleChoice<>("reschedulingTypeField", new PropertyModel<>(this, "reschedulingTypeValue"), this.reschedulingTypeProvider);
         this.reschedulingTypeField.setRequired(true);
         this.reschedulingTypeField.add(new OnChangeAjaxBehavior(this::reschedulingTypeFieldUpdate));
-        this.reschedulingTypeIContainer.add(this.reschedulingTypeField);
-        this.reschedulingTypeFeedback = new TextFeedbackPanel("reschedulingTypeFeedback", this.reschedulingTypeField);
-        this.reschedulingTypeIContainer.add(this.reschedulingTypeFeedback);
-    }
-
-    protected void initToDateBlock() {
-        this.toDateBlock = new WebMarkupBlock("toDateBlock", Size.Six_6);
-        this.form.add(this.toDateBlock);
-        this.toDateIContainer = new WebMarkupContainer("toDateIContainer");
-        this.toDateBlock.add(this.toDateIContainer);
-        this.toDateField = new DateTextField("toDateField", new PropertyModel<>(this, "toDateValue"));
         this.toDateField.setRequired(true);
-        this.toDateIContainer.add(this.toDateField);
-        this.toDateFeedback = new TextFeedbackPanel("toDateFeedback", this.toDateField);
-        this.toDateIContainer.add(this.toDateFeedback);
-    }
-
-    protected void initFromDateBlock() {
-        this.fromDateBlock = new WebMarkupBlock("fromDateBlock", Size.Six_6);
-        this.form.add(this.fromDateBlock);
-        this.fromDateIContainer = new WebMarkupContainer("fromDateIContainer");
-        this.fromDateBlock.add(this.fromDateIContainer);
-        this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this, "fromDateValue"));
         this.fromDateField.setRequired(true);
-        this.fromDateIContainer.add(this.fromDateField);
-        this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
-        this.fromDateIContainer.add(this.fromDateFeedback);
-    }
-
-    protected void initDescriptionBlock() {
-        this.descriptionBlock = new WebMarkupBlock("descriptionBlock", Size.Six_6);
-        this.form.add(this.descriptionBlock);
-        this.descriptionIContainer = new WebMarkupContainer("descriptionIContainer");
-        this.descriptionBlock.add(this.descriptionIContainer);
-        this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
         this.descriptionField.setRequired(true);
-        this.descriptionIContainer.add(this.descriptionField);
-        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-        this.descriptionIContainer.add(this.descriptionFeedback);
-    }
-
-    protected void initNameBlock() {
-        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
-        this.form.add(this.nameBlock);
-        this.nameIContainer = new WebMarkupContainer("nameIContainer");
-        this.nameBlock.add(this.nameIContainer);
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameField.setRequired(true);
-        this.nameIContainer.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.nameIContainer.add(this.nameFeedback);
+        this.officeField.setRequired(true);
+        reschedulingTypeFieldUpdate(null);
     }
 
     protected boolean reschedulingTypeFieldUpdate(AjaxRequestTarget target) {
