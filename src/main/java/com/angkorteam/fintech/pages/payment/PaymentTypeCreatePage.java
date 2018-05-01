@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages.payment;
 import java.util.List;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -17,13 +16,15 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.PaymentTypeBuilder;
 import com.angkorteam.fintech.helper.PaymentTypeHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -32,33 +33,37 @@ import io.github.openunirest.http.JsonNode;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class PaymentTypeCreatePage extends Page {
 
-    protected WebMarkupBlock descriptionBlock;
-    protected WebMarkupContainer descriptionIContainer;
-    protected String descriptionValue;
-    protected TextField<String> descriptionField;
-    protected TextFeedbackPanel descriptionFeedback;
-
-    protected WebMarkupBlock nameBlock;
-    protected WebMarkupContainer nameIContainer;
-    protected String nameValue;
-    protected TextField<String> nameField;
-    protected TextFeedbackPanel nameFeedback;
-
-    protected WebMarkupBlock positionBlock;
-    protected WebMarkupContainer positionIContainer;
-    protected Long positionValue;
-    protected TextField<Long> positionField;
-    protected TextFeedbackPanel positionFeedback;
-
-    protected WebMarkupBlock cashBlock;
-    protected WebMarkupContainer cashIContainer;
-    protected Boolean cashValue;
-    protected CheckBox cashField;
-    protected TextFeedbackPanel cashFeedback;
-
     protected Form<Void> form;
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
+
+    protected UIRow row1;
+
+    protected UIBlock nameBlock;
+    protected UIContainer nameIContainer;
+    protected String nameValue;
+    protected TextField<String> nameField;
+
+    protected UIRow row2;
+
+    protected UIBlock descriptionBlock;
+    protected UIContainer descriptionIContainer;
+    protected String descriptionValue;
+    protected TextField<String> descriptionField;
+
+    protected UIRow row3;
+
+    protected UIBlock cashBlock;
+    protected UIContainer cashIContainer;
+    protected Boolean cashValue;
+    protected CheckBox cashField;
+
+    protected UIRow row4;
+
+    protected UIBlock positionBlock;
+    protected UIContainer positionIContainer;
+    protected Long positionValue;
+    protected TextField<Long> positionField;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -104,65 +109,45 @@ public class PaymentTypeCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", PaymentTypeBrowsePage.class);
         this.form.add(this.closeLink);
 
-        initDescriptionBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initNameBlock();
+        this.nameBlock = this.row1.newUIBlock("nameBlock", Size.Twelve_12);
+        this.nameIContainer = this.nameBlock.newUIContainer("nameIContainer");
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameIContainer.add(this.nameField);
+        this.nameIContainer.newFeedback("nameFeedback", this.nameField);
 
-        initCashBlock();
+        this.row2 = UIRow.newUIRow("row2", this.form);
 
-        initPositionBlock();
+        this.descriptionBlock = this.row2.newUIBlock("descriptionBlock", Size.Twelve_12);
+        this.descriptionIContainer = this.descriptionBlock.newUIContainer("descriptionIContainer");
+        this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
+        this.descriptionIContainer.add(this.descriptionField);
+        this.descriptionIContainer.newFeedback("descriptionFeedback", this.descriptionField);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.cashBlock = this.row3.newUIBlock("cashBlock", Size.Twelve_12);
+        this.cashIContainer = this.cashBlock.newUIContainer("cashIContainer");
+        this.cashField = new CheckBox("cashField", new PropertyModel<>(this, "cashValue"));
+        this.cashIContainer.add(this.cashField);
+        this.cashIContainer.newFeedback("cashFeedback", this.cashField);
+
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.positionBlock = this.row4.newUIBlock("positionBlock", Size.Twelve_12);
+        this.positionIContainer = this.positionBlock.newUIContainer("positionIContainer");
+        this.positionField = new TextField<>("positionField", new PropertyModel<>(this, "positionValue"));
+        this.positionIContainer.add(this.positionField);
+        this.positionIContainer.newFeedback("positionFeedback", this.positionField);
     }
 
     @Override
     protected void configureMetaData() {
-    }
-
-    protected void initPositionBlock() {
-        this.positionBlock = new WebMarkupBlock("positionBlock", Size.Twelve_12);
-        this.form.add(this.positionBlock);
-        this.positionIContainer = new WebMarkupContainer("positionIContainer");
-        this.positionBlock.add(this.positionIContainer);
-        this.positionField = new TextField<>("positionField", new PropertyModel<>(this, "positionValue"));
         this.positionField.setRequired(true);
-        this.positionIContainer.add(this.positionField);
-        this.positionFeedback = new TextFeedbackPanel("positionFeedback", this.positionField);
-        this.positionIContainer.add(this.positionFeedback);
-    }
-
-    protected void initCashBlock() {
-        this.cashBlock = new WebMarkupBlock("cashBlock", Size.Twelve_12);
-        this.form.add(this.cashBlock);
-        this.cashIContainer = new WebMarkupContainer("cashIContainer");
-        this.cashBlock.add(this.cashIContainer);
-        this.cashField = new CheckBox("cashField", new PropertyModel<>(this, "cashValue"));
         this.cashField.setRequired(true);
-        this.cashIContainer.add(this.cashField);
-        this.cashFeedback = new TextFeedbackPanel("cashFeedback", this.cashField);
-        this.cashIContainer.add(this.cashFeedback);
-    }
-
-    protected void initNameBlock() {
-        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Twelve_12);
-        this.form.add(this.nameBlock);
-        this.nameIContainer = new WebMarkupContainer("nameIContainer");
-        this.nameBlock.add(this.nameIContainer);
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameField.setRequired(true);
-        this.nameIContainer.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.nameIContainer.add(this.nameFeedback);
-    }
-
-    protected void initDescriptionBlock() {
-        this.descriptionBlock = new WebMarkupBlock("descriptionBlock", Size.Twelve_12);
-        this.form.add(this.descriptionBlock);
-        this.descriptionIContainer = new WebMarkupContainer("descriptionIContainer");
-        this.descriptionBlock.add(this.descriptionIContainer);
-        this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
         this.descriptionField.setRequired(true);
-        this.descriptionIContainer.add(this.descriptionField);
-        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-        this.descriptionIContainer.add(this.descriptionFeedback);
     }
 
     protected void saveButtonSubmit(Button button) {

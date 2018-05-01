@@ -8,7 +8,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -20,12 +19,14 @@ import com.angkorteam.fintech.ddl.MPaymentType;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.PaymentTypeHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -46,9 +47,11 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class PaymentTypeBrowsePage extends Page {
 
-    protected WebMarkupBlock dataBlock;
-    protected WebMarkupContainer dataIContainer;
-    protected FilterForm<Map<String, String>> dataFilterForm;
+    protected UIRow row1;
+
+    protected UIBlock dataBlock;
+    protected UIContainer dataIContainer;
+    protected FilterForm<Map<String, String>> form;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;
@@ -79,25 +82,6 @@ public class PaymentTypeBrowsePage extends Page {
 
     @Override
     protected void initData() {
-    }
-
-    @Override
-    protected void initComponent() {
-        initDataBlock();
-
-        this.createLink = new BookmarkablePageLink<>("createLink", PaymentTypeCreatePage.class);
-        add(this.createLink);
-    }
-
-    @Override
-    protected void configureMetaData() {
-    }
-
-    protected void initDataBlock() {
-        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
-        add(this.dataBlock);
-        this.dataIContainer = new WebMarkupContainer("dataIContainer");
-        this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider(MPaymentType.NAME);
         this.dataProvider.boardField(MPaymentType.Field.ID, "id", Long.class);
         this.dataProvider.boardField(MPaymentType.Field.VALUE, "name", String.class);
@@ -113,12 +97,27 @@ public class PaymentTypeBrowsePage extends Page {
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Position"), "position", "position", this::dataColumn));
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
-        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        this.dataIContainer.add(this.dataFilterForm);
+    }
 
+    @Override
+    protected void initComponent() {
+        this.createLink = new BookmarkablePageLink<>("createLink", PaymentTypeCreatePage.class);
+        add(this.createLink);
+
+        this.form = new FilterForm<>("form", this.dataProvider);
+        add(this.form);
+
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.dataBlock = this.row1.newUIBlock("dataBlock", Size.Twelve_12);
+        this.dataIContainer = this.dataBlock.newUIContainer("dataIContainer");
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
-        this.dataFilterForm.add(this.dataTable);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.form));
+        this.dataIContainer.add(this.dataTable);
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
     protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
