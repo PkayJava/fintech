@@ -6,7 +6,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.AttributeModifier;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -183,6 +183,7 @@ public class BadgeCell extends ItemPanel {
     protected void onInitialize() {
         super.onInitialize();
         WebMarkupContainer badge = new WebMarkupContainer("badge");
+        badge.setOutputMarkupId(true);
         add(badge);
         if (this.type != null) {
             badge.add(AttributeModifier.append("class", this.type.getLiteral()));

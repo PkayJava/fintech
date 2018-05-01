@@ -6,61 +6,64 @@
 		<div class="modal-content">
 			<form role="form" wicket:id="form">
 				<div class="modal-body">
-					<!-- Row -->
-					<div
-						class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2">
-						<label wicket:for="attributeField">Attribute</label> <select
-							wicket:id="attributeField" class="form-control select2"
-							style="width: 100%;"></select> <span
-							wicket:id="attributeFeedback" class="help-block"></span>
+
+					<div wicket:id="row1">
+						<div wicket:id="attributeBlock" class="form-group">
+							<wicket:container wicket:id="attributeIContainer">
+								<label wicket:for="attributeField">Attribute</label>
+								<select wicket:id="attributeField" class="form-control"></select>
+								<span wicket:id="attributeFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="operatorBlock" class="form-group">
+							<wicket:container wicket:id="operatorIContainer">
+								<label wicket:for="operatorField">Operator</label>
+								<select wicket:id="operatorField" class="form-control"></select>
+								<span wicket:id="operatorFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="operandBlock" class="form-group">
+							<wicket:container wicket:id="numberOperandIContainer">
+								<label wicket:for="numberOperandField">Value</label>
+								<input wicket:id="numberOperandField" type="text"
+									class="form-control" />
+								<span wicket:id="numberOperandFeedback" class="help-block"></span>
+							</wicket:container>
+							<wicket:container wicket:id="clientTypeOperandIContainer">
+								<label wicket:for="clientTypeOperandField">Value</label>
+								<select wicket:id="clientTypeOperandField" class="form-control"></select>
+								<span wicket:id="clientTypeOperandFeedback" class="help-block"></span>
+							</wicket:container>
+							<wicket:container wicket:id="genderOperandIContainer">
+								<label wicket:for="genderOperandField">Value</label>
+								<select wicket:id="genderOperandField" class="form-control"></select>
+								<span wicket:id="genderOperandFeedback" class="help-block"></span>
+							</wicket:container>
+							<wicket:container
+								wicket:id="clientClassificationOperandIContainer">
+								<label wicket:for="clientClassificationOperandField">Value</label>
+								<select wicket:id="clientClassificationOperandField"
+									class="form-control"></select>
+								<span wicket:id="clientClassificationOperandFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="operandTypeBlock" class="form-group">
+							<wicket:container wicket:id="operandTypeIContainer">
+								<label wicket:for="operandTypeField">Type</label>
+								<select wicket:id="operandTypeField" class="form-control"></select>
+								<span wicket:id="operandTypeFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="interestBlock" class="form-group">
+							<wicket:container wicket:id="interestIContainer">
+								<label wicket:for="interestField">Interest</label>
+								<input wicket:id="interestField" type="text"
+									class="form-control" />
+								<span wicket:id="interestFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div
-						class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2">
-						<label wicket:for="operatorField">Operator</label> <select
-							wicket:id="operatorField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="operatorFeedback"
-							class="help-block"></span>
-					</div>
-					<div wicket:id="operandBlock" class="form-group">
-						<wicket:container wicket:id="numberOperandIContainer">
-							<label wicket:for="numberOperandField">Value</label>
-							<input wicket:id="numberOperandField" type="text"
-								class="form-control" />
-							<span wicket:id="numberOperandFeedback" class="help-block"></span>
-						</wicket:container>
-						<wicket:container wicket:id="clientTypeOperandIContainer">
-							<label wicket:for="clientTypeOperandField">Value</label>
-							<select wicket:id="clientTypeOperandField" class="form-control"></select>
-							<span wicket:id="clientTypeOperandFeedback" class="help-block"></span>
-						</wicket:container>
-						<wicket:container wicket:id="genderOperandIContainer">
-							<label wicket:for="genderOperandField">Value</label>
-							<select wicket:id="genderOperandField" class="form-control"></select>
-							<span wicket:id="genderOperandFeedback" class="help-block"></span>
-						</wicket:container>
-						<wicket:container
-							wicket:id="clientClassificationOperandIContainer">
-							<label wicket:for="clientClassificationOperandField">Value</label>
-							<select wicket:id="clientClassificationOperandField"
-								class="form-control"></select>
-							<span wicket:id="clientClassificationOperandFeedback"
-								class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div
-						class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
-						<label wicket:for="operandTypeField">Type</label> <select
-							wicket:id="operandTypeField" class="form-control select2"
-							style="width: 100%;"></select> <span
-							wicket:id="operandTypeFeedback" class="help-block"></span>
-					</div>
-					<div
-						class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
-						<label wicket:for="interestField">Interest</label> <input
-							wicket:id="interestField" type="text" class="form-control" /> <span
-							wicket:id="interestFeedback" class="help-block"></span>
-					</div>
-					<div class="clearfix"></div>
 				</div>
 				<div class="modal-footer">
 					<button wicket:id="addButton" type="submit"
@@ -68,7 +71,13 @@
 				</div>
 			</form>
 			<div class="modal-body">
-				<table wicket:id="dataTable"></table>
+				<div wicket:id="row2">
+					<div wicket:id="dataBlock" class="form-group">
+						<wicket:container wicket:id="dataIContainer">
+							<table wicket:id="dataTable"></table>
+						</wicket:container>
+					</div>
+				</div>
 			</div>
 
 		</div>

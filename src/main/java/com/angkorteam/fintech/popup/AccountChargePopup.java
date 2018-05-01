@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -19,10 +18,11 @@ import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.ChargeType;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -40,46 +40,57 @@ public class AccountChargePopup extends PopupPanel {
     protected Form<Void> form;
     protected AjaxButton okayButton;
 
-    protected WebMarkupBlock chargeBlock;
-    protected WebMarkupContainer chargeIContainer;
+    protected UIRow row1;
+
+    protected UIBlock chargeBlock;
+    protected UIContainer chargeIContainer;
     protected SingleChoiceProvider chargeProvider;
     protected Select2SingleChoice<Option> chargeField;
-    protected TextFeedbackPanel chargeFeedback;
     protected PropertyModel<Option> chargeValue;
 
-    protected WebMarkupBlock chargeTypeBlock;
-    protected WebMarkupContainer chargeTypeIContainer;
+    protected UIBlock chargeTypeBlock;
+    protected UIContainer chargeTypeIContainer;
     protected ReadOnlyView chargeTypeView;
     protected PropertyModel<Option> chargeTypeValue;
 
-    protected WebMarkupBlock amountBlock;
-    protected WebMarkupContainer amountIContainer;
+    protected UIRow row2;
+
+    protected UIBlock amountBlock;
+    protected UIContainer amountIContainer;
     protected TextField<Double> amountField;
-    protected TextFeedbackPanel amountFeedback;
     protected PropertyModel<Double> amountValue;
 
-    protected WebMarkupBlock collectedOnBlock;
-    protected WebMarkupContainer collectedOnIContainer;
+    protected UIBlock collectedOnBlock;
+    protected UIContainer collectedOnIContainer;
     protected ReadOnlyView collectedOnView;
     protected PropertyModel<Option> collectedOnValue;
 
-    protected WebMarkupBlock dayMonthBlock;
-    protected WebMarkupContainer dayMonthIContainer;
+    protected UIRow row3;
+
+    protected UIBlock dayMonthBlock;
+    protected UIContainer dayMonthIContainer;
     protected DayMonthTextField dayMonthField;
-    protected TextFeedbackPanel dayMonthFeedback;
     protected PropertyModel<Date> dayMonthValue;
 
-    protected WebMarkupBlock dateBlock;
-    protected WebMarkupContainer dateIContainer;
+    protected UIBlock row3Block1;
+
+    protected UIRow row4;
+
+    protected UIBlock dateBlock;
+    protected UIContainer dateIContainer;
     protected DateTextField dateField;
-    protected TextFeedbackPanel dateFeedback;
     protected PropertyModel<Date> dateValue;
 
-    protected WebMarkupBlock repaymentEveryBlock;
-    protected WebMarkupContainer repaymentEveryIContainer;
+    protected UIBlock row4Block1;
+
+    protected UIRow row5;
+
+    protected UIBlock repaymentEveryBlock;
+    protected UIContainer repaymentEveryIContainer;
     protected TextField<Long> repaymentEveryField;
-    protected TextFeedbackPanel repaymentEveryFeedback;
     protected PropertyModel<Long> repaymentEveryValue;
+
+    protected UIBlock row5Block1;
 
     protected String currencyCode;
 
@@ -93,6 +104,24 @@ public class AccountChargePopup extends PopupPanel {
 
     @Override
     protected void initData() {
+        this.chargeValue = new PropertyModel<>(this.model, "chargeValue");
+        this.chargeTypeValue = new PropertyModel<>(this.model, "chargeTypeValue");
+        this.amountValue = new PropertyModel<>(this.model, "amountValue");
+        this.collectedOnValue = new PropertyModel<>(this.model, "collectedOnValue");
+        this.dayMonthValue = new PropertyModel<>(this.model, "dayMonthValue");
+        this.dateValue = new PropertyModel<>(this.model, "dateValue");
+        this.repaymentEveryValue = new PropertyModel<>(this.model, "repaymentEveryValue");
+
+        this.chargeProvider = new SingleChoiceProvider(MCharge.NAME, MCharge.Field.ID, MCharge.Field.NAME);
+        this.chargeProvider.applyWhere("currency_code", MCharge.Field.CURRENCY_CODE + " = '" + this.currencyCode + "'");
+        if (this.productPopup == ProductPopup.Share) {
+            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.Share.getLiteral());
+        } else if (this.productPopup == ProductPopup.Loan) {
+            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.Loan.getLiteral());
+        } else if (this.productPopup == ProductPopup.Fixed || this.productPopup == ProductPopup.Saving || this.productPopup == ProductPopup.Recurring) {
+            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.SavingDeposit.getLiteral());
+        }
+        this.chargeProvider.applyWhere("is_active", MCharge.Field.IS_ACTIVE + " = 1");
     }
 
     @Override
@@ -104,98 +133,79 @@ public class AccountChargePopup extends PopupPanel {
         this.okayButton.setOnSubmit(this::okayButtonSubmit);
         this.form.add(this.okayButton);
 
-        this.chargeValue = new PropertyModel<>(this.model, "chargeValue");
-        this.chargeProvider = new SingleChoiceProvider(MCharge.NAME, MCharge.Field.ID, MCharge.Field.NAME);
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        this.chargeProvider.applyWhere("currency_code", MCharge.Field.CURRENCY_CODE + " = '" + this.currencyCode + "'");
-
-        if (this.productPopup == ProductPopup.Share) {
-            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.Share.getLiteral());
-        } else if (this.productPopup == ProductPopup.Loan) {
-            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.Loan.getLiteral());
-        } else if (this.productPopup == ProductPopup.Fixed || this.productPopup == ProductPopup.Saving || this.productPopup == ProductPopup.Recurring) {
-            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.SavingDeposit.getLiteral());
-        }
-
-        this.chargeProvider.applyWhere("is_active", MCharge.Field.IS_ACTIVE + " = 1");
-
-        this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Six_6);
-        this.form.add(this.chargeBlock);
-        this.chargeIContainer = new WebMarkupContainer("chargeIContainer");
-        this.chargeBlock.add(this.chargeIContainer);
+        this.chargeBlock = this.row1.newUIBlock("chargeBlock", Size.Six_6);
+        this.chargeIContainer = this.chargeBlock.newUIContainer("chargeIContainer");
         this.chargeField = new Select2SingleChoice<>("chargeField", this.chargeValue, this.chargeProvider);
-        this.chargeField.setRequired(true);
-        this.chargeField.add(new OnChangeAjaxBehavior(this::chargeFieldUpdate));
-        this.chargeField.setLabel(Model.of("Charge"));
         this.chargeIContainer.add(this.chargeField);
-        this.chargeFeedback = new TextFeedbackPanel("chargeFeedback", this.chargeField);
-        this.chargeIContainer.add(this.chargeFeedback);
+        this.chargeIContainer.newFeedback("chargeFeedback", this.chargeField);
 
-        this.chargeTypeValue = new PropertyModel<>(this.model, "chargeTypeValue");
-        this.chargeTypeBlock = new WebMarkupBlock("chargeTypeBlock", Size.Six_6);
-        this.form.add(this.chargeTypeBlock);
-        this.chargeTypeIContainer = new WebMarkupContainer("chargeTypeIContainer");
-        this.chargeTypeBlock.add(this.chargeTypeIContainer);
+        this.chargeTypeBlock = this.row1.newUIBlock("chargeTypeBlock", Size.Six_6);
+        this.chargeTypeIContainer = this.chargeTypeBlock.newUIContainer("chargeTypeIContainer");
         this.chargeTypeView = new ReadOnlyView("chargeTypeView", this.chargeTypeValue);
         this.chargeTypeIContainer.add(this.chargeTypeView);
 
-        this.amountValue = new PropertyModel<>(this.model, "amountValue");
-        this.amountBlock = new WebMarkupBlock("amountBlock", Size.Six_6);
-        this.form.add(this.amountBlock);
-        this.amountIContainer = new WebMarkupContainer("amountIContainer");
-        this.amountBlock.add(this.amountIContainer);
-        this.amountField = new TextField<>("amountField", this.amountValue);
-        this.amountField.setType(Double.class);
-        this.amountField.setLabel(Model.of("Amount"));
-        this.amountIContainer.add(this.amountField);
-        this.amountFeedback = new TextFeedbackPanel("amountFeedback", this.amountField);
-        this.amountIContainer.add(this.amountFeedback);
+        this.row2 = UIRow.newUIRow("row2", this.form);
 
-        this.collectedOnValue = new PropertyModel<>(this.model, "collectedOnValue");
-        this.collectedOnBlock = new WebMarkupBlock("collectedOnBlock", Size.Six_6);
-        this.form.add(this.collectedOnBlock);
-        this.collectedOnIContainer = new WebMarkupContainer("collectedOnIContainer");
-        this.collectedOnBlock.add(this.collectedOnIContainer);
+        this.amountBlock = this.row2.newUIBlock("amountBlock", Size.Six_6);
+        this.amountIContainer = this.amountBlock.newUIContainer("amountIContainer");
+        this.amountField = new TextField<>("amountField", this.amountValue);
+        this.amountIContainer.add(this.amountField);
+        this.amountIContainer.newFeedback("amountFeedback", this.amountField);
+
+        this.collectedOnBlock = this.row2.newUIBlock("collectedOnBlock", Size.Six_6);
+        this.collectedOnIContainer = this.collectedOnBlock.newUIContainer("collectedOnIContainer");
         this.collectedOnView = new ReadOnlyView("collectedOnView", this.collectedOnValue);
         this.collectedOnIContainer.add(this.collectedOnView);
 
-        this.dayMonthValue = new PropertyModel<>(this.model, "dayMonthValue");
-        this.dayMonthBlock = new WebMarkupBlock("dayMonthBlock", Size.Six_6);
-        this.form.add(this.dayMonthBlock);
-        this.dayMonthIContainer = new WebMarkupContainer("dayMonthIContainer");
-        this.dayMonthBlock.add(this.dayMonthIContainer);
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.dayMonthBlock = this.row3.newUIBlock("dayMonthBlock", Size.Six_6);
+        this.dayMonthIContainer = this.dayMonthBlock.newUIContainer("dayMonthIContainer");
         this.dayMonthField = new DayMonthTextField("dayMonthField", this.dayMonthValue);
-        this.dayMonthField.setLabel(Model.of("Day Month"));
         this.dayMonthIContainer.add(this.dayMonthField);
-        this.dayMonthFeedback = new TextFeedbackPanel("dayMonthFeedback", this.dayMonthField);
-        this.dayMonthIContainer.add(this.dayMonthFeedback);
+        this.dayMonthIContainer.newFeedback("dayMonthFeedback", this.dayMonthField);
 
-        this.dateValue = new PropertyModel<>(this.model, "dateValue");
-        this.dateBlock = new WebMarkupBlock("dateBlock", Size.Six_6);
-        this.form.add(this.dateBlock);
-        this.dateIContainer = new WebMarkupContainer("dateIContainer");
-        this.dateBlock.add(this.dateIContainer);
+        this.row3Block1 = this.row3.newUIBlock("row3Block1", Size.Six_6);
+
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.dateBlock = this.row4.newUIBlock("dateBlock", Size.Six_6);
+        this.dateIContainer = this.dateBlock.newUIContainer("dateIContainer");
         this.dateField = new DateTextField("dateField", this.dateValue);
-        this.dateField.setLabel(Model.of("Day Month"));
         this.dateIContainer.add(this.dateField);
-        this.dateFeedback = new TextFeedbackPanel("dateFeedback", this.dateField);
-        this.dateIContainer.add(this.dateFeedback);
+        this.dateIContainer.newFeedback("dateFeedback", this.dateField);
 
-        this.repaymentEveryValue = new PropertyModel<>(this.model, "repaymentEveryValue");
-        this.repaymentEveryBlock = new WebMarkupBlock("repaymentEveryBlock", Size.Six_6);
-        this.form.add(this.repaymentEveryBlock);
-        this.repaymentEveryIContainer = new WebMarkupContainer("repaymentEveryIContainer");
-        this.repaymentEveryBlock.add(this.repaymentEveryIContainer);
+        this.row4Block1 = this.row4.newUIBlock("row4Block1", Size.Six_6);
+
+        this.row5 = UIRow.newUIRow("row5", this.form);
+
+        this.repaymentEveryBlock = this.row5.newUIBlock("repaymentEveryBlock", Size.Six_6);
+        this.repaymentEveryIContainer = this.repaymentEveryBlock.newUIContainer("repaymentEveryIContainer");
         this.repaymentEveryField = new TextField<>("repaymentEveryField", this.repaymentEveryValue);
-        this.repaymentEveryField.setType(Long.class);
-        this.repaymentEveryField.setLabel(Model.of("repaymentEvery"));
         this.repaymentEveryIContainer.add(this.repaymentEveryField);
-        this.repaymentEveryFeedback = new TextFeedbackPanel("repaymentEveryFeedback", this.repaymentEveryField);
-        this.repaymentEveryIContainer.add(this.repaymentEveryFeedback);
+        this.repaymentEveryIContainer.newFeedback("repaymentEveryFeedback", this.repaymentEveryField);
+
+        this.row5Block1 = this.row5.newUIBlock("row5Block1", Size.Six_6);
     }
 
     @Override
     protected void configureMetaData() {
+        this.repaymentEveryField.setType(Long.class);
+        this.repaymentEveryField.setLabel(Model.of("repaymentEvery"));
+
+        this.dateField.setLabel(Model.of("Day Month"));
+
+        this.dayMonthField.setLabel(Model.of("Day Month"));
+
+        this.amountField.setType(Double.class);
+        this.amountField.setLabel(Model.of("Amount"));
+
+        this.chargeField.setRequired(true);
+        this.chargeField.add(new OnChangeAjaxBehavior(this::chargeFieldUpdate));
+        this.chargeField.setLabel(Model.of("Charge"));
+
         chargeFieldUpdate(null);
     }
 

@@ -4,14 +4,14 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.layout.Size;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -21,17 +21,17 @@ public class MarketPricePopup extends PopupPanel {
     protected Form<Void> form;
     protected AjaxButton okayButton;
 
-    protected WebMarkupBlock fromDateBlock;
-    protected WebMarkupContainer fromDateIContainer;
+    protected UIRow row1;
+
+    protected UIBlock fromDateBlock;
+    protected UIContainer fromDateIContainer;
     protected PropertyModel<Date> fromDateValue;
     protected DateTextField fromDateField;
-    protected TextFeedbackPanel fromDateFeedback;
 
-    protected WebMarkupBlock unitPriceBlock;
-    protected WebMarkupContainer unitPriceIContainer;
+    protected UIBlock unitPriceBlock;
+    protected UIContainer unitPriceIContainer;
     protected PropertyModel<Double> unitPriceValue;
     protected TextField<Double> unitPriceField;
-    protected TextFeedbackPanel unitPriceFeedback;
 
     public MarketPricePopup(String name, Map<String, Object> model) {
         super(name, model);
@@ -39,6 +39,8 @@ public class MarketPricePopup extends PopupPanel {
 
     @Override
     protected void initData() {
+        this.fromDateValue = new PropertyModel<>(this.model, "fromDateValue");
+        this.unitPriceValue = new PropertyModel<>(this.model, "unitPriceValue");
     }
 
     @Override
@@ -51,34 +53,29 @@ public class MarketPricePopup extends PopupPanel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
-        this.fromDateBlock = new WebMarkupBlock("fromDateBlock", Size.Six_6);
-        this.form.add(this.fromDateBlock);
-        this.fromDateIContainer = new WebMarkupContainer("fromDateIContainer");
-        this.fromDateBlock.add(this.fromDateIContainer);
-        this.fromDateValue = new PropertyModel<>(this.model, "fromDateValue");
-        this.fromDateField = new DateTextField("fromDateField", this.fromDateValue);
-        this.fromDateField.setLabel(Model.of("From Date"));
-        this.fromDateField.setRequired(true);
-        this.fromDateIContainer.add(this.fromDateField);
-        this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
-        this.fromDateIContainer.add(this.fromDateFeedback);
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        this.unitPriceBlock = new WebMarkupBlock("unitPriceBlock", Size.Six_6);
-        this.form.add(this.unitPriceBlock);
-        this.unitPriceIContainer = new WebMarkupContainer("unitPriceIContainer");
-        this.unitPriceBlock.add(this.unitPriceIContainer);
-        this.unitPriceValue = new PropertyModel<>(this.model, "unitPriceValue");
+        this.fromDateBlock = this.row1.newUIBlock("fromDateBlock", Size.Six_6);
+        this.fromDateIContainer = this.fromDateBlock.newUIContainer("fromDateIContainer");
+        this.fromDateField = new DateTextField("fromDateField", this.fromDateValue);
+        this.fromDateIContainer.add(this.fromDateField);
+        this.fromDateIContainer.newFeedback("fromDateFeedback", this.fromDateField);
+
+        this.unitPriceBlock = this.row1.newUIBlock("unitPriceBlock", Size.Six_6);
+        this.unitPriceIContainer = this.unitPriceBlock.newUIContainer("unitPriceIContainer");
         this.unitPriceField = new TextField<>("unitPriceField", this.unitPriceValue);
-        this.unitPriceField.setType(Double.class);
-        this.unitPriceField.setLabel(Model.of("Unit Price"));
-        this.unitPriceField.setRequired(true);
         this.unitPriceIContainer.add(this.unitPriceField);
-        this.unitPriceFeedback = new TextFeedbackPanel("unitPriceFeedback", this.unitPriceField);
-        this.unitPriceIContainer.add(this.unitPriceFeedback);
+        this.unitPriceIContainer.newFeedback("unitPriceFeedback", this.unitPriceField);
     }
 
     @Override
     protected void configureMetaData() {
+        this.unitPriceField.setType(Double.class);
+        this.unitPriceField.setLabel(Model.of("Unit Price"));
+        this.unitPriceField.setRequired(true);
+
+        this.fromDateField.setLabel(Model.of("From Date"));
+        this.fromDateField.setRequired(true);
     }
 
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {

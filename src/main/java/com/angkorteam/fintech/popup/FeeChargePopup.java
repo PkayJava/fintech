@@ -3,7 +3,6 @@ package com.angkorteam.fintech.popup;
 import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
@@ -14,9 +13,10 @@ import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.dto.enums.ChargeType;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -27,19 +27,19 @@ public class FeeChargePopup extends PopupPanel {
     protected Form<Void> form;
     protected AjaxButton okayButton;
 
-    protected WebMarkupBlock chargeBlock;
-    protected WebMarkupContainer chargeIContainer;
+    protected UIRow row1;
+
+    protected UIBlock chargeBlock;
+    protected UIContainer chargeIContainer;
     protected PropertyModel<Option> chargeValue;
     protected SingleChoiceProvider chargeProvider;
     protected Select2SingleChoice<Option> chargeField;
-    protected TextFeedbackPanel chargeFeedback;
 
-    protected WebMarkupBlock accountBlock;
-    protected WebMarkupContainer accountIContainer;
+    protected UIBlock accountBlock;
+    protected UIContainer accountIContainer;
     protected PropertyModel<Option> accountValue;
     protected SingleChoiceProvider accountProvider;
     protected Select2SingleChoice<Option> accountField;
-    protected TextFeedbackPanel accountFeedback;
 
     protected String currencyCode;
 
@@ -53,6 +53,23 @@ public class FeeChargePopup extends PopupPanel {
 
     @Override
     protected void initData() {
+        this.chargeValue = new PropertyModel<>(this.model, "chargeValue");
+        this.accountValue = new PropertyModel<>(this.model, "accountValue");
+
+        this.chargeProvider = new SingleChoiceProvider(MCharge.NAME, MCharge.Field.ID, MCharge.Field.NAME);
+        if (this.productPopup == ProductPopup.Saving || this.productPopup == ProductPopup.Recurring || this.productPopup == ProductPopup.Fixed) {
+            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.SavingDeposit.getLiteral());
+        } else if (this.productPopup == ProductPopup.Loan) {
+            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.Loan.getLiteral());
+        }
+        this.chargeProvider.applyWhere("currency_code", MCharge.Field.CURRENCY_CODE + " = '" + this.currencyCode + "'");
+        this.chargeProvider.applyWhere("is_penalty", MCharge.Field.IS_PENALTY + " = 0");
+        this.chargeProvider.applyWhere("is_active", MCharge.Field.IS_ACTIVE + " = 1");
+
+        this.accountProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accountProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.accountProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " IN (" + AccountType.Income.getLiteral() + ")");
+
     }
 
     @Override
@@ -65,43 +82,25 @@ public class FeeChargePopup extends PopupPanel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
-        this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Six_6);
-        this.form.add(this.chargeBlock);
-        this.chargeIContainer = new WebMarkupContainer("chargeIContainer");
-        this.chargeBlock.add(this.chargeIContainer);
-        this.chargeValue = new PropertyModel<>(this.model, "chargeValue");
-        this.chargeProvider = new SingleChoiceProvider(MCharge.NAME, MCharge.Field.ID, MCharge.Field.NAME);
-        if (this.productPopup == ProductPopup.Saving || this.productPopup == ProductPopup.Recurring || this.productPopup == ProductPopup.Fixed) {
-            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.SavingDeposit.getLiteral());
-        } else if (this.productPopup == ProductPopup.Loan) {
-            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.Loan.getLiteral());
-        }
-        this.chargeProvider.applyWhere("currency_code", MCharge.Field.CURRENCY_CODE + " = '" + this.currencyCode + "'");
-        this.chargeProvider.applyWhere("is_penalty", MCharge.Field.IS_PENALTY + " = 0");
-        this.chargeProvider.applyWhere("is_active", MCharge.Field.IS_ACTIVE + " = 1");
-        this.chargeField = new Select2SingleChoice<>("chargeField", this.chargeValue, this.chargeProvider);
-        this.chargeField.setLabel(Model.of("Charge"));
-        this.chargeIContainer.add(this.chargeField);
-        this.chargeFeedback = new TextFeedbackPanel("chargeFeedback", this.chargeField);
-        this.chargeIContainer.add(this.chargeFeedback);
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        this.accountBlock = new WebMarkupBlock("accountBlock", Size.Six_6);
-        this.form.add(this.accountBlock);
-        this.accountIContainer = new WebMarkupContainer("accountIContainer");
-        this.accountBlock.add(this.accountIContainer);
-        this.accountValue = new PropertyModel<>(this.model, "accountValue");
-        this.accountProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.accountProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.accountProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " IN (" + AccountType.Income.getLiteral() + ")");
+        this.chargeBlock = this.row1.newUIBlock("chargeBlock", Size.Six_6);
+        this.chargeIContainer = this.chargeBlock.newUIContainer("chargeIContainer");
+        this.chargeField = new Select2SingleChoice<>("chargeField", this.chargeValue, this.chargeProvider);
+        this.chargeIContainer.add(this.chargeField);
+        this.chargeIContainer.newFeedback("chargeFeedback", this.chargeField);
+
+        this.accountBlock = this.row1.newUIBlock("accountBlock", Size.Six_6);
+        this.accountIContainer = this.accountBlock.newUIContainer("accountIContainer");
         this.accountField = new Select2SingleChoice<>("accountField", this.accountValue, this.accountProvider);
-        this.accountField.setLabel(Model.of("Account"));
         this.accountIContainer.add(this.accountField);
-        this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
-        this.accountIContainer.add(this.accountFeedback);
+        this.accountIContainer.newFeedback("accountFeedback", this.accountField);
     }
 
     @Override
     protected void configureMetaData() {
+        this.chargeField.setLabel(Model.of("Charge"));
+        this.accountField.setLabel(Model.of("Account"));
     }
 
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {

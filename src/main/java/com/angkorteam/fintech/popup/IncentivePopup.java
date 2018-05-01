@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -14,6 +13,9 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.dto.enums.Attribute;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.AttributeProvider;
 import com.angkorteam.fintech.provider.ClientClassificationProvider;
 import com.angkorteam.fintech.provider.ClientTypeProvider;
@@ -22,8 +24,6 @@ import com.angkorteam.fintech.provider.OperandTypeProvider;
 import com.angkorteam.fintech.provider.OperatorProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -49,50 +49,56 @@ public class IncentivePopup extends PopupPanel {
     protected Form<Void> form;
     protected AjaxButton addButton;
 
+    protected UIRow row1;
+
+    protected UIBlock attributeBlock;
+    protected UIContainer attributeIContainer;
     protected Option attributeValue;
     protected AttributeProvider attributeProvider;
     protected Select2SingleChoice<Option> attributeField;
-    protected TextFeedbackPanel attributeFeedback;
 
+    protected UIBlock operatorBlock;
+    protected UIContainer operatorIContainer;
     protected Option operatorValue;
     protected OperatorProvider operatorProvider;
     protected Select2SingleChoice<Option> operatorField;
-    protected TextFeedbackPanel operatorFeedback;
 
-    protected WebMarkupBlock operandBlock;
+    protected UIBlock operandBlock;
 
-    protected WebMarkupContainer numberOperandIContainer;
+    protected UIContainer numberOperandIContainer;
     protected Long numberOperandValue;
     protected TextField<Long> numberOperandField;
-    protected TextFeedbackPanel numberOperandFeedback;
 
-    protected WebMarkupContainer clientTypeOperandIContainer;
+    protected UIContainer clientTypeOperandIContainer;
     protected Option clientTypeOperandValue;
     protected ClientTypeProvider clientTypeOperandProvider;
     protected Select2SingleChoice<Option> clientTypeOperandField;
-    protected TextFeedbackPanel clientTypeOperandFeedback;
 
-    protected WebMarkupContainer clientClassificationOperandIContainer;
+    protected UIContainer clientClassificationOperandIContainer;
     protected Option clientClassificationOperandValue;
     protected ClientClassificationProvider clientClassificationOperandProvider;
     protected Select2SingleChoice<Option> clientClassificationOperandField;
-    protected TextFeedbackPanel clientClassificationOperandFeedback;
 
-    protected WebMarkupContainer genderOperandIContainer;
+    protected UIContainer genderOperandIContainer;
     protected Option genderOperandValue;
     protected GenderProvider genderOperandProvider;
     protected Select2SingleChoice<Option> genderOperandField;
-    protected TextFeedbackPanel genderOperandFeedback;
 
+    protected UIBlock operandTypeBlock;
+    protected UIContainer operandTypeIContainer;
     protected Option operandTypeValue;
     protected OperandTypeProvider operandTypeProvider;
     protected Select2SingleChoice<Option> operandTypeField;
-    protected TextFeedbackPanel operandTypeFeedback;
 
+    protected UIBlock interestBlock;
+    protected UIContainer interestIContainer;
     protected Double interestValue;
     protected TextField<Double> interestField;
-    protected TextFeedbackPanel interestFeedback;
 
+    protected UIRow row2;
+
+    protected UIBlock dataBlock;
+    protected UIContainer dataIContainer;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
     protected List<Map<String, Object>> dataValue;
     protected DataTable<Map<String, Object>, String> dataTable;
@@ -110,6 +116,23 @@ public class IncentivePopup extends PopupPanel {
 
     @Override
     protected void initData() {
+        this.attributeProvider = new AttributeProvider();
+        this.operatorProvider = new OperatorProvider();
+        this.clientTypeOperandProvider = new ClientTypeProvider();
+        this.clientClassificationOperandProvider = new ClientClassificationProvider();
+        this.genderOperandProvider = new GenderProvider();
+        this.operandTypeProvider = new OperandTypeProvider();
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextColumn(Model.of("Attribute"), "attribute", "attribute", this::dataColumn));
+        this.dataColumn.add(new TextColumn(Model.of("Operator"), "operator", "operator", this::dataColumn));
+        this.dataColumn.add(new TextColumn(Model.of("Value"), "operand", "operand", this::dataColumn));
+        this.dataColumn.add(new TextColumn(Model.of("Type"), "operandType", "operandType", this::dataColumn));
+        this.dataColumn.add(new TextColumn(Model.of("Interest"), "interest", "interest", this::dataColumn));
+        if (!this.readonly) {
+            this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
+        }
+        this.dataProvider = new ListDataProvider(this.dataValue);
     }
 
     @Override
@@ -123,91 +146,78 @@ public class IncentivePopup extends PopupPanel {
         this.addButton.setOnError(this::addButtonError);
         this.form.add(this.addButton);
 
-        this.attributeProvider = new AttributeProvider();
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.attributeBlock = this.row1.newUIBlock("attributeBlock", Size.Two_2);
+        this.attributeIContainer = this.attributeBlock.newUIContainer("attributeIContainer");
         this.attributeField = new Select2SingleChoice<>("attributeField", new PropertyModel<>(this, "attributeValue"), this.attributeProvider);
-        this.attributeField.setLabel(Model.of("Attribute"));
-        this.attributeField.add(new OnChangeAjaxBehavior(this::attributeFieldUpdate));
-        this.form.add(this.attributeField);
-        this.attributeFeedback = new TextFeedbackPanel("attributeFeedback", this.attributeField);
-        this.form.add(this.attributeFeedback);
+        this.attributeIContainer.add(this.attributeField);
+        this.attributeIContainer.newFeedback("attributeFeedback", this.attributeField);
 
-        this.operatorProvider = new OperatorProvider();
+        this.operatorBlock = this.row1.newUIBlock("operatorBlock", Size.Two_2);
+        this.operatorIContainer = this.operatorBlock.newUIContainer("operatorIContainer");
         this.operatorField = new Select2SingleChoice<>("operatorField", new PropertyModel<>(this, "operatorValue"), this.operatorProvider);
-        this.operatorField.setLabel(Model.of("Operator"));
-        this.form.add(this.operatorField);
-        this.operatorFeedback = new TextFeedbackPanel("operatorFeedback", this.operatorField);
-        this.form.add(this.operatorFeedback);
+        this.operatorBlock.add(this.operatorField);
+        this.operatorIContainer.newFeedback("operatorFeedback", this.operatorField);
 
-        this.operandBlock = new WebMarkupBlock("operandBlock", Size.Two_2);
+        this.operandBlock = this.row1.newUIBlock("operandBlock", Size.Two_2);
         this.form.add(this.operandBlock);
 
-        this.numberOperandIContainer = new WebMarkupContainer("numberOperandIContainer");
-        this.operandBlock.add(this.numberOperandIContainer);
+        this.numberOperandIContainer = this.operandBlock.newUIContainer("numberOperandIContainer");
         this.numberOperandField = new TextField<>("numberOperandField", new PropertyModel<>(this, "numberOperandValue"));
-        this.numberOperandField.setLabel(Model.of("Value"));
         this.numberOperandIContainer.add(this.numberOperandField);
-        this.numberOperandFeedback = new TextFeedbackPanel("numberOperandFeedback", this.numberOperandField);
-        this.numberOperandIContainer.add(this.numberOperandFeedback);
+        this.numberOperandIContainer.newFeedback("numberOperandFeedback", this.numberOperandField);
 
-        this.clientTypeOperandIContainer = new WebMarkupContainer("clientTypeOperandIContainer");
-        this.operandBlock.add(this.clientTypeOperandIContainer);
-        this.clientTypeOperandProvider = new ClientTypeProvider();
+        this.clientTypeOperandIContainer = this.operandBlock.newUIContainer("clientTypeOperandIContainer");
         this.clientTypeOperandField = new Select2SingleChoice<>("clientTypeOperandField", new PropertyModel<>(this, "clientTypeOperandValue"), this.clientTypeOperandProvider);
-        this.clientTypeOperandField.setLabel(Model.of("Value"));
         this.clientTypeOperandIContainer.add(this.clientTypeOperandField);
-        this.clientTypeOperandFeedback = new TextFeedbackPanel("clientTypeOperandFeedback", this.clientTypeOperandField);
-        this.clientTypeOperandIContainer.add(this.clientTypeOperandFeedback);
+        this.clientTypeOperandIContainer.newFeedback("clientTypeOperandFeedback", this.clientTypeOperandField);
 
-        this.clientClassificationOperandIContainer = new WebMarkupContainer("clientClassificationOperandIContainer");
-        this.operandBlock.add(this.clientClassificationOperandIContainer);
-        this.clientClassificationOperandProvider = new ClientClassificationProvider();
+        this.clientClassificationOperandIContainer = this.operandBlock.newUIContainer("clientClassificationOperandIContainer");
         this.clientClassificationOperandField = new Select2SingleChoice<>("clientClassificationOperandField", new PropertyModel<>(this, "clientClassificationOperandValue"), this.clientClassificationOperandProvider);
-        this.clientClassificationOperandField.setLabel(Model.of("Value"));
         this.clientClassificationOperandIContainer.add(this.clientClassificationOperandField);
-        this.clientClassificationOperandFeedback = new TextFeedbackPanel("clientClassificationOperandFeedback", this.clientClassificationOperandField);
-        this.clientClassificationOperandIContainer.add(this.clientClassificationOperandFeedback);
+        this.clientClassificationOperandIContainer.newFeedback("clientClassificationOperandFeedback", this.clientClassificationOperandField);
 
-        this.genderOperandIContainer = new WebMarkupContainer("genderOperandIContainer");
-        this.operandBlock.add(this.genderOperandIContainer);
-        this.genderOperandProvider = new GenderProvider();
+        this.genderOperandIContainer = this.operandBlock.newUIContainer("genderOperandIContainer");
         this.genderOperandField = new Select2SingleChoice<>("genderOperandField", new PropertyModel<>(this, "genderOperandValue"), this.genderOperandProvider);
-        this.genderOperandField.setLabel(Model.of("Value"));
         this.genderOperandIContainer.add(this.genderOperandField);
-        this.genderOperandFeedback = new TextFeedbackPanel("genderOperandFeedback", this.genderOperandField);
-        this.genderOperandIContainer.add(this.genderOperandFeedback);
+        this.genderOperandIContainer.newFeedback("genderOperandFeedback", this.genderOperandField);
 
-        this.operandTypeProvider = new OperandTypeProvider();
+        this.operandTypeBlock = this.row1.newUIBlock("operandTypeBlock", Size.Three_3);
+        this.operandTypeIContainer = this.operandTypeBlock.newUIContainer("operandTypeIContainer");
         this.operandTypeField = new Select2SingleChoice<>("operandTypeField", new PropertyModel<>(this, "operandTypeValue"), this.operandTypeProvider);
-        this.operandTypeField.setLabel(Model.of("Type"));
-        this.form.add(this.operandTypeField);
-        this.operandTypeFeedback = new TextFeedbackPanel("operandTypeFeedback", this.operandTypeField);
-        this.form.add(this.operandTypeFeedback);
+        this.operandTypeIContainer.add(this.operandTypeField);
+        this.operandTypeIContainer.newFeedback("operandTypeFeedback", this.operandTypeField);
 
+        this.interestBlock = this.row1.newUIBlock("interestBlock", Size.Three_3);
+        this.interestIContainer = this.interestBlock.newUIContainer("interestIContainer");
         this.interestField = new TextField<>("interestField", new PropertyModel<>(this, "interestValue"));
-        this.interestField.setLabel(Model.of("Interest"));
-        this.form.add(this.interestField);
-        this.interestFeedback = new TextFeedbackPanel("interestFeedback", this.interestField);
-        this.form.add(this.interestFeedback);
+        this.interestIContainer.add(this.interestField);
+        this.interestIContainer.newFeedback("interestFeedback", this.interestField);
 
         // Table
-        this.dataColumn = Lists.newArrayList();
-        this.dataColumn.add(new TextColumn(Model.of("Attribute"), "attribute", "attribute", this::dataColumn));
-        this.dataColumn.add(new TextColumn(Model.of("Operator"), "operator", "operator", this::dataColumn));
-        this.dataColumn.add(new TextColumn(Model.of("Value"), "operand", "operand", this::dataColumn));
-        this.dataColumn.add(new TextColumn(Model.of("Type"), "operandType", "operandType", this::dataColumn));
-        this.dataColumn.add(new TextColumn(Model.of("Interest"), "interest", "interest", this::dataColumn));
-        if (!this.readonly) {
-            this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
-        }
-        this.dataProvider = new ListDataProvider(this.dataValue);
+        this.row2 = UIRow.newUIRow("row2", this);
+
+        this.dataBlock = this.row2.newUIBlock("dataBlock", Size.Twelve_12);
+        this.dataIContainer = this.dataBlock.newUIContainer("dataIContainer");
         this.dataTable = new DataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
-        add(this.dataTable);
+        this.dataIContainer.add(this.dataTable);
         this.dataTable.addTopToolbar(new HeadersToolbar<>(this.dataTable, this.dataProvider));
         this.dataTable.addBottomToolbar(new NoRecordsToolbar(this.dataTable));
     }
 
     @Override
     protected void configureMetaData() {
+        this.interestField.setLabel(Model.of("Interest"));
+        this.operandTypeField.setLabel(Model.of("Type"));
+        this.genderOperandField.setLabel(Model.of("Value"));
+        this.clientClassificationOperandField.setLabel(Model.of("Value"));
+        this.clientTypeOperandField.setLabel(Model.of("Value"));
+        this.numberOperandField.setLabel(Model.of("Value"));
+        this.operatorField.setLabel(Model.of("Operator"));
+        this.attributeField.setLabel(Model.of("Attribute"));
+        this.attributeField.add(new OnChangeAjaxBehavior(this::attributeFieldUpdate));
+
         attributeFieldUpdate(null);
     }
 

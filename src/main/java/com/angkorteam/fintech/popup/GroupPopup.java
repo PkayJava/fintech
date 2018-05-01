@@ -3,15 +3,15 @@ package com.angkorteam.fintech.popup;
 import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.ddl.MGroup;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -22,11 +22,14 @@ public class GroupPopup extends PopupPanel {
     protected Form<Void> form;
     protected AjaxButton okayButton;
 
-    protected WebMarkupBlock groupBlock;
-    protected WebMarkupContainer groupIContainer;
+    protected UIRow row1;
+
+    protected UIBlock groupBlock;
+    protected UIContainer groupIContainer;
     protected SingleChoiceProvider groupProvider;
     protected Select2SingleChoice<Option> groupField;
-    protected TextFeedbackPanel groupFeedback;
+
+    protected UIBlock row1Block1;
 
     protected String officeId;
 
@@ -37,6 +40,9 @@ public class GroupPopup extends PopupPanel {
 
     @Override
     protected void initData() {
+        this.groupProvider = new SingleChoiceProvider(MGroup.NAME, MGroup.Field.ID, MGroup.Field.DISPLAY_NAME);
+        this.groupProvider.applyWhere("office_id", MGroup.Field.OFFICE_ID + " = " + this.officeId);
+        this.groupProvider.applyWhere("level_id", MGroup.Field.LEVEL_ID + " = " + 2);
     }
 
     @Override
@@ -49,26 +55,20 @@ public class GroupPopup extends PopupPanel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
-        initGroupBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.groupBlock = this.row1.newUIBlock("groupBlock", Size.Six_6);
+        this.groupIContainer = this.groupBlock.newUIContainer("groupIContainer");
+        this.groupField = new Select2SingleChoice<>("groupField", new PropertyModel<>(this.model, "groupValue"), this.groupProvider);
+        this.groupIContainer.add(this.groupField);
+        this.groupIContainer.newFeedback("groupFeedback", this.groupField);
+
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
     }
 
     @Override
     protected void configureMetaData() {
-    }
-
-    protected void initGroupBlock() {
-        this.groupBlock = new WebMarkupBlock("groupBlock", Size.Six_6);
-        this.form.add(this.groupBlock);
-        this.groupIContainer = new WebMarkupContainer("groupIContainer");
-        this.groupBlock.add(this.groupIContainer);
-        this.groupProvider = new SingleChoiceProvider(MGroup.NAME, MGroup.Field.ID, MGroup.Field.DISPLAY_NAME);
-        this.groupProvider.applyWhere("office_id", MGroup.Field.OFFICE_ID + " = " + this.officeId);
-        this.groupProvider.applyWhere("level_id", MGroup.Field.LEVEL_ID + " = " + 2);
-        this.groupField = new Select2SingleChoice<>("groupField", new PropertyModel<>(this.model, "groupValue"), this.groupProvider);
         this.groupField.setLabel(Model.of("Group"));
-        this.groupIContainer.add(this.groupField);
-        this.groupFeedback = new TextFeedbackPanel("groupFeedback", this.groupField);
-        this.groupIContainer.add(this.groupFeedback);
     }
 
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {

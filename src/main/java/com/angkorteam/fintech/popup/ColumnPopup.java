@@ -3,7 +3,6 @@ package com.angkorteam.fintech.popup;
 import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.PropertyModel;
@@ -11,10 +10,12 @@ import org.apache.wicket.model.PropertyModel;
 import com.angkorteam.fintech.ddl.MCode;
 import com.angkorteam.fintech.dto.enums.ColumnType;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.ColumnTypeOptionProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -26,37 +27,38 @@ public class ColumnPopup extends PopupPanel {
     protected Form<Void> form;
     protected AjaxButton okayButton;
 
-    protected WebMarkupBlock nameBlock;
-    protected WebMarkupContainer nameIContainer;
+    protected UIRow row1;
+
+    protected UIBlock nameBlock;
+    protected UIContainer nameIContainer;
     protected PropertyModel<String> nameValue;
     protected TextField<String> nameField;
-    protected TextFeedbackPanel nameFeedback;
 
-    protected WebMarkupBlock lengthBlock;
-    protected WebMarkupContainer lengthIContainer;
-    protected PropertyModel<Long> lengthValue;
-    protected TextField<Long> lengthField;
-    protected TextFeedbackPanel lengthFeedback;
-
-    protected WebMarkupBlock mandatoryBlock;
-    protected WebMarkupContainer mandatoryIContainer;
-    protected PropertyModel<Boolean> mandatoryValue;
-    protected CheckBox mandatoryField;
-    protected TextFeedbackPanel mandatoryFeedback;
-
-    protected WebMarkupBlock typeBlock;
-    protected WebMarkupContainer typeIContainer;
+    protected UIBlock typeBlock;
+    protected UIContainer typeIContainer;
     protected ColumnTypeOptionProvider typeProvider;
     protected PropertyModel<Option> typeValue;
     protected Select2SingleChoice<Option> typeField;
-    protected TextFeedbackPanel typeFeedback;
 
-    protected WebMarkupContainer codeBlock;
-    protected WebMarkupContainer codeIContainer;
+    protected UIRow row2;
+
+    protected UIBlock lengthBlock;
+    protected UIContainer lengthIContainer;
+    protected PropertyModel<Long> lengthValue;
+    protected TextField<Long> lengthField;
+
+    protected UIBlock codeBlock;
+    protected UIContainer codeIContainer;
     protected SingleChoiceProvider codeProvider;
     protected PropertyModel<Option> codeValue;
     protected Select2SingleChoice<Option> codeField;
-    protected TextFeedbackPanel codeFeedback;
+
+    protected UIRow row3;
+
+    protected UIBlock mandatoryBlock;
+    protected UIContainer mandatoryIContainer;
+    protected PropertyModel<Boolean> mandatoryValue;
+    protected CheckBox mandatoryField;
 
     public ColumnPopup(String name, Map<String, Object> model) {
         super(name, model);
@@ -64,6 +66,14 @@ public class ColumnPopup extends PopupPanel {
 
     @Override
     protected void initData() {
+        this.nameValue = new PropertyModel<>(this.model, "nameValue");
+        this.lengthValue = new PropertyModel<>(this.model, "lengthValue");
+        this.mandatoryValue = new PropertyModel<>(this.model, "mandatoryValue");
+        this.typeValue = new PropertyModel<>(this.model, "typeValue");
+        this.codeValue = new PropertyModel<>(this.model, "codeValue");
+
+        this.typeProvider = new ColumnTypeOptionProvider();
+        this.codeProvider = new SingleChoiceProvider(MCode.NAME, MCode.Field.CODE_NAME);
     }
 
     @Override
@@ -76,63 +86,52 @@ public class ColumnPopup extends PopupPanel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
-        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
-        this.form.add(this.nameBlock);
-        this.nameIContainer = new WebMarkupContainer("nameIContainer");
-        this.nameBlock.add(this.nameIContainer);
-        this.nameValue = new PropertyModel<>(this.model, "nameValue");
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.nameBlock = this.row1.newUIBlock("nameBlock", Size.Six_6);
+        this.nameIContainer = this.nameBlock.newUIContainer("nameIContainer");
         this.nameField = new TextField<>("nameField", this.nameValue);
-        this.nameField.setRequired(true);
         this.nameIContainer.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.nameIContainer.add(this.nameFeedback);
+        this.nameIContainer.newFeedback("nameFeedback", this.nameField);
 
-        this.lengthBlock = new WebMarkupBlock("lengthBlock", Size.Six_6);
-        this.form.add(this.lengthBlock);
-        this.lengthIContainer = new WebMarkupContainer("lengthIContainer");
-        this.lengthBlock.add(this.lengthIContainer);
-        this.lengthValue = new PropertyModel<>(this.model, "lengthValue");
-        this.lengthField = new TextField<>("lengthField", this.lengthValue);
-        this.lengthField.setType(Long.class);
-        this.lengthIContainer.add(this.lengthField);
-        this.lengthFeedback = new TextFeedbackPanel("lengthFeedback", this.lengthField);
-        this.lengthIContainer.add(this.lengthFeedback);
-
-        this.mandatoryBlock = new WebMarkupBlock("mandatoryBlock", Size.Twelve_12);
-        this.form.add(this.mandatoryBlock);
-        this.mandatoryIContainer = new WebMarkupContainer("mandatoryIContainer");
-        this.mandatoryBlock.add(this.mandatoryIContainer);
-        this.mandatoryValue = new PropertyModel<>(this.model, "mandatoryValue");
-        this.mandatoryField = new CheckBox("mandatoryField", this.mandatoryValue);
-        this.mandatoryField.setRequired(true);
-        this.mandatoryIContainer.add(this.mandatoryField);
-        this.mandatoryFeedback = new TextFeedbackPanel("mandatoryFeedback", this.mandatoryField);
-        this.mandatoryIContainer.add(this.mandatoryFeedback);
-
-        this.typeBlock = new WebMarkupBlock("typeBlock", Size.Six_6);
-        this.form.add(this.typeBlock);
-        this.typeIContainer = new WebMarkupContainer("typeIContainer");
-        this.typeBlock.add(this.typeIContainer);
-        this.typeProvider = new ColumnTypeOptionProvider();
-        this.typeValue = new PropertyModel<>(this.model, "typeValue");
+        this.typeBlock = this.row1.newUIBlock("typeBlock", Size.Six_6);
+        this.typeIContainer = this.typeBlock.newUIContainer("typeIContainer");
         this.typeField = new Select2SingleChoice<>("typeField", this.typeValue, this.typeProvider);
-        this.typeField.add(new OnChangeAjaxBehavior(this::typeFieldUpdate));
-        this.typeField.setRequired(true);
         this.typeIContainer.add(this.typeField);
-        this.typeFeedback = new TextFeedbackPanel("typeFeedback", this.typeField);
-        this.typeIContainer.add(this.typeFeedback);
+        this.typeIContainer.newFeedback("typeFeedback", this.typeField);
 
-        this.codeBlock = new WebMarkupBlock("codeBlock", Size.Six_6);
-        this.form.add(this.codeBlock);
-        this.codeIContainer = new WebMarkupContainer("codeIContainer");
-        this.codeBlock.add(this.codeIContainer);
-        this.codeProvider = new SingleChoiceProvider(MCode.NAME, MCode.Field.CODE_NAME);
-        this.codeValue = new PropertyModel<>(this.model, "codeValue");
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.lengthBlock = this.row2.newUIBlock("lengthBlock", Size.Six_6);
+        this.lengthIContainer = this.lengthBlock.newUIContainer("lengthIContainer");
+        this.lengthField = new TextField<>("lengthField", this.lengthValue);
+        this.lengthIContainer.add(this.lengthField);
+        this.lengthIContainer.newFeedback("lengthFeedback", this.lengthField);
+
+        this.codeBlock = this.row2.newUIBlock("codeBlock", Size.Six_6);
+        this.codeIContainer = this.codeBlock.newUIContainer("codeIContainer");
         this.codeField = new Select2SingleChoice<>("codeField", this.codeValue, this.codeProvider);
         this.codeIContainer.add(this.codeField);
-        this.codeFeedback = new TextFeedbackPanel("codeFeedback", this.codeField);
-        this.codeIContainer.add(this.codeFeedback);
+        this.codeIContainer.newFeedback("codeFeedback", this.codeField);
 
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.mandatoryBlock = this.row3.newUIBlock("mandatoryBlock", Size.Twelve_12);
+        this.mandatoryIContainer = this.mandatoryBlock.newUIContainer("mandatoryIContainer");
+        this.mandatoryField = new CheckBox("mandatoryField", this.mandatoryValue);
+        this.mandatoryIContainer.add(this.mandatoryField);
+        this.mandatoryIContainer.newFeedback("mandatoryFeedback", this.mandatoryField);
+
+    }
+
+    @Override
+    protected void configureMetaData() {
+        this.typeField.add(new OnChangeAjaxBehavior(this::typeFieldUpdate));
+        this.typeField.setRequired(true);
+        this.mandatoryField.setRequired(true);
+        this.lengthField.setType(Long.class);
+        this.nameField.setRequired(true);
+        typeFieldUpdate(null);
     }
 
     protected boolean typeFieldUpdate(AjaxRequestTarget target) {
@@ -154,11 +153,6 @@ public class ColumnPopup extends PopupPanel {
             target.add(this.lengthBlock);
         }
         return false;
-    }
-
-    @Override
-    protected void configureMetaData() {
-        typeFieldUpdate(null);
     }
 
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {

@@ -5,22 +5,24 @@
 		<form role="form" wicket:id="form">
 			<div class="modal-content">
 				<div class="modal-body">
-					<!-- Row -->
-					<div wicket:id="chargeBlock" class="form-group">
-						<wicket:container wicket:id="chargeIContainer">
-							<label wicket:for="chargeField">Fees</label>
-							<select wicket:id="chargeField" class="form-control"></select>
-							<span wicket:id="chargeFeedback" class="help-block"></span>
-						</wicket:container>
+
+					<div wicket:id="row1">
+						<div wicket:id="chargeBlock" class="form-group">
+							<wicket:container wicket:id="chargeIContainer">
+								<label wicket:for="chargeField">Fees</label>
+								<select wicket:id="chargeField" class="form-control"></select>
+								<span wicket:id="chargeFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="accountBlock" class="form-group">
+							<wicket:container wicket:id="accountIContainer">
+								<label wicket:for="accountField">Income Source</label>
+								<select wicket:id="accountField" class="form-control"></select>
+								<span wicket:id="accountFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="accountBlock" class="form-group">
-						<wicket:container wicket:id="accountIContainer">
-							<label wicket:for="accountField">Income Source</label>
-							<select wicket:id="accountField" class="form-control"></select>
-							<span wicket:id="accountFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
+
 				</div>
 				<div class="modal-footer">
 					<button wicket:id="okayButton" type="submit" class="btn btn-info">Okay</button>
