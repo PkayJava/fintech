@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages.product.mixed;
 import java.util.List;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -17,11 +16,12 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.MixedBuilder;
 import com.angkorteam.fintech.helper.MixedHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.provider.MultipleChoiceProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -30,6 +30,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -39,19 +40,25 @@ public class MixedCreatePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock productBlock;
-    protected WebMarkupContainer productIContainer;
+    protected UIRow row1;
+
+    protected UIBlock productBlock;
+    protected UIContainer productIContainer;
     protected SingleChoiceProvider productProvider;
     protected Option productValue;
     protected Select2SingleChoice<Option> productField;
-    protected TextFeedbackPanel productFeedback;
 
-    protected WebMarkupBlock restrictedBlock;
-    protected WebMarkupContainer restrictedIContainer;
+    protected UIBlock row1Block1;
+
+    protected UIRow row2;
+
+    protected UIBlock restrictedBlock;
+    protected UIContainer restrictedIContainer;
     protected MultipleChoiceProvider restrictedProvider;
     protected List<Option> restrictedValue;
     protected Select2MultipleChoice<Option> restrictedField;
-    protected TextFeedbackPanel restrictedFeedback;
+
+    protected UIBlock row2Block1;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -84,6 +91,10 @@ public class MixedCreatePage extends Page {
 
     @Override
     protected void initData() {
+        this.productProvider = new SingleChoiceProvider(MProductLoan.NAME, MProductLoan.Field.ID, MProductLoan.Field.NAME);
+        this.productProvider.applyWhere("product", MProductLoan.NAME + "." + MProductLoan.Field.ID + " NOT IN (SELECT " + MProductMix.Field.PRODUCT_ID + " FROM " + MProductMix.NAME + ")");
+
+        this.restrictedProvider = new MultipleChoiceProvider(MProductLoan.NAME, MProductLoan.Field.ID, MProductLoan.Field.NAME);
     }
 
     @Override
@@ -98,44 +109,32 @@ public class MixedCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", MixedBrowsePage.class);
         this.form.add(this.closeLink);
 
-        initProductBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initRestrictedBlock();
-    }
-
-    protected void initRestrictedBlock() {
-        this.restrictedBlock = new WebMarkupBlock("restrictedBlock", Size.Six_6);
-        this.form.add(this.restrictedBlock);
-        this.restrictedIContainer = new WebMarkupContainer("restrictedIContainer");
-        this.restrictedBlock.add(this.restrictedIContainer);
-        this.restrictedProvider = new MultipleChoiceProvider(MProductLoan.NAME, MProductLoan.Field.ID, MProductLoan.Field.NAME);
-        this.restrictedField = new Select2MultipleChoice<>("restrictedField", new PropertyModel<>(this, "restrictedValue"), this.restrictedProvider);
-        this.restrictedField.setLabel(Model.of("Restricted"));
-        this.restrictedField.setRequired(false);
-        this.restrictedField.add(new OnChangeAjaxBehavior());
-        this.restrictedIContainer.add(this.restrictedField);
-        this.restrictedFeedback = new TextFeedbackPanel("restrictedFeedback", this.restrictedField);
-        this.restrictedIContainer.add(this.restrictedFeedback);
-    }
-
-    protected void initProductBlock() {
-        this.productBlock = new WebMarkupBlock("productBlock", Size.Six_6);
-        this.form.add(this.productBlock);
-        this.productIContainer = new WebMarkupContainer("productIContainer");
-        this.productBlock.add(this.productIContainer);
-        this.productProvider = new SingleChoiceProvider(MProductLoan.NAME, MProductLoan.Field.ID, MProductLoan.Field.NAME);
-        this.productProvider.applyWhere("product", MProductLoan.NAME + "." + MProductLoan.Field.ID + " NOT IN (SELECT " + MProductMix.Field.PRODUCT_ID + " FROM " + MProductMix.NAME + ")");
+        this.productBlock = this.row1.newUIBlock("productBlock", Size.Six_6);
+        this.productIContainer = this.productBlock.newUIContainer("productIContainer");
         this.productField = new Select2SingleChoice<>("productField", new PropertyModel<>(this, "productValue"), this.productProvider);
-        this.productField.setLabel(Model.of("Product"));
-        this.productField.setRequired(false);
-        this.productField.add(new OnChangeAjaxBehavior());
         this.productIContainer.add(this.productField);
-        this.productFeedback = new TextFeedbackPanel("productFeedback", this.productField);
-        this.productIContainer.add(this.productFeedback);
+        this.productIContainer.newFeedback("productFeedback", this.productField);
+
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
+
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.restrictedBlock = this.row2.newUIBlock("restrictedBlock", Size.Six_6);
+        this.restrictedIContainer = this.restrictedBlock.newUIContainer("restrictedIContainer");
+        this.restrictedField = new Select2MultipleChoice<>("restrictedField", new PropertyModel<>(this, "restrictedValue"), this.restrictedProvider);
+        this.restrictedIContainer.add(this.restrictedField);
+        this.restrictedIContainer.newFeedback("restrictedFeedback", this.restrictedField);
     }
 
     @Override
     protected void configureMetaData() {
+        this.productField.setLabel(Model.of("Product"));
+        this.productField.add(new OnChangeAjaxBehavior());
+
+        this.restrictedField.setLabel(Model.of("Restricted"));
+        this.restrictedField.add(new OnChangeAjaxBehavior());
     }
 
     protected void saveButtonSubmit(Button button) {

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
@@ -91,9 +90,6 @@ public class SharePreviewPage extends Page {
     // Accounting
 
     protected String accountingValue;
-
-    protected WebMarkupContainer cashBlock;
-    protected WebMarkupContainer cashIContainer;
 
     protected Option cashShareReferenceValue;
     protected Option cashShareSuspenseControlValue;

@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.json.JSONObject;
@@ -41,14 +39,12 @@ import com.angkorteam.fintech.widget.product.fixed.Settings;
 import com.angkorteam.fintech.widget.product.fixed.Terms;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.share.provider.ListDataProvider;
-import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -123,28 +119,9 @@ public class FixedCreatePage extends Page {
     protected Option cashIncomeFromFeeValue;
     protected Option cashIncomeFromPenaltyValue;
 
-    // Advanced Accounting Rule
-
-    protected WebMarkupContainer advancedAccountingRuleBlock;
-    protected WebMarkupContainer advancedAccountingRuleIContainer;
-
-    protected List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFundSourceColumn;
     protected List<Map<String, Object>> advancedAccountingRuleFundSourceValue;
-    protected DataTable<Map<String, Object>, String> advancedAccountingRuleFundSourceTable;
-    protected ListDataProvider advancedAccountingRuleFundSourceProvider;
-    protected AjaxLink<Void> advancedAccountingRuleFundSourceAddLink;
-
-    protected List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFeeIncomeColumn;
     protected List<Map<String, Object>> advancedAccountingRuleFeeIncomeValue;
-    protected DataTable<Map<String, Object>, String> advancedAccountingRuleFeeIncomeTable;
-    protected ListDataProvider advancedAccountingRuleFeeIncomeProvider;
-    protected AjaxLink<Void> advancedAccountingRuleFeeIncomeAddLink;
-
-    protected List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn;
     protected List<Map<String, Object>> advancedAccountingRulePenaltyIncomeValue;
-    protected DataTable<Map<String, Object>, String> advancedAccountingRulePenaltyIncomeTable;
-    protected ListDataProvider advancedAccountingRulePenaltyIncomeProvider;
-    protected AjaxLink<Void> advancedAccountingRulePenaltyIncomeAddLink;
 
     protected AjaxTabbedPanel<ITab> tab;
 

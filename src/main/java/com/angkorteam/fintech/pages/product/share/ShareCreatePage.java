@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
@@ -36,6 +35,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -91,9 +91,6 @@ public class ShareCreatePage extends Page {
     // Accounting
 
     protected String accountingValue;
-
-    protected WebMarkupContainer cashBlock;
-    protected WebMarkupContainer cashIContainer;
 
     protected Option cashShareReferenceValue;
     protected Option cashShareSuspenseControlValue;
