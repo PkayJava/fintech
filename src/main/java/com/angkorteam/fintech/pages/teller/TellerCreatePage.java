@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -21,11 +20,12 @@ import com.angkorteam.fintech.dto.builder.TellerBuilder;
 import com.angkorteam.fintech.dto.constant.TellerStatus;
 import com.angkorteam.fintech.helper.TellerHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.provider.TellerStateProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
@@ -33,6 +33,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -45,43 +46,49 @@ public class TellerCreatePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock nameBlock;
-    protected WebMarkupContainer nameIContainer;
+    protected UIRow row1;
+
+    protected UIBlock nameBlock;
+    protected UIContainer nameIContainer;
     protected String nameValue;
     protected TextField<String> nameField;
-    protected TextFeedbackPanel nameFeedback;
 
-    protected WebMarkupBlock officeBlock;
-    protected WebMarkupContainer officeIContainer;
+    protected UIRow row2;
+
+    protected UIBlock officeBlock;
+    protected UIContainer officeIContainer;
     protected SingleChoiceProvider officeProvider;
     protected Option officeValue;
     protected Select2SingleChoice<Option> officeField;
-    protected TextFeedbackPanel officeFeedback;
 
-    protected WebMarkupBlock statusBlock;
-    protected WebMarkupContainer statusIContainer;
+    protected UIRow row3;
+
+    protected UIBlock statusBlock;
+    protected UIContainer statusIContainer;
     protected TellerStateProvider statusProvider;
     protected Option statusValue;
     protected Select2SingleChoice<Option> statusField;
-    protected TextFeedbackPanel statusFeedback;
 
-    protected WebMarkupBlock startDateBlock;
-    protected WebMarkupContainer startDateIContainer;
+    protected UIRow row4;
+
+    protected UIBlock startDateBlock;
+    protected UIContainer startDateIContainer;
     protected Date startDateValue;
     protected DateTextField startDateField;
-    protected TextFeedbackPanel startDateFeedback;
 
-    protected WebMarkupBlock endDateBlock;
-    protected WebMarkupContainer endDateIContainer;
+    protected UIRow row5;
+
+    protected UIBlock endDateBlock;
+    protected UIContainer endDateIContainer;
     protected Date endDateValue;
     protected DateTextField endDateField;
-    protected TextFeedbackPanel endDateFeedback;
 
-    protected WebMarkupBlock descriptionBlock;
-    protected WebMarkupContainer descriptionIContainer;
+    protected UIRow row6;
+
+    protected UIBlock descriptionBlock;
+    protected UIContainer descriptionIContainer;
     protected String descriptionValue;
     protected TextArea<String> descriptionField;
-    protected TextFeedbackPanel descriptionFeedback;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -116,6 +123,8 @@ public class TellerCreatePage extends Page {
         this.startDateValue = DateTime.now().toDate();
         this.endDateValue = DateTime.now().plusYears(1).toDate();
         this.statusValue = TellerStatus.Active.toOption();
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
+        this.statusProvider = new TellerStateProvider();
     }
 
     @Override
@@ -130,94 +139,62 @@ public class TellerCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", TellerBrowsePage.class);
         this.form.add(this.closeLink);
 
-        initOfficeBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initStatusBlock();
-
-        initNameBlock();
-
-        initStartDateBlock();
-
-        initEndDateBlock();
-
-        initDescriptionBlock();
-    }
-
-    protected void initDescriptionBlock() {
-        this.descriptionBlock = new WebMarkupBlock("descriptionBlock", Size.Twelve_12);
-        this.form.add(this.descriptionBlock);
-        this.descriptionIContainer = new WebMarkupContainer("descriptionIContainer");
-        this.descriptionBlock.add(this.descriptionIContainer);
-        this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
-        this.descriptionField.setRequired(true);
-        this.descriptionIContainer.add(this.descriptionField);
-        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-        this.descriptionIContainer.add(this.descriptionFeedback);
-    }
-
-    protected void initEndDateBlock() {
-        this.endDateBlock = new WebMarkupBlock("endDateBlock", Size.Twelve_12);
-        this.form.add(this.endDateBlock);
-        this.endDateIContainer = new WebMarkupContainer("endDateIContainer");
-        this.endDateBlock.add(this.endDateIContainer);
-        this.endDateField = new DateTextField("endDateField", new PropertyModel<>(this, "endDateValue"));
-        this.endDateField.setRequired(true);
-        this.endDateIContainer.add(this.endDateField);
-        this.endDateFeedback = new TextFeedbackPanel("endDateFeedback", this.endDateField);
-        this.endDateIContainer.add(this.endDateFeedback);
-    }
-
-    protected void initStartDateBlock() {
-        this.startDateBlock = new WebMarkupBlock("startDateBlock", Size.Twelve_12);
-        this.form.add(this.startDateBlock);
-        this.startDateIContainer = new WebMarkupContainer("startDateIContainer");
-        this.startDateBlock.add(this.startDateIContainer);
-        this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
-        this.startDateField.setRequired(true);
-        this.startDateIContainer.add(this.startDateField);
-        this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
-        this.startDateIContainer.add(this.startDateFeedback);
-    }
-
-    protected void initNameBlock() {
-        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Twelve_12);
-        this.form.add(this.nameBlock);
-        this.nameIContainer = new WebMarkupContainer("nameIContainer");
-        this.nameBlock.add(this.nameIContainer);
+        this.nameBlock = this.row1.newUIBlock("nameBlock", Size.Twelve_12);
+        this.nameIContainer = this.nameBlock.newUIContainer("nameIContainer");
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setRequired(true);
         this.nameIContainer.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.nameIContainer.add(this.nameFeedback);
-    }
+        this.nameIContainer.newFeedback("nameFeedback", this.nameField);
 
-    protected void initStatusBlock() {
-        this.statusBlock = new WebMarkupBlock("statusBlock", Size.Twelve_12);
-        this.form.add(this.statusBlock);
-        this.statusIContainer = new WebMarkupContainer("statusIContainer");
-        this.statusBlock.add(this.statusIContainer);
-        this.statusProvider = new TellerStateProvider();
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.officeBlock = this.row2.newUIBlock("officeBlock", Size.Twelve_12);
+        this.officeIContainer = this.officeBlock.newUIContainer("officeIContainer");
+        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
+        this.officeIContainer.add(this.officeField);
+        this.officeIContainer.newFeedback("officeFeedback", this.officeField);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.descriptionBlock = this.row3.newUIBlock("descriptionBlock", Size.Twelve_12);
+        this.descriptionIContainer = this.descriptionBlock.newUIContainer("descriptionIContainer");
+        this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
+        this.descriptionIContainer.add(this.descriptionField);
+        this.descriptionIContainer.newFeedback("descriptionFeedback", this.descriptionField);
+
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.startDateBlock = this.row4.newUIBlock("startDateBlock", Size.Twelve_12);
+        this.startDateIContainer = this.startDateBlock.newUIContainer("startDateIContainer");
+        this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
+        this.startDateIContainer.add(this.startDateField);
+        this.startDateIContainer.newFeedback("startDateFeedback", this.startDateField);
+
+        this.row5 = UIRow.newUIRow("row5", this.form);
+
+        this.endDateBlock = this.row5.newUIBlock("endDateBlock", Size.Twelve_12);
+        this.endDateIContainer = this.endDateBlock.newUIContainer("endDateIContainer");
+        this.endDateField = new DateTextField("endDateField", new PropertyModel<>(this, "endDateValue"));
+        this.endDateIContainer.add(this.endDateField);
+        this.endDateIContainer.newFeedback("endDateFeedback", this.endDateField);
+
+        this.row6 = UIRow.newUIRow("row6", this.form);
+
+        this.statusBlock = this.row6.newUIBlock("statusBlock", Size.Twelve_12);
+        this.statusIContainer = this.statusBlock.newUIContainer("statusIContainer");
         this.statusField = new Select2SingleChoice<>("statusField", new PropertyModel<>(this, "statusValue"), this.statusProvider);
         this.statusIContainer.add(this.statusField);
-        this.statusFeedback = new TextFeedbackPanel("statusFeedback", this.statusField);
-        this.statusIContainer.add(this.statusFeedback);
-    }
-
-    protected void initOfficeBlock() {
-        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Twelve_12);
-        this.form.add(this.officeBlock);
-        this.officeIContainer = new WebMarkupContainer("officeIContainer");
-        this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
-        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
-        this.officeField.setRequired(true);
-        this.officeIContainer.add(this.officeField);
-        this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
-        this.officeIContainer.add(this.officeFeedback);
+        this.statusIContainer.newFeedback("statusFeedback", this.statusField);
     }
 
     @Override
     protected void configureMetaData() {
+        this.endDateField.setRequired(true);
+        this.startDateField.setRequired(true);
+        this.descriptionField.setRequired(true);
+        this.officeField.setRequired(true);
+        this.nameField.setRequired(true);
     }
 
     protected void saveButtonSubmit(Button button) {
