@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -20,10 +19,12 @@ import com.angkorteam.fintech.dto.builder.ExternalServiceBuilder;
 import com.angkorteam.fintech.dto.enums.ServiceType;
 import com.angkorteam.fintech.helper.ServiceHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.ServiceDashboardPage;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -32,6 +33,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -41,35 +43,40 @@ public class EMailConfigurationPage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock usernameBlock;
-    protected WebMarkupContainer usernameIContainer;
+    protected UIRow row1;
+
+    protected UIBlock usernameBlock;
+    protected UIContainer usernameIContainer;
     protected String usernameValue;
     protected TextField<String> usernameField;
-    protected TextFeedbackPanel usernameFeedback;
 
-    protected WebMarkupBlock passwordBlock;
-    protected WebMarkupContainer passwordIContainer;
+    protected UIRow row2;
+
+    protected UIBlock passwordBlock;
+    protected UIContainer passwordIContainer;
     protected String passwordValue;
     protected TextField<String> passwordField;
-    protected TextFeedbackPanel passwordFeedback;
 
-    protected WebMarkupBlock hostBlock;
-    protected WebMarkupContainer hostIContainer;
+    protected UIRow row3;
+
+    protected UIBlock hostBlock;
+    protected UIContainer hostIContainer;
     protected String hostValue;
     protected TextField<String> hostField;
-    protected TextFeedbackPanel hostFeedback;
 
-    protected WebMarkupBlock portBlock;
-    protected WebMarkupContainer portIContainer;
+    protected UIRow row4;
+
+    protected UIBlock portBlock;
+    protected UIContainer portIContainer;
     protected Long portValue = 25l;
     protected TextField<Long> portField;
-    protected TextFeedbackPanel portFeedback;
 
-    protected WebMarkupBlock useTlsBlock;
-    protected WebMarkupContainer useTlsIContainer;
+    protected UIRow row5;
+
+    protected UIBlock useTlsBlock;
+    protected UIContainer useTlsIContainer;
     protected Boolean useTlsValue;
     protected CheckBox useTlsField;
-    protected TextFeedbackPanel useTlsFeedback;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -136,79 +143,54 @@ public class EMailConfigurationPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ServiceDashboardPage.class);
         this.form.add(this.closeLink);
 
-        initUsernameBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initPasswordBlock();
-
-        initHostBlock();
-
-        initPortBlock();
-
-        initUseTlsBlock();
-    }
-
-    protected void initUseTlsBlock() {
-        this.useTlsBlock = new WebMarkupBlock("useTlsBlock", Size.Twelve_12);
-        this.form.add(this.useTlsBlock);
-        this.useTlsIContainer = new WebMarkupContainer("useTlsIContainer");
-        this.useTlsBlock.add(this.useTlsIContainer);
-        this.useTlsField = new CheckBox("useTlsField", new PropertyModel<>(this, "useTlsValue"));
-        this.useTlsField.setRequired(true);
-        this.useTlsIContainer.add(this.useTlsField);
-        this.useTlsFeedback = new TextFeedbackPanel("useTlsFeedback", this.useTlsField);
-        this.useTlsIContainer.add(this.useTlsFeedback);
-    }
-
-    protected void initPortBlock() {
-        this.portBlock = new WebMarkupBlock("portBlock", Size.Twelve_12);
-        this.form.add(this.portBlock);
-        this.portIContainer = new WebMarkupContainer("portIContainer");
-        this.portBlock.add(this.portIContainer);
-        this.portField = new TextField<>("portField", new PropertyModel<>(this, "portValue"));
-        this.portField.setRequired(true);
-        this.portIContainer.add(this.portField);
-        this.portFeedback = new TextFeedbackPanel("portFeedback", this.portField);
-        this.portIContainer.add(this.portFeedback);
-    }
-
-    protected void initHostBlock() {
-        this.hostBlock = new WebMarkupBlock("hostBlock", Size.Twelve_12);
-        this.form.add(this.hostBlock);
-        this.hostIContainer = new WebMarkupContainer("hostIContainer");
-        this.hostBlock.add(this.hostIContainer);
-        this.hostField = new TextField<>("hostField", new PropertyModel<>(this, "hostValue"));
-        this.hostField.setRequired(true);
-        this.hostIContainer.add(this.hostField);
-        this.hostFeedback = new TextFeedbackPanel("hostFeedback", this.hostField);
-        this.hostIContainer.add(this.hostFeedback);
-    }
-
-    protected void initPasswordBlock() {
-        this.passwordBlock = new WebMarkupBlock("passwordBlock", Size.Twelve_12);
-        this.form.add(this.passwordBlock);
-        this.passwordIContainer = new WebMarkupContainer("passwordIContainer");
-        this.passwordBlock.add(this.passwordIContainer);
-        this.passwordField = new TextField<>("passwordField", new PropertyModel<>(this, "passwordValue"));
-        this.passwordField.setRequired(true);
-        this.passwordIContainer.add(this.passwordField);
-        this.passwordFeedback = new TextFeedbackPanel("passwordFeedback", this.passwordField);
-        this.passwordIContainer.add(this.passwordFeedback);
-    }
-
-    protected void initUsernameBlock() {
-        this.usernameBlock = new WebMarkupBlock("usernameBlock", Size.Twelve_12);
-        this.form.add(this.usernameBlock);
-        this.usernameIContainer = new WebMarkupContainer("usernameIContainer");
-        this.usernameBlock.add(this.usernameIContainer);
+        this.usernameBlock = this.row1.newUIBlock("usernameBlock", Size.Twelve_12);
+        this.usernameIContainer = this.usernameBlock.newUIContainer("usernameIContainer");
         this.usernameField = new TextField<>("usernameField", new PropertyModel<>(this, "usernameValue"));
-        this.usernameField.setRequired(true);
         this.usernameIContainer.add(this.usernameField);
-        this.usernameFeedback = new TextFeedbackPanel("usernameFeedback", this.usernameField);
-        this.usernameIContainer.add(this.usernameFeedback);
+        this.usernameIContainer.newFeedback("usernameFeedback", this.usernameField);
+
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.passwordBlock = this.row2.newUIBlock("passwordBlock", Size.Twelve_12);
+        this.passwordIContainer = this.passwordBlock.newUIContainer("passwordIContainer");
+        this.passwordField = new TextField<>("passwordField", new PropertyModel<>(this, "passwordValue"));
+        this.passwordIContainer.add(this.passwordField);
+        this.passwordIContainer.newFeedback("passwordFeedback", this.passwordField);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.hostBlock = this.row3.newUIBlock("hostBlock", Size.Twelve_12);
+        this.hostIContainer = this.hostBlock.newUIContainer("hostIContainer");
+        this.hostField = new TextField<>("hostField", new PropertyModel<>(this, "hostValue"));
+        this.hostIContainer.add(this.hostField);
+        this.hostIContainer.newFeedback("hostFeedback", this.hostField);
+
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.portBlock = this.row4.newUIBlock("portBlock", Size.Twelve_12);
+        this.portIContainer = this.portBlock.newUIContainer("portIContainer");
+        this.portField = new TextField<>("portField", new PropertyModel<>(this, "portValue"));
+        this.portIContainer.add(this.portField);
+        this.portIContainer.newFeedback("portFeedback", this.portField);
+
+        this.row5 = UIRow.newUIRow("row5", this.form);
+
+        this.useTlsBlock = this.row5.newUIBlock("useTlsBlock", Size.Twelve_12);
+        this.useTlsIContainer = this.useTlsBlock.newUIContainer("useTlsIContainer");
+        this.useTlsField = new CheckBox("useTlsField", new PropertyModel<>(this, "useTlsValue"));
+        this.useTlsIContainer.add(this.useTlsField);
+        this.useTlsIContainer.newFeedback("useTlsFeedback", this.useTlsField);
     }
 
     @Override
     protected void configureMetaData() {
+        this.useTlsField.setRequired(true);
+        this.portField.setRequired(true);
+        this.hostField.setRequired(true);
+        this.passwordField.setRequired(true);
+        this.usernameField.setRequired(true);
     }
 
     protected void saveButtonSubmit(Button button) {
