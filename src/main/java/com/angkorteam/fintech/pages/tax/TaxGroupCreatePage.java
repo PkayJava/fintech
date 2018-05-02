@@ -8,7 +8,6 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -21,13 +20,15 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.TaxGroupBuilder;
 import com.angkorteam.fintech.helper.TaxGroupHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.pages.TaxDashboardPage;
 import com.angkorteam.fintech.popup.TaxComponentCreatePopup;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -46,6 +47,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -58,22 +60,25 @@ public class TaxGroupCreatePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock nameBlock;
-    protected WebMarkupContainer nameIContainer;
+    protected UIRow row1;
+
+    protected UIBlock nameBlock;
+    protected UIContainer nameIContainer;
     protected String nameValue;
     protected TextField<String> nameField;
     protected TextFeedbackPanel nameFeedback;
 
-    protected WebMarkupBlock taxComponentBlock;
-    protected WebMarkupContainer taxComponentIContainer;
+    protected UIRow row2;
+
+    protected UIBlock taxComponentBlock;
+    protected UIContainer taxComponentIContainer;
     protected List<Map<String, Object>> taxComponentValue;
     protected DataTable<Map<String, Object>, String> taxComponentTable;
     protected ListDataProvider taxComponentProvider;
     protected List<IColumn<Map<String, Object>, String>> taxComponentColumn;
-
     protected AjaxLink<Void> taxComponentAddLink;
 
-    protected ModalWindow popup;
+    protected ModalWindow modalWindow;
     protected Map<String, Object> popupModel;
 
     @Override
@@ -113,6 +118,14 @@ public class TaxGroupCreatePage extends Page {
     @Override
     protected void initData() {
         this.popupModel = Maps.newHashMap();
+
+        this.taxComponentColumn = Lists.newArrayList();
+        this.taxComponentColumn.add(new TextColumn(Model.of("Tax Component"), "tax", "tax", this::taxComponentColumn));
+        this.taxComponentColumn.add(new TextColumn(Model.of("Start Date"), "startDate", "startDate", this::taxComponentColumn));
+        this.taxComponentColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::taxComponentAction, this::taxComponentClick));
+
+        this.taxComponentValue = Lists.newArrayList();
+        this.taxComponentProvider = new ListDataProvider(this.taxComponentValue);
     }
 
     @Override
@@ -128,16 +141,33 @@ public class TaxGroupCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", TaxGroupBrowsePage.class);
         this.form.add(this.closeLink);
 
-        initNameBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initTaxComponentBlock();
+        this.nameBlock = this.row1.newUIBlock("nameBlock", Size.Twelve_12);
+        this.nameIContainer = this.nameBlock.newUIContainer("nameIContainer");
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameIContainer.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.nameIContainer.add(this.nameFeedback);
 
-        this.popup = new ModalWindow("popup");
-        add(this.popup);
-        this.popup.setOnClose(this::popupClose);
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.taxComponentBlock = this.row2.newUIBlock("taxComponentBlock", Size.Twelve_12);
+        this.taxComponentIContainer = this.taxComponentBlock.newUIContainer("taxComponentIContainer");
+        this.taxComponentTable = new DataTable<>("taxComponentTable", taxComponentColumn, this.taxComponentProvider, 20);
+        this.taxComponentIContainer.add(this.taxComponentTable);
+        this.taxComponentTable.addTopToolbar(new HeadersToolbar<>(this.taxComponentTable, this.taxComponentProvider));
+        this.taxComponentTable.addBottomToolbar(new NoRecordsToolbar(this.taxComponentTable));
+        this.taxComponentAddLink = new AjaxLink<>("taxComponentAddLink");
+        this.taxComponentAddLink.setOnClick(this::taxComponentAddLinkClick);
+        this.taxComponentIContainer.add(this.taxComponentAddLink);
+
+        this.modalWindow = new ModalWindow("modalWindow");
+        add(this.modalWindow);
+        this.modalWindow.setOnClose(this::modalWindowClose);
     }
 
-    protected void popupClose(String popupName, String signalId, AjaxRequestTarget target) {
+    protected void modalWindowClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> tax = Maps.newHashMap();
         tax.put("uuid", generator.externalId());
@@ -148,48 +178,16 @@ public class TaxGroupCreatePage extends Page {
         target.add(this.taxComponentTable);
     }
 
-    protected void initTaxComponentBlock() {
-        this.taxComponentBlock = new WebMarkupBlock("taxComponentBlock", Size.Twelve_12);
-        this.form.add(this.taxComponentBlock);
-        this.taxComponentIContainer = new WebMarkupContainer("taxComponentIContainer");
-        this.taxComponentBlock.add(this.taxComponentIContainer);
-        this.taxComponentColumn = Lists.newArrayList();
-        this.taxComponentColumn.add(new TextColumn(Model.of("Tax Component"), "tax", "tax", this::taxComponentColumn));
-        this.taxComponentColumn.add(new TextColumn(Model.of("Start Date"), "startDate", "startDate", this::taxComponentColumn));
-        this.taxComponentColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::taxComponentAction, this::taxComponentClick));
-        this.taxComponentValue = Lists.newArrayList();
-        this.taxComponentProvider = new ListDataProvider(this.taxComponentValue);
-        this.taxComponentTable = new DataTable<>("taxComponentTable", taxComponentColumn, this.taxComponentProvider, 20);
-        this.taxComponentIContainer.add(this.taxComponentTable);
-        this.taxComponentTable.addTopToolbar(new HeadersToolbar<>(this.taxComponentTable, this.taxComponentProvider));
-        this.taxComponentTable.addBottomToolbar(new NoRecordsToolbar(this.taxComponentTable));
-
-        this.taxComponentAddLink = new AjaxLink<>("taxComponentAddLink");
-        this.taxComponentAddLink.setOnClick(this::taxComponentAddLinkClick);
-        this.taxComponentIContainer.add(this.taxComponentAddLink);
+    @Override
+    protected void configureMetaData() {
+        this.nameField.setRequired(true);
     }
 
     protected boolean taxComponentAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.popup.setContent(new TaxComponentCreatePopup("add", this.popupModel));
-        this.popup.show(target);
+        this.modalWindow.setContent(new TaxComponentCreatePopup("add", this.popupModel));
+        this.modalWindow.show(target);
         return false;
-    }
-
-    protected void initNameBlock() {
-        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Twelve_12);
-        this.form.add(this.nameBlock);
-        this.nameIContainer = new WebMarkupContainer("nameIContainer");
-        this.nameBlock.add(this.nameIContainer);
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setRequired(true);
-        this.nameIContainer.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.nameIContainer.add(this.nameFeedback);
-    }
-
-    @Override
-    protected void configureMetaData() {
     }
 
     protected ItemPanel taxComponentColumn(String column, IModel<String> display, Map<String, Object> model) {

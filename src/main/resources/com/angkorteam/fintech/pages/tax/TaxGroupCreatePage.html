@@ -11,26 +11,28 @@
 					<h3 class="box-title">Create Tax Group</h3>
 				</div>
 				<div class="box-body">
-					<!-- Row -->
-					<div wicket:id="nameBlock" class="form-group">
-						<wicket:container wicket:id="nameIContainer">
-							<label wicket:for="nameField">Name</label>
-							<input wicket:id="nameField" type="text" class="form-control" />
-							<span wicket:id="nameFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="taxComponentBlock" class="form-group">
-						<wicket:container wicket:id="taxComponentIContainer">
-							<h4>Tax Components</h4>
-							<table wicket:id="taxComponentTable"></table>
-							<a wicket:id="taxComponentAddLink"
-								class="btn btn-sm btn-default pull-right">Add</a>
-						</wicket:container>
+					<div wicket:id="row1">
+						<div wicket:id="nameBlock" class="form-group">
+							<wicket:container wicket:id="nameIContainer">
+								<label wicket:for="nameField">Name</label>
+								<input wicket:id="nameField" type="text" class="form-control" />
+								<span wicket:id="nameFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div class="clearfix"></div>
+
+					<div wicket:id="row2">
+						<div wicket:id="taxComponentBlock" class="form-group">
+							<wicket:container wicket:id="taxComponentIContainer">
+								<h4>Tax Components</h4>
+								<table wicket:id="taxComponentTable"></table>
+								<a wicket:id="taxComponentAddLink"
+									class="btn btn-sm btn-default pull-right">Add</a>
+							</wicket:container>
+						</div>
+					</div>
+
 				</div>
 				<div class="box-footer">
 					<button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
@@ -39,7 +41,7 @@
 			</div>
 		</form>
 
-		<div wicket:id="popup" />
+		<div wicket:id="modalWindow"></div>
 
 	</wicket:extend>
 </body>
