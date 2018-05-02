@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -16,9 +15,11 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
 import com.angkorteam.fintech.provider.OfficeHierarchyProvider;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.tree.NestedTree;
 import com.google.common.collect.Lists;
@@ -29,8 +30,10 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class OfficeHierarchyPage extends Page {
 
-    protected WebMarkupBlock dataBlock;
-    protected WebMarkupContainer dataIContainer;
+    protected UIRow row1;
+
+    protected UIBlock dataBlock;
+    protected UIContainer dataIContainer;
     protected NestedTree<Map<String, Object>> dataTree;
     protected OfficeHierarchyProvider dataProvider;
 
@@ -68,31 +71,27 @@ public class OfficeHierarchyPage extends Page {
 
     @Override
     protected void initData() {
+        this.dataProvider = new OfficeHierarchyProvider();
     }
 
     @Override
     protected void initComponent() {
-        initDataBlock();
-
         this.browseLink = new BookmarkablePageLink<>("browseLink", OfficeBrowsePage.class);
         add(this.browseLink);
 
         this.createLink = new BookmarkablePageLink<>("createLink", OfficeCreatePage.class);
         add(this.createLink);
+
+        this.row1 = UIRow.newUIRow("row1", this);
+
+        this.dataBlock = this.row1.newUIBlock("dataBlock", Size.Twelve_12);
+        this.dataIContainer = this.dataBlock.newUIContainer("dataIContainer");
+        this.dataTree = new NestedTree<>("dataTree", this.dataProvider, this::dataNewLabel, this::dataNewLink);
+        this.dataIContainer.add(this.dataTree);
     }
 
     @Override
     protected void configureMetaData() {
-    }
-
-    protected void initDataBlock() {
-        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
-        add(this.dataBlock);
-        this.dataIContainer = new WebMarkupContainer("dataIContainer");
-        this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new OfficeHierarchyProvider();
-        this.dataTree = new NestedTree<>("dataTree", this.dataProvider, this::dataNewLabel, this::dataNewLink);
-        this.dataIContainer.add(this.dataTree);
     }
 
     protected MarkupContainer dataNewLink(String s, IModel<Map<String, Object>> model) {
