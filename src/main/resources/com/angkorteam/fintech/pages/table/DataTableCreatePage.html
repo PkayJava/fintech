@@ -10,46 +10,50 @@
 					<h3 class="box-title">Create Data Table</h3>
 				</div>
 				<div class="box-body">
-					<!-- Row -->
-					<div wicket:id="dataTableBlock" class="form-group">
-						<wicket:container wicket:id="dataTableIContainer">
-							<label wicket:for="dataTableField">Data Table</label>
-							<input wicket:id="dataTableField" type="text"
-								class="form-control" />
-							<span wicket:id="dataTableFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="appTableBlock" class="form-group">
-						<wicket:container wicket:id="appTableIContainer">
-							<label wicket:for="appTableField">App Table</label>
-							<select wicket:id="appTableField" class="form-control"></select>
-							<span wicket:id="appTableFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="multiRowBlock" class="form-group">
-						<wicket:container wicket:id="multiRowIContainer">
-							<label>&nbsp;</label>
-							<span style="display: block"> <label> <input
-									type="checkbox" wicket:id="multiRowField"> Is Multi Row
-							</label>
-							</span>
-							<span wicket:id="multiRowFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row1">
+						<div wicket:id="dataTableBlock" class="form-group">
+							<wicket:container wicket:id="dataTableIContainer">
+								<label wicket:for="dataTableField">Data Table</label>
+								<input wicket:id="dataTableField" type="text"
+									class="form-control" />
+								<span wicket:id="dataTableFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="appTableBlock" class="form-group">
+							<wicket:container wicket:id="appTableIContainer">
+								<label wicket:for="appTableField">App Table</label>
+								<select wicket:id="appTableField" class="form-control"></select>
+								<span wicket:id="appTableFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="columnBlock" class="form-group">
-						<wicket:container wicket:id="columnIContainer">
-							<h4>Columns</h4>
-							<table wicket:id="columnTable"></table>
-							<a wicket:id="columnAddLink" class="btn btn-sm btn-default pull-right">Add</a>
-						</wicket:container>
+					<div wicket:id="row2">
+						<div wicket:id="multiRowBlock" class="form-group">
+							<wicket:container wicket:id="multiRowIContainer">
+								<label>&nbsp;</label>
+								<span style="display: block"> <label> <input
+										type="checkbox" wicket:id="multiRowField"> Is Multi
+										Row
+								</label>
+								</span>
+								<span wicket:id="multiRowFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div class="clearfix"></div>
+
+					<div wicket:id="row3">
+						<div wicket:id="columnBlock" class="form-group">
+							<wicket:container wicket:id="columnIContainer">
+								<h4>Columns</h4>
+								<table wicket:id="columnTable"></table>
+								<a wicket:id="columnAddLink"
+									class="btn btn-sm btn-default pull-right">Add</a>
+							</wicket:container>
+						</div>
+					</div>
+
 				</div>
 				<div class="box-footer">
 					<button wicket:id="createButton" type="submit" class="btn btn-info">Create</button>
@@ -57,7 +61,7 @@
 			</div>
 		</form>
 
-		<div wicket:id="columnPopup" />
+		<div wicket:id="modalWindow"></div>
 
 	</wicket:extend>
 </body>

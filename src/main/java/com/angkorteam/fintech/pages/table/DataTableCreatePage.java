@@ -8,7 +8,6 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
@@ -23,14 +22,15 @@ import com.angkorteam.fintech.dto.enums.ColumnType;
 import com.angkorteam.fintech.dto.enums.TableType;
 import com.angkorteam.fintech.helper.DataTableHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.popup.ColumnPopup;
 import com.angkorteam.fintech.provider.AppTableOptionProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -51,6 +51,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -62,35 +63,37 @@ public class DataTableCreatePage extends Page {
     protected Form<Void> form;
     protected Button createButton;
 
-    protected WebMarkupBlock dataTableBlock;
-    protected WebMarkupContainer dataTableIContainer;
+    protected UIRow row1;
+
+    protected UIBlock dataTableBlock;
+    protected UIContainer dataTableIContainer;
     protected String dataTableValue;
     protected TextField<String> dataTableField;
-    protected TextFeedbackPanel dataTableFeedback;
 
-    protected WebMarkupBlock multiRowBlock;
-    protected WebMarkupContainer multiRowIContainer;
-    protected Boolean multiRowValue;
-    protected CheckBox multiRowField;
-    protected TextFeedbackPanel multiRowFeedback;
-
-    protected WebMarkupBlock appTableBlock;
-    protected WebMarkupContainer appTableIContainer;
+    protected UIBlock appTableBlock;
+    protected UIContainer appTableIContainer;
     protected AppTableOptionProvider appTableProvider;
     protected Option appTableValue;
     protected Select2SingleChoice<Option> appTableField;
-    protected TextFeedbackPanel appTableFeedback;
 
-    protected WebMarkupBlock columnBlock;
-    protected WebMarkupContainer columnIContainer;
+    protected UIRow row2;
+
+    protected UIBlock multiRowBlock;
+    protected UIContainer multiRowIContainer;
+    protected Boolean multiRowValue;
+    protected CheckBox multiRowField;
+
+    protected UIRow row3;
+
+    protected UIBlock columnBlock;
+    protected UIContainer columnIContainer;
     protected List<Map<String, Object>> columnValue;
     protected DataTable<Map<String, Object>, String> columnTable;
     protected ListDataProvider columnProvider;
     protected List<IColumn<Map<String, Object>, String>> columnColumn;
-
     protected AjaxLink<Void> columnAddLink;
 
-    protected ModalWindow columnPopup;
+    protected ModalWindow modalWindow;
     protected Map<String, Object> popupModel;
 
     @Override
@@ -124,6 +127,18 @@ public class DataTableCreatePage extends Page {
     @Override
     protected void initData() {
         this.popupModel = new HashMap<>();
+        this.appTableProvider = new AppTableOptionProvider();
+
+        this.columnColumn = Lists.newArrayList();
+        this.columnColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::columnColumn));
+        this.columnColumn.add(new TextColumn(Model.of("Mandatory"), "mandatory", "mandatory", this::columnColumn));
+        this.columnColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::columnColumn));
+        this.columnColumn.add(new TextColumn(Model.of("Length"), "length", "length", this::columnColumn));
+        this.columnColumn.add(new TextColumn(Model.of("Code"), "code", "code", this::columnColumn));
+        this.columnColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::columnAction, this::columnClick));
+
+        this.columnValue = Lists.newArrayList();
+        this.columnProvider = new ListDataProvider(this.columnValue);
     }
 
     @Override
@@ -135,20 +150,53 @@ public class DataTableCreatePage extends Page {
         this.createButton.setOnSubmit(this::createButtonSubmit);
         this.form.add(this.createButton);
 
-        initColumnBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initDataTableBlock();
+        this.dataTableBlock = this.row1.newUIBlock("dataTableBlock", Size.Six_6);
+        this.dataTableIContainer = this.dataTableBlock.newUIContainer("dataTableIContainer");
+        this.dataTableField = new TextField<>("dataTableField", new PropertyModel<>(this, "dataTableValue"));
+        this.dataTableIContainer.add(this.dataTableField);
+        this.dataTableIContainer.newFeedback("dataTableFeedback", this.dataTableField);
 
-        initMultiRowBlock();
+        this.appTableBlock = this.row1.newUIBlock("appTableBlock", Size.Six_6);
+        this.appTableIContainer = this.appTableBlock.newUIContainer("appTableIContainer");
+        this.appTableField = new Select2SingleChoice<>("appTableField", new PropertyModel<>(this, "appTableValue"), this.appTableProvider);
+        this.appTableIContainer.add(this.appTableField);
+        this.appTableIContainer.newFeedback("appTableFeedback", this.appTableField);
 
-        initAppTableBlock();
+        this.row2 = UIRow.newUIRow("row2", this.form);
 
-        this.columnPopup = new ModalWindow("columnPopup");
-        add(this.columnPopup);
-        this.columnPopup.setOnClose(this::columnPopupClose);
+        this.multiRowBlock = this.row2.newUIBlock("multiRowBlock", Size.Twelve_12);
+        this.multiRowIContainer = this.multiRowBlock.newUIContainer("multiRowIContainer");
+        this.multiRowField = new CheckBox("multiRowField", new PropertyModel<>(this, "multiRowValue"));
+        this.multiRowIContainer.add(this.multiRowField);
+        this.multiRowIContainer.newFeedback("multiRowFeedback", this.multiRowField);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.columnBlock = this.row3.newUIBlock("columnBlock", Size.Twelve_12);
+        this.columnIContainer = this.columnBlock.newUIContainer("columnIContainer");
+        this.columnTable = new DataTable<>("columnTable", this.columnColumn, this.columnProvider, 20);
+        this.columnIContainer.add(this.columnTable);
+        this.columnTable.addTopToolbar(new HeadersToolbar<>(this.columnTable, this.columnProvider));
+        this.columnTable.addBottomToolbar(new NoRecordsToolbar(this.columnTable));
+        this.columnAddLink = new AjaxLink<>("columnAddLink");
+        this.columnAddLink.setOnClick(this::columnAddLinkClick);
+        this.columnIContainer.add(this.columnAddLink);
+
+        this.modalWindow = new ModalWindow("modalWindow");
+        add(this.modalWindow);
+        this.modalWindow.setOnClose(this::modalWindowClose);
     }
 
-    protected void columnPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
+    @Override
+    protected void configureMetaData() {
+        this.multiRowField.setRequired(true);
+        this.appTableField.setRequired(true);
+        this.dataTableField.setRequired(true);
+    }
+
+    protected void modalWindowClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> column = Maps.newHashMap();
         column.put("uuid", generator.externalId());
@@ -171,77 +219,11 @@ public class DataTableCreatePage extends Page {
         target.add(this.columnTable);
     }
 
-    protected void initAppTableBlock() {
-        this.appTableBlock = new WebMarkupBlock("appTableBlock", Size.Six_6);
-        this.form.add(this.appTableBlock);
-        this.appTableIContainer = new WebMarkupContainer("appTableIContainer");
-        this.appTableBlock.add(this.appTableIContainer);
-        this.appTableProvider = new AppTableOptionProvider();
-        this.appTableField = new Select2SingleChoice<>("appTableField", new PropertyModel<>(this, "appTableValue"), this.appTableProvider);
-        this.appTableField.setRequired(true);
-        this.appTableIContainer.add(this.appTableField);
-        this.appTableFeedback = new TextFeedbackPanel("appTableFeedback", this.appTableField);
-        this.appTableIContainer.add(this.appTableFeedback);
-    }
-
-    protected void initMultiRowBlock() {
-        this.multiRowBlock = new WebMarkupBlock("multiRowBlock", Size.Twelve_12);
-        this.form.add(this.multiRowBlock);
-        this.multiRowIContainer = new WebMarkupContainer("multiRowIContainer");
-        this.multiRowBlock.add(this.multiRowIContainer);
-        this.multiRowField = new CheckBox("multiRowField", new PropertyModel<>(this, "multiRowValue"));
-        this.multiRowField.setRequired(true);
-        this.multiRowIContainer.add(this.multiRowField);
-        this.multiRowFeedback = new TextFeedbackPanel("multiRowFeedback", this.multiRowField);
-        this.multiRowIContainer.add(this.multiRowFeedback);
-    }
-
-    protected void initDataTableBlock() {
-        this.dataTableBlock = new WebMarkupBlock("dataTableBlock", Size.Six_6);
-        this.form.add(this.dataTableBlock);
-        this.dataTableIContainer = new WebMarkupContainer("dataTableIContainer");
-        this.dataTableBlock.add(this.dataTableIContainer);
-        this.dataTableField = new TextField<>("dataTableField", new PropertyModel<>(this, "dataTableValue"));
-        this.dataTableField.setRequired(true);
-        this.dataTableIContainer.add(this.dataTableField);
-        this.dataTableFeedback = new TextFeedbackPanel("dataTableFeedback", this.dataTableField);
-        this.dataTableIContainer.add(this.dataTableFeedback);
-    }
-
-    protected void initColumnBlock() {
-        this.columnBlock = new WebMarkupBlock("columnBlock", Size.Twelve_12);
-        this.form.add(this.columnBlock);
-        this.columnIContainer = new WebMarkupContainer("columnIContainer");
-        this.columnBlock.add(this.columnIContainer);
-        this.columnColumn = Lists.newArrayList();
-        this.columnColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::columnColumn));
-        this.columnColumn.add(new TextColumn(Model.of("Mandatory"), "mandatory", "mandatory", this::columnColumn));
-        this.columnColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::columnColumn));
-        this.columnColumn.add(new TextColumn(Model.of("Length"), "length", "length", this::columnColumn));
-        this.columnColumn.add(new TextColumn(Model.of("Code"), "code", "code", this::columnColumn));
-        this.columnColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::columnAction, this::columnClick));
-        this.columnValue = Lists.newArrayList();
-        this.columnProvider = new ListDataProvider(this.columnValue);
-        this.columnTable = new DataTable<>("columnTable", this.columnColumn, this.columnProvider, 20);
-        this.columnIContainer.add(this.columnTable);
-        this.columnTable.addTopToolbar(new HeadersToolbar<>(this.columnTable, this.columnProvider));
-        this.columnTable.addBottomToolbar(new NoRecordsToolbar(this.columnTable));
-
-        this.columnAddLink = new AjaxLink<>("columnAddLink");
-        this.columnAddLink.setOnClick(this::columnAddLinkClick);
-        this.columnIContainer.add(this.columnAddLink);
-    }
-
     protected boolean columnAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.columnPopup.setContent(new ColumnPopup("columnPopup", this.popupModel));
-        this.columnPopup.show(target);
+        this.modalWindow.setContent(new ColumnPopup("columnPopup", this.popupModel));
+        this.modalWindow.show(target);
         return false;
-    }
-
-    @Override
-    protected void configureMetaData() {
-
     }
 
     protected void columnClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
