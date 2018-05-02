@@ -16,6 +16,7 @@ public class JUnitMockServletContext extends MockServletContext {
 
     static {
         PATHS.put("/WEB-INF/api-context.xml", "src" + File.separatorChar + "main" + File.separatorChar + "webapp" + File.separatorChar + "WEB-INF" + File.separatorChar + "api-context.xml");
+        PATHS.put("/META-INF/MANIFEST.MF", "/");
     }
 
     public JUnitMockServletContext(Application application, String path) {

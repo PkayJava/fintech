@@ -4,17 +4,16 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Map;
 
-import org.apache.commons.configuration.XMLPropertiesConfiguration;
 import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
+import org.apache.wicket.core.request.mapper.CryptoMapper;
 import org.apache.wicket.markup.html.IPackageResourceGuard;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.IRequestMapper;
 import org.apache.wicket.request.resource.PackageResourceReference;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.angkorteam.fintech.pages.LoginPage;
 import com.angkorteam.fintech.pages.SimulatorPage;
@@ -48,6 +47,11 @@ public class Application extends AuthenticatedWebApplication {
         }
         getJavaScriptLibrarySettings().setJQueryReference(new PackageResourceReference(ResourceScope.class, ReferenceUtilities.J_QUERY_JS));
         mountPage("/simulator", SimulatorPage.class);
+
+        IRequestMapper cryptoMapper = new CryptoMapper(getRootRequestMapper(), this);
+        setRootRequestMapper(cryptoMapper);
+
+        getMarkupSettings().setStripWicketTags(true);
     }
 
     @Override
@@ -57,9 +61,12 @@ public class Application extends AuthenticatedWebApplication {
 
     @Override
     public RuntimeConfigurationType getConfigurationType() {
-        ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-        XMLPropertiesConfiguration configuration = applicationContext.getBean(XMLPropertiesConfiguration.class);
-        return RuntimeConfigurationType.valueOf(configuration.getString("wicket"));
+        // ApplicationContext applicationContext =
+        // WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+        // XMLPropertiesConfiguration configuration =
+        // applicationContext.getBean(XMLPropertiesConfiguration.class);
+        // return RuntimeConfigurationType.valueOf(configuration.getString("wicket"));
+        return RuntimeConfigurationType.DEVELOPMENT;
     }
 
     @Override

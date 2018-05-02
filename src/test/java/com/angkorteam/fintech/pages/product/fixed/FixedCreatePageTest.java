@@ -38,7 +38,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-public class FixedDepositCreatePageTest {
+public class FixedCreatePageTest {
 
     private JUnitWicketTester wicket;
 

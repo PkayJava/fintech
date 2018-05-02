@@ -34,6 +34,9 @@ public class Start {
      */
     public static void main(String[] args) throws UnrecoverableKeyException, NoSuchAlgorithmException, Exception {
 
+        System.setProperty("javax.net.ssl.trustStore", "/opt/jdk1.8.0_172/jre/lib/security/cacerts");
+        System.setProperty("javax.net.ssl.trustStorePassowrd", "changeit");
+
         System.setProperty("wicket.configuration", "development");
 
         Server server = new Server();

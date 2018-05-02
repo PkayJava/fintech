@@ -65,7 +65,7 @@ public class LoginPage extends WebPage {
         String absoluteDiskPath = Application.get().getServletContext().getRealPath(manifest);
         File file = new File(absoluteDiskPath);
 
-        if (file.exists()) {
+        if (file.exists() && file.isFile()) {
             try {
                 List<String> lines = FileUtils.readLines(file, "UTF-8");
                 String v = "";
