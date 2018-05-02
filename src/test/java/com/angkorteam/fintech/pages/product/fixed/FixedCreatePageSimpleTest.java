@@ -21,7 +21,7 @@ public class FixedCreatePageSimpleTest {
         this.wicket.login();
         FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
         this.wicket.assertRenderedPage(FixedCreatePage.class);
-        Assert.assertEquals("Expected to land detail tab " + FixedCreatePage.TAB_DETAIL, FixedCreatePage.TAB_DETAIL, page.tab.getSelectedTab());
+        Assert.assertEquals("expected to land detail tab " + FixedCreatePage.TAB_DETAIL, FixedCreatePage.TAB_DETAIL, page.tab.getSelectedTab());
         this.wicket.assertRenderedPage(FixedCreatePage.class);
     }
 
@@ -31,7 +31,7 @@ public class FixedCreatePageSimpleTest {
         FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
         this.wicket.assertRenderedPage(FixedCreatePage.class);
         this.wicket.executeAjaxEvent("tab:tabs-container:tabs:" + FixedCreatePage.TAB_CURRENCY + ":link", "click");
-        Assert.assertEquals("Expected to land currency tab " + FixedCreatePage.TAB_CURRENCY, FixedCreatePage.TAB_CURRENCY, page.tab.getSelectedTab());
+        Assert.assertEquals("expected to land currency tab " + FixedCreatePage.TAB_CURRENCY, FixedCreatePage.TAB_CURRENCY, page.tab.getSelectedTab());
         this.wicket.assertRenderedPage(FixedCreatePage.class);
     }
 
@@ -41,7 +41,7 @@ public class FixedCreatePageSimpleTest {
         FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
         this.wicket.assertRenderedPage(FixedCreatePage.class);
         this.wicket.executeAjaxEvent("tab:tabs-container:tabs:" + FixedCreatePage.TAB_TERM + ":link", "click");
-        Assert.assertEquals("Expected to land term tab " + FixedCreatePage.TAB_TERM, FixedCreatePage.TAB_TERM, page.tab.getSelectedTab());
+        Assert.assertEquals("expected to land term tab " + FixedCreatePage.TAB_TERM, FixedCreatePage.TAB_TERM, page.tab.getSelectedTab());
         this.wicket.assertRenderedPage(FixedCreatePage.class);
     }
 
@@ -51,7 +51,7 @@ public class FixedCreatePageSimpleTest {
         FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
         this.wicket.assertRenderedPage(FixedCreatePage.class);
         this.wicket.executeAjaxEvent("tab:tabs-container:tabs:" + FixedCreatePage.TAB_SETTING + ":link", "click");
-        Assert.assertEquals("Expected to land setting tab " + FixedCreatePage.TAB_SETTING, FixedCreatePage.TAB_SETTING, page.tab.getSelectedTab());
+        Assert.assertEquals("expected to land setting tab " + FixedCreatePage.TAB_SETTING, FixedCreatePage.TAB_SETTING, page.tab.getSelectedTab());
         this.wicket.assertRenderedPage(FixedCreatePage.class);
     }
 
@@ -61,7 +61,7 @@ public class FixedCreatePageSimpleTest {
         FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
         this.wicket.assertRenderedPage(FixedCreatePage.class);
         this.wicket.executeAjaxEvent("tab:tabs-container:tabs:" + FixedCreatePage.TAB_PREVIEW + ":link", "click");
-        Assert.assertEquals("Expected to land preview tab " + FixedCreatePage.TAB_PREVIEW, FixedCreatePage.TAB_PREVIEW, page.tab.getSelectedTab());
+        Assert.assertEquals("expected to land preview tab " + FixedCreatePage.TAB_PREVIEW, FixedCreatePage.TAB_PREVIEW, page.tab.getSelectedTab());
         this.wicket.assertRenderedPage(FixedCreatePage.class);
     }
 
