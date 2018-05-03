@@ -85,11 +85,11 @@ public class CurrencyPanel extends Panel {
 
         this.row1 = UIRow.newUIRow("row1", this.form);
 
-        this.currencyMultipleOfBlock = this.row1.newUIBlock("currencyMultipleOfBlock", Size.Six_6);
-        this.currencyMultipleOfIContainer = this.currencyMultipleOfBlock.newUIContainer("currencyMultipleOfIContainer");
-        this.currencyMultipleOfField = new TextField<>("currencyMultipleOfField", new PropertyModel<>(this.itemPage, "currencyMultipleOfValue"));
-        this.currencyMultipleOfIContainer.add(this.currencyMultipleOfField);
-        this.currencyMultipleOfIContainer.newFeedback("currencyMultipleOfFeedback", this.currencyMultipleOfField);
+        this.currencyCodeBlock = this.row1.newUIBlock("currencyCodeBlock", Size.Six_6);
+        this.currencyCodeIContainer = this.currencyCodeBlock.newUIContainer("currencyCodeIContainer");
+        this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", new PropertyModel<>(this.itemPage, "currencyCodeValue"), this.currencyCodeProvider);
+        this.currencyCodeIContainer.add(this.currencyCodeField);
+        this.currencyCodeIContainer.newFeedback("currencyCodeFeedback", this.currencyCodeField);
 
         this.currencyDecimalPlaceBlock = this.row1.newUIBlock("currencyDecimalPlaceBlock", Size.Six_6);
         this.currencyDecimalPlaceIContainer = this.currencyDecimalPlaceBlock.newUIContainer("currencyDecimalPlaceIContainer");
@@ -99,11 +99,11 @@ public class CurrencyPanel extends Panel {
 
         this.row2 = UIRow.newUIRow("row2", this.form);
 
-        this.currencyCodeBlock = this.row2.newUIBlock("currencyCodeBlock", Size.Six_6);
-        this.currencyCodeIContainer = this.currencyCodeBlock.newUIContainer("currencyCodeIContainer");
-        this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", new PropertyModel<>(this.itemPage, "currencyCodeValue"), this.currencyCodeProvider);
-        this.currencyCodeIContainer.add(this.currencyCodeField);
-        this.currencyCodeIContainer.newFeedback("currencyCodeFeedback", this.currencyCodeField);
+        this.currencyMultipleOfBlock = this.row2.newUIBlock("currencyMultipleOfBlock", Size.Six_6);
+        this.currencyMultipleOfIContainer = this.currencyMultipleOfBlock.newUIContainer("currencyMultipleOfIContainer");
+        this.currencyMultipleOfField = new TextField<>("currencyMultipleOfField", new PropertyModel<>(this.itemPage, "currencyMultipleOfValue"));
+        this.currencyMultipleOfIContainer.add(this.currencyMultipleOfField);
+        this.currencyMultipleOfIContainer.newFeedback("currencyMultipleOfFeedback", this.currencyMultipleOfField);
 
         this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Six_6);
 

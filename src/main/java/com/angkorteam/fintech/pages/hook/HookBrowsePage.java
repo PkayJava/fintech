@@ -112,7 +112,6 @@ public class HookBrowsePage extends Page {
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Template"), "template", "template", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Is Active ?"), "active", "active", this::dataColumn));
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
-
     }
 
     @Override
@@ -133,7 +132,7 @@ public class HookBrowsePage extends Page {
         this.templateIContainer.add(this.templateField);
         this.templateIContainer.newFeedback("templateFeedback", this.templateField);
 
-        this.form2 = new FilterForm<>("form1", this.dataProvider);
+        this.form2 = new FilterForm<>("form2", this.dataProvider);
         add(this.form2);
 
         this.row2 = UIRow.newUIRow("row2", this.form2);

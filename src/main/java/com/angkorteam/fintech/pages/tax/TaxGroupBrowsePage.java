@@ -94,7 +94,7 @@ public class TaxGroupBrowsePage extends Page {
         this.createLink = new BookmarkablePageLink<>("createLink", TaxGroupCreatePage.class);
         add(this.createLink);
 
-        this.form = new FilterForm<>("dataform", this.dataProvider);
+        this.form = new FilterForm<>("form", this.dataProvider);
         add(this.form);
 
         this.row1 = UIRow.newUIRow("row1", this.form);

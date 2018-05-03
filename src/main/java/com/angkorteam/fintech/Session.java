@@ -68,7 +68,7 @@ public class Session extends AbstractAuthenticatedWebSession implements IMifos {
             session.setAttribute(IDENTIFIER, this.identifier);
             session.setAttribute(TOKEN, this.token);
             this.roles.add(Function.ALL_FUNCTION);
-            LOGGER.info("identifier {} token {}", this.identifier, this.token);
+            // LOGGER.info("identifier {} token {}", this.identifier, this.token);
             return true;
         } else {
             return false;

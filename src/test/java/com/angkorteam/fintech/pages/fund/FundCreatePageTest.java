@@ -7,6 +7,7 @@ import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 
 public class FundCreatePageTest {
+
     private JUnitWicketTester wicket;
 
     @Before
@@ -17,7 +18,7 @@ public class FundCreatePageTest {
     @Test
     public void visitPage() {
         this.wicket.login();
-        this.wicket.startPage(FundCreatePage.class);
+        FundCreatePage page = this.wicket.startPage(FundCreatePage.class);
         this.wicket.assertRenderedPage(FundCreatePage.class);
     }
 }

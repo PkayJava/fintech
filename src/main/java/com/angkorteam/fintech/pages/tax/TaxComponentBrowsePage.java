@@ -107,7 +107,7 @@ public class TaxComponentBrowsePage extends Page {
         this.dataIContainer = this.dataBlock.newUIContainer("dataIContainer");
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.form));
-        this.form.add(this.dataTable);
+        this.dataIContainer.add(this.dataTable);
     }
 
     @Override

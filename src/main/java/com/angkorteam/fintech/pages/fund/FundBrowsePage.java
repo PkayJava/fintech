@@ -74,12 +74,20 @@ public class FundBrowsePage extends Page {
 
     @Override
     protected void initData() {
+        this.dataProvider = new JdbcProvider(MFund.NAME);
+        this.dataProvider.boardField(MFund.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MFund.Field.EXTERNAL_ID, "external_id", String.class);
+        this.dataProvider.boardField(MFund.Field.NAME, "name", String.class);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("External ID"), "external_id", "external_id", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
     }
 
     @Override
     protected void initComponent() {
-
-        this.form = new FilterForm<>("dataFilterForm", this.dataProvider);
+        this.form = new FilterForm<>("form", this.dataProvider);
         add(this.form);
 
         this.row1 = UIRow.newUIRow("row1", this.form);
@@ -97,15 +105,6 @@ public class FundBrowsePage extends Page {
 
     @Override
     protected void configureMetaData() {
-        this.dataProvider = new JdbcProvider(MFund.NAME);
-        this.dataProvider.boardField(MFund.Field.ID, "id", Long.class);
-        this.dataProvider.boardField(MFund.Field.EXTERNAL_ID, "external_id", String.class);
-        this.dataProvider.boardField(MFund.Field.NAME, "name", String.class);
-
-        this.dataColumn = Lists.newArrayList();
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("External ID"), "external_id", "external_id", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
     }
 
     protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
