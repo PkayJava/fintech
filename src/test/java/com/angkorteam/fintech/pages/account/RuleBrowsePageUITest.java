@@ -6,7 +6,7 @@ import org.junit.Test;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 
-public class RuleBrowsePageTest {
+public class RuleBrowsePageUITest {
 
     private JUnitWicketTester wicket;
 
@@ -19,7 +19,7 @@ public class RuleBrowsePageTest {
     public void visitPage() {
         this.wicket.login();
 
-        this.wicket.startPage(RuleBrowsePage.class);
+        RuleBrowsePage page = this.wicket.startPage(RuleBrowsePage.class);
 
         this.wicket.assertRenderedPage(RuleBrowsePage.class);
     }
