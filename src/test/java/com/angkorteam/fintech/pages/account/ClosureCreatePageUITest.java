@@ -6,7 +6,7 @@ import org.junit.Test;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 
-public class AccountBrowsePageTest {
+public class ClosureCreatePageUITest {
 
     private JUnitWicketTester wicket;
 
@@ -19,8 +19,10 @@ public class AccountBrowsePageTest {
     public void visitPage() {
         this.wicket.login();
 
-        this.wicket.startPage(AccountBrowsePage.class);
+        ClosureCreatePage page = this.wicket.startPage(ClosureCreatePage.class);
 
-        this.wicket.assertRenderedPage(AccountBrowsePage.class);
+        this.wicket.assertRenderedPage(ClosureCreatePage.class);
+        
     }
+
 }

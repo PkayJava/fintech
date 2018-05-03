@@ -12,7 +12,6 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -67,7 +66,6 @@ public class JournalPostPage extends Page {
 
     protected Form<Void> form;
     protected Button saveButton;
-    protected BookmarkablePageLink<Void> closeLink;
 
     protected ModalWindow modalWindow;
     protected Map<String, Object> popupModel;
@@ -227,9 +225,6 @@ public class JournalPostPage extends Page {
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
-
-        this.closeLink = new BookmarkablePageLink<>("closeLink", AccountingPage.class);
-        this.form.add(this.closeLink);
 
         this.modalWindow = new ModalWindow("modalWindow");
         add(this.modalWindow);

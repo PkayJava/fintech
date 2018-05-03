@@ -6,7 +6,7 @@ import org.junit.Test;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 
-public class AccountHierarchyPageTest {
+public class AccrualAccountingPageUITest {
 
     private JUnitWicketTester wicket;
 
@@ -19,8 +19,9 @@ public class AccountHierarchyPageTest {
     public void visitPage() {
         this.wicket.login();
 
-        this.wicket.startPage(AccountHierarchyPage.class);
+        AccrualAccountingPage page = this.wicket.startPage(AccrualAccountingPage.class);
 
-        this.wicket.assertRenderedPage(AccountHierarchyPage.class);
+        this.wicket.assertRenderedPage(AccrualAccountingPage.class);
     }
+
 }
