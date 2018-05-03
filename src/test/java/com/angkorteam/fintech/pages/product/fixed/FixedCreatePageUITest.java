@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 
-public class FixedCreatePageSimpleTest {
+public class FixedCreatePageUITest {
 
     private JUnitWicketTester wicket;
 
@@ -52,6 +52,36 @@ public class FixedCreatePageSimpleTest {
         this.wicket.assertRenderedPage(FixedCreatePage.class);
         this.wicket.executeAjaxEvent("tab:tabs-container:tabs:" + FixedCreatePage.TAB_SETTING + ":link", "click");
         Assert.assertEquals("expected to land setting tab " + FixedCreatePage.TAB_SETTING, FixedCreatePage.TAB_SETTING, page.tab.getSelectedTab());
+        this.wicket.assertRenderedPage(FixedCreatePage.class);
+    }
+
+    @Test
+    public void landingInterestRateChartTab() {
+        this.wicket.login();
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
+        this.wicket.assertRenderedPage(FixedCreatePage.class);
+        this.wicket.executeAjaxEvent("tab:tabs-container:tabs:" + FixedCreatePage.TAB_INTEREST_RATE_CHART + ":link", "click");
+        Assert.assertEquals("expected to land setting tab " + FixedCreatePage.TAB_INTEREST_RATE_CHART, FixedCreatePage.TAB_INTEREST_RATE_CHART, page.tab.getSelectedTab());
+        this.wicket.assertRenderedPage(FixedCreatePage.class);
+    }
+
+    @Test
+    public void landingChargeTab() {
+        this.wicket.login();
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
+        this.wicket.assertRenderedPage(FixedCreatePage.class);
+        this.wicket.executeAjaxEvent("tab:tabs-container:tabs:" + FixedCreatePage.TAB_CHARGE + ":link", "click");
+        Assert.assertEquals("expected to land setting tab " + FixedCreatePage.TAB_CHARGE, FixedCreatePage.TAB_CHARGE, page.tab.getSelectedTab());
+        this.wicket.assertRenderedPage(FixedCreatePage.class);
+    }
+
+    @Test
+    public void landingAccountingTab() {
+        this.wicket.login();
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
+        this.wicket.assertRenderedPage(FixedCreatePage.class);
+        this.wicket.executeAjaxEvent("tab:tabs-container:tabs:" + FixedCreatePage.TAB_ACCOUNTING + ":link", "click");
+        Assert.assertEquals("expected to land setting tab " + FixedCreatePage.TAB_ACCOUNTING, FixedCreatePage.TAB_ACCOUNTING, page.tab.getSelectedTab());
         this.wicket.assertRenderedPage(FixedCreatePage.class);
     }
 

@@ -446,7 +446,7 @@ public class PreviewPanel extends Panel {
         this.settingWithholdTaxApplicableVContainer.add(this.settingWithholdTaxApplicableView);
 
         this.settingTaxGroupBlock = this.row7.newUIBlock("settingTaxGroupBlock", Size.Three_3);
-        this.settingTaxGroupVContainer = this.settingWithholdTaxApplicableBlock.newUIContainer("settingTaxGroupVContainer");
+        this.settingTaxGroupVContainer = this.settingTaxGroupBlock.newUIContainer("settingTaxGroupVContainer");
         this.settingTaxGroupView = new ReadOnlyView("settingTaxGroupView", new PropertyModel<>(this.itemPage, "settingTaxGroupValue"));
         this.settingTaxGroupVContainer.add(this.settingTaxGroupView);
 
