@@ -52,13 +52,13 @@ public class SavingPreviewPage extends Page {
 
     protected String savingId;
 
-    public static int TAB_DETAIL = 0;
-    public static int TAB_CURRENCY = 1;
-    public static int TAB_TERM = 2;
-    public static int TAB_SETTING = 3;
-    public static int TAB_CHARGE = 4;
-    public static int TAB_ACCOUNTING = 5;
-    public static int TAB_PREVIEW = 6;
+    public static int TAB_DETAIL = SavingCreatePage.TAB_DETAIL;
+    public static int TAB_CURRENCY = SavingCreatePage.TAB_CURRENCY;
+    public static int TAB_TERM = SavingCreatePage.TAB_TERM;
+    public static int TAB_SETTING = SavingCreatePage.TAB_SETTING;
+    public static int TAB_CHARGE = SavingCreatePage.TAB_CHARGE;
+    public static int TAB_ACCOUNTING = SavingCreatePage.TAB_ACCOUNTING;
+    public static int TAB_PREVIEW = SavingCreatePage.TAB_PREVIEW;
 
     // Details
     protected String detailProductNameValue;

@@ -121,13 +121,19 @@ public class TermsPanel extends Panel {
         this.termInterestCompoundingPeriodIContainer.add(this.termInterestCompoundingPeriodField);
         this.termInterestCompoundingPeriodIContainer.newFeedback("termInterestCompoundingPeriodFeedback", this.termInterestCompoundingPeriodField);
 
-        this.termInterestCalculatedUsingBlock = this.row2.newUIBlock("termInterestCalculatedUsingBlock", Size.Six_6);
+        this.termInterestPostingPeriodBlock = this.row2.newUIBlock("termInterestPostingPeriodBlock", Size.Six_6);
+        this.termInterestPostingPeriodIContainer = this.termInterestPostingPeriodBlock.newUIContainer("termInterestPostingPeriodIContainer");
+        this.termInterestPostingPeriodField = new Select2SingleChoice<>("termInterestPostingPeriodField", new PropertyModel<>(this.itemPage, "termInterestPostingPeriodValue"), this.termInterestPostingPeriodProvider);
+        this.termInterestPostingPeriodIContainer.add(this.termInterestPostingPeriodField);
+        this.termInterestPostingPeriodIContainer.newFeedback("termInterestPostingPeriodFeedback", this.termInterestPostingPeriodField);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.termInterestCalculatedUsingBlock = this.row3.newUIBlock("termInterestCalculatedUsingBlock", Size.Six_6);
         this.termInterestCalculatedUsingIContainer = this.termInterestCalculatedUsingBlock.newUIContainer("termInterestCalculatedUsingIContainer");
         this.termInterestCalculatedUsingField = new Select2SingleChoice<>("termInterestCalculatedUsingField", new PropertyModel<>(this.itemPage, "termInterestCalculatedUsingValue"), this.termInterestCalculatedUsingProvider);
         this.termInterestCalculatedUsingIContainer.add(this.termInterestCalculatedUsingField);
         this.termInterestCalculatedUsingIContainer.newFeedback("termInterestCalculatedUsingFeedback", this.termInterestCalculatedUsingField);
-
-        this.row3 = UIRow.newUIRow("row3", this.form);
 
         this.termDayInYearBlock = this.row3.newUIBlock("termDayInYearBlock", Size.Six_6);
         this.termDayInYearIContainer = this.termDayInYearBlock.newUIContainer("termDayInYearIContainer");
@@ -135,11 +141,6 @@ public class TermsPanel extends Panel {
         this.termDayInYearIContainer.add(this.termDayInYearField);
         this.termDayInYearIContainer.newFeedback("termDayInYearFeedback", this.termDayInYearField);
 
-        this.termInterestPostingPeriodBlock = this.row3.newUIBlock("termInterestPostingPeriodBlock", Size.Six_6);
-        this.termInterestPostingPeriodIContainer = this.termInterestPostingPeriodBlock.newUIContainer("termInterestPostingPeriodIContainer");
-        this.termInterestPostingPeriodField = new Select2SingleChoice<>("termInterestPostingPeriodField", new PropertyModel<>(this.itemPage, "termInterestPostingPeriodValue"), this.termInterestPostingPeriodProvider);
-        this.termInterestPostingPeriodIContainer.add(this.termInterestPostingPeriodField);
-        this.termInterestPostingPeriodIContainer.newFeedback("termInterestPostingPeriodFeedback", this.termInterestPostingPeriodField);
     }
 
     @Override
