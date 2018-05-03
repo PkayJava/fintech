@@ -193,7 +193,7 @@ public class SettingsPanel extends Panel {
         this.settingLockInTypeIContainer.add(this.settingLockInTypeField);
         this.settingLockInTypeIContainer.newFeedback("settingLockInTypeFeedback", this.settingLockInTypeField);
 
-        this.settingMinimumDepositTermBlock = this.row3.newUIBlock("settingMinimumDepositTermBlock", Size.Three_3);
+        this.settingMinimumDepositTermBlock = this.row2.newUIBlock("settingMinimumDepositTermBlock", Size.Three_3);
         this.settingMinimumDepositTermIContainer = this.settingMinimumDepositTermBlock.newUIContainer("settingMinimumDepositTermIContainer");
         this.settingMinimumDepositTermField = new TextField<>("settingMinimumDepositTermField", new PropertyModel<>(this.itemPage, "settingMinimumDepositTermValue"));
         this.settingMinimumDepositTermIContainer.add(this.settingMinimumDepositTermField);

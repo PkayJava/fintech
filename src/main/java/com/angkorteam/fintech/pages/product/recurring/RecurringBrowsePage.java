@@ -90,7 +90,7 @@ public class RecurringBrowsePage extends Page {
     }
 
     protected void initDataBlock() {
-        this.form = new FilterForm<>("dataFilterForm", this.dataProvider);
+        this.form = new FilterForm<>("form", this.dataProvider);
         add(this.form);
 
         this.row1 = UIRow.newUIRow("row1", this.form);

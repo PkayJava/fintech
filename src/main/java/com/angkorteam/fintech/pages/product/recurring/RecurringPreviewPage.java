@@ -65,14 +65,14 @@ public class RecurringPreviewPage extends Page {
 
     protected String recurringId;
 
-    public static int TAB_DETAIL = 0;
-    public static int TAB_CURRENCY = 1;
-    public static int TAB_TERM = 2;
-    public static int TAB_SETTING = 3;
-    public static int TAB_INTEREST_RATE_CHART = 4;
-    public static int TAB_CHARGE = 5;
-    public static int TAB_ACCOUNTING = 6;
-    public static int TAB_PREVIEW = 7;
+    public static int TAB_DETAIL = RecurringCreatePage.TAB_DETAIL;
+    public static int TAB_CURRENCY = RecurringCreatePage.TAB_CURRENCY;
+    public static int TAB_TERM = RecurringCreatePage.TAB_TERM;
+    public static int TAB_SETTING = RecurringCreatePage.TAB_SETTING;
+    public static int TAB_INTEREST_RATE_CHART = RecurringCreatePage.TAB_INTEREST_RATE_CHART;
+    public static int TAB_CHARGE = RecurringCreatePage.TAB_CHARGE;
+    public static int TAB_ACCOUNTING = RecurringCreatePage.TAB_ACCOUNTING;
+    public static int TAB_PREVIEW = RecurringCreatePage.TAB_PREVIEW;
 
     // Detail
 
