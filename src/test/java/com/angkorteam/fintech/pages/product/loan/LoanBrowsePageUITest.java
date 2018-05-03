@@ -6,7 +6,7 @@ import org.junit.Test;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 
-public class LoanBrowsePageTest {
+public class LoanBrowsePageUITest {
     private JUnitWicketTester wicket;
 
     @Before
@@ -17,7 +17,7 @@ public class LoanBrowsePageTest {
     @Test
     public void visitPage() {
         this.wicket.login();
-        this.wicket.startPage(LoanBrowsePage.class);
+        LoanBrowsePage page = this.wicket.startPage(LoanBrowsePage.class);
         this.wicket.assertRenderedPage(LoanBrowsePage.class);
     }
 }

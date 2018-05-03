@@ -66,14 +66,14 @@ public class FixedPreviewPage extends Page {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(FixedPreviewPage.class);
 
-    public static int TAB_DETAIL = 0;
-    public static int TAB_CURRENCY = 1;
-    public static int TAB_TERM = 2;
-    public static int TAB_SETTING = 3;
-    public static int TAB_INTEREST_RATE_CHART = 4;
-    public static int TAB_CHARGE = 5;
-    public static int TAB_ACCOUNTING = 6;
-    public static int TAB_PREVIEW = 7;
+    public static int TAB_DETAIL = FixedCreatePage.TAB_DETAIL;
+    public static int TAB_CURRENCY = FixedCreatePage.TAB_CURRENCY;
+    public static int TAB_TERM = FixedCreatePage.TAB_TERM;
+    public static int TAB_SETTING = FixedCreatePage.TAB_SETTING;
+    public static int TAB_INTEREST_RATE_CHART = FixedCreatePage.TAB_INTEREST_RATE_CHART;
+    public static int TAB_CHARGE = FixedCreatePage.TAB_CHARGE;
+    public static int TAB_ACCOUNTING = FixedCreatePage.TAB_ACCOUNTING;
+    public static int TAB_PREVIEW = FixedCreatePage.TAB_PREVIEW;
 
     private String fixedId;
 
