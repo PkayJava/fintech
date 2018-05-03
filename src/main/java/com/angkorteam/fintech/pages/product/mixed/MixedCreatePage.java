@@ -126,6 +126,8 @@ public class MixedCreatePage extends Page {
         this.restrictedField = new Select2MultipleChoice<>("restrictedField", new PropertyModel<>(this, "restrictedValue"), this.restrictedProvider);
         this.restrictedIContainer.add(this.restrictedField);
         this.restrictedIContainer.newFeedback("restrictedFeedback", this.restrictedField);
+
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Six_6);
     }
 
     @Override

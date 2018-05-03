@@ -6,7 +6,7 @@ import org.junit.Test;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 
-public class MixedBrowsePageTest {
+public class MixedBrowsePageUITest {
     private JUnitWicketTester wicket;
 
     @Before
