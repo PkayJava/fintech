@@ -165,12 +165,6 @@ public class SharePreviewPage extends Page {
         SelectQuery selectQuery = null;
 
         selectQuery = new SelectQuery(MShareProduct.NAME);
-        // selectQuery.addJoin("INNER JOIN " + MOrganisationCurrency.NAME + " ON " +
-        // MShareProduct.NAME + "." + MShareProduct.Field.CURRENCY_CODE + " = " +
-        // MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.CODE);
-        // selectQuery.addField("concat(" + MOrganisationCurrency.NAME + "." +
-        // MOrganisationCurrency.Field.NAME + ", ' [', " + MOrganisationCurrency.NAME +
-        // "." + MOrganisationCurrency.Field.CODE + ", ']') currency");
         selectQuery.addField(MShareProduct.NAME + "." + MShareProduct.Field.NAME);
         selectQuery.addField(MShareProduct.NAME + "." + MShareProduct.Field.SHORT_NAME);
         selectQuery.addField(MShareProduct.NAME + "." + MShareProduct.Field.DESCRIPTION);
