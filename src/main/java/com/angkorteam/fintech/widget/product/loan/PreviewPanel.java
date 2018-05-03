@@ -1073,10 +1073,10 @@ public class PreviewPanel extends Panel {
         this.settingEqualAmortizationView = new ReadOnlyView("settingEqualAmortizationView", new PropertyModel<>(this.itemPage, "settingEqualAmortizationValue"));
         this.settingEqualAmortizationVContainer.add(this.settingEqualAmortizationView);
 
-        this.settingInterestCalculationPeriodBlock = this.row16.newUIBlock("settingInterestCalculationPeriodBlock", Size.Three_3);
-        this.settingInterestCalculationPeriodVContainer = this.settingInterestCalculationPeriodBlock.newUIContainer("settingInterestCalculationPeriodVContainer");
-        this.settingInterestCalculationPeriodView = new ReadOnlyView("settingInterestCalculationPeriodView", new PropertyModel<>(this.itemPage, "settingInterestCalculationPeriodValue"));
-        this.settingInterestCalculationPeriodVContainer.add(this.settingInterestCalculationPeriodView);
+        this.settingArrearsToleranceBlock = this.row16.newUIBlock("settingArrearsToleranceBlock", Size.Three_3);
+        this.settingArrearsToleranceVContainer = this.settingArrearsToleranceBlock.newUIContainer("settingArrearsToleranceVContainer");
+        this.settingArrearsToleranceView = new ReadOnlyView("settingArrearsToleranceView", new PropertyModel<>(this.itemPage, "settingArrearsToleranceValue"));
+        this.settingArrearsToleranceVContainer.add(this.settingArrearsToleranceView);
 
         this.row17 = UIRow.newUIRow("row17", this.form);
 
@@ -1085,10 +1085,10 @@ public class PreviewPanel extends Panel {
         this.settingCalculateInterestForExactDaysInPartialPeriodView = new ReadOnlyView("settingCalculateInterestForExactDaysInPartialPeriodView", new PropertyModel<>(this.itemPage, "settingCalculateInterestForExactDaysInPartialPeriodValue"));
         this.settingCalculateInterestForExactDaysInPartialPeriodVContainer.add(this.settingCalculateInterestForExactDaysInPartialPeriodView);
 
-        this.settingArrearsToleranceBlock = this.row17.newUIBlock("settingArrearsToleranceBlock", Size.Three_3);
-        this.settingArrearsToleranceVContainer = this.settingArrearsToleranceBlock.newUIContainer("settingArrearsToleranceVContainer");
-        this.settingArrearsToleranceView = new ReadOnlyView("settingArrearsToleranceView", new PropertyModel<>(this.itemPage, "settingArrearsToleranceValue"));
-        this.settingArrearsToleranceVContainer.add(this.settingArrearsToleranceView);
+        this.settingInterestCalculationPeriodBlock = this.row17.newUIBlock("settingInterestCalculationPeriodBlock", Size.Three_3);
+        this.settingInterestCalculationPeriodVContainer = this.settingInterestCalculationPeriodBlock.newUIContainer("settingInterestCalculationPeriodVContainer");
+        this.settingInterestCalculationPeriodView = new ReadOnlyView("settingInterestCalculationPeriodView", new PropertyModel<>(this.itemPage, "settingInterestCalculationPeriodValue"));
+        this.settingInterestCalculationPeriodVContainer.add(this.settingInterestCalculationPeriodView);
 
         this.settingRepaymentStrategyBlock = this.row17.newUIBlock("settingRepaymentStrategyBlock", Size.Three_3);
         this.settingRepaymentStrategyVContainer = this.settingRepaymentStrategyBlock.newUIContainer("settingRepaymentStrategyVContainer");
@@ -1273,12 +1273,12 @@ public class PreviewPanel extends Panel {
         this.loanTrancheDetailEnableMultipleDisbursalVContainer.add(this.loanTrancheDetailEnableMultipleDisbursalView);
 
         this.loanTrancheDetailMaximumTrancheCountBlock = this.row29.newUIBlock("loanTrancheDetailMaximumTrancheCountBlock", Size.Four_4);
-        this.loanTrancheDetailMaximumTrancheCountVContainer = this.loanTrancheDetailEnableMultipleDisbursalBlock.newUIContainer("loanTrancheDetailMaximumTrancheCountVContainer");
+        this.loanTrancheDetailMaximumTrancheCountVContainer = this.loanTrancheDetailMaximumTrancheCountBlock.newUIContainer("loanTrancheDetailMaximumTrancheCountVContainer");
         this.loanTrancheDetailMaximumTrancheCountView = new ReadOnlyView("loanTrancheDetailMaximumTrancheCountView", new PropertyModel<>(this.itemPage, "loanTrancheDetailMaximumTrancheCountValue"));
         this.loanTrancheDetailMaximumTrancheCountVContainer.add(this.loanTrancheDetailMaximumTrancheCountView);
 
         this.loanTrancheDetailMaximumAllowedOutstandingBalanceBlock = this.row29.newUIBlock("loanTrancheDetailMaximumAllowedOutstandingBalanceBlock", Size.Four_4);
-        this.loanTrancheDetailMaximumAllowedOutstandingBalanceVContainer = this.loanTrancheDetailEnableMultipleDisbursalBlock.newUIContainer("loanTrancheDetailMaximumAllowedOutstandingBalanceVContainer");
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceVContainer = this.loanTrancheDetailMaximumAllowedOutstandingBalanceBlock.newUIContainer("loanTrancheDetailMaximumAllowedOutstandingBalanceVContainer");
         this.loanTrancheDetailMaximumAllowedOutstandingBalanceView = new ReadOnlyView("loanTrancheDetailMaximumAllowedOutstandingBalanceView", new PropertyModel<>(this.itemPage, "loanTrancheDetailMaximumAllowedOutstandingBalanceValue"));
         this.loanTrancheDetailMaximumAllowedOutstandingBalanceVContainer.add(this.loanTrancheDetailMaximumAllowedOutstandingBalanceView);
 
@@ -1301,37 +1301,37 @@ public class PreviewPanel extends Panel {
 
         this.row31 = UIRow.newUIRow("row31", this.form);
 
-        this.configurableRepaymentStrategyBlock = this.row31.newUIBlock("configurableRepaymentStrategyBlock", Size.Six_6);
-        this.configurableRepaymentStrategyVContainer = this.configurableRepaymentStrategyBlock.newUIContainer("configurableRepaymentStrategyVContainer");
-        this.configurableRepaymentStrategyView = new ReadOnlyView("configurableRepaymentStrategyView", new PropertyModel<>(this.itemPage, "configurableRepaymentStrategyValue"));
-        this.configurableRepaymentStrategyVContainer.add(this.configurableRepaymentStrategyView);
+        this.configurableMoratoriumBlock = this.row31.newUIBlock("configurableMoratoriumBlock", Size.Three_3);
+        this.configurableMoratoriumVContainer = this.configurableMoratoriumBlock.newUIContainer("configurableMoratoriumVContainer");
+        this.configurableMoratoriumView = new ReadOnlyView("configurableMoratoriumView", new PropertyModel<>(this.itemPage, "configurableMoratoriumValue"));
+        this.configurableMoratoriumVContainer.add(this.configurableMoratoriumView);
 
-        this.configurableInterestCalculationPeriodBlock = this.row31.newUIBlock("configurableInterestCalculationPeriodBlock", Size.Three_3);
-        this.configurableInterestCalculationPeriodVContainer = this.configurableInterestCalculationPeriodBlock.newUIContainer("configurableInterestCalculationPeriodVContainer");
-        this.configurableInterestCalculationPeriodView = new ReadOnlyView("configurableInterestCalculationPeriodView", new PropertyModel<>(this.itemPage, "configurableInterestCalculationPeriodValue"));
-        this.configurableInterestCalculationPeriodVContainer.add(this.configurableInterestCalculationPeriodView);
-
-        this.configurableArrearsToleranceBlock = this.row31.newUIBlock("configurableArrearsToleranceBlock", Size.Three_3);
-        this.configurableArrearsToleranceVContainer = this.configurableArrearsToleranceBlock.newUIContainer("configurableArrearsToleranceVContainer");
-        this.configurableArrearsToleranceView = new ReadOnlyView("configurableArrearsToleranceView", new PropertyModel<>(this.itemPage, "configurableArrearsToleranceValue"));
-        this.configurableArrearsToleranceVContainer.add(this.configurableArrearsToleranceView);
-
-        this.row32 = UIRow.newUIRow("row32", this.form);
-
-        this.configurableOverdueBeforeMovingBlock = this.row32.newUIBlock("configurableOverdueBeforeMovingBlock", Size.Six_6);
-        this.configurableOverdueBeforeMovingVContainer = this.configurableOverdueBeforeMovingBlock.newUIContainer("configurableOverdueBeforeMovingVContainer");
-        this.configurableOverdueBeforeMovingView = new ReadOnlyView("configurableOverdueBeforeMovingView", new PropertyModel<>(this.itemPage, "configurableOverdueBeforeMovingValue"));
-        this.configurableOverdueBeforeMovingVContainer.add(this.configurableOverdueBeforeMovingView);
-
-        this.configurableRepaidEveryBlock = this.row32.newUIBlock("configurableRepaidEveryBlock", Size.Three_3);
+        this.configurableRepaidEveryBlock = this.row31.newUIBlock("configurableRepaidEveryBlock", Size.Three_3);
         this.configurableRepaidEveryVContainer = this.configurableRepaidEveryBlock.newUIContainer("configurableRepaidEveryVContainer");
         this.configurableRepaidEveryView = new ReadOnlyView("configurableRepaidEveryView", new PropertyModel<>(this.itemPage, "configurableRepaidEveryValue"));
         this.configurableRepaidEveryVContainer.add(this.configurableRepaidEveryView);
 
-        this.configurableMoratoriumBlock = this.row32.newUIBlock("configurableMoratoriumBlock", Size.Three_3);
-        this.configurableMoratoriumVContainer = this.configurableMoratoriumBlock.newUIContainer("configurableMoratoriumVContainer");
-        this.configurableMoratoriumView = new ReadOnlyView("configurableMoratoriumView", new PropertyModel<>(this.itemPage, "configurableMoratoriumValue"));
-        this.configurableMoratoriumVContainer.add(this.configurableMoratoriumView);
+        this.configurableOverdueBeforeMovingBlock = this.row31.newUIBlock("configurableOverdueBeforeMovingBlock", Size.Six_6);
+        this.configurableOverdueBeforeMovingVContainer = this.configurableOverdueBeforeMovingBlock.newUIContainer("configurableOverdueBeforeMovingVContainer");
+        this.configurableOverdueBeforeMovingView = new ReadOnlyView("configurableOverdueBeforeMovingView", new PropertyModel<>(this.itemPage, "configurableOverdueBeforeMovingValue"));
+        this.configurableOverdueBeforeMovingVContainer.add(this.configurableOverdueBeforeMovingView);
+
+        this.row32 = UIRow.newUIRow("row32", this.form);
+
+        this.configurableArrearsToleranceBlock = this.row32.newUIBlock("configurableArrearsToleranceBlock", Size.Three_3);
+        this.configurableArrearsToleranceVContainer = this.configurableArrearsToleranceBlock.newUIContainer("configurableArrearsToleranceVContainer");
+        this.configurableArrearsToleranceView = new ReadOnlyView("configurableArrearsToleranceView", new PropertyModel<>(this.itemPage, "configurableArrearsToleranceValue"));
+        this.configurableArrearsToleranceVContainer.add(this.configurableArrearsToleranceView);
+
+        this.configurableInterestCalculationPeriodBlock = this.row32.newUIBlock("configurableInterestCalculationPeriodBlock", Size.Three_3);
+        this.configurableInterestCalculationPeriodVContainer = this.configurableInterestCalculationPeriodBlock.newUIContainer("configurableInterestCalculationPeriodVContainer");
+        this.configurableInterestCalculationPeriodView = new ReadOnlyView("configurableInterestCalculationPeriodView", new PropertyModel<>(this.itemPage, "configurableInterestCalculationPeriodValue"));
+        this.configurableInterestCalculationPeriodVContainer.add(this.configurableInterestCalculationPeriodView);
+
+        this.configurableRepaymentStrategyBlock = this.row32.newUIBlock("configurableRepaymentStrategyBlock", Size.Six_6);
+        this.configurableRepaymentStrategyVContainer = this.configurableRepaymentStrategyBlock.newUIContainer("configurableRepaymentStrategyVContainer");
+        this.configurableRepaymentStrategyView = new ReadOnlyView("configurableRepaymentStrategyView", new PropertyModel<>(this.itemPage, "configurableRepaymentStrategyValue"));
+        this.configurableRepaymentStrategyVContainer.add(this.configurableRepaymentStrategyView);
 
         this.row33 = UIRow.newUIRow("row33", this.form);
 

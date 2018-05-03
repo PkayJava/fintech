@@ -311,6 +311,8 @@ public class TermsPanel extends Panel {
         this.termPrincipleMaximumIContainer.add(this.termPrincipleMaximumField);
         this.termPrincipleMaximumIContainer.newFeedback("termPrincipleMaximumFeedback", this.termPrincipleMaximumField);
 
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Three_3);
+
         this.row3 = UIRow.newUIRow("row3", this.form);
 
         this.termPrincipleByLoanCycleBlock = this.row3.newUIBlock("termPrincipleByLoanCycleBlock", Size.Twelve_12);
@@ -461,6 +463,8 @@ public class TermsPanel extends Panel {
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField = new TextField<>("termMinimumDayBetweenDisbursalAndFirstRepaymentDateField", new PropertyModel<>(this.itemPage, "termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue"));
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateIContainer.add(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField);
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateIContainer.newFeedback("termMinimumDayBetweenDisbursalAndFirstRepaymentDateFeedback", this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField);
+
+        this.row11Block1 = this.row11.newUIBlock("row11Block1", Size.Six_6);
     }
 
     @Override
