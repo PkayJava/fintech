@@ -66,8 +66,8 @@ public class CurrencyPanel extends Panel {
     protected void initData() {
         this.errorCurrency = new PropertyModel<>(this.itemPage, "errorCurrency");
         this.tab = new PropertyModel<>(this.itemPage, "tab");
-        this.currencyCodeProvider = new CurrencyProvider();
 
+        this.currencyCodeProvider = new CurrencyProvider();
     }
 
     @Override
@@ -120,18 +120,18 @@ public class CurrencyPanel extends Panel {
     @Override
     protected void configureMetaData() {
         this.currencyCodeField.setRequired(true);
-        this.currencyDecimalPlaceField.setRequired(true);
-        this.currencyInMultipleOfField.setRequired(true);
-
         this.currencyCodeField.add(new OnChangeAjaxBehavior());
         this.currencyCodeField.setLabel(Model.of("Currency"));
 
+        this.currencyDecimalPlaceField.setRequired(true);
         this.currencyDecimalPlaceField.setLabel(Model.of("Decimal Places"));
         this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
 
+        this.currencyInMultipleOfField.setRequired(true);
         this.currencyInMultipleOfField.setLabel(Model.of("Currency in multiple of"));
         this.currencyInMultipleOfField.add(new OnChangeAjaxBehavior());
 
+        this.currencyInstallmentInMultipleOfField.setRequired(true);
         this.currencyInstallmentInMultipleOfField.setLabel(Model.of("Installment in multiple of"));
         this.currencyInstallmentInMultipleOfField.add(new OnChangeAjaxBehavior());
         this.currencyInstallmentInMultipleOfField.add(RangeValidator.minimum((long) 1));

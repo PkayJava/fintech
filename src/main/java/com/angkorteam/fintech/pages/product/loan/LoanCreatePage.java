@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
@@ -47,6 +48,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -269,6 +271,7 @@ public class LoanCreatePage extends Page {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         this.accountingValue = AccountingType.None.getDescription();
         this.detailShortNameValue = generator.generate(4);
+        this.detailStartDateValue = DateTime.now().toDate();
         this.currencyDecimalPlaceValue = 2l;
         this.currencyInMultipleOfValue = 1l;
         this.termPrincipleDefaultValue = 100d;

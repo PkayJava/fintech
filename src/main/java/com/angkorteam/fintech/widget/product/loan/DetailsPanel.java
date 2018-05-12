@@ -156,16 +156,16 @@ public class DetailsPanel extends Panel {
     @Override
     protected void configureMetaData() {
         this.detailProductNameField.setRequired(true);
+        this.detailProductNameField.setLabel(Model.of("Product Name"));
+
         this.detailShortNameField.setRequired(true);
         this.detailShortNameField.add(StringValidator.exactLength(4));
-
-        this.detailProductNameField.setLabel(Model.of("Product Name"));
         this.detailShortNameField.setLabel(Model.of("Short Name"));
+
         this.detailDescriptionField.setLabel(Model.of("Description"));
         this.detailFundField.setLabel(Model.of("Fund"));
         this.detailStartDateField.setLabel(Model.of("Start Date"));
         this.detailCloseDateField.setLabel(Model.of("Close Date"));
-
     }
 
     protected void nextButtonSubmit(Button button) {

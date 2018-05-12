@@ -9,11 +9,14 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.validation.IFormValidator;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.IValidator;
 
 import com.angkorteam.fintech.ddl.MFloatingRates;
 import com.angkorteam.fintech.dto.enums.LockInType;
@@ -51,6 +54,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.angkorteam.framework.wicket.markup.html.form.validation.LamdaFormValidator;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -469,6 +473,8 @@ public class TermsPanel extends Panel {
 
     @Override
     protected void configureMetaData() {
+        this.termVaryBasedOnLoanCycleField.add(new OnChangeAjaxBehavior(this::termVaryBasedOnLoanCycleFieldUpdate));
+
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField.setLabel(Model.of("Minimum days between disbursal and first repayment date"));
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField.add(new OnChangeAjaxBehavior());
 
@@ -491,12 +497,14 @@ public class TermsPanel extends Panel {
 
         this.termNominalInterestRateTypeField.setLabel(Model.of("Type"));
         this.termNominalInterestRateTypeField.add(new OnChangeAjaxBehavior());
+        this.termNominalInterestRateTypeField.setRequired(true);
 
         this.termNominalInterestRateMaximumField.setLabel(Model.of("Nominal interest rate Maximum"));
         this.termNominalInterestRateMaximumField.add(new OnChangeAjaxBehavior());
 
         this.termNominalInterestRateDefaultField.setLabel(Model.of("Nominal interest rate Default"));
         this.termNominalInterestRateDefaultField.add(new OnChangeAjaxBehavior());
+        this.termNominalInterestRateDefaultField.setRequired(true);
 
         this.termNominalInterestRateMinimumField.setLabel(Model.of("Nominal interest rate minimum"));
         this.termNominalInterestRateMinimumField.add(new OnChangeAjaxBehavior());
@@ -505,40 +513,45 @@ public class TermsPanel extends Panel {
 
         this.termRepaidTypeField.setLabel(Model.of("Repaid Type"));
         this.termRepaidTypeField.add(new OnChangeAjaxBehavior());
+        this.termRepaidTypeField.setRequired(true);
 
         this.termRepaidEveryField.setLabel(Model.of("Repaid Every"));
         this.termRepaidEveryField.add(new OnChangeAjaxBehavior());
+        this.termRepaidEveryField.setRequired(true);
 
         this.termNumberOfRepaymentMaximumField.setLabel(Model.of("Number of repayment Maximum"));
         this.termNumberOfRepaymentMaximumField.add(new OnChangeAjaxBehavior());
 
         this.termNumberOfRepaymentDefaultField.setLabel(Model.of("Number of repayment Default"));
         this.termNumberOfRepaymentDefaultField.add(new OnChangeAjaxBehavior());
+        this.termNumberOfRepaymentDefaultField.setRequired(true);
 
         this.termNumberOfRepaymentMinimumField.setLabel(Model.of("Number of repayment Minimum"));
         this.termNumberOfRepaymentMinimumField.add(new OnChangeAjaxBehavior());
 
-        this.termPrincipleMaximumField.setLabel(Model.of("Principle Maximum"));
-        this.termPrincipleMaximumField.add(new OnChangeAjaxBehavior());
+        this.termPrincipleMinimumField.setLabel(Model.of("Principle Minimum"));
+        this.termPrincipleMinimumField.add(new OnChangeAjaxBehavior());
+        this.termPrincipleMinimumField.setRequired(true);
 
         this.termPrincipleDefaultField.setLabel(Model.of("Principle Default"));
         this.termPrincipleDefaultField.add(new OnChangeAjaxBehavior());
-
-        this.termPrincipleMinimumField.setLabel(Model.of("Principle Minimum"));
-        this.termPrincipleMinimumField.add(new OnChangeAjaxBehavior());
-
-        this.termVaryBasedOnLoanCycleField.add(new OnChangeAjaxBehavior(this::termVaryBasedOnLoanCycleFieldUpdate));
-
         this.termPrincipleDefaultField.setRequired(true);
-        this.termNumberOfRepaymentDefaultField.setRequired(true);
-        this.termRepaidEveryField.setRequired(true);
-        this.termRepaidTypeField.setRequired(true);
-        this.termNominalInterestRateDefaultField.setRequired(true);
-        this.termNominalInterestRateTypeField.setRequired(true);
+
+        this.termPrincipleMaximumField.setLabel(Model.of("Principle Maximum"));
+        this.termPrincipleMaximumField.add(new OnChangeAjaxBehavior());
+        this.termPrincipleMaximumField.setRequired(true);
 
         termVaryBasedOnLoanCycleFieldUpdate(null);
 
         termLinkedToFloatingInterestRatesFieldUpdate(null);
+
+        FormComponent<?>[] p = new FormComponent<?>[] { this.termPrincipleMinimumField, this.termPrincipleMinimumField, this.termPrincipleMinimumField };
+
+        this.form.add(new LamdaFormValidator(this::principleValidator, p));
+    }
+
+    protected void principleValidator(Form<?> form) {
+
     }
 
     protected void modalWindowClose(String popupName, String signalId, AjaxRequestTarget target) {
