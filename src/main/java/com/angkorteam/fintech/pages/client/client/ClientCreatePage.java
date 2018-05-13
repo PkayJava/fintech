@@ -205,6 +205,11 @@ public class ClientCreatePage extends Page {
 
     protected UIRow row11;
 
+    protected UIBlock externalIdBlock;
+    protected UIContainer externalIdIContainer;
+    protected String externalIdValue;
+    protected TextField<String> externalIdField;
+
     protected UIBlock activeBlock;
     protected UIContainer activeIContainer;
     protected Boolean activeValue;
@@ -409,19 +414,25 @@ public class ClientCreatePage extends Page {
 
         this.row11 = UIRow.newUIRow("row11", this.form);
 
-        this.activeBlock = this.row11.newUIBlock("activeBlock", Size.Four_4);
+        this.externalIdBlock = this.row11.newUIBlock("externalIdBlock", Size.Three_3);
+        this.externalIdIContainer = this.externalIdBlock.newUIContainer("externalIdIContainer");
+        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
+        this.externalIdIContainer.add(this.externalIdField);
+        this.externalIdIContainer.newFeedback("externalIdFeedback", this.externalIdField);
+
+        this.activeBlock = this.row11.newUIBlock("activeBlock", Size.Three_3);
         this.activeIContainer = this.activeBlock.newUIContainer("activeIContainer");
         this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
         this.activeIContainer.add(this.activeField);
         this.activeIContainer.newFeedback("activeFeedback", this.activeField);
 
-        this.activationDateBlock = this.row11.newUIBlock("activationDateBlock", Size.Four_4);
+        this.activationDateBlock = this.row11.newUIBlock("activationDateBlock", Size.Three_3);
         this.activationDateIContainer = this.activationDateBlock.newUIContainer("activationDateIContainer");
         this.activationDateField = new DateTextField("activationDateField", new PropertyModel<>(this, "activationDateValue"));
         this.activationDateIContainer.add(this.activationDateField);
         this.activationDateIContainer.newFeedback("activationDateFeedback", this.activationDateField);
 
-        this.submittedOnBlock = this.row11.newUIBlock("submittedOnBlock", Size.Four_4);
+        this.submittedOnBlock = this.row11.newUIBlock("submittedOnBlock", Size.Three_3);
         this.submittedOnIContainer = this.submittedOnBlock.newUIContainer("submittedOnIContainer");
         this.submittedOnField = new DateTextField("submittedOnField", new PropertyModel<>(this, "submittedOnValue"));
         this.submittedOnIContainer.add(this.submittedOnField);
@@ -447,6 +458,7 @@ public class ClientCreatePage extends Page {
     @Override
     protected void initData() {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+        this.externalIdValue = generator.externalId();
         this.popupModel = Maps.newHashMap();
 
         this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
@@ -597,25 +609,27 @@ public class ClientCreatePage extends Page {
     }
 
     protected void modalWindowClose(String popupName, String signalId, AjaxRequestTarget target) {
-        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
-        Map<String, Object> item = Maps.newHashMap();
-        item.put("uuid", generator.externalId());
-        item.put("relationship", this.popupModel.get("relationshipValue"));
-        item.put("firstName", this.popupModel.get("firstNameValue"));
-        item.put("middleName", this.popupModel.get("middleNameValue"));
-        item.put("lastName", this.popupModel.get("lastNameValue"));
-        item.put("gender", this.popupModel.get("genderValue"));
-        item.put("mobileNumber", this.popupModel.get("mobileNumberValue"));
-        item.put("qualificationValue", this.popupModel.get("qualificationValue"));
-        item.put("dependentValue", this.popupModel.get("dependentValue"));
-        item.put("professionValue", this.popupModel.get("professionValue"));
-        item.put("maritalStatusValue", this.popupModel.get("maritalStatusValue"));
-        item.put("dateOfBirthValue", this.popupModel.get("dateOfBirthValue"));
-        if (this.popupModel.get("dateOfBirthValue") != null) {
-            item.put("age", String.valueOf(Years.yearsBetween(new DateTime((Date) this.popupModel.get("dateOfBirthValue")), DateTime.now()).getYears()));
+        if ("familyMemberPopup".equals(popupName)) {
+            StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+            Map<String, Object> item = Maps.newHashMap();
+            item.put("uuid", generator.externalId());
+            item.put("relationship", this.popupModel.get("relationshipValue"));
+            item.put("firstName", this.popupModel.get("firstNameValue"));
+            item.put("middleName", this.popupModel.get("middleNameValue"));
+            item.put("lastName", this.popupModel.get("lastNameValue"));
+            item.put("gender", this.popupModel.get("genderValue"));
+            item.put("mobileNumber", this.popupModel.get("mobileNumberValue"));
+            item.put("qualificationValue", this.popupModel.get("qualificationValue"));
+            item.put("dependentValue", this.popupModel.get("dependentValue"));
+            item.put("professionValue", this.popupModel.get("professionValue"));
+            item.put("maritalStatusValue", this.popupModel.get("maritalStatusValue"));
+            item.put("dateOfBirthValue", this.popupModel.get("dateOfBirthValue"));
+            if (this.popupModel.get("dateOfBirthValue") != null) {
+                item.put("age", String.valueOf(Years.yearsBetween(new DateTime((Date) this.popupModel.get("dateOfBirthValue")), DateTime.now()).getYears()));
+            }
+            this.familyMemberValue.add(item);
+            target.add(this.familyMemberTable);
         }
-        this.familyMemberValue.add(item);
-        target.add(this.familyMemberTable);
     }
 
     protected boolean activeFieldUpdate(AjaxRequestTarget target) {
@@ -684,8 +698,6 @@ public class ClientCreatePage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
-
         LegalForm legalForm = null;
         if (this.legalFormValue != null) {
             legalForm = LegalForm.valueOf(this.legalFormValue.getId());
@@ -726,7 +738,7 @@ public class ClientCreatePage extends Page {
         if (this.clientTypeValue != null) {
             builder.withClientTypeId(this.clientTypeValue.getId());
         }
-        builder.withExternalId(generator.externalId());
+        builder.withExternalId(this.externalIdValue);
         boolean active = this.activeValue == null ? false : this.activeValue;
         if (active) {
             builder.withActivationDate(this.activationDateValue);
@@ -740,12 +752,12 @@ public class ClientCreatePage extends Page {
             if (relationship != null) {
                 f.withRelationshipId(relationship.getId());
             }
-            f.withLastName((String) item.get("firstName"));
+            f.withFirstName((String) item.get("firstName"));
             f.withMiddleName((String) item.get("middleName"));
             f.withLastName((String) item.get("lastName"));
-            f.withQualification((String) item.get("qualification"));
+            f.withQualification((String) item.get("qualificationValue"));
             f.withMobileNumber((String) item.get("mobileNumber"));
-            Boolean dependent = (Boolean) item.get("dependent");
+            Boolean dependent = (Boolean) item.get("dependentValue");
             if (dependent != null) {
                 f.withDependent(dependent);
             }
@@ -753,15 +765,15 @@ public class ClientCreatePage extends Page {
             if (gender != null) {
                 f.withGenderId(gender.getId());
             }
-            Option profession = (Option) item.get("profession");
+            Option profession = (Option) item.get("professionValue");
             if (profession != null) {
                 f.withProfessionId(profession.getId());
             }
-            Option maritalStatus = (Option) item.get("maritalStatus");
+            Option maritalStatus = (Option) item.get("maritalStatusValue");
             if (maritalStatus != null) {
                 f.withMaritalStatusId(maritalStatus.getId());
             }
-            Date dateOfBirth = (Date) item.get("dateOfBirth");
+            Date dateOfBirth = (Date) item.get("dateOfBirthValue");
             f.withDateOfBirth(dateOfBirth);
             if (dateOfBirth != null) {
                 LocalDate start = dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
