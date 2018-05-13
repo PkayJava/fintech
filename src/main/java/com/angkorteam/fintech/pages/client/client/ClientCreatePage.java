@@ -23,12 +23,10 @@ import org.joda.time.Years;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.ddl.MOffice;
-import com.angkorteam.fintech.ddl.MSavingsProduct;
 import com.angkorteam.fintech.ddl.MStaff;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.ClientBuilder;
 import com.angkorteam.fintech.dto.builder.FamilyMemberBuilder;
-import com.angkorteam.fintech.dto.enums.DepositType;
 import com.angkorteam.fintech.dto.enums.LegalForm;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.layout.Size;
@@ -222,24 +220,6 @@ public class ClientCreatePage extends Page {
     protected Date submittedOnValue;
     protected DateTextField submittedOnField;
 
-    protected UIRow row12;
-
-    protected UIBlock externalIdBlock;
-    protected UIContainer externalIdIContainer;
-    protected String externalIdValue;
-    protected TextField<String> externalIdField;
-
-    protected UIBlock openSavingsAccountBlock;
-    protected UIContainer openSavingsAccountIContainer;
-    protected Boolean openSavingsAccountValue;
-    protected CheckBox openSavingsAccountField;
-
-    protected UIBlock savingsAccountBlock;
-    protected UIContainer savingsAccountIContainer;
-    protected SingleChoiceProvider savingsAccountProvider;
-    protected Option savingsAccountValue;
-    protected Select2SingleChoice<Option> savingsAccountField;
-
     protected UIRow row13;
 
     protected UIBlock familyMemberBlock;
@@ -425,7 +405,7 @@ public class ClientCreatePage extends Page {
         this.remarkIContainer.add(this.remarkField);
         this.remarkIContainer.newFeedback("remarkFeedback", this.remarkField);
 
-        this.row10Block1 = this.row10.newUIBlock("row10lock1", Size.Six_6);
+        this.row10Block1 = this.row10.newUIBlock("row10Block1", Size.Six_6);
 
         this.row11 = UIRow.newUIRow("row11", this.form);
 
@@ -447,26 +427,6 @@ public class ClientCreatePage extends Page {
         this.submittedOnIContainer.add(this.submittedOnField);
         this.submittedOnIContainer.newFeedback("submittedOnFeedback", this.submittedOnField);
 
-        this.row12 = UIRow.newUIRow("row12", this.form);
-
-        this.openSavingsAccountBlock = this.row12.newUIBlock("openSavingsAccountBlock", Size.Four_4);
-        this.openSavingsAccountIContainer = this.openSavingsAccountBlock.newUIContainer("openSavingsAccountIContainer");
-        this.openSavingsAccountField = new CheckBox("openSavingsAccountField", new PropertyModel<>(this, "openSavingsAccountValue"));
-        this.openSavingsAccountIContainer.add(this.openSavingsAccountField);
-        this.openSavingsAccountIContainer.newFeedback("openSavingsAccountFeedback", this.openSavingsAccountField);
-
-        this.externalIdBlock = this.row12.newUIBlock("externalIdBlock", Size.Four_4);
-        this.externalIdIContainer = this.externalIdBlock.newUIContainer("externalIdIContainer");
-        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
-        this.externalIdIContainer.add(this.externalIdField);
-        this.externalIdIContainer.newFeedback("externalIdFeedback", this.externalIdField);
-
-        this.savingsAccountBlock = this.row12.newUIBlock("savingsAccountBlock", Size.Four_4);
-        this.savingsAccountIContainer = this.savingsAccountBlock.newUIContainer("savingsAccountIContainer");
-        this.savingsAccountField = new Select2SingleChoice<>("savingsAccountField", new PropertyModel<>(this, "savingsAccountValue"), this.savingsAccountProvider);
-        this.savingsAccountIContainer.add(this.savingsAccountField);
-        this.savingsAccountIContainer.newFeedback("savingsAccountFeedback", this.savingsAccountField);
-
         this.row13 = UIRow.newUIRow("row13", this.form);
 
         this.familyMemberBlock = this.row13.newUIBlock("familyMemberBlock", Size.Twelve_12);
@@ -487,7 +447,6 @@ public class ClientCreatePage extends Page {
     @Override
     protected void initData() {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
-        this.externalIdValue = generator.externalId();
         this.popupModel = Maps.newHashMap();
 
         this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
@@ -506,9 +465,6 @@ public class ClientCreatePage extends Page {
         this.mainBusinessLineProvider = new MainBusinessLineProvider();
 
         this.constitutionProvider = new ConstitutionProvider();
-
-        this.savingsAccountProvider = new SingleChoiceProvider(MSavingsProduct.NAME, MSavingsProduct.Field.ID, MSavingsProduct.Field.NAME);
-        this.savingsAccountProvider.applyWhere("deposit_type_enum", MSavingsProduct.Field.DEPOSIT_TYPE_ENUM + " = " + DepositType.Saving.getLiteral());
 
         this.familyMemberColumn = Lists.newLinkedList();
         this.familyMemberColumn.add(new TextColumn(Model.of("Relationship"), "relationship", "relationship", this::familyMemberColumn));
@@ -532,13 +488,6 @@ public class ClientCreatePage extends Page {
 
     @Override
     protected void configureMetaData() {
-        this.savingsAccountField.setLabel(Model.of("Savings Account"));
-        this.savingsAccountField.add(new OnChangeAjaxBehavior());
-
-        this.externalIdField.setLabel(Model.of("External ID"));
-        this.externalIdField.add(new OnChangeAjaxBehavior());
-
-        this.openSavingsAccountField.add(new OnChangeAjaxBehavior(this::openSavingsAccountFieldUpdate));
 
         this.submittedOnField.setLabel(Model.of("Submitted On"));
         this.submittedOnField.add(new OnChangeAjaxBehavior());
@@ -607,7 +556,6 @@ public class ClientCreatePage extends Page {
         legalFormFieldUpdate(null);
         officeFieldUpdate(null);
         activeFieldUpdate(null);
-        openSavingsAccountFieldUpdate(null);
     }
 
     protected boolean familyMemberAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
@@ -668,15 +616,6 @@ public class ClientCreatePage extends Page {
         }
         this.familyMemberValue.add(item);
         target.add(this.familyMemberTable);
-    }
-
-    protected boolean openSavingsAccountFieldUpdate(AjaxRequestTarget target) {
-        boolean visible = this.openSavingsAccountValue == null ? false : this.openSavingsAccountValue;
-        this.savingsAccountIContainer.setVisible(visible);
-        if (target != null) {
-            target.add(this.savingsAccountBlock);
-        }
-        return false;
     }
 
     protected boolean activeFieldUpdate(AjaxRequestTarget target) {
@@ -745,6 +684,8 @@ public class ClientCreatePage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+
         LegalForm legalForm = null;
         if (this.legalFormValue != null) {
             legalForm = LegalForm.valueOf(this.legalFormValue.getId());
@@ -785,15 +726,12 @@ public class ClientCreatePage extends Page {
         if (this.clientTypeValue != null) {
             builder.withClientTypeId(this.clientTypeValue.getId());
         }
-        builder.withExternalId(this.externalIdValue);
+        builder.withExternalId(generator.externalId());
         boolean active = this.activeValue == null ? false : this.activeValue;
         if (active) {
             builder.withActivationDate(this.activationDateValue);
         }
         builder.withActive(active);
-        if (this.openSavingsAccountValue != null && this.openSavingsAccountValue) {
-            builder.withSavingsProductId(this.savingsAccountValue.getId());
-        }
         builder.withSubmittedOnDate(this.submittedOnValue);
 
         for (Map<String, Object> item : this.familyMemberValue) {

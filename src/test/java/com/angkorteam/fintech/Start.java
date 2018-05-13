@@ -1,11 +1,13 @@
 package com.angkorteam.fintech;
 
+import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 
 import javax.management.MBeanServer;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -34,7 +36,12 @@ public class Start {
      */
     public static void main(String[] args) throws UnrecoverableKeyException, NoSuchAlgorithmException, Exception {
 
-        System.setProperty("javax.net.ssl.trustStore", "/opt/jdk1.8.0_172/jre/lib/security/cacerts");
+        String javaHome = System.getenv("JAVA_HOME");
+        if (javaHome == null || "".equals(javaHome)) {
+            throw new WicketRuntimeException("JAVA_HOME is not define");
+        }
+        File cacertFile = new File(javaHome, "jre/lib/security/cacerts");
+        System.setProperty("javax.net.ssl.trustStore", cacertFile.getAbsolutePath());
         System.setProperty("javax.net.ssl.trustStorePassowrd", "changeit");
 
         System.setProperty("wicket.configuration", "development");

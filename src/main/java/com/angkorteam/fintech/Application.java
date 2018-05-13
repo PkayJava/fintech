@@ -23,6 +23,7 @@ import com.angkorteam.fintech.pages.SimulatorPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.framework.ReferenceUtilities;
 import com.angkorteam.framework.ResourceScope;
+import com.angkorteam.framework.SpringBean;
 import com.google.common.collect.Maps;
 
 /**
@@ -42,6 +43,8 @@ public class Application extends AuthenticatedWebApplication {
     @Override
     protected void init() {
         super.init();
+        XMLPropertiesConfiguration configuration = SpringBean.getBean(XMLPropertiesConfiguration.class);
+
         IPackageResourceGuard packageResourceGuard = this.getResourceSettings().getPackageResourceGuard();
         if (packageResourceGuard instanceof SecurePackageResourceGuard) {
             SecurePackageResourceGuard guard = (SecurePackageResourceGuard) packageResourceGuard;
@@ -51,8 +54,12 @@ public class Application extends AuthenticatedWebApplication {
         getJavaScriptLibrarySettings().setJQueryReference(new PackageResourceReference(ResourceScope.class, ReferenceUtilities.J_QUERY_JS));
         mountPage("/simulator", SimulatorPage.class);
 
-        IRequestMapper cryptoMapper = new CryptoMapper(getRootRequestMapper(), this);
-        setRootRequestMapper(cryptoMapper);
+        RuntimeConfigurationType configurationType = RuntimeConfigurationType.valueOf(configuration.getString("wicket"));
+
+        if (configurationType == RuntimeConfigurationType.DEPLOYMENT) {
+            IRequestMapper cryptoMapper = new CryptoMapper(getRootRequestMapper(), this);
+            setRootRequestMapper(cryptoMapper);
+        }
 
         getMarkupSettings().setStripWicketTags(true);
     }

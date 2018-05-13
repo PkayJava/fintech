@@ -204,6 +204,14 @@
 					</div>
 
 					<div wicket:id="row11">
+						<div wicket:id="submittedOnBlock" class="form-group">
+							<wicket:container wicket:id="submittedOnIContainer">
+								<label wicket:for="submittedOnField">Submitted On</label>
+								<input wicket:id="submittedOnField" type="text"
+									class="form-control" />
+								<span wicket:id="submittedOnFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 						<div wicket:id="activeBlock" class="form-group">
 							<wicket:container wicket:id="activeIContainer">
 								<label>&nbsp;</label>
@@ -220,44 +228,6 @@
 								<input wicket:id="activationDateField" type="text"
 									class="form-control" />
 								<span wicket:id="activationDateFeedback" class="help-block"></span>
-							</wicket:container>
-						</div>
-						<div wicket:id="submittedOnBlock" class="form-group">
-							<wicket:container wicket:id="submittedOnIContainer">
-								<label wicket:for="submittedOnField">Submitted On</label>
-								<input wicket:id="submittedOnField" type="text"
-									class="form-control" />
-								<span wicket:id="submittedOnFeedback" class="help-block"></span>
-							</wicket:container>
-						</div>
-					</div>
-
-					<div wicket:id="row12">
-						<div wicket:id="openSavingsAccountBlock" class="form-group">
-							<wicket:container wicket:id="openSavingsAccountIContainer">
-								<label>&nbsp;</label>
-								<span style="display: block"> <label> <input
-										type="checkbox" wicket:id="openSavingsAccountField">
-										Open Savings Account ?
-								</label>
-								</span>
-								<span wicket:id="openSavingsAccountFeedback" class="help-block"></span>
-							</wicket:container>
-						</div>
-						<div wicket:id="savingsAccountBlock" class="form-group">
-							<wicket:container wicket:id="savingsAccountIContainer">
-								<label wicket:for="savingsAccountField">Select Savings
-									Account</label>
-								<select wicket:id="savingsAccountField" class="form-control"></select>
-								<span wicket:id="savingsAccountFeedback" class="help-block"></span>
-							</wicket:container>
-						</div>
-						<div wicket:id="externalIdBlock" class="form-group">
-							<wicket:container wicket:id="externalIdIContainer">
-								<label wicket:for="externalIdField">External ID</label>
-								<input wicket:id="externalIdField" type="text"
-									class="form-control" />
-								<span wicket:id="externalIdFeedback" class="help-block"></span>
 							</wicket:container>
 						</div>
 					</div>

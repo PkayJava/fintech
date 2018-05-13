@@ -28,15 +28,15 @@
 		<junit.version>4.12</junit.version>
 		<!-- allowed values: R7, 1.0, 1.5, 2.0 or none -->
 		<wtp.version>none</wtp.version>
-		<frmk.version>2.2.6-SNAPSHOT</frmk.version>
-		<guava.version>24.1-jre</guava.version>
-		<spring.version>5.0.5.RELEASE</spring.version>
-		<spring.integration.version>5.0.4.RELEASE</spring.integration.version>
+		<frmk.version>2.2.7</frmk.version>
+		<guava.version>25.0-jre</guava.version>
+		<spring.version>5.0.6.RELEASE</spring.version>
+		<spring.integration.version>5.0.5.RELEASE</spring.integration.version>
 		<mysql.version>5.1.46</mysql.version>
 		<commons-dbcp2.version>2.2.0</commons-dbcp2.version>
 		<configuration.version>1.10</configuration.version>
 		<jasypt.version>1.9.2</jasypt.version>
-		<selenium.version>3.5.2</selenium.version>
+		<selenium.version>3.12.0</selenium.version>
 		<gson.version>2.8.4</gson.version>
 		<unirest-java.version>2.2.03</unirest-java.version>
 		<commons-lang3.version>3.7</commons-lang3.version>
