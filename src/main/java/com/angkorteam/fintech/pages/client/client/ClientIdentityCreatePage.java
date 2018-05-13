@@ -220,6 +220,7 @@ public class ClientIdentityCreatePage extends Page {
 
         PageParameters parameters = new PageParameters();
         parameters.add("clientId", this.clientId);
+        parameters.add("tab", ClientPreviewPage.CLIENT_PREVIEW_IDENTITY_INDEX);
         setResponsePage(ClientPreviewPage.class, parameters);
     }
 }

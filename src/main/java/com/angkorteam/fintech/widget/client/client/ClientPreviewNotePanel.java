@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.WorkingPage;
@@ -19,6 +20,7 @@ import com.angkorteam.fintech.ddl.MAppUser;
 import com.angkorteam.fintech.ddl.MNote;
 import com.angkorteam.fintech.dto.builder.client.client.ClientNoteBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
@@ -31,6 +33,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 public class ClientPreviewNotePanel extends Panel {
@@ -130,7 +133,11 @@ public class ClientPreviewNotePanel extends Panel {
                 return;
             }
         }
-        this.noteValue = "";
+
+        PageParameters parameters = new PageParameters();
+        parameters.add("clientId", this.clientId);
+        parameters.add("tab", ClientPreviewPage.CLIENT_PREVIEW_NOTE_INDEX);
+        setResponsePage(ClientPreviewPage.class, parameters);
     }
 
 }

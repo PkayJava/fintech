@@ -170,10 +170,12 @@ public class ClientDocumentUploadPage extends Page {
     @Override
     protected void configureMetaData() {
         this.descriptionField.setLabel(Model.of("Description"));
+        this.descriptionField.setRequired(true);
 
         this.fileField.setRequired(true);
         this.fileField.setLabel(Model.of("File"));
 
+        this.nameField.setRequired(true);
         this.nameField.setLabel(Model.of("Name"));
     }
 
@@ -200,6 +202,11 @@ public class ClientDocumentUploadPage extends Page {
             } catch (IOException e) {
             }
         }
+
+        PageParameters parameters = new PageParameters();
+        parameters.add("clientId", this.clientId);
+        parameters.add("tab", ClientPreviewPage.CLIENT_PREVIEW_DOCUMENT_INDEX);
+        setResponsePage(ClientPreviewPage.class, parameters);
 
     }
 

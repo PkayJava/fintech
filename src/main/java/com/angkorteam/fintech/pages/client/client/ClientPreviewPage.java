@@ -27,6 +27,16 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ClientPreviewPage extends Page {
 
+    public static final int CLIENT_PREVIEW_GENERAL_INDEX = 0;
+
+    public static final int CLIENT_PREVIEW_FAMILY_MEMBER_INDEX = 1;
+
+    public static final int CLIENT_PREVIEW_IDENTITY_INDEX = 2;
+
+    public static final int CLIENT_PREVIEW_DOCUMENT_INDEX = 3;
+
+    public static final int CLIENT_PREVIEW_NOTE_INDEX = 4;
+
     protected AjaxTabbedPanel<ITab> tab;
 
     protected String clientId;
@@ -75,6 +85,8 @@ public class ClientPreviewPage extends Page {
 
     @Override
     protected void configureMetaData() {
+        int tab = getPageParameters().get("tab").toInt(CLIENT_PREVIEW_GENERAL_INDEX);
+        this.tab.setSelectedTab(tab);
     }
 
 }

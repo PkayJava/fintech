@@ -12,6 +12,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
@@ -257,6 +258,8 @@ public class ClientFamilyMemberCreatePage extends Page {
         this.genderProvider = new GenderProvider();
         this.professionProvider = new ProfessionProvider();
         this.maritalStatusProvider = new MaritalStatusProvider();
+
+        this.dateOfBirthValue = DateTime.now().minusYears(18).toDate();
     }
 
     @Override
@@ -310,6 +313,7 @@ public class ClientFamilyMemberCreatePage extends Page {
         }
         PageParameters parameters = new PageParameters();
         parameters.add("clientId", this.clientId);
+        parameters.add("tab", ClientPreviewPage.CLIENT_PREVIEW_FAMILY_MEMBER_INDEX);
         setResponsePage(ClientPreviewPage.class, parameters);
     }
 
