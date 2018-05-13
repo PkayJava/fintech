@@ -82,9 +82,9 @@ public class LoanCreatePage extends Page {
     // Terms
 
     protected Boolean termVaryBasedOnLoanCycleValue;
-    protected Double termPrincipleMinimumValue;
-    protected Double termPrincipleDefaultValue;
-    protected Double termPrincipleMaximumValue;
+    protected Double termPrincipalMinimumValue;
+    protected Double termPrincipalDefaultValue;
+    protected Double termPrincipalMaximumValue;
     protected List<Map<String, Object>> termPrincipleByLoanCycleValue;
     protected Long termNumberOfRepaymentMinimumValue;
     protected Long termNumberOfRepaymentDefaultValue;
@@ -274,7 +274,7 @@ public class LoanCreatePage extends Page {
         this.detailStartDateValue = DateTime.now().toDate();
         this.currencyDecimalPlaceValue = 2l;
         this.currencyInMultipleOfValue = 1l;
-        this.termPrincipleDefaultValue = 100d;
+        this.termPrincipalDefaultValue = 100d;
         this.termNumberOfRepaymentDefaultValue = 12l;
         this.termRepaidEveryValue = 1l;
         this.termRepaidTypeValue = LockInType.Month.toOption();
@@ -349,9 +349,9 @@ public class LoanCreatePage extends Page {
 
         boolean useBorrowerCycle = this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue;
         builder.withUseBorrowerCycle(useBorrowerCycle);
-        builder.withMinPrinciple(this.termPrincipleMinimumValue);
-        builder.withPrinciple(this.termPrincipleDefaultValue);
-        builder.withMaxPrinciple(this.termPrincipleMaximumValue);
+        builder.withMinPrinciple(this.termPrincipalMinimumValue);
+        builder.withPrinciple(this.termPrincipalDefaultValue);
+        builder.withMaxPrinciple(this.termPrincipalMaximumValue);
         builder.withMinNumberOfRepayments(this.termNumberOfRepaymentMinimumValue);
         builder.withNumberOfRepayments(this.termNumberOfRepaymentDefaultValue);
         builder.withMaxNumberOfRepayments(this.termNumberOfRepaymentMaximumValue);

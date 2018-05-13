@@ -9,14 +9,12 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.validation.IFormValidator;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.validation.IValidator;
+import org.apache.wicket.validation.ValidationError;
 
 import com.angkorteam.fintech.ddl.MFloatingRates;
 import com.angkorteam.fintech.dto.enums.LockInType;
@@ -84,17 +82,20 @@ public class TermsPanel extends Panel {
     protected UIRow row2;
 
     // Row 2 : Principle
-    protected UIBlock termPrincipleMinimumBlock;
-    protected UIContainer termPrincipleMinimumIContainer;
-    protected TextField<Double> termPrincipleMinimumField;
+    protected UIBlock termPrincipalMinimumBlock;
+    protected UIContainer termPrincipalMinimumIContainer;
+    protected TextField<Double> termPrincipalMinimumField;
+    protected PropertyModel<Double> termPrincipalMinimumValue;
 
-    protected UIBlock termPrincipleDefaultBlock;
-    protected UIContainer termPrincipleDefaultIContainer;
-    protected TextField<Double> termPrincipleDefaultField;
+    protected UIBlock termPrincipalDefaultBlock;
+    protected UIContainer termPrincipalDefaultIContainer;
+    protected TextField<Double> termPrincipalDefaultField;
+    protected PropertyModel<Double> termPrincipalDefaultValue;
 
-    protected UIBlock termPrincipleMaximumBlock;
-    protected UIContainer termPrincipleMaximumIContainer;
-    protected TextField<Double> termPrincipleMaximumField;
+    protected UIBlock termPrincipalMaximumBlock;
+    protected UIContainer termPrincipalMaximumIContainer;
+    protected TextField<Double> termPrincipalMaximumField;
+    protected PropertyModel<Double> termPrincipalMaximumValue;
 
     protected UIBlock row2Block1;
 
@@ -115,14 +116,17 @@ public class TermsPanel extends Panel {
     protected UIBlock termNumberOfRepaymentMinimumBlock;
     protected UIContainer termNumberOfRepaymentMinimumIContainer;
     protected TextField<Long> termNumberOfRepaymentMinimumField;
+    protected PropertyModel<Long> termNumberOfRepaymentMinimumValue;
 
     protected UIBlock termNumberOfRepaymentDefaultBlock;
     protected UIContainer termNumberOfRepaymentDefaultIContainer;
     protected TextField<Long> termNumberOfRepaymentDefaultField;
+    protected PropertyModel<Long> termNumberOfRepaymentDefaultValue;
 
     protected UIBlock termNumberOfRepaymentMaximumBlock;
     protected UIContainer termNumberOfRepaymentMaximumIContainer;
     protected TextField<Long> termNumberOfRepaymentMaximumField;
+    protected PropertyModel<Long> termNumberOfRepaymentMaximumValue;
 
     protected UIBlock termRepaidEveryBlock;
     protected UIContainer termRepaidEveryIContainer;
@@ -264,6 +268,14 @@ public class TermsPanel extends Panel {
         this.termRepaidTypeProvider = new LockInTypeProvider(LockInType.Day, LockInType.Week, LockInType.Month);
         this.termNominalInterestRateTypeProvider = new NominalInterestRateTypeProvider();
         this.termFloatingInterestRateProvider = new SingleChoiceProvider(MFloatingRates.NAME, MFloatingRates.Field.ID, MFloatingRates.Field.NAME);
+
+        this.termPrincipalMinimumValue = new PropertyModel<>(this.itemPage, "termPrincipalMinimumValue");
+        this.termPrincipalDefaultValue = new PropertyModel<>(this.itemPage, "termPrincipalDefaultValue");
+        this.termPrincipalMaximumValue = new PropertyModel<>(this.itemPage, "termPrincipalMaximumValue");
+
+        this.termNumberOfRepaymentMinimumValue = new PropertyModel<>(this.itemPage, "termNumberOfRepaymentMinimumValue");
+        this.termNumberOfRepaymentDefaultValue = new PropertyModel<>(this.itemPage, "termNumberOfRepaymentDefaultValue");
+        this.termNumberOfRepaymentMaximumValue = new PropertyModel<>(this.itemPage, "termNumberOfRepaymentMaximumValue");
     }
 
     @Override
@@ -297,23 +309,23 @@ public class TermsPanel extends Panel {
 
         this.row2 = UIRow.newUIRow("row2", this.form);
 
-        this.termPrincipleMinimumBlock = this.row2.newUIBlock("termPrincipleMinimumBlock", Size.Three_3);
-        this.termPrincipleMinimumIContainer = this.termPrincipleMinimumBlock.newUIContainer("termPrincipleMinimumIContainer");
-        this.termPrincipleMinimumField = new TextField<>("termPrincipleMinimumField", new PropertyModel<>(this.itemPage, "termPrincipleMinimumValue"));
-        this.termPrincipleMinimumIContainer.add(this.termPrincipleMinimumField);
-        this.termPrincipleMinimumIContainer.newFeedback("termPrincipleMinimumFeedback", this.termPrincipleMinimumField);
+        this.termPrincipalMinimumBlock = this.row2.newUIBlock("termPrincipalMinimumBlock", Size.Three_3);
+        this.termPrincipalMinimumIContainer = this.termPrincipalMinimumBlock.newUIContainer("termPrincipalMinimumIContainer");
+        this.termPrincipalMinimumField = new TextField<>("termPrincipalMinimumField", this.termPrincipalMinimumValue);
+        this.termPrincipalMinimumIContainer.add(this.termPrincipalMinimumField);
+        this.termPrincipalMinimumIContainer.newFeedback("termPrincipalMinimumFeedback", this.termPrincipalMinimumField);
 
-        this.termPrincipleDefaultBlock = this.row2.newUIBlock("termPrincipleDefaultBlock", Size.Three_3);
-        this.termPrincipleDefaultIContainer = this.termPrincipleDefaultBlock.newUIContainer("termPrincipleDefaultIContainer");
-        this.termPrincipleDefaultField = new TextField<>("termPrincipleDefaultField", new PropertyModel<>(this.itemPage, "termPrincipleDefaultValue"));
-        this.termPrincipleDefaultIContainer.add(this.termPrincipleDefaultField);
-        this.termPrincipleDefaultIContainer.newFeedback("termPrincipleDefaultFeedback", this.termPrincipleDefaultField);
+        this.termPrincipalDefaultBlock = this.row2.newUIBlock("termPrincipalDefaultBlock", Size.Three_3);
+        this.termPrincipalDefaultIContainer = this.termPrincipalDefaultBlock.newUIContainer("termPrincipalDefaultIContainer");
+        this.termPrincipalDefaultField = new TextField<>("termPrincipalDefaultField", this.termPrincipalDefaultValue);
+        this.termPrincipalDefaultIContainer.add(this.termPrincipalDefaultField);
+        this.termPrincipalDefaultIContainer.newFeedback("termPrincipalDefaultFeedback", this.termPrincipalDefaultField);
 
-        this.termPrincipleMaximumBlock = this.row2.newUIBlock("termPrincipleMaximumBlock", Size.Three_3);
-        this.termPrincipleMaximumIContainer = this.termPrincipleMaximumBlock.newUIContainer("termPrincipleMaximumIContainer");
-        this.termPrincipleMaximumField = new TextField<>("termPrincipleMaximumField", new PropertyModel<>(this.itemPage, "termPrincipleMaximumValue"));
-        this.termPrincipleMaximumIContainer.add(this.termPrincipleMaximumField);
-        this.termPrincipleMaximumIContainer.newFeedback("termPrincipleMaximumFeedback", this.termPrincipleMaximumField);
+        this.termPrincipalMaximumBlock = this.row2.newUIBlock("termPrincipalMaximumBlock", Size.Three_3);
+        this.termPrincipalMaximumIContainer = this.termPrincipalMaximumBlock.newUIContainer("termPrincipalMaximumIContainer");
+        this.termPrincipalMaximumField = new TextField<>("termPrincipalMaximumField", this.termPrincipalMaximumValue);
+        this.termPrincipalMaximumIContainer.add(this.termPrincipalMaximumField);
+        this.termPrincipalMaximumIContainer.newFeedback("termPrincipalMaximumFeedback", this.termPrincipalMaximumField);
 
         this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Three_3);
 
@@ -333,19 +345,19 @@ public class TermsPanel extends Panel {
 
         this.termNumberOfRepaymentMinimumBlock = this.row4.newUIBlock("termNumberOfRepaymentMinimumBlock", Size.Three_3);
         this.termNumberOfRepaymentMinimumIContainer = this.termNumberOfRepaymentMinimumBlock.newUIContainer("termNumberOfRepaymentMinimumIContainer");
-        this.termNumberOfRepaymentMinimumField = new TextField<>("termNumberOfRepaymentMinimumField", new PropertyModel<>(this.itemPage, "termNumberOfRepaymentMinimumValue"));
+        this.termNumberOfRepaymentMinimumField = new TextField<>("termNumberOfRepaymentMinimumField", this.termNumberOfRepaymentMinimumValue);
         this.termNumberOfRepaymentMinimumIContainer.add(this.termNumberOfRepaymentMinimumField);
         this.termNumberOfRepaymentMinimumIContainer.newFeedback("termNumberOfRepaymentMinimumFeedback", this.termNumberOfRepaymentMinimumField);
 
         this.termNumberOfRepaymentDefaultBlock = this.row4.newUIBlock("termNumberOfRepaymentDefaultBlock", Size.Three_3);
         this.termNumberOfRepaymentDefaultIContainer = this.termNumberOfRepaymentDefaultBlock.newUIContainer("termNumberOfRepaymentDefaultIContainer");
-        this.termNumberOfRepaymentDefaultField = new TextField<>("termNumberOfRepaymentDefaultField", new PropertyModel<>(this.itemPage, "termNumberOfRepaymentDefaultValue"));
+        this.termNumberOfRepaymentDefaultField = new TextField<>("termNumberOfRepaymentDefaultField", this.termNumberOfRepaymentDefaultValue);
         this.termNumberOfRepaymentDefaultIContainer.add(this.termNumberOfRepaymentDefaultField);
         this.termNumberOfRepaymentDefaultIContainer.newFeedback("termNumberOfRepaymentDefaultFeedback", this.termNumberOfRepaymentDefaultField);
 
         this.termNumberOfRepaymentMaximumBlock = this.row4.newUIBlock("termNumberOfRepaymentMaximumBlock", Size.Three_3);
         this.termNumberOfRepaymentMaximumIContainer = this.termNumberOfRepaymentMaximumBlock.newUIContainer("termNumberOfRepaymentMaximumIContainer");
-        this.termNumberOfRepaymentMaximumField = new TextField<>("termNumberOfRepaymentMaximumField", new PropertyModel<>(this.itemPage, "termNumberOfRepaymentMaximumValue"));
+        this.termNumberOfRepaymentMaximumField = new TextField<>("termNumberOfRepaymentMaximumField", this.termNumberOfRepaymentMaximumValue);
         this.termNumberOfRepaymentMaximumIContainer.add(this.termNumberOfRepaymentMaximumField);
         this.termNumberOfRepaymentMaximumIContainer.newFeedback("termNumberOfRepaymentMaximumFeedback", this.termNumberOfRepaymentMaximumField);
 
@@ -519,39 +531,87 @@ public class TermsPanel extends Panel {
         this.termRepaidEveryField.add(new OnChangeAjaxBehavior());
         this.termRepaidEveryField.setRequired(true);
 
-        this.termNumberOfRepaymentMaximumField.setLabel(Model.of("Number of repayment Maximum"));
-        this.termNumberOfRepaymentMaximumField.add(new OnChangeAjaxBehavior());
+        this.termNumberOfRepaymentMinimumField.setLabel(Model.of("Number of repayment Minimum"));
+        this.termNumberOfRepaymentMinimumField.add(new OnChangeAjaxBehavior());
 
         this.termNumberOfRepaymentDefaultField.setLabel(Model.of("Number of repayment Default"));
         this.termNumberOfRepaymentDefaultField.add(new OnChangeAjaxBehavior());
         this.termNumberOfRepaymentDefaultField.setRequired(true);
 
-        this.termNumberOfRepaymentMinimumField.setLabel(Model.of("Number of repayment Minimum"));
-        this.termNumberOfRepaymentMinimumField.add(new OnChangeAjaxBehavior());
+        this.termNumberOfRepaymentMaximumField.setLabel(Model.of("Number of repayment Maximum"));
+        this.termNumberOfRepaymentMaximumField.add(new OnChangeAjaxBehavior());
 
-        this.termPrincipleMinimumField.setLabel(Model.of("Principle Minimum"));
-        this.termPrincipleMinimumField.add(new OnChangeAjaxBehavior());
-        this.termPrincipleMinimumField.setRequired(true);
+        this.termPrincipalMinimumField.setLabel(Model.of("Principal Minimum"));
+        this.termPrincipalMinimumField.add(new OnChangeAjaxBehavior());
 
-        this.termPrincipleDefaultField.setLabel(Model.of("Principle Default"));
-        this.termPrincipleDefaultField.add(new OnChangeAjaxBehavior());
-        this.termPrincipleDefaultField.setRequired(true);
+        this.termPrincipalDefaultField.setLabel(Model.of("Principal Default"));
+        this.termPrincipalDefaultField.add(new OnChangeAjaxBehavior());
+        this.termPrincipalDefaultField.setRequired(true);
 
-        this.termPrincipleMaximumField.setLabel(Model.of("Principle Maximum"));
-        this.termPrincipleMaximumField.add(new OnChangeAjaxBehavior());
-        this.termPrincipleMaximumField.setRequired(true);
+        this.termPrincipalMaximumField.setLabel(Model.of("Principal Maximum"));
+        this.termPrincipalMaximumField.add(new OnChangeAjaxBehavior());
 
         termVaryBasedOnLoanCycleFieldUpdate(null);
 
         termLinkedToFloatingInterestRatesFieldUpdate(null);
 
-        FormComponent<?>[] p = new FormComponent<?>[] { this.termPrincipleMinimumField, this.termPrincipleMinimumField, this.termPrincipleMinimumField };
+        this.form.add(new LamdaFormValidator(this::principalValidator, this.termPrincipalMinimumField, this.termPrincipalDefaultField, this.termPrincipalMaximumField));
 
-        this.form.add(new LamdaFormValidator(this::principleValidator, p));
+        this.form.add(new LamdaFormValidator(this::numberOfRepaymentValidator, this.termNumberOfRepaymentMinimumField, this.termNumberOfRepaymentDefaultField, this.termNumberOfRepaymentMaximumField));
     }
 
-    protected void principleValidator(Form<?> form) {
+    protected void numberOfRepaymentValidator(Form<?> form) {
+        if (this.termNumberOfRepaymentMinimumValue.getObject() == null && this.termNumberOfRepaymentMaximumValue.getObject() == null) {
+        } else if (this.termNumberOfRepaymentMinimumValue.getObject() != null && this.termNumberOfRepaymentMaximumValue.getObject() != null) {
+            if (this.termNumberOfRepaymentMinimumValue.getObject() >= this.termNumberOfRepaymentDefaultValue.getObject()) {
+                this.termNumberOfRepaymentMinimumField.error(new ValidationError("Invalid"));
+            }
+            if (this.termNumberOfRepaymentMaximumValue.getObject() <= this.termNumberOfRepaymentDefaultValue.getObject()) {
+                this.termNumberOfRepaymentMaximumField.error(new ValidationError("Invalid"));
+            }
+        } else {
+            if (this.termNumberOfRepaymentMinimumValue.getObject() == null) {
+                this.termNumberOfRepaymentMinimumField.error(new ValidationError("Required"));
+            } else {
+                if (this.termNumberOfRepaymentMinimumValue.getObject() >= this.termNumberOfRepaymentDefaultValue.getObject()) {
+                    this.termNumberOfRepaymentMinimumField.error(new ValidationError("Invalid"));
+                }
+            }
+            if (this.termNumberOfRepaymentMaximumValue.getObject() == null) {
+                this.termNumberOfRepaymentMaximumField.error(new ValidationError("Required"));
+            } else {
+                if (this.termNumberOfRepaymentMaximumValue.getObject() <= this.termNumberOfRepaymentDefaultValue.getObject()) {
+                    this.termNumberOfRepaymentMaximumField.error(new ValidationError("Invalid"));
+                }
+            }
+        }
+    }
 
+    protected void principalValidator(Form<?> form) {
+        if (this.termPrincipalMinimumValue.getObject() == null && this.termPrincipalMaximumValue.getObject() == null) {
+        } else if (this.termPrincipalMinimumValue.getObject() != null && this.termPrincipalMaximumValue.getObject() != null) {
+            if (this.termPrincipalMinimumValue.getObject() >= this.termPrincipalDefaultValue.getObject()) {
+                this.termPrincipalMinimumField.error(new ValidationError("Invalid"));
+            }
+            if (this.termPrincipalMaximumValue.getObject() <= this.termPrincipalDefaultValue.getObject()) {
+                this.termPrincipalMaximumField.error(new ValidationError("Invalid"));
+            }
+        } else {
+            if (this.termPrincipalMinimumValue.getObject() == null) {
+                this.termPrincipalMinimumField.error(new ValidationError("Required"));
+            } else {
+                if (this.termPrincipalMinimumValue.getObject() >= this.termPrincipalDefaultValue.getObject()) {
+                    this.termPrincipalMinimumField.error(new ValidationError("Invalid"));
+                }
+            }
+            if (this.termPrincipalMaximumValue.getObject() == null) {
+                this.termPrincipalMaximumField.error(new ValidationError("Required"));
+            } else {
+                if (this.termPrincipalMaximumValue.getObject() <= this.termPrincipalDefaultValue.getObject()) {
+                    this.termPrincipalMaximumField.error(new ValidationError("Invalid"));
+                }
+            }
+        }
     }
 
     protected void modalWindowClose(String popupName, String signalId, AjaxRequestTarget target) {

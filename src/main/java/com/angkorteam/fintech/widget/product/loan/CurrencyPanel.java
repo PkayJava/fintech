@@ -126,15 +126,17 @@ public class CurrencyPanel extends Panel {
         this.currencyDecimalPlaceField.setRequired(true);
         this.currencyDecimalPlaceField.setLabel(Model.of("Decimal Places"));
         this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
+        this.currencyDecimalPlaceField.add(RangeValidator.minimum(0l));
 
         this.currencyInMultipleOfField.setRequired(true);
         this.currencyInMultipleOfField.setLabel(Model.of("Currency in multiple of"));
         this.currencyInMultipleOfField.add(new OnChangeAjaxBehavior());
+        this.currencyInMultipleOfField.add(RangeValidator.minimum(1l));
 
         this.currencyInstallmentInMultipleOfField.setRequired(true);
         this.currencyInstallmentInMultipleOfField.setLabel(Model.of("Installment in multiple of"));
         this.currencyInstallmentInMultipleOfField.add(new OnChangeAjaxBehavior());
-        this.currencyInstallmentInMultipleOfField.add(RangeValidator.minimum((long) 1));
+        this.currencyInstallmentInMultipleOfField.add(RangeValidator.minimum(1l));
 
     }
 
