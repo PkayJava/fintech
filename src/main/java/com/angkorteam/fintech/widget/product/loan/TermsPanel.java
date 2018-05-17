@@ -15,6 +15,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.ValidationError;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.angkorteam.fintech.ddl.MFloatingRates;
 import com.angkorteam.fintech.dto.enums.LockInType;
@@ -161,14 +162,17 @@ public class TermsPanel extends Panel {
     protected UIBlock termNominalInterestRateMinimumBlock;
     protected UIContainer termNominalInterestRateMinimumIContainer;
     protected TextField<Double> termNominalInterestRateMinimumField;
+    protected PropertyModel<Double> termNominalInterestRateMinimumValue;
 
     protected UIBlock termNominalInterestRateDefaultBlock;
     protected UIContainer termNominalInterestRateDefaultIContainer;
     protected TextField<Double> termNominalInterestRateDefaultField;
+    protected PropertyModel<Double> termNominalInterestRateDefaultValue;
 
     protected UIBlock termNominalInterestRateMaximumBlock;
     protected UIContainer termNominalInterestRateMaximumIContainer;
     protected TextField<Double> termNominalInterestRateMaximumField;
+    protected PropertyModel<Double> termNominalInterestRateMaximumValue;
 
     protected UIBlock termNominalInterestRateTypeBlock;
     protected UIContainer termNominalInterestRateTypeIContainer;
@@ -195,14 +199,17 @@ public class TermsPanel extends Panel {
     protected UIBlock termFloatingInterestMinimumBlock;
     protected UIContainer termFloatingInterestMinimumIContainer;
     protected TextField<Double> termFloatingInterestMinimumField;
+    protected PropertyModel<Double> termFloatingInterestMinimumValue;
 
     protected UIBlock termFloatingInterestDefaultBlock;
     protected UIContainer termFloatingInterestDefaultIContainer;
     protected TextField<Double> termFloatingInterestDefaultField;
+    protected PropertyModel<Double> termFloatingInterestDefaultValue;
 
     protected UIBlock termFloatingInterestMaximumBlock;
     protected UIContainer termFloatingInterestMaximumIContainer;
     protected TextField<Double> termFloatingInterestMaximumField;
+    protected PropertyModel<Double> termFloatingInterestMaximumValue;
 
     protected UIRow row10;
 
@@ -276,6 +283,14 @@ public class TermsPanel extends Panel {
         this.termNumberOfRepaymentMinimumValue = new PropertyModel<>(this.itemPage, "termNumberOfRepaymentMinimumValue");
         this.termNumberOfRepaymentDefaultValue = new PropertyModel<>(this.itemPage, "termNumberOfRepaymentDefaultValue");
         this.termNumberOfRepaymentMaximumValue = new PropertyModel<>(this.itemPage, "termNumberOfRepaymentMaximumValue");
+
+        this.termNominalInterestRateMinimumValue = new PropertyModel<>(this.itemPage, "termNominalInterestRateMinimumValue");
+        this.termNominalInterestRateMaximumValue = new PropertyModel<>(this.itemPage, "termNominalInterestRateMaximumValue");
+        this.termNominalInterestRateDefaultValue = new PropertyModel<>(this.itemPage, "termNominalInterestRateDefaultValue");
+
+        this.termFloatingInterestMinimumValue = new PropertyModel<>(this.itemPage, "termFloatingInterestMinimumValue");
+        this.termFloatingInterestDefaultValue = new PropertyModel<>(this.itemPage, "termFloatingInterestDefaultValue");
+        this.termFloatingInterestMaximumValue = new PropertyModel<>(this.itemPage, "termFloatingInterestMaximumValue");
     }
 
     @Override
@@ -398,19 +413,19 @@ public class TermsPanel extends Panel {
 
         this.termNominalInterestRateMinimumBlock = this.row7.newUIBlock("termNominalInterestRateMinimumBlock", Size.Three_3);
         this.termNominalInterestRateMinimumIContainer = this.termNominalInterestRateMinimumBlock.newUIContainer("termNominalInterestRateMinimumIContainer");
-        this.termNominalInterestRateMinimumField = new TextField<>("termNominalInterestRateMinimumField", new PropertyModel<>(this.itemPage, "termNominalInterestRateMinimumValue"));
+        this.termNominalInterestRateMinimumField = new TextField<>("termNominalInterestRateMinimumField", this.termNominalInterestRateMinimumValue);
         this.termNominalInterestRateMinimumIContainer.add(this.termNominalInterestRateMinimumField);
         this.termNominalInterestRateMinimumIContainer.newFeedback("termNominalInterestRateMinimumFeedback", this.termNominalInterestRateMinimumField);
 
         this.termNominalInterestRateDefaultBlock = this.row7.newUIBlock("termNominalInterestRateDefaultBlock", Size.Three_3);
         this.termNominalInterestRateDefaultIContainer = this.termNominalInterestRateDefaultBlock.newUIContainer("termNominalInterestRateDefaultIContainer");
-        this.termNominalInterestRateDefaultField = new TextField<>("termNominalInterestRateDefaultField", new PropertyModel<>(this.itemPage, "termNominalInterestRateDefaultValue"));
+        this.termNominalInterestRateDefaultField = new TextField<>("termNominalInterestRateDefaultField", this.termNominalInterestRateDefaultValue);
         this.termNominalInterestRateDefaultIContainer.add(this.termNominalInterestRateDefaultField);
         this.termNominalInterestRateDefaultIContainer.newFeedback("termNominalInterestRateDefaultFeedback", this.termNominalInterestRateDefaultField);
 
         this.termNominalInterestRateMaximumBlock = this.row7.newUIBlock("termNominalInterestRateMaximumBlock", Size.Three_3);
         this.termNominalInterestRateMaximumIContainer = this.termNominalInterestRateMaximumBlock.newUIContainer("termNominalInterestRateMaximumIContainer");
-        this.termNominalInterestRateMaximumField = new TextField<>("termNominalInterestRateMaximumField", new PropertyModel<>(this.itemPage, "termNominalInterestRateMaximumValue"));
+        this.termNominalInterestRateMaximumField = new TextField<>("termNominalInterestRateMaximumField", this.termNominalInterestRateMaximumValue);
         this.termNominalInterestRateMaximumIContainer.add(this.termNominalInterestRateMaximumField);
         this.termNominalInterestRateMaximumIContainer.newFeedback("termNominalInterestRateMaximumFeedback", this.termNominalInterestRateMaximumField);
 
@@ -444,19 +459,19 @@ public class TermsPanel extends Panel {
 
         this.termFloatingInterestMinimumBlock = this.row9.newUIBlock("termFloatingInterestMinimumBlock", Size.Four_4);
         this.termFloatingInterestMinimumIContainer = this.termFloatingInterestMinimumBlock.newUIContainer("termFloatingInterestMinimumIContainer");
-        this.termFloatingInterestMinimumField = new TextField<>("termFloatingInterestMinimumField", new PropertyModel<>(this.itemPage, "termFloatingInterestMinimumValue"));
+        this.termFloatingInterestMinimumField = new TextField<>("termFloatingInterestMinimumField", this.termFloatingInterestMinimumValue);
         this.termFloatingInterestMinimumIContainer.add(this.termFloatingInterestMinimumField);
         this.termFloatingInterestMinimumIContainer.newFeedback("termFloatingInterestMinimumFeedback", this.termFloatingInterestMinimumField);
 
         this.termFloatingInterestDefaultBlock = this.row9.newUIBlock("termFloatingInterestDefaultBlock", Size.Four_4);
         this.termFloatingInterestDefaultIContainer = this.termFloatingInterestDefaultBlock.newUIContainer("termFloatingInterestDefaultIContainer");
-        this.termFloatingInterestDefaultField = new TextField<>("termFloatingInterestDefaultField", new PropertyModel<>(this.itemPage, "termFloatingInterestDefaultValue"));
+        this.termFloatingInterestDefaultField = new TextField<>("termFloatingInterestDefaultField", this.termFloatingInterestDefaultValue);
         this.termFloatingInterestDefaultIContainer.add(this.termFloatingInterestDefaultField);
         this.termFloatingInterestDefaultIContainer.newFeedback("termFloatingInterestDefaultFeedback", this.termFloatingInterestDefaultField);
 
         this.termFloatingInterestMaximumBlock = this.row9.newUIBlock("termFloatingInterestMaximumBlock", Size.Four_4);
         this.termFloatingInterestMaximumIContainer = this.termFloatingInterestMaximumBlock.newUIContainer("termFloatingInterestMaximumIContainer");
-        this.termFloatingInterestMaximumField = new TextField<>("termFloatingInterestMaximumField", new PropertyModel<>(this.itemPage, "termFloatingInterestMaximumValue"));
+        this.termFloatingInterestMaximumField = new TextField<>("termFloatingInterestMaximumField", this.termFloatingInterestMaximumValue);
         this.termFloatingInterestMaximumIContainer.add(this.termFloatingInterestMaximumField);
         this.termFloatingInterestMaximumIContainer.newFeedback("termFloatingInterestMaximumFeedback", this.termFloatingInterestMaximumField);
 
@@ -489,20 +504,25 @@ public class TermsPanel extends Panel {
 
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField.setLabel(Model.of("Minimum days between disbursal and first repayment date"));
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField.add(new OnChangeAjaxBehavior());
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField.add(RangeValidator.minimum(0l));
 
         this.termFloatingInterestMaximumField.setLabel(Model.of("Floating interest Maximum"));
         this.termFloatingInterestMaximumField.add(new OnChangeAjaxBehavior());
+        this.termFloatingInterestMaximumField.add(RangeValidator.minimum(0d));
 
         this.termFloatingInterestDefaultField.setLabel(Model.of("Floating Interest Default"));
         this.termFloatingInterestDefaultField.add(new OnChangeAjaxBehavior());
+        this.termFloatingInterestDefaultField.add(RangeValidator.minimum(0d));
 
         this.termFloatingInterestMinimumField.setLabel(Model.of("Floating Interest Minimum"));
         this.termFloatingInterestMinimumField.add(new OnChangeAjaxBehavior());
+        this.termFloatingInterestMinimumField.add(RangeValidator.minimum(0d));
 
         this.termFloatingInterestAllowedField.add(new OnChangeAjaxBehavior());
 
         this.termFloatingInterestDifferentialField.setLabel(Model.of("Floating interest differential rate"));
         this.termFloatingInterestDifferentialField.add(new OnChangeAjaxBehavior());
+        this.termFloatingInterestDifferentialField.add(RangeValidator.minimum(0d));
 
         this.termFloatingInterestRateField.setLabel(Model.of("Floating interest rate"));
         this.termFloatingInterestRateField.add(new OnChangeAjaxBehavior());
@@ -511,15 +531,17 @@ public class TermsPanel extends Panel {
         this.termNominalInterestRateTypeField.add(new OnChangeAjaxBehavior());
         this.termNominalInterestRateTypeField.setRequired(true);
 
-        this.termNominalInterestRateMaximumField.setLabel(Model.of("Nominal interest rate Maximum"));
-        this.termNominalInterestRateMaximumField.add(new OnChangeAjaxBehavior());
+        this.termNominalInterestRateMinimumField.setLabel(Model.of("Nominal interest rate minimum"));
+        this.termNominalInterestRateMinimumField.add(new OnChangeAjaxBehavior());
+        this.termNominalInterestRateMinimumField.add(RangeValidator.minimum(0d));
 
         this.termNominalInterestRateDefaultField.setLabel(Model.of("Nominal interest rate Default"));
         this.termNominalInterestRateDefaultField.add(new OnChangeAjaxBehavior());
+        this.termNominalInterestRateDefaultField.add(RangeValidator.minimum(0d));
         this.termNominalInterestRateDefaultField.setRequired(true);
 
-        this.termNominalInterestRateMinimumField.setLabel(Model.of("Nominal interest rate minimum"));
-        this.termNominalInterestRateMinimumField.add(new OnChangeAjaxBehavior());
+        this.termNominalInterestRateMaximumField.setLabel(Model.of("Nominal interest rate Maximum"));
+        this.termNominalInterestRateMaximumField.add(new OnChangeAjaxBehavior());
 
         this.termLinkedToFloatingInterestRatesField.add(new OnChangeAjaxBehavior(this::termLinkedToFloatingInterestRatesFieldUpdate));
 
@@ -533,9 +555,11 @@ public class TermsPanel extends Panel {
 
         this.termNumberOfRepaymentMinimumField.setLabel(Model.of("Number of repayment Minimum"));
         this.termNumberOfRepaymentMinimumField.add(new OnChangeAjaxBehavior());
+        this.termNumberOfRepaymentMinimumField.add(RangeValidator.minimum(0l));
 
         this.termNumberOfRepaymentDefaultField.setLabel(Model.of("Number of repayment Default"));
         this.termNumberOfRepaymentDefaultField.add(new OnChangeAjaxBehavior());
+        this.termNumberOfRepaymentDefaultField.add(RangeValidator.minimum(0l));
         this.termNumberOfRepaymentDefaultField.setRequired(true);
 
         this.termNumberOfRepaymentMaximumField.setLabel(Model.of("Number of repayment Maximum"));
@@ -543,9 +567,11 @@ public class TermsPanel extends Panel {
 
         this.termPrincipalMinimumField.setLabel(Model.of("Principal Minimum"));
         this.termPrincipalMinimumField.add(new OnChangeAjaxBehavior());
+        this.termPrincipalMinimumField.add(RangeValidator.minimum(0d));
 
         this.termPrincipalDefaultField.setLabel(Model.of("Principal Default"));
         this.termPrincipalDefaultField.add(new OnChangeAjaxBehavior());
+        this.termPrincipalDefaultField.add(RangeValidator.minimum(0d));
         this.termPrincipalDefaultField.setRequired(true);
 
         this.termPrincipalMaximumField.setLabel(Model.of("Principal Maximum"));
@@ -558,6 +584,67 @@ public class TermsPanel extends Panel {
         this.form.add(new LamdaFormValidator(this::principalValidator, this.termPrincipalMinimumField, this.termPrincipalDefaultField, this.termPrincipalMaximumField));
 
         this.form.add(new LamdaFormValidator(this::numberOfRepaymentValidator, this.termNumberOfRepaymentMinimumField, this.termNumberOfRepaymentDefaultField, this.termNumberOfRepaymentMaximumField));
+
+        this.form.add(new LamdaFormValidator(this::termNominalInterestRateValidator, this.termNominalInterestRateMinimumField, this.termNominalInterestRateDefaultField, this.termNominalInterestRateMaximumField));
+
+        this.form.add(new LamdaFormValidator(this::termFloatingInterestValidator, this.termFloatingInterestMinimumField, this.termFloatingInterestDefaultField, this.termFloatingInterestMaximumField));
+
+    }
+
+    protected void termFloatingInterestValidator(Form<?> form) {
+        if (this.termFloatingInterestDefaultValue.getObject() != null) {
+            if (this.termFloatingInterestMinimumValue.getObject() == null && this.termFloatingInterestMaximumValue.getObject() == null) {
+            } else if (this.termFloatingInterestMinimumValue.getObject() != null && this.termFloatingInterestMaximumValue.getObject() != null) {
+                if (this.termFloatingInterestMinimumValue.getObject() >= this.termFloatingInterestDefaultValue.getObject()) {
+                    this.termFloatingInterestMinimumField.error(new ValidationError("Invalid"));
+                }
+                if (this.termFloatingInterestMaximumValue.getObject() <= this.termFloatingInterestDefaultValue.getObject()) {
+                    this.termFloatingInterestMaximumField.error(new ValidationError("Invalid"));
+                }
+            } else {
+                if (this.termFloatingInterestMinimumValue.getObject() == null) {
+                    this.termFloatingInterestMinimumField.error(new ValidationError("Required"));
+                } else {
+                    if (this.termFloatingInterestMinimumValue.getObject() >= this.termFloatingInterestDefaultValue.getObject()) {
+                        this.termFloatingInterestMinimumField.error(new ValidationError("Invalid"));
+                    }
+                }
+                if (this.termFloatingInterestMaximumValue.getObject() == null) {
+                    this.termFloatingInterestMaximumField.error(new ValidationError("Required"));
+                } else {
+                    if (this.termFloatingInterestMaximumValue.getObject() <= this.termFloatingInterestDefaultValue.getObject()) {
+                        this.termFloatingInterestMaximumField.error(new ValidationError("Invalid"));
+                    }
+                }
+            }
+        }
+    }
+
+    protected void termNominalInterestRateValidator(Form<?> form) {
+        if (this.termNominalInterestRateMinimumValue.getObject() == null && this.termNominalInterestRateMaximumValue.getObject() == null) {
+        } else if (this.termNominalInterestRateMinimumValue.getObject() != null && this.termNominalInterestRateMaximumValue.getObject() != null) {
+            if (this.termNominalInterestRateMinimumValue.getObject() >= this.termNominalInterestRateDefaultValue.getObject()) {
+                this.termNominalInterestRateMinimumField.error(new ValidationError("Invalid"));
+            }
+            if (this.termNominalInterestRateMaximumValue.getObject() <= this.termNominalInterestRateDefaultValue.getObject()) {
+                this.termNominalInterestRateMaximumField.error(new ValidationError("Invalid"));
+            }
+        } else {
+            if (this.termNominalInterestRateMinimumValue.getObject() == null) {
+                this.termNominalInterestRateMinimumField.error(new ValidationError("Required"));
+            } else {
+                if (this.termNominalInterestRateMinimumValue.getObject() >= this.termNominalInterestRateDefaultValue.getObject()) {
+                    this.termNominalInterestRateMinimumField.error(new ValidationError("Invalid"));
+                }
+            }
+            if (this.termNominalInterestRateMaximumValue.getObject() == null) {
+                this.termNominalInterestRateMaximumField.error(new ValidationError("Required"));
+            } else {
+                if (this.termNominalInterestRateMaximumValue.getObject() <= this.termNominalInterestRateDefaultValue.getObject()) {
+                    this.termNominalInterestRateMaximumField.error(new ValidationError("Invalid"));
+                }
+            }
+        }
     }
 
     protected void numberOfRepaymentValidator(Form<?> form) {

@@ -7,6 +7,8 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.ValidationError;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.angkorteam.fintech.dto.enums.loan.Frequency;
 import com.angkorteam.fintech.dto.enums.loan.FrequencyType;
@@ -40,6 +42,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.angkorteam.framework.wicket.markup.html.form.validation.LamdaFormValidator;
 
 public class SettingsPanel extends Panel {
 
@@ -155,14 +158,17 @@ public class SettingsPanel extends Panel {
     protected UIBlock settingVariableInstallmentsAllowedBlock;
     protected UIContainer settingVariableInstallmentsAllowedIContainer;
     protected CheckBox settingVariableInstallmentsAllowedField;
+    protected PropertyModel<Boolean> settingVariableInstallmentsAllowedValue;
 
     protected UIBlock settingVariableInstallmentsMinimumBlock;
     protected UIContainer settingVariableInstallmentsMinimumIContainer;
     protected TextField<Long> settingVariableInstallmentsMinimumField;
+    protected PropertyModel<Long> settingVariableInstallmentsMinimumValue;
 
     protected UIBlock settingVariableInstallmentsMaximumBlock;
     protected UIContainer settingVariableInstallmentsMaximumIContainer;
     protected TextField<Long> settingVariableInstallmentsMaximumField;
+    protected PropertyModel<Long> settingVariableInstallmentsMaximumValue;
 
     protected UIRow row11;
 
@@ -500,19 +506,19 @@ public class SettingsPanel extends Panel {
 
         this.settingVariableInstallmentsAllowedBlock = this.row10.newUIBlock("settingVariableInstallmentsAllowedBlock", Size.Four_4);
         this.settingVariableInstallmentsAllowedIContainer = this.settingVariableInstallmentsAllowedBlock.newUIContainer("settingVariableInstallmentsAllowedIContainer");
-        this.settingVariableInstallmentsAllowedField = new CheckBox("settingVariableInstallmentsAllowedField", new PropertyModel<>(this.itemPage, "settingVariableInstallmentsAllowedValue"));
+        this.settingVariableInstallmentsAllowedField = new CheckBox("settingVariableInstallmentsAllowedField", this.settingVariableInstallmentsAllowedValue);
         this.settingVariableInstallmentsAllowedIContainer.add(this.settingVariableInstallmentsAllowedField);
         this.settingVariableInstallmentsAllowedIContainer.newFeedback("settingVariableInstallmentsAllowedFeedback", this.settingVariableInstallmentsAllowedField);
 
         this.settingVariableInstallmentsMinimumBlock = this.row10.newUIBlock("settingVariableInstallmentsMinimumBlock", Size.Four_4);
         this.settingVariableInstallmentsMinimumIContainer = this.settingVariableInstallmentsMinimumBlock.newUIContainer("settingVariableInstallmentsMinimumIContainer");
-        this.settingVariableInstallmentsMinimumField = new TextField<>("settingVariableInstallmentsMinimumField", new PropertyModel<>(this.itemPage, "settingVariableInstallmentsMinimumValue"));
+        this.settingVariableInstallmentsMinimumField = new TextField<>("settingVariableInstallmentsMinimumField", this.settingVariableInstallmentsMinimumValue);
         this.settingVariableInstallmentsMinimumIContainer.add(this.settingVariableInstallmentsMinimumField);
         this.settingVariableInstallmentsMinimumIContainer.newFeedback("settingVariableInstallmentsMinimumFeedback", this.settingVariableInstallmentsMinimumField);
 
         this.settingVariableInstallmentsMaximumBlock = this.row10.newUIBlock("settingVariableInstallmentsMaximumBlock", Size.Four_4);
         this.settingVariableInstallmentsMaximumIContainer = this.settingVariableInstallmentsMaximumBlock.newUIContainer("settingVariableInstallmentsMaximumIContainer");
-        this.settingVariableInstallmentsMaximumField = new TextField<>("settingVariableInstallmentsMaximumField", new PropertyModel<>(this.itemPage, "settingVariableInstallmentsMaximumValue"));
+        this.settingVariableInstallmentsMaximumField = new TextField<>("settingVariableInstallmentsMaximumField", this.settingVariableInstallmentsMaximumValue);
         this.settingVariableInstallmentsMaximumIContainer.add(this.settingVariableInstallmentsMaximumField);
         this.settingVariableInstallmentsMaximumIContainer.newFeedback("settingVariableInstallmentsMaximumFeedback", this.settingVariableInstallmentsMaximumField);
 
@@ -771,10 +777,61 @@ public class SettingsPanel extends Panel {
         this.interestRecalculationRecalculateTypeProvider = new FrequencyTypeProvider();
         this.interestRecalculationRecalculateDayProvider = new FrequencyDayProvider();
         this.interestRecalculationRecalculateOnDayProvider = new OnDayProvider();
+
+        this.settingVariableInstallmentsAllowedValue = new PropertyModel<>(this.itemPage, "settingVariableInstallmentsAllowedValue");
+        this.settingVariableInstallmentsMinimumValue = new PropertyModel<>(this.itemPage, "settingVariableInstallmentsMinimumValue");
+        this.settingVariableInstallmentsMaximumValue = new PropertyModel<>(this.itemPage, "settingVariableInstallmentsMaximumValue");
     }
 
     @Override
     protected void configureMetaData() {
+
+        this.settingAmortizationField.setLabel(Model.of("Amortization"));
+        this.settingAmortizationField.add(new OnChangeAjaxBehavior());
+        this.settingAmortizationField.setRequired(true);
+
+        this.settingInterestMethodField.setLabel(Model.of("Interest Method"));
+        this.settingInterestMethodField.add(new OnChangeAjaxBehavior());
+        this.settingInterestMethodField.setRequired(true);
+
+        this.settingEqualAmortizationField.add(new OnChangeAjaxBehavior());
+
+        this.settingInterestCalculationPeriodField.setLabel(Model.of("Interest Calculation Period"));
+        this.settingInterestCalculationPeriodField.add(new OnChangeAjaxBehavior(this::settingInterestCalculationPeriodFieldUpdate));
+        this.settingInterestCalculationPeriodField.setRequired(true);
+
+        this.settingCalculateInterestForExactDaysInPartialPeriodField.add(new OnChangeAjaxBehavior());
+
+        this.settingRepaymentStrategyField.setLabel(Model.of("Repayment Strategy"));
+        this.settingRepaymentStrategyField.add(new OnChangeAjaxBehavior());
+        this.settingRepaymentStrategyField.setRequired(true);
+
+        this.settingMoratoriumPrincipleField.setLabel(Model.of("Moratorium Principle"));
+        this.settingMoratoriumPrincipleField.add(new OnChangeAjaxBehavior());
+        this.settingMoratoriumPrincipleField.add(RangeValidator.minimum(0l));
+
+        this.settingMoratoriumInterestField.setLabel(Model.of("Moratorium Interest"));
+        this.settingMoratoriumInterestField.add(new OnChangeAjaxBehavior());
+        this.settingMoratoriumInterestField.add(RangeValidator.minimum(0l));
+
+        this.settingInterestFreePeriodField.setLabel(Model.of("Interest Free Period"));
+        this.settingInterestFreePeriodField.add(new OnChangeAjaxBehavior());
+        this.settingInterestFreePeriodField.add(RangeValidator.minimum(0l));
+
+        this.settingArrearsToleranceField.setLabel(Model.of("Arrears Tolerance"));
+        this.settingArrearsToleranceField.add(new OnChangeAjaxBehavior());
+        this.settingArrearsToleranceField.add(RangeValidator.minimum(0l));
+
+        this.settingDayInYearField.setLabel(Model.of("Day In Year"));
+        this.settingDayInYearField.add(new OnChangeAjaxBehavior());
+        this.settingDayInYearField.setRequired(true);
+
+        this.settingDayInMonthField.setLabel(Model.of("Day In Month"));
+        this.settingDayInMonthField.add(new OnChangeAjaxBehavior());
+        this.settingDayInMonthField.setRequired(true);
+
+        //
+
         this.configurableOverdueBeforeMovingField.add(new OnChangeAjaxBehavior());
 
         this.configurableMoratoriumField.add(new OnChangeAjaxBehavior());
@@ -797,18 +854,23 @@ public class SettingsPanel extends Panel {
 
         this.loanTrancheDetailMaximumTrancheCountField.setLabel(Model.of("Maximum Tranche count"));
         this.loanTrancheDetailMaximumTrancheCountField.add(new OnChangeAjaxBehavior());
+        this.loanTrancheDetailMaximumTrancheCountField.add(RangeValidator.minimum(0l));
 
         this.loanTrancheDetailMaximumAllowedOutstandingBalanceField.setLabel(Model.of("Maximum allowed outstanding balance"));
         this.loanTrancheDetailMaximumAllowedOutstandingBalanceField.add(new OnChangeAjaxBehavior());
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceField.add(RangeValidator.minimum(0d));
 
         this.guaranteeRequirementMandatoryGuaranteeField.setLabel(Model.of("Mandatory Guarantee: (%)"));
         this.guaranteeRequirementMandatoryGuaranteeField.add(new OnChangeAjaxBehavior());
+        this.guaranteeRequirementMandatoryGuaranteeField.add(RangeValidator.minimum(0d));
 
         this.guaranteeRequirementMinimumGuaranteeField.setLabel(Model.of("Minimum Guarantee from Own Funds: (%)"));
         this.guaranteeRequirementMinimumGuaranteeField.add(new OnChangeAjaxBehavior());
+        this.guaranteeRequirementMinimumGuaranteeField.add(RangeValidator.minimum(0d));
 
         this.guaranteeRequirementMinimumGuaranteeFromGuarantorField.setLabel(Model.of("Minimum Guarantee from Guarantor Funds: (%)"));
         this.guaranteeRequirementMinimumGuaranteeFromGuarantorField.add(new OnChangeAjaxBehavior());
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorField.add(RangeValidator.minimum(0d));
 
         this.guaranteeRequirementPlaceGuaranteeFundsOnHoldField.add(new OnChangeAjaxBehavior(this::guaranteeRequirementPlaceGuaranteeFundsOnHoldFieldUpdate));
 
@@ -824,10 +886,11 @@ public class SettingsPanel extends Panel {
         this.interestRecalculationRecalculateDayField.add(new OnChangeAjaxBehavior());
 
         this.interestRecalculationRecalculateTypeField.setLabel(Model.of("Frequency type for recalculate"));
-        this.interestRecalculationRecalculateTypeField.add(new OnChangeAjaxBehavior(this::interestRecalculationRecalculateFieldUpdate));
+        this.interestRecalculationRecalculateTypeField.add(new OnChangeAjaxBehavior(this::interestRecalculationRecalculateTypeFieldUpdate));
 
         this.interestRecalculationRecalculateField.setLabel(Model.of("Frequency for recalculate Outstanding Principle"));
         this.interestRecalculationRecalculateField.add(new OnChangeAjaxBehavior(this::interestRecalculationRecalculateFieldUpdate));
+        this.interestRecalculationRecalculateField.setRequired(true);
 
         this.interestRecalculationCompoundingIntervalField.setLabel(Model.of("Frequency Interval for compounding"));
         this.interestRecalculationCompoundingIntervalField.add(new OnChangeAjaxBehavior());
@@ -839,19 +902,22 @@ public class SettingsPanel extends Panel {
         this.interestRecalculationCompoundingOnDayField.add(new OnChangeAjaxBehavior());
 
         this.interestRecalculationCompoundingField.setLabel(Model.of("Frequency for compounding"));
-        this.interestRecalculationCompoundingField.add(new OnChangeAjaxBehavior(this::interestRecalculationCompoundingFieldUpdate));
+        this.interestRecalculationCompoundingField.add(new OnChangeAjaxBehavior(this::interestRecalculationCompoundingTypeFieldUpdate));
 
         this.interestRecalculationCompoundingTypeField.setLabel(Model.of("Frequency type for compounding"));
         this.interestRecalculationCompoundingTypeField.add(new OnChangeAjaxBehavior(this::interestRecalculationCompoundingFieldUpdate));
 
         this.interestRecalculationCompoundingOnField.setLabel(Model.of("Interest recalculation compounding on"));
-        this.interestRecalculationCompoundingOnField.add(new OnChangeAjaxBehavior(this::interestRecalculationCompoundingFieldUpdate));
+        this.interestRecalculationCompoundingOnField.add(new OnChangeAjaxBehavior(this::interestRecalculationCompoundingOnFieldUpdate));
+        this.interestRecalculationCompoundingOnField.setRequired(true);
 
         this.interestRecalculationPreClosureInterestCalculationRuleField.setLabel(Model.of("Pre-closure interest calculation rule"));
         this.interestRecalculationPreClosureInterestCalculationRuleField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationPreClosureInterestCalculationRuleField.setRequired(true);
 
         this.interestRecalculationAdvancePaymentsAdjustmentTypeField.setLabel(Model.of("Advance payments adjustment type"));
         this.interestRecalculationAdvancePaymentsAdjustmentTypeField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeField.setRequired(true);
 
         this.interestRecalculationRecalculateInterestField.add(new OnChangeAjaxBehavior(this::interestRecalculationRecalculateInterestFieldUpdate));
 
@@ -861,6 +927,7 @@ public class SettingsPanel extends Panel {
 
         this.settingVariableInstallmentsMinimumField.setLabel(Model.of("Variable Installments Minimum"));
         this.settingVariableInstallmentsMinimumField.add(new OnChangeAjaxBehavior());
+        this.settingVariableInstallmentsMinimumField.add(RangeValidator.minimum(0l));
 
         this.settingVariableInstallmentsMaximumField.setLabel(Model.of("Variable Installments Maximum"));
         this.settingVariableInstallmentsMaximumField.add(new OnChangeAjaxBehavior());
@@ -878,47 +945,9 @@ public class SettingsPanel extends Panel {
 
         this.settingAllowFixingOfTheInstallmentAmountField.add(new OnChangeAjaxBehavior());
 
-        this.settingDayInYearField.setLabel(Model.of("Day In Year"));
-        this.settingDayInYearField.add(new OnChangeAjaxBehavior());
+        this.form.add(new LamdaFormValidator(this::settingVariableInstallmentsValidator, this.settingVariableInstallmentsMinimumField, this.settingVariableInstallmentsMaximumField));
 
-        this.settingDayInMonthField.setLabel(Model.of("Day In Month"));
-        this.settingDayInMonthField.add(new OnChangeAjaxBehavior());
-
-        this.settingInterestFreePeriodField.setLabel(Model.of("Interest Free Period"));
-        this.settingInterestFreePeriodField.add(new OnChangeAjaxBehavior());
-
-        this.settingArrearsToleranceField.setLabel(Model.of("Arrears Tolerance"));
-        this.settingArrearsToleranceField.add(new OnChangeAjaxBehavior());
-
-        this.settingMoratoriumPrincipleField.setLabel(Model.of("Moratorium Principle"));
-        this.settingMoratoriumPrincipleField.add(new OnChangeAjaxBehavior());
-
-        this.settingMoratoriumInterestField.setLabel(Model.of("Moratorium Interest"));
-        this.settingMoratoriumInterestField.add(new OnChangeAjaxBehavior());
-
-        this.settingRepaymentStrategyField.setLabel(Model.of("Repayment Strategy"));
-        this.settingRepaymentStrategyField.add(new OnChangeAjaxBehavior());
-
-        this.settingInterestCalculationPeriodField.setLabel(Model.of("Interest Calculation Period"));
-        this.settingInterestCalculationPeriodField.add(new OnChangeAjaxBehavior(this::settingInterestCalculationPeriodFieldUpdate));
-
-        this.settingCalculateInterestForExactDaysInPartialPeriodField.add(new OnChangeAjaxBehavior());
-
-        this.settingAmortizationField.setLabel(Model.of("Amortization"));
-        this.settingAmortizationField.add(new OnChangeAjaxBehavior());
-
-        this.settingInterestMethodField.setLabel(Model.of("Interest Method"));
-        this.settingInterestMethodField.add(new OnChangeAjaxBehavior());
-
-        this.settingEqualAmortizationField.add(new OnChangeAjaxBehavior());
-
-        settingInterestCalculationPeriodFieldUpdate(null);
-
-        interestRecalculationRecalculateInterestFieldUpdate(null);
-
-        interestRecalculationCompoundingFieldUpdate(null);
-
-        interestRecalculationRecalculateFieldUpdate(null);
+        baseInterestRecalculation();
 
         guaranteeRequirementPlaceGuaranteeFundsOnHoldFieldUpdate(null);
 
@@ -929,11 +958,32 @@ public class SettingsPanel extends Panel {
         settingVariableInstallmentsAllowedFieldUpdate(null);
     }
 
+    protected void settingVariableInstallmentsValidator(Form<?> form) {
+        if (this.settingVariableInstallmentsMinimumValue.getObject() != null && this.settingVariableInstallmentsMaximumValue.getObject() != null) {
+            if (this.settingVariableInstallmentsMinimumValue.getObject() > this.settingVariableInstallmentsMaximumValue.getObject()) {
+                this.settingVariableInstallmentsMinimumField.error(new ValidationError("invalid"));
+                this.settingVariableInstallmentsMaximumField.error(new ValidationError("invalid"));
+            }
+        } else if (this.settingVariableInstallmentsMinimumValue.getObject() == null && this.settingVariableInstallmentsMaximumValue.getObject() == null) {
+        } else {
+            if (this.settingVariableInstallmentsAllowedValue.getObject() != null && this.settingVariableInstallmentsAllowedValue.getObject()) {
+                if (this.settingVariableInstallmentsMinimumValue.getObject() != null) {
+                    this.settingVariableInstallmentsMinimumField.error(new ValidationError("invalid"));
+                }
+                if (this.settingVariableInstallmentsMaximumValue.getObject() != null) {
+                    this.settingVariableInstallmentsMaximumField.error(new ValidationError("invalid"));
+                }
+            }
+        }
+    }
+
     protected boolean loanTrancheDetailEnableMultipleDisbursalFieldUpdate(AjaxRequestTarget target) {
         PropertyModel<Boolean> loanTrancheDetailEnableMultipleDisbursalValue = new PropertyModel<>(this.itemPage, "loanTrancheDetailEnableMultipleDisbursalValue");
         boolean visible = loanTrancheDetailEnableMultipleDisbursalValue.getObject() != null && loanTrancheDetailEnableMultipleDisbursalValue.getObject();
         this.loanTrancheDetailMaximumTrancheCountIContainer.setVisible(visible);
+        this.loanTrancheDetailMaximumTrancheCountField.setRequired(visible);
         this.loanTrancheDetailMaximumAllowedOutstandingBalanceIContainer.setVisible(visible);
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceField.setRequired(visible);
         if (target != null) {
             target.add(this.loanTrancheDetailMaximumTrancheCountBlock);
             target.add(this.loanTrancheDetailMaximumAllowedOutstandingBalanceBlock);
@@ -944,93 +994,172 @@ public class SettingsPanel extends Panel {
     protected boolean guaranteeRequirementPlaceGuaranteeFundsOnHoldFieldUpdate(AjaxRequestTarget target) {
         PropertyModel<Boolean> guaranteeRequirementPlaceGuaranteeFundsOnHoldValue = new PropertyModel<>(this.itemPage, "guaranteeRequirementPlaceGuaranteeFundsOnHoldValue");
         boolean visible = guaranteeRequirementPlaceGuaranteeFundsOnHoldValue.getObject() != null && guaranteeRequirementPlaceGuaranteeFundsOnHoldValue.getObject();
-        this.guaranteeRequirementMandatoryGuaranteeIContainer.setVisible(visible);
-        this.guaranteeRequirementMinimumGuaranteeIContainer.setVisible(visible);
-        this.guaranteeRequirementMinimumGuaranteeFromGuarantorIContainer.setVisible(visible);
+        this.guaranteeRequirementMandatoryGuaranteeBlock.setVisible(visible);
+        this.guaranteeRequirementMandatoryGuaranteeField.setRequired(visible);
+        this.guaranteeRequirementMinimumGuaranteeBlock.setVisible(visible);
+        this.guaranteeRequirementMinimumGuaranteeField.setRequired(visible);
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorBlock.setVisible(visible);
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorField.setRequired(visible);
         if (target != null) {
-            target.add(this.guaranteeRequirementMandatoryGuaranteeBlock);
-            target.add(this.guaranteeRequirementMinimumGuaranteeBlock);
-            target.add(this.guaranteeRequirementMinimumGuaranteeFromGuarantorBlock);
+            target.add(this.row21);
         }
         return false;
     }
 
     protected boolean settingInterestCalculationPeriodFieldUpdate(AjaxRequestTarget target) {
-        PropertyModel<Option> settingInterestCalculationPeriodValue = new PropertyModel<>(this.itemPage, "settingInterestCalculationPeriodValue");
-        InterestCalculationPeriod interestCalculationPeriod = null;
-        if (settingInterestCalculationPeriodValue.getObject() != null) {
-            interestCalculationPeriod = InterestCalculationPeriod.valueOf(settingInterestCalculationPeriodValue.getObject().getId());
-        }
 
-        boolean visible = interestCalculationPeriod == InterestCalculationPeriod.SameAsPayment;
+        baseInterestRecalculation();
 
-        if (interestCalculationPeriod == InterestCalculationPeriod.Daily) {
-            this.interestRecalculationRecalculateInterestIContainer.setVisible(true);
-        } else if (interestCalculationPeriod == InterestCalculationPeriod.SameAsPayment) {
-            this.interestRecalculationRecalculateInterestIContainer.setVisible(false);
-        }
-
-        this.settingCalculateInterestForExactDaysInPartialPeriodIContainer.setVisible(visible);
         if (target != null) {
             target.add(this.settingCalculateInterestForExactDaysInPartialPeriodBlock);
-            target.add(this.interestRecalculationRecalculateInterestBlock);
+            target.add(this.row12);
+            target.add(this.row13);
+            target.add(this.row14);
+            target.add(this.row15);
+            target.add(this.row16);
+            target.add(this.row17);
+            target.add(this.row18);
+            target.add(this.row19);
         }
-
-        interestRecalculationRecalculateInterestFieldUpdate(target);
-
-        // initSectionValidationRule();
 
         return false;
     }
 
-    protected boolean interestRecalculationRecalculateInterestFieldUpdate(AjaxRequestTarget target) {
+    protected void baseInterestRecalculation() {
         PropertyModel<Option> settingInterestCalculationPeriodValue = new PropertyModel<>(this.itemPage, "settingInterestCalculationPeriodValue");
         InterestCalculationPeriod interestCalculationPeriod = null;
         if (settingInterestCalculationPeriodValue.getObject() != null) {
             interestCalculationPeriod = InterestCalculationPeriod.valueOf(settingInterestCalculationPeriodValue.getObject().getId());
         }
 
+        this.settingCalculateInterestForExactDaysInPartialPeriodIContainer.setVisible(interestCalculationPeriod == InterestCalculationPeriod.SameAsPayment);
+        this.interestRecalculationRecalculateInterestBlock.setVisible(interestCalculationPeriod == InterestCalculationPeriod.Daily);
+
+        this.interestRecalculationPreClosureInterestCalculationRuleBlock.setVisible(false);
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock.setVisible(false);
+        this.interestRecalculationCompoundingOnBlock.setVisible(false);
+        this.interestRecalculationCompoundingBlock.setVisible(false);
+        this.interestRecalculationCompoundingField.setRequired(false);
+        this.interestRecalculationCompoundingTypeBlock.setVisible(false);
+        this.interestRecalculationCompoundingDayBlock.setVisible(false);
+        this.interestRecalculationCompoundingIntervalBlock.setVisible(false);
+        this.interestRecalculationCompoundingIntervalField.setRequired(false);
+        this.interestRecalculationRecalculateBlock.setVisible(false);
+        this.interestRecalculationRecalculateTypeBlock.setVisible(false);
+        this.interestRecalculationRecalculateDayBlock.setVisible(false);
+        this.interestRecalculationRecalculateIntervalBlock.setVisible(false);
+        this.interestRecalculationRecalculateIntervalField.setRequired(false);
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock.setVisible(false);
+        this.interestRecalculationCompoundingDayIContainer.setVisible(false);
+        this.interestRecalculationCompoundingDayField.setRequired(false);
+        this.interestRecalculationCompoundingTypeIContainer.setVisible(false);
+        this.interestRecalculationCompoundingTypeField.setRequired(false);
+        this.interestRecalculationCompoundingOnDayIContainer.setVisible(false);
+        this.interestRecalculationCompoundingOnDayField.setRequired(false);
+        this.interestRecalculationRecalculateTypeIContainer.setVisible(false);
+        this.interestRecalculationRecalculateDayIContainer.setVisible(false);
+        this.interestRecalculationRecalculateDayField.setRequired(false);
+        this.interestRecalculationRecalculateOnDayIContainer.setVisible(false);
+        this.interestRecalculationRecalculateOnDayField.setRequired(false);
+
         PropertyModel<Boolean> interestRecalculationRecalculateInterestValue = new PropertyModel<>(this.itemPage, "interestRecalculationRecalculateInterestValue");
-        boolean visible = interestCalculationPeriod == InterestCalculationPeriod.Daily && interestRecalculationRecalculateInterestValue.getObject() != null && interestRecalculationRecalculateInterestValue.getObject();
+        if (interestCalculationPeriod == InterestCalculationPeriod.Daily && interestRecalculationRecalculateInterestValue.getObject() != null && interestRecalculationRecalculateInterestValue.getObject()) {
+            this.interestRecalculationPreClosureInterestCalculationRuleBlock.setVisible(true);
+            this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock.setVisible(true);
+            this.interestRecalculationCompoundingOnBlock.setVisible(true);
+            this.interestRecalculationCompoundingDayBlock.setVisible(true);
+            this.interestRecalculationCompoundingTypeBlock.setVisible(true);
+            this.interestRecalculationRecalculateBlock.setVisible(true);
+            this.interestRecalculationRecalculateTypeBlock.setVisible(true);
+            this.interestRecalculationRecalculateDayBlock.setVisible(true);
+            this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock.setVisible(true);
 
-        this.interestRecalculationPreClosureInterestCalculationRuleIContainer.setVisible(visible);
-        this.interestRecalculationAdvancePaymentsAdjustmentTypeIContainer.setVisible(visible);
-        this.interestRecalculationCompoundingOnIContainer.setVisible(visible);
-        this.interestRecalculationCompoundingIContainer.setVisible(visible);
-        this.interestRecalculationCompoundingTypeIContainer.setVisible(visible);
-        this.interestRecalculationCompoundingDayIContainer.setVisible(visible);
-        this.interestRecalculationCompoundingIntervalIContainer.setVisible(visible);
-        this.interestRecalculationRecalculateIContainer.setVisible(visible);
-        this.interestRecalculationRecalculateTypeIContainer.setVisible(visible);
-        this.interestRecalculationRecalculateDayIContainer.setVisible(visible);
-        this.interestRecalculationRecalculateIntervalIContainer.setVisible(visible);
-        if (visible) {
-            interestRecalculationRecalculateFieldUpdate(target);
-            interestRecalculationCompoundingFieldUpdate(target);
+            PropertyModel<Option> interestRecalculationCompoundingOnValue = new PropertyModel<>(this.itemPage, "interestRecalculationCompoundingOnValue");
+
+            if (interestRecalculationCompoundingOnValue.getObject() != null && InterestRecalculationCompound.valueOf(interestRecalculationCompoundingOnValue.getObject().getId()) != InterestRecalculationCompound.None) {
+                this.interestRecalculationCompoundingBlock.setVisible(true);
+                this.interestRecalculationCompoundingField.setRequired(true);
+
+                PropertyModel<Option> interestRecalculationCompoundingValue = new PropertyModel<>(this.itemPage, "interestRecalculationCompoundingValue");
+
+                if (interestRecalculationCompoundingValue.getObject() != null) {
+                    Frequency frequency = Frequency.valueOf(interestRecalculationCompoundingValue.getObject().getId());
+                    if (frequency == Frequency.Daily || frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
+                        this.interestRecalculationCompoundingIntervalBlock.setVisible(true);
+                        this.interestRecalculationCompoundingIntervalField.setRequired(true);
+                    }
+                    if (frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
+                        this.interestRecalculationCompoundingDayIContainer.setVisible(true);
+                        this.interestRecalculationCompoundingDayField.setRequired(true);
+                    }
+                    if (frequency == Frequency.Monthly) {
+                        this.interestRecalculationCompoundingTypeIContainer.setVisible(true);
+                        this.interestRecalculationCompoundingTypeField.setRequired(true);
+
+                        PropertyModel<Option> interestRecalculationCompoundingTypeValue = new PropertyModel<>(this.itemPage, "interestRecalculationCompoundingTypeValue");
+
+                        if (interestRecalculationCompoundingTypeValue.getObject() != null) {
+                            FrequencyType type = FrequencyType.valueOf(interestRecalculationCompoundingTypeValue.getObject().getId());
+                            this.interestRecalculationCompoundingDayIContainer.setVisible(type != null && type != FrequencyType.OnDay);
+                            this.interestRecalculationCompoundingDayField.setRequired(type != null && type != FrequencyType.OnDay);
+                            this.interestRecalculationCompoundingOnDayIContainer.setVisible(type != null && type == FrequencyType.OnDay);
+                            this.interestRecalculationCompoundingOnDayField.setRequired(type != null && type == FrequencyType.OnDay);
+                        }
+                    }
+                }
+            }
+
+            PropertyModel<Option> interestRecalculationRecalculateValue = new PropertyModel<>(this.itemPage, "interestRecalculationRecalculateValue");
+            PropertyModel<Option> interestRecalculationRecalculateTypeValue = new PropertyModel<>(this.itemPage, "interestRecalculationRecalculateTypeValue");
+            if (interestRecalculationRecalculateValue.getObject() != null) {
+                Frequency frequency = Frequency.valueOf(interestRecalculationRecalculateValue.getObject().getId());
+                if (frequency == Frequency.Daily || frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
+                    this.interestRecalculationRecalculateIntervalBlock.setVisible(true);
+                    this.interestRecalculationRecalculateIntervalField.setRequired(true);
+                }
+                if (frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
+                    this.interestRecalculationRecalculateDayIContainer.setVisible(true);
+                    this.interestRecalculationRecalculateDayField.setRequired(true);
+                }
+                if (frequency == Frequency.Monthly) {
+                    this.interestRecalculationRecalculateTypeIContainer.setVisible(true);
+
+                    if (interestRecalculationRecalculateTypeValue.getObject() != null) {
+                        FrequencyType type = FrequencyType.valueOf(interestRecalculationRecalculateTypeValue.getObject().getId());
+                        this.interestRecalculationRecalculateDayIContainer.setVisible(type != null && type != FrequencyType.OnDay);
+                        this.interestRecalculationRecalculateDayField.setRequired(type != null && type != FrequencyType.OnDay);
+                        this.interestRecalculationRecalculateOnDayIContainer.setVisible(type != null && type == FrequencyType.OnDay);
+                        this.interestRecalculationRecalculateOnDayField.setRequired(type != null && type == FrequencyType.OnDay);
+                    }
+                }
+            }
+
         }
-        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleIContainer.setVisible(visible);
+
+    }
+
+    protected boolean interestRecalculationRecalculateInterestFieldUpdate(AjaxRequestTarget target) {
+
+        baseInterestRecalculation();
+
         if (target != null) {
-            target.add(this.interestRecalculationPreClosureInterestCalculationRuleBlock);
-            target.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock);
-            target.add(this.interestRecalculationCompoundingOnBlock);
-            target.add(this.interestRecalculationCompoundingBlock);
-            target.add(this.interestRecalculationCompoundingTypeBlock);
-            target.add(this.interestRecalculationCompoundingDayBlock);
-            target.add(this.interestRecalculationCompoundingIntervalBlock);
-            target.add(this.interestRecalculationRecalculateBlock);
-            target.add(this.interestRecalculationRecalculateTypeBlock);
-            target.add(this.interestRecalculationRecalculateDayBlock);
-            target.add(this.interestRecalculationRecalculateIntervalBlock);
-            target.add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock);
+            target.add(this.row13);
+            target.add(this.row14);
+            target.add(this.row15);
+            target.add(this.row16);
+            target.add(this.row17);
+            target.add(this.row18);
+            target.add(this.row19);
         }
 
-        // initSectionValidationRule();
         return false;
     }
 
     protected boolean settingVariableInstallmentsAllowedFieldUpdate(AjaxRequestTarget target) {
-        PropertyModel<Boolean> settingVariableInstallmentsAllowedValue = new PropertyModel<>(this.itemPage, "settingVariableInstallmentsAllowedValue");
-        boolean visible = settingVariableInstallmentsAllowedValue.getObject() != null && settingVariableInstallmentsAllowedValue.getObject();
+        boolean visible = this.settingVariableInstallmentsAllowedValue.getObject() != null && this.settingVariableInstallmentsAllowedValue.getObject();
+        this.settingVariableInstallmentsMinimumField.setRequired(visible);
+        this.settingVariableInstallmentsMaximumField.setRequired(visible);
+
         this.settingVariableInstallmentsMinimumIContainer.setVisible(visible);
         this.settingVariableInstallmentsMaximumIContainer.setVisible(visible);
         if (target != null) {
@@ -1040,36 +1169,24 @@ public class SettingsPanel extends Panel {
         return false;
     }
 
-    protected boolean interestRecalculationRecalculateFieldUpdate(AjaxRequestTarget target) {
-        this.interestRecalculationRecalculateTypeIContainer.setVisible(false);
-        this.interestRecalculationRecalculateDayIContainer.setVisible(false);
-        this.interestRecalculationRecalculateIntervalIContainer.setVisible(false);
-        this.interestRecalculationRecalculateOnDayIContainer.setVisible(false);
+    protected boolean interestRecalculationRecalculateTypeFieldUpdate(AjaxRequestTarget target) {
 
-        PropertyModel<Option> interestRecalculationRecalculateValue = new PropertyModel<>(this.itemPage, "interestRecalculationRecalculateValue");
-        PropertyModel<Option> interestRecalculationRecalculateTypeValue = new PropertyModel<>(this.itemPage, "interestRecalculationRecalculateTypeValue");
-        if (interestRecalculationRecalculateValue.getObject() != null) {
-            Frequency frequency = Frequency.valueOf(interestRecalculationRecalculateValue.getObject().getId());
-            if (frequency == Frequency.Daily || frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
-                this.interestRecalculationRecalculateIntervalIContainer.setVisible(true);
-            }
-            if (frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
-                this.interestRecalculationRecalculateDayIContainer.setVisible(true);
-            }
-            if (frequency == Frequency.Monthly) {
-                this.interestRecalculationRecalculateTypeIContainer.setVisible(true);
+        baseInterestRecalculation();
 
-                if (interestRecalculationRecalculateTypeValue.getObject() != null) {
-                    FrequencyType type = FrequencyType.valueOf(interestRecalculationRecalculateTypeValue.getObject().getId());
-                    this.interestRecalculationRecalculateDayIContainer.setVisible(type != null && type != FrequencyType.OnDay);
-                    this.interestRecalculationRecalculateOnDayIContainer.setVisible(type != null && type == FrequencyType.OnDay);
-                }
-            }
+        if (target != null) {
+            target.add(this.interestRecalculationRecalculateDayBlock);
         }
+        return false;
+    }
+
+    protected boolean interestRecalculationRecalculateFieldUpdate(AjaxRequestTarget target) {
+
+        baseInterestRecalculation();
+
         if (target != null) {
             target.add(this.interestRecalculationRecalculateTypeBlock);
             target.add(this.interestRecalculationRecalculateDayBlock);
-            target.add(this.interestRecalculationRecalculateIntervalBlock);
+            target.add(this.row18);
         }
         return false;
     }
@@ -1077,68 +1194,49 @@ public class SettingsPanel extends Panel {
     protected boolean configurableAllowOverridingSelectTermsAndSettingsInLoanAccountFieldUpdate(AjaxRequestTarget target) {
         PropertyModel<Boolean> configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue = new PropertyModel<>(this.itemPage, "configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue");
         boolean visible = configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue.getObject() != null && configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue.getObject();
-        this.configurableAmortizationIContainer.setVisible(visible);
-        this.configurableInterestMethodIContainer.setVisible(visible);
-        this.configurableRepaymentStrategyIContainer.setVisible(visible);
-        this.configurableInterestCalculationPeriodIContainer.setVisible(visible);
-        this.configurableArrearsToleranceIContainer.setVisible(visible);
-        this.configurableRepaidEveryIContainer.setVisible(visible);
-        this.configurableMoratoriumIContainer.setVisible(visible);
-        this.configurableOverdueBeforeMovingIContainer.setVisible(visible);
+        this.configurableAmortizationBlock.setVisible(visible);
+        this.configurableInterestMethodBlock.setVisible(visible);
+        this.configurableRepaymentStrategyBlock.setVisible(visible);
+        this.configurableInterestCalculationPeriodBlock.setVisible(visible);
+        this.configurableArrearsToleranceBlock.setVisible(visible);
+        this.configurableRepaidEveryBlock.setVisible(visible);
+        this.configurableMoratoriumBlock.setVisible(visible);
+        this.configurableOverdueBeforeMovingBlock.setVisible(visible);
         if (target != null) {
-            target.add(this.configurableAmortizationBlock);
-            target.add(this.configurableInterestMethodBlock);
-            target.add(this.configurableRepaymentStrategyBlock);
-            target.add(configurableInterestCalculationPeriodBlock);
-            target.add(this.configurableArrearsToleranceBlock);
-            target.add(this.configurableRepaidEveryBlock);
-            target.add(this.configurableMoratoriumBlock);
-            target.add(this.configurableOverdueBeforeMovingBlock);
+            target.add(this.row24);
+            target.add(this.row25);
+            target.add(this.row26);
+            target.add(this.row27);
+        }
+        return false;
+    }
+
+    protected boolean interestRecalculationCompoundingTypeFieldUpdate(AjaxRequestTarget target) {
+        baseInterestRecalculation();
+
+        if (target != null) {
+            target.add(this.interestRecalculationCompoundingTypeBlock);
+            target.add(this.interestRecalculationCompoundingDayBlock);
+            target.add(this.row16);
         }
         return false;
     }
 
     protected boolean interestRecalculationCompoundingFieldUpdate(AjaxRequestTarget target) {
-        this.interestRecalculationCompoundingTypeIContainer.setVisible(false);
-        this.interestRecalculationCompoundingDayIContainer.setVisible(false);
-        this.interestRecalculationCompoundingOnDayIContainer.setVisible(false);
-        this.interestRecalculationCompoundingIntervalIContainer.setVisible(false);
+        baseInterestRecalculation();
 
-        PropertyModel<Option> interestRecalculationCompoundingOnValue = new PropertyModel<>(this.itemPage, "interestRecalculationCompoundingOnValue");
-
-        if (interestRecalculationCompoundingOnValue.getObject() != null && InterestRecalculationCompound.valueOf(interestRecalculationCompoundingOnValue.getObject().getId()) != InterestRecalculationCompound.None) {
-            this.interestRecalculationCompoundingIContainer.setVisible(true);
-
-            PropertyModel<Option> interestRecalculationCompoundingValue = new PropertyModel<>(this.itemPage, "interestRecalculationCompoundingValue");
-
-            if (interestRecalculationCompoundingValue.getObject() != null) {
-                Frequency frequency = Frequency.valueOf(interestRecalculationCompoundingValue.getObject().getId());
-                if (frequency == Frequency.Daily || frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
-                    this.interestRecalculationCompoundingIntervalIContainer.setVisible(true);
-                }
-                if (frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
-                    this.interestRecalculationCompoundingDayIContainer.setVisible(true);
-                }
-                if (frequency == Frequency.Monthly) {
-                    this.interestRecalculationCompoundingTypeIContainer.setVisible(true);
-
-                    PropertyModel<Option> interestRecalculationCompoundingTypeValue = new PropertyModel<>(this.itemPage, "interestRecalculationCompoundingTypeValue");
-
-                    if (interestRecalculationCompoundingTypeValue.getObject() != null) {
-                        FrequencyType type = FrequencyType.valueOf(interestRecalculationCompoundingTypeValue.getObject().getId());
-                        this.interestRecalculationCompoundingDayIContainer.setVisible(type != null && type != FrequencyType.OnDay);
-                        this.interestRecalculationCompoundingOnDayIContainer.setVisible(type != null && type == FrequencyType.OnDay);
-                    }
-                }
-            }
-        } else {
-            this.interestRecalculationCompoundingIContainer.setVisible(false);
-        }
         if (target != null) {
-            target.add(this.interestRecalculationCompoundingTypeBlock);
             target.add(this.interestRecalculationCompoundingDayBlock);
-            target.add(this.interestRecalculationCompoundingIntervalBlock);
-            target.add(this.interestRecalculationCompoundingBlock);
+        }
+        return false;
+    }
+
+    protected boolean interestRecalculationCompoundingOnFieldUpdate(AjaxRequestTarget target) {
+        baseInterestRecalculation();
+
+        if (target != null) {
+            target.add(this.row15);
+            target.add(this.row16);
         }
         return false;
     }

@@ -1,23 +1,23 @@
 package com.angkorteam.fintech;
 
 import java.io.File;
-import java.lang.management.ManagementFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 
-import javax.management.MBeanServer;
+import javax.servlet.ServletException;
 
-import org.apache.wicket.WicketRuntimeException;
-import org.eclipse.jetty.jmx.MBeanContainer;
-import org.eclipse.jetty.server.HttpConfiguration;
-import org.eclipse.jetty.server.HttpConnectionFactory;
-import org.eclipse.jetty.server.SecureRequestCustomizer;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.SslConnectionFactory;
-import org.eclipse.jetty.util.resource.Resource;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.eclipse.jetty.webapp.WebAppContext;
+import org.apache.catalina.LifecycleException;
+import org.apache.catalina.WebResourceRoot;
+import org.apache.catalina.connector.Connector;
+import org.apache.catalina.core.StandardContext;
+import org.apache.catalina.startup.Tomcat;
+import org.apache.catalina.startup.VersionLoggerListener;
+import org.apache.catalina.webresources.DirResourceSet;
+import org.apache.catalina.webresources.StandardRoot;
+import org.apache.coyote.http11.Http11NioProtocol;
+import org.apache.tomcat.util.net.SSLHostConfig;
+import org.apache.tomcat.util.net.SSLHostConfigCertificate;
+import org.apache.tomcat.util.net.SSLHostConfigCertificate.Type;
 
 /**
  * Separate startup class for people that want to run the examples directly. Use
@@ -30,94 +30,64 @@ public class Start {
      * Main function, starts the jetty server.
      *
      * @param args
+     * @throws ServletException
+     * @throws LifecycleException
      * @throws Exception
      * @throws NoSuchAlgorithmException
      * @throws UnrecoverableKeyException
      */
-    public static void main(String[] args) throws UnrecoverableKeyException, NoSuchAlgorithmException, Exception {
+    public static void main(String[] args) throws ServletException, LifecycleException {
 
-        String javaHome = System.getenv("JAVA_HOME");
-        if (javaHome == null || "".equals(javaHome)) {
-            throw new WicketRuntimeException("JAVA_HOME is not define");
-        }
-        File cacertFile = new File(javaHome, "jre/lib/security/cacerts");
-        System.setProperty("javax.net.ssl.trustStore", cacertFile.getAbsolutePath());
-        System.setProperty("javax.net.ssl.trustStorePassowrd", "changeit");
+        Tomcat tomcat = new Tomcat();
 
-        System.setProperty("wicket.configuration", "development");
+        tomcat.getServer().addLifecycleListener(new VersionLoggerListener());
+        tomcat.getServer().addLifecycleListener(new org.apache.catalina.core.JreMemoryLeakPreventionListener());
+        tomcat.getServer().addLifecycleListener(new org.apache.catalina.mbeans.GlobalResourcesLifecycleListener());
+        tomcat.getServer().addLifecycleListener(new org.apache.catalina.core.ThreadLocalLeakPreventionListener());
 
-        Server server = new Server();
-        server.setAttribute("org.eclipse.jetty.server.Request.maxFormContentSize", -1);
-        int httpPort = 9080;
-        int httpSecurePort = 9443;
+        tomcat.getService().addConnector(http(9080));
 
-        HttpConfiguration http_config = new HttpConfiguration();
-        http_config.setSecureScheme("https");
-        http_config.setSecurePort(httpSecurePort);
-        http_config.setOutputBufferSize(32768);
+        String webappDirLocation = "src/main/webapp/";
 
-        ServerConnector http = new ServerConnector(server, new HttpConnectionFactory(http_config));
-        http.setPort(httpPort);
-        http.setIdleTimeout(1000 * 60 * 60);
+        StandardContext ctx = (StandardContext) tomcat.addWebapp("", new File(webappDirLocation).getAbsolutePath());
+        File additionWebInfClasses = new File("target/classes");
+        WebResourceRoot resources = new StandardRoot(ctx);
+        resources.addPreResources(new DirResourceSet(resources, "/WEB-INF/classes", additionWebInfClasses.getAbsolutePath(), "/"));
+        ctx.setResources(resources);
 
-        server.addConnector(http);
+        tomcat.start();
+        tomcat.getServer().await();
 
-        Resource keystore = Resource.newClassPathResource("/keystore");
-        if (keystore != null && keystore.exists()) {
-            // if a keystore for a SSL certificate is available, start a SSL
-            // connector on port 8443.
-            // By default, the quickstart comes with a Apache Wicket Quickstart
-            // Certificate that expires about half way september 2021. Do not
-            // use this certificate anywhere important as the passwords are
-            // available in the source.
+    }
 
-            SslContextFactory sslContextFactory = new SslContextFactory();
-            sslContextFactory.setKeyStoreResource(keystore);
-            sslContextFactory.setKeyStorePassword("wicket");
-            sslContextFactory.setKeyManagerPassword("wicket");
+    public static Connector http(int port) {
+        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+        connector.setPort(port);
+        connector.setURIEncoding("UTF-8");
 
-            HttpConfiguration https_config = new HttpConfiguration(http_config);
-            https_config.addCustomizer(new SecureRequestCustomizer());
+        connector.addUpgradeProtocol(new org.apache.coyote.http2.Http2Protocol());
+        return connector;
+    }
 
-            ServerConnector https = new ServerConnector(server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https_config));
-            https.setPort(httpSecurePort);
-            https.setIdleTimeout(500000);
+    public static Connector https(int port) {
+        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+        connector.setPort(port);
+        connector.setURIEncoding("UTF-8");
 
-            server.addConnector(https);
-            System.out.println("You can access the http://localhost:9080");
-            System.out.println("You can access the https://localhost:9443");
-            System.out.println();
-        }
+        Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();
+        protocol.setSSLEnabled(true);
 
-        WebAppContext bb = new WebAppContext();
-        bb.setServer(server);
-        bb.setContextPath("/");
-        bb.setWar("src/main/webapp");
+        SSLHostConfig sslHostConfig = new SSLHostConfig();
+        sslHostConfig.setProtocols("TLSv1.2");
 
-        // uncomment the next two lines if you want to start Jetty with WebSocket
-        // (JSR-356) support
-        // you need org.apache.wicket:wicket-native-websocket-javax in the classpath!
-        // ServerContainer serverContainer =
-        // WebSocketServerContainerInitializer.configureContext(bb);
-        // serverContainer.addEndpoint(new WicketServerEndpointConfig());
+        SSLHostConfigCertificate certificate = new SSLHostConfigCertificate(sslHostConfig, Type.RSA);
+        certificate.setCertificateFile("/opt/openssl/localhost.crt");
+        certificate.setCertificateKeyFile("/opt/openssl/localhost.pem");
 
-        // uncomment next line if you want to test with JSESSIONID encoded in the urls
-        // ((AbstractSessionManager)
-        // bb.getSessionHandler().getSessionManager()).setUsingCookies(false);
+        sslHostConfig.addCertificate(certificate);
 
-        server.setHandler(bb);
-
-        MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-        MBeanContainer mBeanContainer = new MBeanContainer(mBeanServer);
-        server.addEventListener(mBeanContainer);
-        server.addBean(mBeanContainer);
-
-        try {
-            server.start();
-            server.join();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(100);
-        }
+        connector.addUpgradeProtocol(new org.apache.coyote.http2.Http2Protocol());
+        connector.addSslHostConfig(sslHostConfig);
+        return connector;
     }
 }

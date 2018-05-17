@@ -45,16 +45,30 @@
 		<spring-data.version>3.0.0.RELEASE</spring-data.version>
 		<commons-io.version>2.6</commons-io.version>
 		<reflection.version>0.9.11</reflection.version>
-		<tomcat.version>9.0.6</tomcat.version>
 		<poi.version>3.17</poi.version>
 		<jacoco.version>0.8.1</jacoco.version>
 		<maven-war.version>3.2.0</maven-war.version>
 		<commons-compress.version>1.16.1</commons-compress.version>
+		<org.apache.tomcat.embed.version>9.0.8</org.apache.tomcat.embed.version>
 	</properties>
 	<dependencies>
 
 		<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-elasticsearch</artifactId> 
 			<version>${spring-data.version}</version> </dependency> -->
+		<!-- TOMCAT -->
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-core</artifactId>
+			<version>${org.apache.tomcat.embed.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<version>${org.apache.tomcat.embed.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>

@@ -306,15 +306,15 @@ public class LoanCreatePage extends Page {
         this.advancedAccountingRuleFeeIncomeValue = Lists.newArrayList();
         this.advancedAccountingRulePenaltyIncomeValue = Lists.newArrayList();
 
-        this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue = false;
-        this.configurableAmortizationValue = false;
-        this.configurableInterestMethodValue = false;
-        this.configurableRepaymentStrategyValue = false;
-        this.configurableInterestCalculationPeriodValue = false;
-        this.configurableArrearsToleranceValue = false;
-        this.configurableRepaidEveryValue = false;
-        this.configurableMoratoriumValue = false;
-        this.configurableOverdueBeforeMovingValue = false;
+        this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue = true;
+        this.configurableAmortizationValue = true;
+        this.configurableInterestMethodValue = true;
+        this.configurableRepaymentStrategyValue = true;
+        this.configurableInterestCalculationPeriodValue = true;
+        this.configurableArrearsToleranceValue = true;
+        this.configurableRepaidEveryValue = true;
+        this.configurableMoratoriumValue = true;
+        this.configurableOverdueBeforeMovingValue = true;
 
         this.loanTrancheDetailEnableMultipleDisbursalValue = false;
 

@@ -2,6 +2,11 @@ package com.angkorteam.fintech.junit;
 
 import java.io.File;
 
+import org.apache.catalina.connector.Connector;
+import org.apache.coyote.http11.Http11NioProtocol;
+import org.apache.tomcat.util.net.SSLHostConfig;
+import org.apache.tomcat.util.net.SSLHostConfigCertificate;
+import org.apache.tomcat.util.net.SSLHostConfigCertificate.Type;
 import org.junit.runner.Description;
 import org.junit.runner.Result;
 import org.junit.runner.notification.RunListener;
@@ -34,7 +39,6 @@ public class JUnit extends RunListener {
     }
 
     public void testRunFinished(Result result) throws Exception {
-
     }
 
     public static JUnitApplication getApplication() {
@@ -51,6 +55,37 @@ public class JUnit extends RunListener {
 
     public static JUnitWicketTester getWicket() {
         return wicket;
+    }
+
+    public Connector http(int port) {
+        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+        connector.setPort(port);
+        connector.setURIEncoding("UTF-8");
+
+        connector.addUpgradeProtocol(new org.apache.coyote.http2.Http2Protocol());
+        return connector;
+    }
+
+    public Connector https(int port) {
+        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+        connector.setPort(port);
+        connector.setURIEncoding("UTF-8");
+
+        Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();
+        protocol.setSSLEnabled(true);
+
+        SSLHostConfig sslHostConfig = new SSLHostConfig();
+        sslHostConfig.setProtocols("TLSv1.2");
+
+        SSLHostConfigCertificate certificate = new SSLHostConfigCertificate(sslHostConfig, Type.RSA);
+        certificate.setCertificateFile("/opt/openssl/localhost.crt");
+        certificate.setCertificateKeyFile("/opt/openssl/localhost.pem");
+
+        sslHostConfig.addCertificate(certificate);
+
+        connector.addUpgradeProtocol(new org.apache.coyote.http2.Http2Protocol());
+        connector.addSslHostConfig(sslHostConfig);
+        return connector;
     }
 
 }

@@ -905,17 +905,17 @@ public class PreviewPanel extends Panel {
 
         this.termPrincipleMinimumBlock = this.row7.newUIBlock("termPrincipleMinimumBlock", Size.Three_3);
         this.termPrincipleMinimumVContainer = this.termPrincipleMinimumBlock.newUIContainer("termPrincipleMinimumVContainer");
-        this.termPrincipleMinimumView = new ReadOnlyView("termPrincipleMinimumView", new PropertyModel<>(this.itemPage, "termPrincipleMinimumValue"));
+        this.termPrincipleMinimumView = new ReadOnlyView("termPrincipleMinimumView", new PropertyModel<>(this.itemPage, "termPrincipalMinimumValue"));
         this.termPrincipleMinimumVContainer.add(this.termPrincipleMinimumView);
 
         this.termPrincipleDefaultBlock = this.row7.newUIBlock("termPrincipleDefaultBlock", Size.Three_3);
         this.termPrincipleDefaultVContainer = this.termPrincipleDefaultBlock.newUIContainer("termPrincipleDefaultVContainer");
-        this.termPrincipleDefaultView = new ReadOnlyView("termPrincipleDefaultView", new PropertyModel<>(this.itemPage, "termPrincipleDefaultValue"));
+        this.termPrincipleDefaultView = new ReadOnlyView("termPrincipleDefaultView", new PropertyModel<>(this.itemPage, "termPrincipalDefaultValue"));
         this.termPrincipleDefaultVContainer.add(this.termPrincipleDefaultView);
 
         this.termPrincipleMaximumBlock = this.row7.newUIBlock("termPrincipleMaximumBlock", Size.Three_3);
         this.termPrincipleMaximumVContainer = this.termPrincipleMaximumBlock.newUIContainer("termPrincipleMaximumVContainer");
-        this.termPrincipleMaximumView = new ReadOnlyView("termPrincipleMaximumView", new PropertyModel<>(this.itemPage, "termPrincipleMaximumValue"));
+        this.termPrincipleMaximumView = new ReadOnlyView("termPrincipleMaximumView", new PropertyModel<>(this.itemPage, "termPrincipalMaximumValue"));
         this.termPrincipleMaximumVContainer.add(this.termPrincipleMaximumView);
 
         this.row7Block1 = this.row7.newUIBlock("row7Block1", Size.Three_3);
