@@ -32,3 +32,4 @@ fintech.iml
 /fintech.iws
 /.gradle/
 /logs/
+/tomcat.8080/

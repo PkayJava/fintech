@@ -1421,12 +1421,12 @@ public class PreviewPanel extends Panel {
         this.accrualFundSourceVContainer.add(this.accrualFundSourceView);
 
         this.accrualLoanPortfolioBlock = this.row38.newUIBlock("accrualLoanPortfolioBlock", Size.Four_4);
-        this.accrualLoanPortfolioVContainer = this.accrualFundSourceBlock.newUIContainer("accrualLoanPortfolioVContainer");
+        this.accrualLoanPortfolioVContainer = this.accrualLoanPortfolioBlock.newUIContainer("accrualLoanPortfolioVContainer");
         this.accrualLoanPortfolioView = new ReadOnlyView("accrualLoanPortfolioView", new PropertyModel<>(this.itemPage, "accrualLoanPortfolioValue"));
         this.accrualLoanPortfolioVContainer.add(this.accrualLoanPortfolioView);
 
         this.accrualInterestReceivableBlock = this.row38.newUIBlock("accrualInterestReceivableBlock", Size.Four_4);
-        this.accrualInterestReceivableVContainer = this.accrualFundSourceBlock.newUIContainer("accrualInterestReceivableVContainer");
+        this.accrualInterestReceivableVContainer = this.accrualInterestReceivableBlock.newUIContainer("accrualInterestReceivableVContainer");
         this.accrualInterestReceivableView = new ReadOnlyView("accrualInterestReceivableView", new PropertyModel<>(this.itemPage, "accrualInterestReceivableValue"));
         this.accrualInterestReceivableVContainer.add(this.accrualInterestReceivableView);
 

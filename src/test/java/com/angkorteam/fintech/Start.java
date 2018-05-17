@@ -61,7 +61,7 @@ public class Start {
     }
 
     public static Connector http(int port) {
-        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+        Connector connector = new Connector("org.apache.coyote.http11.Http11Nio2Protocol");
         connector.setPort(port);
         connector.setURIEncoding("UTF-8");
 
@@ -70,7 +70,7 @@ public class Start {
     }
 
     public static Connector https(int port) {
-        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+        Connector connector = new Connector("org.apache.coyote.http11.Http11Nio2Protocol");
         connector.setPort(port);
         connector.setURIEncoding("UTF-8");
 
