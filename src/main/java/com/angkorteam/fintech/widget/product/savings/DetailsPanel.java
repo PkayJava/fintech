@@ -13,7 +13,6 @@ import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
 import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
 import com.angkorteam.fintech.widget.Panel;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -101,11 +100,12 @@ public class DetailsPanel extends Panel {
     @Override
     protected void configureMetaData() {
         this.detailDescriptionField.setLabel(Model.of("Description"));
+
         this.detailProductNameField.setLabel(Model.of("Product Name"));
-        this.detailShortNameField.setLabel(Model.of("Short Name"));
         this.detailProductNameField.setRequired(true);
+
+        this.detailShortNameField.setLabel(Model.of("Short Name"));
         this.detailShortNameField.setRequired(true);
-        this.detailDescriptionField.setRequired(true);
     }
 
     protected void nextButtonSubmit(Button button) {

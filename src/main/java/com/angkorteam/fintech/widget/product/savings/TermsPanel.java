@@ -6,6 +6,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.angkorteam.fintech.dto.enums.DayInYear;
 import com.angkorteam.fintech.layout.Size;
@@ -147,24 +148,24 @@ public class TermsPanel extends Panel {
     protected void configureMetaData() {
         this.termInterestPostingPeriodField.setLabel(Model.of("Interest calculated using"));
         this.termInterestPostingPeriodField.add(new OnChangeAjaxBehavior());
+        this.termInterestPostingPeriodField.setRequired(true);
 
         this.termDayInYearField.setLabel(Model.of("Days in year"));
         this.termDayInYearField.add(new OnChangeAjaxBehavior());
+        this.termDayInYearField.setRequired(true);
 
         this.termInterestCalculatedUsingField.setLabel(Model.of("Interest posting period"));
         this.termInterestCalculatedUsingField.add(new OnChangeAjaxBehavior());
+        this.termInterestCalculatedUsingField.setRequired(true);
 
         this.termInterestCompoundingPeriodField.setLabel(Model.of("Interest compounding period"));
         this.termInterestCompoundingPeriodField.add(new OnChangeAjaxBehavior());
+        this.termInterestCompoundingPeriodField.setRequired(true);
 
         this.termNominalAnnualInterestField.setLabel(Model.of("Nominal annual interest"));
         this.termNominalAnnualInterestField.add(new OnChangeAjaxBehavior());
-
         this.termNominalAnnualInterestField.setRequired(true);
-        this.termInterestCompoundingPeriodField.setRequired(true);
-        this.termInterestCalculatedUsingField.setRequired(true);
-        this.termDayInYearField.setRequired(true);
-        this.termInterestPostingPeriodField.setRequired(true);
+        this.termNominalAnnualInterestField.add(RangeValidator.minimum(0d));
     }
 
     protected void nextButtonSubmit(Button button) {

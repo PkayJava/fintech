@@ -505,6 +505,7 @@ public class TermsPanel extends Panel {
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField.setLabel(Model.of("Minimum days between disbursal and first repayment date"));
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField.add(new OnChangeAjaxBehavior());
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField.add(RangeValidator.minimum(0l));
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField.setRequired(true);
 
         this.termFloatingInterestMaximumField.setLabel(Model.of("Floating interest Maximum"));
         this.termFloatingInterestMaximumField.add(new OnChangeAjaxBehavior());

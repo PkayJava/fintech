@@ -809,18 +809,22 @@ public class SettingsPanel extends Panel {
         this.settingMoratoriumPrincipleField.setLabel(Model.of("Moratorium Principle"));
         this.settingMoratoriumPrincipleField.add(new OnChangeAjaxBehavior());
         this.settingMoratoriumPrincipleField.add(RangeValidator.minimum(0l));
+        this.settingMoratoriumPrincipleField.setRequired(true);
 
         this.settingMoratoriumInterestField.setLabel(Model.of("Moratorium Interest"));
         this.settingMoratoriumInterestField.add(new OnChangeAjaxBehavior());
         this.settingMoratoriumInterestField.add(RangeValidator.minimum(0l));
+        this.settingMoratoriumInterestField.setRequired(true);
 
         this.settingInterestFreePeriodField.setLabel(Model.of("Interest Free Period"));
         this.settingInterestFreePeriodField.add(new OnChangeAjaxBehavior());
         this.settingInterestFreePeriodField.add(RangeValidator.minimum(0l));
+        this.settingInterestFreePeriodField.setRequired(true);
 
         this.settingArrearsToleranceField.setLabel(Model.of("Arrears Tolerance"));
         this.settingArrearsToleranceField.add(new OnChangeAjaxBehavior());
         this.settingArrearsToleranceField.add(RangeValidator.minimum(0l));
+        this.settingArrearsToleranceField.setRequired(true);
 
         this.settingDayInYearField.setLabel(Model.of("Day In Year"));
         this.settingDayInYearField.add(new OnChangeAjaxBehavior());
@@ -829,8 +833,6 @@ public class SettingsPanel extends Panel {
         this.settingDayInMonthField.setLabel(Model.of("Day In Month"));
         this.settingDayInMonthField.add(new OnChangeAjaxBehavior());
         this.settingDayInMonthField.setRequired(true);
-
-        //
 
         this.configurableOverdueBeforeMovingField.add(new OnChangeAjaxBehavior());
 
@@ -936,12 +938,15 @@ public class SettingsPanel extends Panel {
 
         this.settingPrincipleThresholdForLastInstalmentField.setLabel(Model.of("Principle Threshold (%) for Last Installment"));
         this.settingPrincipleThresholdForLastInstalmentField.add(new OnChangeAjaxBehavior());
+        this.settingPrincipleThresholdForLastInstalmentField.setRequired(true);
 
         this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField.setLabel(Model.of("Number of days a loan may be overdue before moving into arrears"));
         this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField.add(new OnChangeAjaxBehavior());
+        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField.setRequired(true);
 
         this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField.setLabel(Model.of("Maximum number of days a loan may be overdue before becoming a NPA"));
         this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField.add(new OnChangeAjaxBehavior());
+        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField.setRequired(true);
 
         this.settingAllowFixingOfTheInstallmentAmountField.add(new OnChangeAjaxBehavior());
 
