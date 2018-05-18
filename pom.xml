@@ -322,11 +322,10 @@
 					</additionalConfig>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.20</version>
+				<version>2.21.0</version>
 				<configuration>
 					<trimStackTrace>false</trimStackTrace>
 					<useFile>false</useFile>
@@ -336,18 +335,41 @@
 							<value>com.angkorteam.fintech.junit.JUnit</value>
 						</property>
 					</properties>
+					<excludes>
+						<exclude>**/*SITest.java</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
-
 			<plugin>
-				<groupId>org.codehaus.cargo</groupId>
-				<artifactId>cargo-maven2-plugin</artifactId>
-				<version>1.6.4</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.21.0</version>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>verify</id>
+						<goals>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
-					<container>
-						<containerId>jetty9x</containerId>
-						<type>embedded</type>
-					</container>
+					<trimStackTrace>false</trimStackTrace>
+					<useFile>false</useFile>
+					<properties>
+						<property>
+							<name>listener</name>
+							<value>com.angkorteam.fintech.junit.IntegrationUnit</value>
+						</property>
+					</properties>
+					<includes>
+						<include>**/*SITest.java</include>
+					</includes>
 				</configuration>
 			</plugin>
 
