@@ -23,10 +23,12 @@ import org.joda.time.Years;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MSavingsProduct;
 import com.angkorteam.fintech.ddl.MStaff;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.ClientBuilder;
 import com.angkorteam.fintech.dto.builder.FamilyMemberBuilder;
+import com.angkorteam.fintech.dto.enums.DepositType;
 import com.angkorteam.fintech.dto.enums.LegalForm;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.layout.Size;
@@ -46,6 +48,7 @@ import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
+import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -224,6 +227,21 @@ public class ClientCreatePage extends Page {
     protected UIContainer submittedOnIContainer;
     protected Date submittedOnValue;
     protected DateTextField submittedOnField;
+
+    protected UIRow row12;
+
+    protected UIBlock openSavingsAccountBlock;
+    protected UIContainer openSavingsAccountIContainer;
+    protected Boolean openSavingsAccountValue;
+    protected CheckBox openSavingsAccountField;
+
+    protected UIBlock savingsAccountBlock;
+    protected UIContainer savingsAccountIContainer;
+    protected SingleChoiceProvider savingsAccountProvider;
+    protected Option savingsAccountValue;
+    protected Select2SingleChoice<Option> savingsAccountField;
+
+    protected UIBlock row12Block1;
 
     protected UIRow row13;
 
@@ -438,6 +456,22 @@ public class ClientCreatePage extends Page {
         this.submittedOnIContainer.add(this.submittedOnField);
         this.submittedOnIContainer.newFeedback("submittedOnFeedback", this.submittedOnField);
 
+        this.row12 = UIRow.newUIRow("row12", this.form);
+
+        this.openSavingsAccountBlock = this.row12.newUIBlock("openSavingsAccountBlock", Size.Three_3);
+        this.openSavingsAccountIContainer = this.openSavingsAccountBlock.newUIContainer("openSavingsAccountIContainer");
+        this.openSavingsAccountField = new CheckBox("openSavingsAccountField", new PropertyModel<>(this, "openSavingsAccountValue"));
+        this.openSavingsAccountIContainer.add(this.openSavingsAccountField);
+        this.openSavingsAccountIContainer.newFeedback("openSavingsAccountFeedback", this.openSavingsAccountField);
+
+        this.savingsAccountBlock = this.row12.newUIBlock("savingsAccountBlock", Size.Three_3);
+        this.savingsAccountIContainer = this.savingsAccountBlock.newUIContainer("savingsAccountIContainer");
+        this.savingsAccountField = new Select2SingleChoice<>("savingsAccountField", new PropertyModel<>(this, "savingsAccountValue"), this.savingsAccountProvider);
+        this.savingsAccountIContainer.add(this.savingsAccountField);
+        this.savingsAccountIContainer.newFeedback("savingsAccountFeedback", this.savingsAccountField);
+
+        this.row12Block1 = this.row12.newUIBlock("row12Block1", Size.Six_6);
+
         this.row13 = UIRow.newUIRow("row13", this.form);
 
         this.familyMemberBlock = this.row13.newUIBlock("familyMemberBlock", Size.Twelve_12);
@@ -465,6 +499,9 @@ public class ClientCreatePage extends Page {
 
         this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.NAME + "." + MStaff.Field.ID, MStaff.NAME + "." + MStaff.Field.DISPLAY_NAME);
         this.staffProvider.applyJoin("m_office", "INNER JOIN " + MOffice.NAME + " ON " + MStaff.NAME + "." + MStaff.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+
+        this.savingsAccountProvider = new SingleChoiceProvider(MSavingsProduct.NAME, MSavingsProduct.Field.ID, MSavingsProduct.Field.NAME);
+        this.savingsAccountProvider.applyWhere("deposit_type_enum", MSavingsProduct.Field.DEPOSIT_TYPE_ENUM + " = " + DepositType.Saving.getLiteral());
 
         this.legalFormProvider = new LegalFormProvider();
 
@@ -500,6 +537,11 @@ public class ClientCreatePage extends Page {
 
     @Override
     protected void configureMetaData() {
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+
+        this.openSavingsAccountField.add(new OnChangeAjaxBehavior(this::openSavingsAccountFieldUpdate));
+
+        this.savingsAccountField.setRequired(true);
 
         this.submittedOnField.setLabel(Model.of("Submitted On"));
         this.submittedOnField.add(new OnChangeAjaxBehavior());
@@ -568,6 +610,22 @@ public class ClientCreatePage extends Page {
         legalFormFieldUpdate(null);
         officeFieldUpdate(null);
         activeFieldUpdate(null);
+        openSavingsAccountFieldUpdate(null);
+
+        if (jdbcTemplate.queryForObject("select count(*) from " + MSavingsProduct.NAME + " where " + MSavingsProduct.Field.DEPOSIT_TYPE_ENUM + " = " + DepositType.Saving.getLiteral(), Long.class) > 0) {
+            this.row12.setVisible(true);
+        } else {
+            this.row12.setVisible(false);
+        }
+    }
+
+    protected boolean openSavingsAccountFieldUpdate(AjaxRequestTarget target) {
+        boolean visible = this.openSavingsAccountValue == null ? false : this.openSavingsAccountValue;
+        this.savingsAccountIContainer.setVisible(visible);
+        if (target != null) {
+            target.add(this.savingsAccountBlock);
+        }
+        return false;
     }
 
     protected boolean familyMemberAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
