@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.pages.product.loan;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -99,9 +100,9 @@ public class LoanPreviewPage extends Page {
     // Terms
 
     protected Boolean termVaryBasedOnLoanCycleValue;
-    protected Double termPrincipleMinimumValue;
-    protected Double termPrincipleDefaultValue;
-    protected Double termPrincipleMaximumValue;
+    protected Double termPrincipalMinimumValue;
+    protected Double termPrincipalDefaultValue;
+    protected Double termPrincipalMaximumValue;
     protected List<Map<String, Object>> termPrincipleByLoanCycleValue;
     protected Long termNumberOfRepaymentMinimumValue;
     protected Long termNumberOfRepaymentDefaultValue;
@@ -284,6 +285,15 @@ public class LoanPreviewPage extends Page {
     protected void initData() {
         this.loanId = getPageParameters().get("loanId").toString();
 
+        this.overdueChargeValue = new ArrayList<>();
+        this.chargeValue = new ArrayList<>();
+        this.advancedAccountingRuleFundSourceValue = new ArrayList<>();
+        this.advancedAccountingRuleFeeIncomeValue = new ArrayList<>();
+        this.advancedAccountingRulePenaltyIncomeValue = new ArrayList<>();
+        this.termPrincipleByLoanCycleValue = new ArrayList<>();
+        this.termNumberOfRepaymentByLoanCycleValue = new ArrayList<>();
+        this.termNominalInterestRateByLoanCycleValue = new ArrayList<>();
+
         JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
         SelectQuery selectQuery = null;
@@ -332,6 +342,7 @@ public class LoanPreviewPage extends Page {
         selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.REPAY_EVERY);
         selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.REPAYMENT_PERIOD_FREQUENCY_ENUM);
 
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.ANNUAL_NOMINAL_INTEREST_RATE);
         selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MIN_NOMINAL_INTEREST_RATE_PER_PERIOD);
         selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.NOMINAL_INTEREST_RATE_PER_PERIOD);
         selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MAX_NOMINAL_INTEREST_RATE_PER_PERIOD);
@@ -429,9 +440,9 @@ public class LoanPreviewPage extends Page {
 
         this.termVaryBasedOnLoanCycleValue = (Boolean) loanObject.get("use_borrower_cycle");
 
-        this.termPrincipleMinimumValue = (Double) loanObject.get("min_principal_amount");
-        this.termPrincipleDefaultValue = (Double) loanObject.get("principle_amount");
-        this.termPrincipleMaximumValue = (Double) loanObject.get("max_principal_amount");
+        this.termPrincipalMinimumValue = (Double) loanObject.get("min_principal_amount");
+        this.termPrincipalDefaultValue = (Double) loanObject.get("principal_amount");
+        this.termPrincipalMaximumValue = (Double) loanObject.get("max_principal_amount");
 
         this.termNumberOfRepaymentMinimumValue = (Long) loanObject.get("min_number_of_repayments");
         this.termNumberOfRepaymentDefaultValue = (Long) loanObject.get("number_of_repayments");
@@ -510,7 +521,7 @@ public class LoanPreviewPage extends Page {
 
         this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue = (Long) loanObject.get("grace_on_arrears_ageing");
         this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue = (Long) loanObject.get("overdue_days_for_npa");
-        this.settingPrincipleThresholdForLastInstalmentValue = (Double) loanObject.get("principle_threshold_for_last_installment");
+        this.settingPrincipleThresholdForLastInstalmentValue = (Double) loanObject.get("principal_threshold_for_last_installment");
 
         this.settingAllowFixingOfTheInstallmentAmountValue = (Boolean) loanObject.get("can_define_fixed_emi_amount");
 
@@ -621,7 +632,7 @@ public class LoanPreviewPage extends Page {
         chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.INCOME_OR_LIABILITY_ACCOUNT_ID);
         chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.TAX_GROUP_ID);
         chargeQuery.addWhere(MProductLoanCharge.NAME + "." + MProductLoanCharge.Field.PRODUCT_LOAN_ID + " = '" + this.loanId + "'");
-        List<Map<String, Object>> chargeObjects = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
+        List<Map<String, Object>> chargeObjects = named.queryForList(chargeQuery.toSQL(), chargeQuery.getParam());
 
         for (Map<String, Object> chargeObject : chargeObjects) {
             Boolean is_penalty = (Boolean) chargeObject.get("is_penalty");

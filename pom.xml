@@ -55,20 +55,6 @@
 
 		<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-elasticsearch</artifactId> 
 			<version>${spring-data.version}</version> </dependency> -->
-		<!-- TOMCAT -->
-		<dependency>
-			<groupId>org.apache.tomcat.embed</groupId>
-			<artifactId>tomcat-embed-core</artifactId>
-			<version>${org.apache.tomcat.embed.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.tomcat.embed</groupId>
-			<artifactId>tomcat-embed-jasper</artifactId>
-			<version>${org.apache.tomcat.embed.version}</version>
-			<scope>test</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -215,6 +201,21 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 			<version>${log4j.version}</version>
+		</dependency>
+
+		<!-- TOMCAT -->
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-core</artifactId>
+			<version>${org.apache.tomcat.embed.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<version>${org.apache.tomcat.embed.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- JUNIT DEPENDENCY FOR TESTING -->
@@ -364,7 +365,7 @@
 					<properties>
 						<property>
 							<name>listener</name>
-							<value>com.angkorteam.fintech.junit.IntegrationUnit</value>
+							<value>com.angkorteam.fintech.junit.EmbededTomcat</value>
 						</property>
 					</properties>
 					<includes>

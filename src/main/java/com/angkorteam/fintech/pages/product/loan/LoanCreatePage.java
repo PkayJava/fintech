@@ -540,10 +540,13 @@ public class LoanCreatePage extends Page {
 
         builder.withOverdueDaysForNPA(this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue);
 
-        builder.withMinimumGap(this.settingVariableInstallmentsMinimumValue);
-        builder.withMaximumGap(this.settingVariableInstallmentsMaximumValue);
+        boolean settingVariableInstallmentsAllowedValue = this.settingVariableInstallmentsAllowedValue == null ? false : this.settingVariableInstallmentsAllowedValue;
+        builder.withAllowVariableInstallments(settingVariableInstallmentsAllowedValue);
+        if (settingVariableInstallmentsAllowedValue) {
+            builder.withMinimumGap(this.settingVariableInstallmentsMinimumValue);
+            builder.withMaximumGap(this.settingVariableInstallmentsMaximumValue);
+        }
         builder.withAccountMovesOutOfNPAOnlyOnArrearsCompletion(this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue == null ? false : this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue);
-        builder.withAllowVariableInstallments(this.settingVariableInstallmentsAllowedValue == null ? false : this.settingVariableInstallmentsAllowedValue);
         builder.withCanUseForTopup(this.settingAllowedToBeUsedForProvidingTopupLoansValue == null ? false : this.settingAllowedToBeUsedForProvidingTopupLoansValue);
 
         if (this.settingRepaymentStrategyValue != null) {
