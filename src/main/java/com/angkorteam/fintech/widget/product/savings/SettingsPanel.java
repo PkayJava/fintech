@@ -7,6 +7,8 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.ValidationError;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.angkorteam.fintech.ddl.MTaxGroup;
 import com.angkorteam.fintech.layout.Size;
@@ -26,6 +28,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.angkorteam.framework.wicket.markup.html.form.validation.LamdaFormValidator;
 
 public class SettingsPanel extends Panel {
 
@@ -113,20 +116,24 @@ public class SettingsPanel extends Panel {
     protected UIBlock settingEnableDormancyTrackingBlock;
     protected UIContainer settingEnableDormancyTrackingIContainer;
     protected CheckBox settingEnableDormancyTrackingField;
+    protected PropertyModel<Boolean> settingEnableDormancyTrackingValue;
 
     protected UIBlock settingNumberOfDaysToInactiveSubStatusBlock;
     protected UIContainer settingNumberOfDaysToInactiveSubStatusIContainer;
     protected TextField<Long> settingNumberOfDaysToInactiveSubStatusField;
+    protected PropertyModel<Long> settingNumberOfDaysToInactiveSubStatusValue;
 
     protected UIRow row8;
 
     protected UIBlock settingNumberOfDaysToDormantSubStatusBlock;
     protected UIContainer settingNumberOfDaysToDormantSubStatusIContainer;
     protected TextField<Long> settingNumberOfDaysToDormantSubStatusField;
+    protected PropertyModel<Long> settingNumberOfDaysToDormantSubStatusValue;
 
     protected UIBlock settingNumberOfDaysToEscheatBlock;
     protected UIContainer settingNumberOfDaysToEscheatIContainer;
     protected TextField<Long> settingNumberOfDaysToEscheatField;
+    protected PropertyModel<Long> settingNumberOfDaysToEscheatValue;
 
     public SettingsPanel(String id, Page itemPage) {
         super(id);
@@ -139,6 +146,11 @@ public class SettingsPanel extends Panel {
         this.tab = new PropertyModel<>(this.itemPage, "tab");
         this.settingLockInTypeProvider = new LockInTypeProvider();
         this.settingTaxGroupProvider = new SingleChoiceProvider(MTaxGroup.NAME, MTaxGroup.Field.ID, MTaxGroup.Field.NAME);
+
+        this.settingEnableDormancyTrackingValue = new PropertyModel<>(this.itemPage, "settingEnableDormancyTrackingValue");
+        this.settingNumberOfDaysToEscheatValue = new PropertyModel<>(this.itemPage, "settingNumberOfDaysToEscheatValue");
+        this.settingNumberOfDaysToDormantSubStatusValue = new PropertyModel<>(this.itemPage, "settingNumberOfDaysToDormantSubStatusValue");
+        this.settingNumberOfDaysToInactiveSubStatusValue = new PropertyModel<>(this.itemPage, "settingNumberOfDaysToInactiveSubStatusValue");
     }
 
     @Override
@@ -256,13 +268,13 @@ public class SettingsPanel extends Panel {
 
         this.settingEnableDormancyTrackingBlock = this.row7.newUIBlock("settingEnableDormancyTrackingBlock", Size.Six_6);
         this.settingEnableDormancyTrackingIContainer = this.settingEnableDormancyTrackingBlock.newUIContainer("settingEnableDormancyTrackingIContainer");
-        this.settingEnableDormancyTrackingField = new CheckBox("settingEnableDormancyTrackingField", new PropertyModel<>(this.itemPage, "settingEnableDormancyTrackingValue"));
+        this.settingEnableDormancyTrackingField = new CheckBox("settingEnableDormancyTrackingField", this.settingEnableDormancyTrackingValue);
         this.settingEnableDormancyTrackingIContainer.add(this.settingEnableDormancyTrackingField);
         this.settingEnableDormancyTrackingIContainer.newFeedback("settingEnableDormancyTrackingFeedback", this.settingEnableDormancyTrackingField);
 
         this.settingNumberOfDaysToInactiveSubStatusBlock = this.row7.newUIBlock("settingNumberOfDaysToInactiveSubStatusBlock", Size.Six_6);
         this.settingNumberOfDaysToInactiveSubStatusIContainer = this.settingNumberOfDaysToInactiveSubStatusBlock.newUIContainer("settingNumberOfDaysToInactiveSubStatusIContainer");
-        this.settingNumberOfDaysToInactiveSubStatusField = new TextField<>("settingNumberOfDaysToInactiveSubStatusField", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToInactiveSubStatusValue"));
+        this.settingNumberOfDaysToInactiveSubStatusField = new TextField<>("settingNumberOfDaysToInactiveSubStatusField", this.settingNumberOfDaysToInactiveSubStatusValue);
         this.settingNumberOfDaysToInactiveSubStatusIContainer.add(this.settingNumberOfDaysToInactiveSubStatusField);
         this.settingNumberOfDaysToInactiveSubStatusIContainer.newFeedback("settingNumberOfDaysToInactiveSubStatusFeedback", this.settingNumberOfDaysToInactiveSubStatusField);
 
@@ -270,13 +282,13 @@ public class SettingsPanel extends Panel {
 
         this.settingNumberOfDaysToEscheatBlock = this.row8.newUIBlock("settingNumberOfDaysToEscheatBlock", Size.Six_6);
         this.settingNumberOfDaysToEscheatIContainer = this.settingNumberOfDaysToEscheatBlock.newUIContainer("settingNumberOfDaysToEscheatIContainer");
-        this.settingNumberOfDaysToEscheatField = new TextField<>("settingNumberOfDaysToEscheatField", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToEscheatValue"));
+        this.settingNumberOfDaysToEscheatField = new TextField<>("settingNumberOfDaysToEscheatField", this.settingNumberOfDaysToEscheatValue);
         this.settingNumberOfDaysToEscheatIContainer.add(this.settingNumberOfDaysToEscheatField);
         this.settingNumberOfDaysToEscheatIContainer.newFeedback("settingNumberOfDaysToEscheatFeedback", this.settingNumberOfDaysToEscheatField);
 
         this.settingNumberOfDaysToDormantSubStatusBlock = this.row8.newUIBlock("settingNumberOfDaysToDormantSubStatusBlock", Size.Six_6);
         this.settingNumberOfDaysToDormantSubStatusIContainer = this.settingNumberOfDaysToDormantSubStatusBlock.newUIContainer("settingNumberOfDaysToDormantSubStatusIContainer");
-        this.settingNumberOfDaysToDormantSubStatusField = new TextField<>("settingNumberOfDaysToDormantSubStatusField", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToDormantSubStatusValue"));
+        this.settingNumberOfDaysToDormantSubStatusField = new TextField<>("settingNumberOfDaysToDormantSubStatusField", this.settingNumberOfDaysToDormantSubStatusValue);
         this.settingNumberOfDaysToDormantSubStatusIContainer.add(this.settingNumberOfDaysToDormantSubStatusField);
         this.settingNumberOfDaysToDormantSubStatusIContainer.newFeedback("settingNumberOfDaysToDormantSubStatusFeedback", this.settingNumberOfDaysToDormantSubStatusField);
 
@@ -284,57 +296,90 @@ public class SettingsPanel extends Panel {
 
     @Override
     protected void configureMetaData() {
-        this.settingNumberOfDaysToEscheatField.setLabel(Model.of("Number of Days to Escheat"));
-        this.settingNumberOfDaysToEscheatField.add(new OnChangeAjaxBehavior());
+        this.settingMinimumOpeningBalanceField.setLabel(Model.of("Minimum opening balance"));
+        this.settingMinimumOpeningBalanceField.add(new OnChangeAjaxBehavior());
+        this.settingMinimumOpeningBalanceField.setRequired(true);
+        this.settingMinimumOpeningBalanceField.add(RangeValidator.minimum(0d));
 
-        this.settingNumberOfDaysToDormantSubStatusField.setLabel(Model.of("Number of Days to Dormant sub-status"));
-        this.settingNumberOfDaysToDormantSubStatusField.add(new OnChangeAjaxBehavior());
+        this.settingLockInPeriodField.setLabel(Model.of("Lock-in period"));
+        this.settingLockInPeriodField.add(new OnChangeAjaxBehavior());
+        this.settingLockInPeriodField.setRequired(true);
+        this.settingLockInPeriodField.add(RangeValidator.minimum(1l));
 
-        this.settingNumberOfDaysToInactiveSubStatusField.setLabel(Model.of("Number of Days to Inactive sub-status"));
-        this.settingNumberOfDaysToInactiveSubStatusField.add(new OnChangeAjaxBehavior());
+        this.settingLockInTypeField.setLabel(Model.of("Type"));
+        this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
+        this.settingLockInTypeField.setRequired(true);
 
-        this.settingEnableDormancyTrackingField.add(new OnChangeAjaxBehavior(this::settingEnableDormancyTrackingFieldUpdate));
-
-        this.settingTaxGroupField.setLabel(Model.of("Tax Group"));
-        this.settingTaxGroupField.add(new OnChangeAjaxBehavior());
-
-        this.settingWithholdTaxApplicableField.add(new OnChangeAjaxBehavior(this::settingWithholdTaxApplicableFieldUpdate));
-
-        this.settingMinOverdraftRequiredForInterestCalculationField.setLabel(Model.of("Min Overdraft Required For Interest Calculation"));
-        this.settingMinOverdraftRequiredForInterestCalculationField.add(new OnChangeAjaxBehavior());
-
-        this.settingNominalAnnualInterestForOverdraftField.setLabel(Model.of("Nominal annual interest for overdraft"));
-        this.settingNominalAnnualInterestForOverdraftField.add(new OnChangeAjaxBehavior());
-
-        this.settingMaximumOverdraftAmountLimitField.setLabel(Model.of("Maximum Overdraft Amount Limit"));
-        this.settingMaximumOverdraftAmountLimitField.add(new OnChangeAjaxBehavior());
-
-        this.settingOverdraftAllowedField.add(new OnChangeAjaxBehavior(this::settingOverdraftAllowedFieldUpdate));
-
-        this.settingMinimumBalanceField.add(new OnChangeAjaxBehavior());
-        this.settingMinimumBalanceField.setLabel(Model.of("Minimum Balance"));
-
-        this.settingEnforceMinimumBalanceField.add(new OnChangeAjaxBehavior());
+        this.settingApplyWithdrawalFeeForTransferField.add(new OnChangeAjaxBehavior());
 
         this.settingBalanceRequiredForInterestCalculationField.setLabel(Model.of("Balance Required For Interest Calculation"));
         this.settingBalanceRequiredForInterestCalculationField.add(new OnChangeAjaxBehavior());
 
-        this.settingApplyWithdrawalFeeForTransferField.add(new OnChangeAjaxBehavior());
+        this.settingEnforceMinimumBalanceField.add(new OnChangeAjaxBehavior());
 
-        this.settingLockInTypeField.setLabel(Model.of("Type"));
-        this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
+        this.settingMinimumBalanceField.add(new OnChangeAjaxBehavior());
+        this.settingMinimumBalanceField.setLabel(Model.of("Minimum Balance"));
 
-        this.settingLockInPeriodField.setLabel(Model.of("Lock-in period"));
-        this.settingLockInPeriodField.add(new OnChangeAjaxBehavior());
+        this.settingOverdraftAllowedField.add(new OnChangeAjaxBehavior(this::settingOverdraftAllowedFieldUpdate));
 
-        this.settingMinimumOpeningBalanceField.setLabel(Model.of("Minimum opening balance"));
-        this.settingMinimumOpeningBalanceField.add(new OnChangeAjaxBehavior());
+        this.settingMinOverdraftRequiredForInterestCalculationField.setLabel(Model.of("Min Overdraft Required For Interest Calculation"));
+        this.settingMinOverdraftRequiredForInterestCalculationField.add(new OnChangeAjaxBehavior());
+        this.settingMinOverdraftRequiredForInterestCalculationField.setRequired(true);
+        this.settingMinOverdraftRequiredForInterestCalculationField.add(RangeValidator.minimum(0d));
+
+        this.settingNominalAnnualInterestForOverdraftField.setLabel(Model.of("Nominal annual interest for overdraft"));
+        this.settingNominalAnnualInterestForOverdraftField.add(new OnChangeAjaxBehavior());
+        this.settingNominalAnnualInterestForOverdraftField.setRequired(true);
+        this.settingNominalAnnualInterestForOverdraftField.add(RangeValidator.minimum(0d));
+
+        this.settingMaximumOverdraftAmountLimitField.setLabel(Model.of("Maximum Overdraft Amount Limit"));
+        this.settingMaximumOverdraftAmountLimitField.add(new OnChangeAjaxBehavior());
+        this.settingMaximumOverdraftAmountLimitField.setRequired(true);
+        this.settingMaximumOverdraftAmountLimitField.add(RangeValidator.minimum(0d));
+
+        this.settingWithholdTaxApplicableField.add(new OnChangeAjaxBehavior(this::settingWithholdTaxApplicableFieldUpdate));
+
+        this.settingTaxGroupField.setLabel(Model.of("Tax Group"));
+        this.settingTaxGroupField.add(new OnChangeAjaxBehavior());
+        this.settingTaxGroupField.setRequired(true);
+
+        this.settingEnableDormancyTrackingField.add(new OnChangeAjaxBehavior(this::settingEnableDormancyTrackingFieldUpdate));
+
+        this.settingNumberOfDaysToInactiveSubStatusField.setLabel(Model.of("Number of Days to Inactive sub-status"));
+        this.settingNumberOfDaysToInactiveSubStatusField.add(new OnChangeAjaxBehavior());
+        this.settingNumberOfDaysToInactiveSubStatusField.setRequired(true);
+        this.settingNumberOfDaysToInactiveSubStatusField.add(RangeValidator.minimum(1l));
+
+        this.settingNumberOfDaysToDormantSubStatusField.setLabel(Model.of("Number of Days to Dormant sub-status"));
+        this.settingNumberOfDaysToDormantSubStatusField.add(new OnChangeAjaxBehavior());
+        this.settingNumberOfDaysToDormantSubStatusField.setRequired(true);
+        this.settingNumberOfDaysToDormantSubStatusField.add(RangeValidator.minimum(1l));
+
+        this.settingNumberOfDaysToEscheatField.setLabel(Model.of("Number of Days to Escheat"));
+        this.settingNumberOfDaysToEscheatField.add(new OnChangeAjaxBehavior());
+        this.settingNumberOfDaysToEscheatField.setRequired(true);
+        this.settingNumberOfDaysToEscheatField.add(RangeValidator.minimum(1l));
 
         settingOverdraftAllowedFieldUpdate(null);
 
         settingWithholdTaxApplicableFieldUpdate(null);
 
         settingEnableDormancyTrackingFieldUpdate(null);
+
+        this.form.add(new LamdaFormValidator(this::dormancyTrackingValidation, this.settingNumberOfDaysToInactiveSubStatusField, this.settingNumberOfDaysToDormantSubStatusField, this.settingNumberOfDaysToEscheatField));
+    }
+
+    protected void dormancyTrackingValidation(Form<?> form) {
+        if (this.settingEnableDormancyTrackingValue.getObject() != null && this.settingEnableDormancyTrackingValue.getObject()) {
+            if (this.settingNumberOfDaysToInactiveSubStatusValue.getObject() != null && this.settingNumberOfDaysToDormantSubStatusValue.getObject() != null && this.settingNumberOfDaysToEscheatValue.getObject() != null) {
+                if (this.settingNumberOfDaysToDormantSubStatusValue.getObject() <= this.settingNumberOfDaysToInactiveSubStatusValue.getObject()) {
+                    this.settingNumberOfDaysToInactiveSubStatusField.error(new ValidationError("Invalid"));
+                }
+                if (this.settingNumberOfDaysToEscheatValue.getObject() <= this.settingNumberOfDaysToDormantSubStatusValue.getObject()) {
+                    this.settingNumberOfDaysToDormantSubStatusField.error(new ValidationError("Invalid"));
+                }
+            }
+        }
     }
 
     protected boolean settingOverdraftAllowedFieldUpdate(AjaxRequestTarget target) {
@@ -362,8 +407,7 @@ public class SettingsPanel extends Panel {
     }
 
     protected boolean settingEnableDormancyTrackingFieldUpdate(AjaxRequestTarget target) {
-        PropertyModel<Boolean> settingEnableDormancyTrackingValue = new PropertyModel<>(this.itemPage, "settingEnableDormancyTrackingValue");
-        boolean visible = settingEnableDormancyTrackingValue.getObject() != null && settingEnableDormancyTrackingValue.getObject();
+        boolean visible = this.settingEnableDormancyTrackingValue.getObject() != null && this.settingEnableDormancyTrackingValue.getObject();
         this.settingNumberOfDaysToInactiveSubStatusIContainer.setVisible(visible);
         this.settingNumberOfDaysToDormantSubStatusIContainer.setVisible(visible);
         this.settingNumberOfDaysToEscheatIContainer.setVisible(visible);

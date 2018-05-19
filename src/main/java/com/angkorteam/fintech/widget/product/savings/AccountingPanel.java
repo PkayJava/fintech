@@ -390,18 +390,40 @@ public class AccountingPanel extends Panel {
     @Override
     protected void configureMetaData() {
         this.cashOverdraftInterestIncomeField.add(new OnChangeAjaxBehavior());
+        this.cashOverdraftInterestIncomeField.setRequired(true);
+
         this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
+        this.cashIncomeFromFeeField.setRequired(true);
+
         this.cashIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
+        this.cashIncomeFromPenaltyField.setRequired(true);
+
         this.cashWriteOffField.add(new OnChangeAjaxBehavior());
+        this.cashWriteOffField.setRequired(true);
+
         this.cashInterestOnSavingField.add(new OnChangeAjaxBehavior());
-        this.cashEscheatLiabilityField.add(new OnChangeAjaxBehavior());
+        this.cashInterestOnSavingField.setRequired(true);
+
         this.cashSavingControlField.add(new OnChangeAjaxBehavior());
+        this.cashSavingControlField.setRequired(true);
+
         this.cashSavingTransferInSuspenseField.add(new OnChangeAjaxBehavior());
+        this.cashSavingTransferInSuspenseField.setRequired(true);
+
         this.cashOverdraftPortfolioField.add(new OnChangeAjaxBehavior());
+        this.cashOverdraftPortfolioField.setRequired(true);
+
         this.cashSavingReferenceField.add(new OnChangeAjaxBehavior());
+        this.cashSavingReferenceField.setRequired(true);
+
         this.accountingField.setRequired(true);
+
         PropertyModel<Boolean> settingEnableDormancyTrackingValue = new PropertyModel<>(this.itemPage, "settingEnableDormancyTrackingValue");
         this.cashEscheatLiabilityIContainer.setVisible(settingEnableDormancyTrackingValue.getObject() != null && settingEnableDormancyTrackingValue.getObject());
+
+        this.cashEscheatLiabilityField.add(new OnChangeAjaxBehavior());
+        this.cashEscheatLiabilityField.setRequired(true);
+
         accountingFieldUpdate(null);
     }
 

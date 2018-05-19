@@ -1,12 +1,12 @@
 package com.angkorteam.fintech;
 
 import java.io.File;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
+import java.io.IOException;
 
 import javax.servlet.ServletException;
 
 import org.apache.catalina.LifecycleException;
+import org.apache.catalina.LifecycleState;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.core.StandardContext;
@@ -23,17 +23,18 @@ import org.apache.coyote.http11.Http11Nio2Protocol;
  */
 public class Start {
 
+    private static int PORT = 9080;
+
     /**
      * Main function, starts the jetty server.
      *
      * @param args
      * @throws ServletException
      * @throws LifecycleException
-     * @throws Exception
-     * @throws NoSuchAlgorithmException
-     * @throws UnrecoverableKeyException
+     * @throws InterruptedException
+     * @throws IOException
      */
-    public static void main(String[] args) throws ServletException, LifecycleException {
+    public static void main(String[] args) throws ServletException, LifecycleException, InterruptedException, IOException {
 
         Tomcat tomcat = new Tomcat();
 
@@ -53,6 +54,14 @@ public class Start {
         context.setResources(root);
 
         tomcat.start();
+
+        while (tomcat.getServer().getState() != LifecycleState.STARTED) {
+            Thread.sleep(1000);
+        }
+
+        Runtime.getRuntime().exec("/usr/bin/firefox http://localhost:" + PORT);
+        Runtime.getRuntime().exec("/usr/bin/firefox https://localhost:8443/community-app/app/?baseApiUrl=https://localhost:8443&tenantIdentifier=default#/");
+
         tomcat.getServer().await();
 
     }
