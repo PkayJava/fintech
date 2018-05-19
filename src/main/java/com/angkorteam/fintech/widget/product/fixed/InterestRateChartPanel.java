@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.widget.product.fixed;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.ValidationError;
 
 import com.angkorteam.fintech.layout.Size;
 import com.angkorteam.fintech.layout.UIBlock;
@@ -43,6 +45,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.validation.LamdaFormValidator;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -67,10 +70,12 @@ public class InterestRateChartPanel extends Panel {
     protected UIBlock interestRateValidFromDateBlock;
     protected UIContainer interestRateValidFromDateIContainer;
     protected DateTextField interestRateValidFromDateField;
+    protected PropertyModel<Date> interestRateValidFromDateValue;
 
     protected UIBlock interestRateValidEndDateBlock;
     protected UIContainer interestRateValidEndDateIContainer;
     protected DateTextField interestRateValidEndDateField;
+    protected PropertyModel<Date> interestRateValidEndDateValue;
 
     protected UIRow row2;
 
@@ -110,6 +115,9 @@ public class InterestRateChartPanel extends Panel {
         this.interestRateChartColumn.add(new TextColumn(Model.of("Description"), "description", "description", this::interestRateChartColumn));
         this.interestRateChartColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::interestRateChartAction, this::interestRateChartClick));
         this.interestRateChartProvider = new ListDataProvider(this.interestRateChartValue.getObject());
+
+        this.interestRateValidFromDateValue = new PropertyModel<>(this.itemPage, "interestRateValidFromDateValue");
+        this.interestRateValidEndDateValue = new PropertyModel<>(this.itemPage, "interestRateValidEndDateValue");
     }
 
     @Override
@@ -137,13 +145,13 @@ public class InterestRateChartPanel extends Panel {
 
         this.interestRateValidFromDateBlock = this.row1.newUIBlock("interestRateValidFromDateBlock", Size.Six_6);
         this.interestRateValidFromDateIContainer = this.interestRateValidFromDateBlock.newUIContainer("interestRateValidFromDateIContainer");
-        this.interestRateValidFromDateField = new DateTextField("interestRateValidFromDateField", new PropertyModel<>(this.itemPage, "interestRateValidFromDateValue"));
+        this.interestRateValidFromDateField = new DateTextField("interestRateValidFromDateField", this.interestRateValidFromDateValue);
         this.interestRateValidFromDateIContainer.add(this.interestRateValidFromDateField);
         this.interestRateValidFromDateIContainer.newFeedback("interestRateValidFromDateFeedback", this.interestRateValidFromDateField);
 
         this.interestRateValidEndDateBlock = this.row1.newUIBlock("interestRateValidEndDateBlock", Size.Six_6);
         this.interestRateValidEndDateIContainer = this.interestRateValidEndDateBlock.newUIContainer("interestRateValidEndDateIContainer");
-        this.interestRateValidEndDateField = new DateTextField("interestRateValidEndDateField", new PropertyModel<>(this.itemPage, "interestRateValidEndDateValue"));
+        this.interestRateValidEndDateField = new DateTextField("interestRateValidEndDateField", this.interestRateValidEndDateValue);
         this.interestRateValidEndDateIContainer.add(this.interestRateValidEndDateField);
         this.interestRateValidEndDateIContainer.newFeedback("interestRateValidEndDateFeedback", this.interestRateValidEndDateField);
 
@@ -179,7 +187,18 @@ public class InterestRateChartPanel extends Panel {
 
         this.interestRateValidFromDateField.setLabel(Model.of("Valid From Date"));
         this.interestRateValidFromDateField.add(new OnChangeAjaxBehavior());
+        this.interestRateValidFromDateField.setRequired(true);
 
+        this.form.add(new LamdaFormValidator(this::interestRateValidValidation, this.interestRateValidEndDateField, this.interestRateValidFromDateField));
+
+    }
+
+    protected void interestRateValidValidation(Form<?> form) {
+        if (this.interestRateValidEndDateValue.getObject() != null) {
+            if (!this.interestRateValidEndDateValue.getObject().after(this.interestRateValidFromDateValue.getObject())) {
+                this.interestRateValidEndDateField.error(new ValidationError("Invalid"));
+            }
+        }
     }
 
     protected void modalWindowClose(String popupName, String signalId, AjaxRequestTarget target) {

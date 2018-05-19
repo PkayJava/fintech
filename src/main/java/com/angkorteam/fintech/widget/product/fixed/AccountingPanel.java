@@ -325,21 +325,27 @@ public class AccountingPanel extends Panel {
     protected void configureMetaData() {
         this.cashIncomeFromPenaltyField.setLabel(Model.of("Income From Penalties"));
         this.cashIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
+        this.cashIncomeFromPenaltyField.setRequired(true);
 
         this.cashIncomeFromFeeField.setLabel(Model.of("Income From Fees"));
         this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
+        this.cashIncomeFromFeeField.setRequired(true);
 
         this.cashInterestOnSavingField.setLabel(Model.of("Interest On Savings"));
         this.cashInterestOnSavingField.add(new OnChangeAjaxBehavior());
+        this.cashInterestOnSavingField.setRequired(true);
 
         this.cashSavingTransferInSuspenseField.setLabel(Model.of("Savings Transfers In Suspense"));
         this.cashSavingTransferInSuspenseField.add(new OnChangeAjaxBehavior());
+        this.cashSavingTransferInSuspenseField.setRequired(true);
 
         this.cashSavingControlField.setLabel(Model.of("Saving Control"));
         this.cashSavingControlField.add(new OnChangeAjaxBehavior());
+        this.cashSavingControlField.setRequired(true);
 
         this.cashSavingReferenceField.setLabel(Model.of("Saving Reference"));
         this.cashSavingReferenceField.add(new OnChangeAjaxBehavior());
+        this.cashSavingReferenceField.setRequired(true);
 
         this.accountingField.setRequired(true);
         accountingFieldUpdate(null);

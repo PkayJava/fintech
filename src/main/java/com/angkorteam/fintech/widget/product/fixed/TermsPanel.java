@@ -6,6 +6,8 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.ValidationError;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.angkorteam.fintech.dto.enums.DayInYear;
 import com.angkorteam.fintech.layout.Size;
@@ -19,7 +21,6 @@ import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
 import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
 import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
 import com.angkorteam.fintech.widget.Panel;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
@@ -28,6 +29,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.angkorteam.framework.wicket.markup.html.form.validation.LamdaFormValidator;
 
 public class TermsPanel extends Panel {
 
@@ -45,17 +47,17 @@ public class TermsPanel extends Panel {
     protected UIBlock termDefaultDepositAmountBlock;
     protected UIContainer termDefaultDepositAmountIContainer;
     protected TextField<Double> termDefaultDepositAmountField;
-    protected TextFeedbackPanel termDefaultDepositAmountFeedback;
+    protected PropertyModel<Double> termDefaultDepositAmountValue;
 
     protected UIBlock termMinimumDepositAmountBlock;
     protected UIContainer termMinimumDepositAmountIContainer;
     protected TextField<Double> termMinimumDepositAmountField;
-    protected TextFeedbackPanel termMinimumDepositAmountFeedback;
+    protected PropertyModel<Double> termMinimumDepositAmountValue;
 
     protected UIBlock termMaximumDepositAmountBlock;
     protected UIContainer termMaximumDepositAmountIContainer;
     protected TextField<Double> termMaximumDepositAmountField;
-    protected TextFeedbackPanel termMaximumDepositAmountFeedback;
+    protected PropertyModel<Double> termMaximumDepositAmountValue;
 
     protected UIRow row2;
 
@@ -63,13 +65,11 @@ public class TermsPanel extends Panel {
     protected UIContainer termInterestCompoundingPeriodIContainer;
     protected InterestCompoundingPeriodProvider termInterestCompoundingPeriodProvider;
     protected Select2SingleChoice<Option> termInterestCompoundingPeriodField;
-    protected TextFeedbackPanel termInterestCompoundingPeriodFeedback;
 
     protected UIBlock termInterestPostingPeriodBlock;
     protected UIContainer termInterestPostingPeriodIContainer;
     protected InterestPostingPeriodProvider termInterestPostingPeriodProvider;
     protected Select2SingleChoice<Option> termInterestPostingPeriodField;
-    protected TextFeedbackPanel termInterestPostingPeriodFeedback;
 
     protected UIRow row3;
 
@@ -77,13 +77,11 @@ public class TermsPanel extends Panel {
     protected UIContainer termInterestCalculatedUsingIContainer;
     protected InterestCalculatedUsingProvider termInterestCalculatedUsingProvider;
     protected Select2SingleChoice<Option> termInterestCalculatedUsingField;
-    protected TextFeedbackPanel termInterestCalculatedUsingFeedback;
 
     protected UIBlock termDayInYearBlock;
     protected UIContainer termDayInYearIContainer;
     protected DayInYearProvider termDayInYearProvider;
     protected Select2SingleChoice<Option> termDayInYearField;
-    protected TextFeedbackPanel termDayInYearFeedback;
 
     public TermsPanel(String id, Page itemPage) {
         super(id);
@@ -98,6 +96,10 @@ public class TermsPanel extends Panel {
         this.termInterestPostingPeriodProvider = new InterestPostingPeriodProvider();
         this.termInterestCalculatedUsingProvider = new InterestCalculatedUsingProvider();
         this.termDayInYearProvider = new DayInYearProvider(DayInYear.D365, DayInYear.D360);
+
+        this.termDefaultDepositAmountValue = new PropertyModel<>(this.itemPage, "termDefaultDepositAmountValue");
+        this.termMinimumDepositAmountValue = new PropertyModel<>(this.itemPage, "termMinimumDepositAmountValue");
+        this.termMaximumDepositAmountValue = new PropertyModel<>(this.itemPage, "termMaximumDepositAmountValue");
     }
 
     @Override
@@ -121,19 +123,19 @@ public class TermsPanel extends Panel {
 
         this.termDefaultDepositAmountBlock = this.row1.newUIBlock("termDefaultDepositAmountBlock", Size.Four_4);
         this.termDefaultDepositAmountIContainer = this.termDefaultDepositAmountBlock.newUIContainer("termDefaultDepositAmountIContainer");
-        this.termDefaultDepositAmountField = new TextField<>("termDefaultDepositAmountField", new PropertyModel<>(this.itemPage, "termDefaultDepositAmountValue"));
+        this.termDefaultDepositAmountField = new TextField<>("termDefaultDepositAmountField", this.termDefaultDepositAmountValue);
         this.termDefaultDepositAmountIContainer.add(this.termDefaultDepositAmountField);
         this.termDefaultDepositAmountIContainer.newFeedback("termDefaultDepositAmountFeedback", this.termDefaultDepositAmountField);
 
         this.termMinimumDepositAmountBlock = this.row1.newUIBlock("termMinimumDepositAmountBlock", Size.Four_4);
         this.termMinimumDepositAmountIContainer = this.termMinimumDepositAmountBlock.newUIContainer("termMinimumDepositAmountIContainer");
-        this.termMinimumDepositAmountField = new TextField<>("termMinimumDepositAmountField", new PropertyModel<>(this.itemPage, "termMinimumDepositAmountValue"));
+        this.termMinimumDepositAmountField = new TextField<>("termMinimumDepositAmountField", this.termMinimumDepositAmountValue);
         this.termMinimumDepositAmountIContainer.add(this.termMinimumDepositAmountField);
         this.termMinimumDepositAmountIContainer.newFeedback("termMinimumDepositAmountFeedback", this.termMinimumDepositAmountField);
 
         this.termMaximumDepositAmountBlock = this.row1.newUIBlock("termMaximumDepositAmountBlock", Size.Four_4);
         this.termMaximumDepositAmountIContainer = this.termMaximumDepositAmountBlock.newUIContainer("termMaximumDepositAmountIContainer");
-        this.termMaximumDepositAmountField = new TextField<>("termMaximumDepositAmountField", new PropertyModel<>(this.itemPage, "termMaximumDepositAmountValue"));
+        this.termMaximumDepositAmountField = new TextField<>("termMaximumDepositAmountField", this.termMaximumDepositAmountValue);
         this.termMaximumDepositAmountIContainer.add(this.termMaximumDepositAmountField);
         this.termMaximumDepositAmountIContainer.newFeedback("termMaximumDepositAmountFeedback", this.termMaximumDepositAmountField);
 
@@ -171,27 +173,48 @@ public class TermsPanel extends Panel {
     protected void configureMetaData() {
         this.termDayInYearField.setLabel(Model.of("Days In Year"));
         this.termDayInYearField.add(new OnChangeAjaxBehavior());
+        this.termDayInYearField.setRequired(true);
 
         this.termInterestCalculatedUsingField.setLabel(Model.of("Interest calculated using"));
         this.termInterestCalculatedUsingField.add(new OnChangeAjaxBehavior());
+        this.termInterestCalculatedUsingField.setRequired(true);
 
         this.termInterestPostingPeriodField.setLabel(Model.of("Interest posting period"));
         this.termInterestPostingPeriodField.add(new OnChangeAjaxBehavior());
+        this.termInterestPostingPeriodField.setRequired(true);
 
         this.termInterestCompoundingPeriodField.setLabel(Model.of("Interest Compounding Period"));
         this.termInterestCompoundingPeriodField.add(new OnChangeAjaxBehavior());
+        this.termInterestCompoundingPeriodField.setRequired(true);
 
         this.termMaximumDepositAmountField.setLabel(Model.of("Maximum Deposit Amount"));
+        this.termMaximumDepositAmountField.add(new OnChangeAjaxBehavior());
+        this.termMaximumDepositAmountField.setRequired(true);
+        this.termMaximumDepositAmountField.add(RangeValidator.minimum(0d));
 
         this.termMinimumDepositAmountField.setLabel(Model.of("Minimum Deposit Amount"));
+        this.termMinimumDepositAmountField.add(new OnChangeAjaxBehavior());
+        this.termMinimumDepositAmountField.setRequired(true);
+        this.termMinimumDepositAmountField.add(RangeValidator.minimum(0d));
 
         this.termDefaultDepositAmountField.setLabel(Model.of("Default Deposit Amount"));
-
-        this.termInterestCompoundingPeriodField.setRequired(true);
-        this.termInterestPostingPeriodField.setRequired(true);
-        this.termInterestCalculatedUsingField.setRequired(true);
-        this.termDayInYearField.setRequired(true);
         this.termDefaultDepositAmountField.setRequired(true);
+        this.termDefaultDepositAmountField.add(new OnChangeAjaxBehavior());
+        this.termDefaultDepositAmountField.add(RangeValidator.minimum(0d));
+
+        this.form.add(new LamdaFormValidator(this::depositAmountValidation, this.termMinimumDepositAmountField, this.termMaximumDepositAmountField, this.termDefaultDepositAmountField));
+
+    }
+
+    protected void depositAmountValidation(Form<?> form) {
+        if (this.termMinimumDepositAmountValue.getObject() != null && this.termMaximumDepositAmountValue.getObject() != null && this.termDefaultDepositAmountValue.getObject() != null) {
+            if (this.termMinimumDepositAmountValue.getObject() >= this.termDefaultDepositAmountValue.getObject()) {
+                this.termMinimumDepositAmountField.error(new ValidationError("Invalid"));
+            }
+            if (this.termMaximumDepositAmountValue.getObject() <= this.termDefaultDepositAmountValue.getObject()) {
+                this.termMaximumDepositAmountField.error(new ValidationError("Invalid"));
+            }
+        }
     }
 
     protected void nextButtonSubmit(Button button) {

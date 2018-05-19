@@ -422,6 +422,7 @@ public class FixedPreviewPage extends Page {
             selectQuery.addField(AccProductMapping.Field.PAYMENT_TYPE);
             selectQuery.addField(AccProductMapping.Field.PRODUCT_TYPE);
             selectQuery.addField(AccProductMapping.Field.CHARGE_ID);
+            selectQuery.addField(AccProductMapping.Field.FINANCIAL_ACCOUNT_TYPE);
             selectQuery.addField(AccProductMapping.Field.GL_ACCOUNT_ID);
             selectQuery.addWhere(AccProductMapping.Field.PRODUCT_ID + " = :" + AccProductMapping.Field.PRODUCT_ID, this.fixedId);
             selectQuery.addWhere(AccProductMapping.Field.PRODUCT_TYPE + " = :" + AccProductMapping.Field.PRODUCT_TYPE, ProductType.Saving.getLiteral());

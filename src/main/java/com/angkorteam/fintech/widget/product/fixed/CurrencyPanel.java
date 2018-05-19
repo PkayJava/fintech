@@ -6,6 +6,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.angkorteam.fintech.layout.Size;
 import com.angkorteam.fintech.layout.UIBlock;
@@ -113,16 +114,18 @@ public class CurrencyPanel extends Panel {
     protected void configureMetaData() {
         this.currencyMultipleOfField.setLabel(Model.of("Multiples of"));
         this.currencyMultipleOfField.add(new OnChangeAjaxBehavior());
+        this.currencyMultipleOfField.setRequired(true);
+        this.currencyMultipleOfField.add(RangeValidator.minimum(1l));
 
         this.currencyDecimalPlaceField.setLabel(Model.of("Decimal places"));
         this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
+        this.currencyDecimalPlaceField.setRequired(true);
+        this.currencyDecimalPlaceField.add(RangeValidator.minimum(1l));
 
         this.currencyCodeField.setLabel(Model.of("Currency"));
         this.currencyCodeField.add(new OnChangeAjaxBehavior());
-
         this.currencyCodeField.setRequired(true);
-        this.currencyDecimalPlaceField.setRequired(true);
-        this.currencyMultipleOfField.setRequired(true);
+
     }
 
     protected void nextButtonSubmit(Button button) {

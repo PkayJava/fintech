@@ -512,7 +512,7 @@ public class PreviewPanel extends Panel {
         this.cashInterestOnSavingVContainer.add(this.cashInterestOnSavingView);
 
         this.cashIncomeFromFeeBlock = this.row12.newUIBlock("cashIncomeFromFeeBlock", Size.Four_4);
-        this.cashIncomeFromFeeVContainer = this.cashInterestOnSavingBlock.newUIContainer("cashIncomeFromFeeVContainer");
+        this.cashIncomeFromFeeVContainer = this.cashIncomeFromFeeBlock.newUIContainer("cashIncomeFromFeeVContainer");
         this.cashIncomeFromFeeView = new ReadOnlyView("cashIncomeFromFeeView", new PropertyModel<>(this.itemPage, "cashIncomeFromFeeValue"));
         this.cashIncomeFromFeeVContainer.add(this.cashIncomeFromFeeView);
 
@@ -525,7 +525,7 @@ public class PreviewPanel extends Panel {
         this.advancedAccountingRuleMaster.setOutputMarkupId(true);
         this.form.add(this.advancedAccountingRuleMaster);
 
-        this.row13 = UIRow.newUIRow("row13", this.cashMaster);
+        this.row13 = UIRow.newUIRow("row13", this.advancedAccountingRuleMaster);
 
         this.row13Block1 = this.row13.newUIBlock("row13Block1", Size.Twelve_12);
 
