@@ -7,6 +7,8 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.ValidationError;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.angkorteam.fintech.layout.Size;
 import com.angkorteam.fintech.layout.UIBlock;
@@ -25,6 +27,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.angkorteam.framework.wicket.markup.html.form.validation.LamdaFormValidator;
 
 public class SettingsPanel extends Panel {
 
@@ -42,14 +45,17 @@ public class SettingsPanel extends Panel {
     protected UIBlock settingSharePerClientMinimumBlock;
     protected UIContainer settingSharePerClientMinimumIContainer;
     protected TextField<Long> settingSharePerClientMinimumField;
+    protected PropertyModel<Long> settingSharePerClientMinimumValue;
 
     protected UIBlock settingSharePerClientDefaultBlock;
     protected UIContainer settingSharePerClientDefaultIContainer;
     protected TextField<Long> settingSharePerClientDefaultField;
+    protected PropertyModel<Long> settingSharePerClientDefaultValue;
 
     protected UIBlock settingSharePerClientMaximumBlock;
     protected UIContainer settingSharePerClientMaximumIContainer;
     protected TextField<Long> settingSharePerClientMaximumField;
+    protected PropertyModel<Long> settingSharePerClientMaximumValue;
 
     protected UIRow row2;
 
@@ -96,6 +102,10 @@ public class SettingsPanel extends Panel {
         this.tab = new PropertyModel<>(this.itemPage, "tab");
         this.settingMinimumActiveTypeProvider = new MinimumActivePeriodProvider();
         this.settingLockInTypeProvider = new LockInTypeProvider();
+
+        this.settingSharePerClientMinimumValue = new PropertyModel<>(this.itemPage, "settingSharePerClientMinimumValue");
+        this.settingSharePerClientDefaultValue = new PropertyModel<>(this.itemPage, "settingSharePerClientDefaultValue");
+        this.settingSharePerClientMaximumValue = new PropertyModel<>(this.itemPage, "settingSharePerClientMaximumValue");
     }
 
     @Override
@@ -119,19 +129,19 @@ public class SettingsPanel extends Panel {
 
         this.settingSharePerClientMinimumBlock = this.row1.newUIBlock("settingSharePerClientMinimumBlock", Size.Four_4);
         this.settingSharePerClientMinimumIContainer = this.settingSharePerClientMinimumBlock.newUIContainer("settingSharePerClientMinimumIContainer");
-        this.settingSharePerClientMinimumField = new TextField<>("settingSharePerClientMinimumField", new PropertyModel<>(this.itemPage, "settingSharePerClientMinimumValue"));
+        this.settingSharePerClientMinimumField = new TextField<>("settingSharePerClientMinimumField", this.settingSharePerClientMinimumValue);
         this.settingSharePerClientMinimumIContainer.add(this.settingSharePerClientMinimumField);
         this.settingSharePerClientMinimumIContainer.newFeedback("settingSharePerClientMinimumFeedback", this.settingSharePerClientMinimumField);
 
         this.settingSharePerClientDefaultBlock = this.row1.newUIBlock("settingSharePerClientDefaultBlock", Size.Four_4);
         this.settingSharePerClientDefaultIContainer = this.settingSharePerClientDefaultBlock.newUIContainer("settingSharePerClientDefaultIContainer");
-        this.settingSharePerClientDefaultField = new TextField<>("settingSharePerClientDefaultField", new PropertyModel<>(this.itemPage, "settingSharePerClientDefaultValue"));
+        this.settingSharePerClientDefaultField = new TextField<>("settingSharePerClientDefaultField", this.settingSharePerClientDefaultValue);
         this.settingSharePerClientDefaultIContainer.add(this.settingSharePerClientDefaultField);
         this.settingSharePerClientDefaultIContainer.newFeedback("settingSharePerClientDefaultFeedback", this.settingSharePerClientDefaultField);
 
         this.settingSharePerClientMaximumBlock = this.row1.newUIBlock("settingSharePerClientMaximumBlock", Size.Four_4);
         this.settingSharePerClientMaximumIContainer = this.settingSharePerClientMaximumBlock.newUIContainer("settingSharePerClientMaximumIContainer");
-        this.settingSharePerClientMaximumField = new TextField<>("settingSharePerClientMaximumField", new PropertyModel<>(this.itemPage, "settingSharePerClientMaximumValue"));
+        this.settingSharePerClientMaximumField = new TextField<>("settingSharePerClientMaximumField", this.settingSharePerClientMaximumValue);
         this.settingSharePerClientMaximumIContainer.add(this.settingSharePerClientMaximumField);
         this.settingSharePerClientMaximumIContainer.newFeedback("settingSharePerClientMaximumFeedback", this.settingSharePerClientMaximumField);
 
@@ -184,26 +194,50 @@ public class SettingsPanel extends Panel {
 
         this.settingLockInTypeField.setLabel(Model.of("Type"));
         this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
+        this.settingLockInTypeField.setRequired(true);
 
         this.settingLockInPeriodField.setLabel(Model.of("Lock-in period"));
         this.settingLockInPeriodField.add(new OnChangeAjaxBehavior());
+        this.settingLockInPeriodField.setRequired(true);
+        this.settingLockInPeriodField.add(RangeValidator.minimum(0l));
 
         this.settingMinimumActiveTypeField.setLabel(Model.of("Type"));
         this.settingMinimumActiveTypeField.add(new OnChangeAjaxBehavior());
+        this.settingMinimumActiveTypeField.setRequired(true);
 
         this.settingMinimumActivePeriodField.setLabel(Model.of("Minimum Active Period"));
         this.settingMinimumActivePeriodField.add(new OnChangeAjaxBehavior());
+        this.settingMinimumActivePeriodField.setRequired(true);
+        this.settingMinimumActivePeriodField.add(RangeValidator.minimum(0l));
 
         this.settingSharePerClientMaximumField.setLabel(Model.of("Shares per Client Maximum"));
         this.settingSharePerClientMaximumField.add(new OnChangeAjaxBehavior());
 
         this.settingSharePerClientDefaultField.setLabel(Model.of("Shares per Client Default"));
         this.settingSharePerClientDefaultField.add(new OnChangeAjaxBehavior());
+        this.settingSharePerClientDefaultField.setRequired(true);
 
         this.settingSharePerClientMinimumField.setLabel(Model.of("Shares per Client Minimum"));
         this.settingSharePerClientMinimumField.add(new OnChangeAjaxBehavior());
 
-        this.settingSharePerClientDefaultField.setRequired(true);
+        this.form.add(new LamdaFormValidator(this::settingSharePerClientValidation, this.settingSharePerClientMaximumField, this.settingSharePerClientDefaultField, this.settingSharePerClientMinimumField));
+    }
+
+    protected void settingSharePerClientValidation(Form<?> form) {
+        if (this.settingSharePerClientMaximumValue.getObject() != null && this.settingSharePerClientMinimumValue.getObject() != null) {
+            if (this.settingSharePerClientMaximumValue.getObject() <= this.settingSharePerClientMinimumValue.getObject()) {
+                this.settingSharePerClientMinimumField.error(new ValidationError("Invalid"));
+                this.settingSharePerClientMaximumField.error(new ValidationError("Invalid"));
+            }
+        } else if (this.settingSharePerClientMaximumValue.getObject() == null && this.settingSharePerClientMinimumValue.getObject() == null) {
+        } else {
+            if (this.settingSharePerClientMinimumValue.getObject() == null) {
+                this.settingSharePerClientMinimumField.error(new ValidationError("Required"));
+            }
+            if (this.settingSharePerClientMaximumValue.getObject() == null) {
+                this.settingSharePerClientMaximumField.error(new ValidationError("Required"));
+            }
+        }
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {

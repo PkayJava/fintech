@@ -186,15 +186,19 @@ public class AccountingPanel extends Panel {
     protected void configureMetaData() {
         this.cashIncomeFromFeeField.setLabel(Model.of("Income From Fees"));
         this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
+        this.cashIncomeFromFeeField.setRequired(true);
 
         this.cashEquityField.setLabel(Model.of("Equity"));
         this.cashEquityField.add(new OnChangeAjaxBehavior());
+        this.cashEquityField.setRequired(true);
 
         this.cashShareSuspenseControlField.setLabel(Model.of("Share Suspense Control"));
         this.cashShareSuspenseControlField.add(new OnChangeAjaxBehavior());
+        this.cashShareSuspenseControlField.setRequired(true);
 
         this.cashShareReferenceField.setLabel(Model.of("Share Reference"));
         this.cashShareReferenceField.add(new OnChangeAjaxBehavior());
+        this.cashShareReferenceField.setRequired(true);
 
         this.accountingField.setRequired(true);
         accountingFieldUpdate(null);

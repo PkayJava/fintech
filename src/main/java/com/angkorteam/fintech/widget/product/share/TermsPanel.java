@@ -6,6 +6,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.angkorteam.fintech.layout.Size;
 import com.angkorteam.fintech.layout.UIBlock;
@@ -147,16 +148,19 @@ public class TermsPanel extends Panel {
     protected void configureMetaData() {
         this.termNominalPriceField.setLabel(Model.of("Nominal Price"));
         this.termNominalPriceField.add(new OnChangeAjaxBehavior(this::termNominalPriceFieldUpdate));
+        this.termNominalPriceField.setRequired(true);
+        this.termNominalPriceField.add(RangeValidator.minimum(0d));
 
         this.termTotalNumberOfShareField.setLabel(Model.of("Total Number of Shares"));
         this.termTotalNumberOfShareField.add(new OnChangeAjaxBehavior(this::termNominalPriceFieldUpdate));
+        this.termTotalNumberOfShareField.setRequired(true);
+        this.termTotalNumberOfShareField.add(RangeValidator.minimum(1l));
 
         this.termShareToBeIssuedField.setLabel(Model.of("Shares to be issued"));
         this.termShareToBeIssuedField.add(new OnChangeAjaxBehavior());
-
-        this.termTotalNumberOfShareField.setRequired(true);
-        this.termNominalPriceField.setRequired(true);
         this.termShareToBeIssuedField.setRequired(true);
+        this.termShareToBeIssuedField.add(RangeValidator.minimum(1l));
+
     }
 
 }
