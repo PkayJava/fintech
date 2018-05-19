@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.angkorteam.fintech.ddl.MTaxGroup;
 import com.angkorteam.fintech.layout.Size;
@@ -279,52 +280,67 @@ public class SettingsPanel extends Panel {
     protected void configureMetaData() {
         this.settingBalanceRequiredForInterestCalculationField.setLabel(Model.of("Balance Required For Interest Calculation"));
         this.settingBalanceRequiredForInterestCalculationField.add(new OnChangeAjaxBehavior());
+        this.settingBalanceRequiredForInterestCalculationField.setRequired(true);
+        this.settingBalanceRequiredForInterestCalculationField.add(RangeValidator.minimum(0d));
 
         this.settingTaxGroupField.setLabel(Model.of("Tax Group"));
         this.settingTaxGroupField.add(new OnChangeAjaxBehavior());
+        this.settingTaxGroupField.setRequired(true);
 
         this.settingWithholdTaxApplicableField.add(new OnChangeAjaxBehavior(this::settingWithholdTaxApplicableFieldUpdate));
 
         this.settingApplyPenalOnField.setLabel(Model.of("On"));
         this.settingApplyPenalOnField.add(new OnChangeAjaxBehavior());
+        this.settingApplyPenalOnField.setRequired(true);
 
         this.settingApplyPenalInterestField.setLabel(Model.of("Apply penal interest"));
         this.settingApplyPenalInterestField.add(new OnChangeAjaxBehavior());
+        this.settingApplyPenalInterestField.setRequired(true);
+        this.settingApplyPenalInterestField.add(RangeValidator.minimum(0d));
 
         this.settingForPreMatureClosureField.add(new OnChangeAjaxBehavior());
 
         this.settingMaximumDepositTypeField.setLabel(Model.of("Type"));
         this.settingMaximumDepositTypeField.add(new OnChangeAjaxBehavior());
+        this.settingMaximumDepositTypeField.setRequired(true);
 
         this.settingMaximumDepositTermField.setLabel(Model.of("Maximum Deposit Term"));
         this.settingMaximumDepositTermField.add(new OnChangeAjaxBehavior());
+        this.settingMaximumDepositTermField.setRequired(true);
+        this.settingMaximumDepositTermField.add(RangeValidator.minimum(0l));
 
         this.settingInMultiplesTypeField.setLabel(Model.of("Type"));
         this.settingInMultiplesTypeField.add(new OnChangeAjaxBehavior());
+        this.settingInMultiplesTypeField.setRequired(true);
 
         this.settingInMultiplesOfField.setLabel(Model.of("And thereafter, In Multiples of"));
         this.settingInMultiplesOfField.add(new OnChangeAjaxBehavior());
+        this.settingInMultiplesOfField.setRequired(true);
+        this.settingInMultiplesOfField.add(RangeValidator.minimum(0l));
 
         this.settingMinimumDepositTypeField.setLabel(Model.of("Type"));
         this.settingMinimumDepositTypeField.add(new OnChangeAjaxBehavior());
+        this.settingMinimumDepositTypeField.setRequired(true);
 
         this.settingMinimumDepositTermField.setLabel(Model.of("Minimum Deposit Term"));
         this.settingMinimumDepositTermField.add(new OnChangeAjaxBehavior());
+        this.settingMinimumDepositTermField.setRequired(true);
+        this.settingMinimumDepositTermField.add(RangeValidator.minimum(0l));
 
         this.settingLockInTypeField.setLabel(Model.of("Type"));
         this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
+        this.settingLockInTypeField.setRequired(true);
 
         this.settingLockInPeriodField.add(new OnChangeAjaxBehavior());
         this.settingLockInPeriodField.setLabel(Model.of("Lock-in period"));
+        this.settingLockInPeriodField.add(RangeValidator.minimum(0l));
+        this.settingLockInPeriodField.setRequired(true);
 
         this.settingAllowWithdrawalField.add(new OnChangeAjaxBehavior());
 
         this.settingAdjustAdvancePaymentField.add(new OnChangeAjaxBehavior());
 
         this.settingMandatoryDepositField.add(new OnChangeAjaxBehavior());
-
-        this.settingMinimumDepositTermField.setRequired(true);
-        this.settingMinimumDepositTypeField.setRequired(true);
 
         settingWithholdTaxApplicableFieldUpdate(null);
     }

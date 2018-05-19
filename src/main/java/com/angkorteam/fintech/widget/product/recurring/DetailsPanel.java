@@ -101,14 +101,13 @@ public class DetailsPanel extends Panel {
     @Override
     protected void configureMetaData() {
         this.detailDescriptionField.setLabel(Model.of("Description"));
+        this.detailDescriptionField.setRequired(true);
 
         this.detailProductNameField.setLabel(Model.of("Product Name"));
+        this.detailProductNameField.setRequired(true);
 
         this.detailShortNameField.setLabel(Model.of("Short Name"));
-
-        this.detailProductNameField.setRequired(true);
         this.detailShortNameField.setRequired(true);
-        this.detailDescriptionField.setRequired(true);
     }
 
     protected void nextButtonSubmit(Button button) {

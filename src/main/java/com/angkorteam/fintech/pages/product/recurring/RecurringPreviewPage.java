@@ -195,6 +195,12 @@ public class RecurringPreviewPage extends Page {
     protected void initData() {
         this.recurringId = getPageParameters().get("recurringId").toString();
 
+        this.chargeValue = new ArrayList<>();
+        this.interestRateChartValue = new ArrayList<>();
+        this.advancedAccountingRuleFundSourceValue = new ArrayList<>();
+        this.advancedAccountingRuleFeeIncomeValue = new ArrayList<>();
+        this.advancedAccountingRulePenaltyIncomeValue = new ArrayList<>();
+
         JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
         SelectQuery selectQuery = null;
