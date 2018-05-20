@@ -1304,8 +1304,8 @@ public class SettingsPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(LoanCreatePage.TAB_CHARGE);
         this.errorSetting.setObject(false);
+        this.tab.getObject().setSelectedTab(LoanCreatePage.TAB_CHARGE);
     }
 
     protected void nextButtonError(Button button) {

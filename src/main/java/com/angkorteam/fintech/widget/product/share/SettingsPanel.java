@@ -249,8 +249,8 @@ public class SettingsPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(ShareCreatePage.TAB_MARKET_PRICE);
         this.errorSetting.setObject(false);
+        this.tab.getObject().setSelectedTab(ShareCreatePage.TAB_MARKET_PRICE);
     }
 
     protected void nextButtonError(Button button) {

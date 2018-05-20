@@ -464,8 +464,8 @@ public class AccountingPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_PREVIEW);
         this.errorAccounting.setObject(false);
+        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_PREVIEW);
     }
 
     protected void nextButtonError(Button button) {

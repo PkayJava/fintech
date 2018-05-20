@@ -428,8 +428,8 @@ public class SettingsPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_CHARGE);
         this.errorSetting.setObject(false);
+        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_CHARGE);
     }
 
     protected void nextButtonError(Button button) {

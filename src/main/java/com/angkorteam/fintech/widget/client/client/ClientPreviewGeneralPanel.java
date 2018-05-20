@@ -61,9 +61,9 @@ import com.angkorteam.fintech.pages.client.common.SavingAccountActivatePage;
 import com.angkorteam.fintech.pages.client.common.SavingAccountApprovePage;
 import com.angkorteam.fintech.pages.client.common.SavingAccountDepositPage;
 import com.angkorteam.fintech.pages.client.common.SavingAccountPreviewPage;
-import com.angkorteam.fintech.pages.client.common.SavingAccountSelectionPage;
 import com.angkorteam.fintech.pages.client.common.SavingAccountUndoApprovePage;
 import com.angkorteam.fintech.pages.client.common.SavingAccountWithdrawPage;
+import com.angkorteam.fintech.pages.client.common.saving.AccountSelectionPage;
 import com.angkorteam.fintech.popup.client.client.ClientUnassignStaffPopup;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
@@ -160,7 +160,7 @@ public class ClientPreviewGeneralPanel extends Panel {
         savingParameters.add("clientId", this.clientId);
         savingParameters.add("client", ClientEnum.Client.name());
 
-        this.newSavingLink = new BookmarkablePageLink<>("newSavingLink", SavingAccountSelectionPage.class, savingParameters);
+        this.newSavingLink = new BookmarkablePageLink<>("newSavingLink", AccountSelectionPage.class, savingParameters);
         this.buttonGroups.add(this.newSavingLink);
 
         PageParameters parameters = new PageParameters();

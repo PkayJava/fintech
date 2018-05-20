@@ -352,8 +352,8 @@ public class AccountingPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_PREVIEW);
         this.errorAccounting.setObject(false);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_PREVIEW);
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {

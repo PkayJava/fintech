@@ -218,8 +218,8 @@ public class TermsPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_SETTING);
         this.errorTerm.setObject(false);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_SETTING);
     }
 
     protected void nextButtonError(Button button) {

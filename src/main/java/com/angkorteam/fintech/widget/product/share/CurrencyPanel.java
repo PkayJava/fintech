@@ -129,8 +129,8 @@ public class CurrencyPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(ShareCreatePage.TAB_TERM);
         this.errorCurrency.setObject(false);
+        this.tab.getObject().setSelectedTab(ShareCreatePage.TAB_TERM);
     }
 
     protected void nextButtonError(Button button) {

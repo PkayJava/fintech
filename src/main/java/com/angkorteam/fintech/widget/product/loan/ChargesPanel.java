@@ -237,8 +237,8 @@ public class ChargesPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(LoanCreatePage.TAB_ACCOUNTING);
         this.errorCharge.setObject(false);
+        this.tab.getObject().setSelectedTab(LoanCreatePage.TAB_ACCOUNTING);
     }
 
     protected void nextButtonError(Button button) {

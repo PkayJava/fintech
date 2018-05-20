@@ -1,10 +1,8 @@
-package com.angkorteam.fintech.pages.client.common;
+package com.angkorteam.fintech.pages.client.common.saving;
 
 import java.util.List;
 
-import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -19,6 +17,9 @@ import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.DepositType;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
@@ -26,8 +27,6 @@ import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -40,29 +39,28 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.google.common.collect.Lists;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingAccountSelectionPage extends Page {
+public class AccountSelectionPage extends Page {
 
     protected ClientEnum client;
 
     protected String clientId;
-    protected String groupId;
-    protected String centerId;
 
     protected String clientDisplayName;
-    protected String groupDisplayName;
-    protected String centerDisplayName;
 
     protected Form<Void> form;
     protected Button okayButton;
 
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock savingBlock;
-    protected WebMarkupContainer savingIContainer;
+    protected UIRow row1;
+
+    protected UIBlock savingBlock;
+    protected UIContainer savingIContainer;
     protected SingleChoiceProvider savingProvider;
-    protected Option savingValue;
     protected Select2SingleChoice<Option> savingField;
-    protected TextFeedbackPanel savingFeedback;
+    protected Option savingValue;
+
+    protected UIBlock row1Block1;
 
     @Override
     protected void initComponent() {
@@ -75,50 +73,42 @@ public class SavingAccountSelectionPage extends Page {
         this.form.add(this.okayButton);
 
         PageParameters parameters = new PageParameters();
+        parameters.add("clientId", this.clientId);
         if (this.client == ClientEnum.Client) {
-            parameters.add("clientId", this.clientId);
             this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Group) {
-            parameters.add("groupId", this.groupId);
             this.closeLink = new BookmarkablePageLink<>("closeLink", GroupPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Center) {
-            parameters.add("centerId", this.centerId);
             this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
-        } else {
-            throw new WicketRuntimeException("Unknown " + this.client);
         }
         this.form.add(this.closeLink);
 
-        initSavingBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.savingBlock = this.row1.newUIBlock("savingBlock", Size.Six_6);
+        this.savingIContainer = this.savingBlock.newUIContainer("savingIContainer");
+        this.savingField = new Select2SingleChoice<>("savingField", new PropertyModel<>(this, "savingValue"), this.savingProvider);
+        this.savingIContainer.add(this.savingField);
+        this.savingIContainer.newFeedback("savingFeedback", this.savingField);
+
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
     }
 
     @Override
     protected void configureMetaData() {
-    }
-
-    protected void initSavingBlock() {
-        this.savingBlock = new WebMarkupBlock("savingBlock", Size.Six_6);
-        this.form.add(this.savingBlock);
-        this.savingIContainer = new WebMarkupContainer("savingIContainer");
-        this.savingBlock.add(this.savingIContainer);
-        this.savingProvider = new SingleChoiceProvider(MSavingsProduct.NAME, MSavingsProduct.Field.ID, MSavingsProduct.Field.NAME);
-        this.savingProvider.applyWhere("deposit_type_enum", MSavingsProduct.Field.DEPOSIT_TYPE_ENUM + " = " + DepositType.Saving.getLiteral());
-        this.savingField = new Select2SingleChoice<>("savingField", new PropertyModel<>(this, "savingValue"), this.savingProvider);
         this.savingField.setLabel(Model.of("Product"));
         this.savingField.add(new OnChangeAjaxBehavior());
         this.savingField.setRequired(true);
-        this.savingIContainer.add(this.savingField);
-        this.savingFeedback = new TextFeedbackPanel("savingFeedback", this.savingField);
-        this.savingIContainer.add(this.savingFeedback);
     }
 
     @Override
     protected void initData() {
         this.client = ClientEnum.valueOf(getPageParameters().get("client").toString());
 
+        this.savingProvider = new SingleChoiceProvider(MSavingsProduct.NAME, MSavingsProduct.Field.ID, MSavingsProduct.Field.NAME);
+        this.savingProvider.applyWhere("deposit_type_enum", MSavingsProduct.Field.DEPOSIT_TYPE_ENUM + " = " + DepositType.Saving.getLiteral());
+
         this.clientId = getPageParameters().get("clientId").toString();
-        this.groupId = getPageParameters().get("groupId").toString();
-        this.centerId = getPageParameters().get("centerId").toString();
 
         JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
         SelectQuery selectQuery = null;
@@ -127,16 +117,11 @@ public class SavingAccountSelectionPage extends Page {
             selectQuery.addField(MClient.Field.DISPLAY_NAME);
             selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
             this.clientDisplayName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
-        } else if (this.client == ClientEnum.Group) {
+        } else if (this.client == ClientEnum.Group || this.client == ClientEnum.Center) {
             selectQuery = new SelectQuery(MGroup.NAME);
             selectQuery.addField(MGroup.Field.DISPLAY_NAME);
-            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.groupId);
-            this.groupDisplayName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
-        } else if (this.client == ClientEnum.Center) {
-            selectQuery = new SelectQuery(MGroup.NAME);
-            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
-            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.centerId);
-            this.centerDisplayName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.clientId);
+            this.clientDisplayName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
         }
     }
 
@@ -169,19 +154,15 @@ public class SavingAccountSelectionPage extends Page {
             BREADCRUMB.add(breadcrumb);
         }
         {
-            PageParameters parameters = new PageParameters();
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            PageParameters parameters = new PageParameters();
+            parameters.add("clientId", this.clientId);
+            breadcrumb.setLabel(this.clientDisplayName);
             if (this.client == ClientEnum.Client) {
-                parameters.add("clientId", this.clientId);
-                breadcrumb.setLabel(this.clientDisplayName);
                 breadcrumb.setPage(ClientPreviewPage.class);
             } else if (this.client == ClientEnum.Group) {
-                parameters.add("groupId", this.groupId);
-                breadcrumb.setLabel(this.groupDisplayName);
                 breadcrumb.setPage(GroupPreviewPage.class);
             } else if (this.client == ClientEnum.Center) {
-                parameters.add("centerId", this.centerId);
-                breadcrumb.setLabel(this.centerDisplayName);
                 breadcrumb.setPage(CenterPreviewPage.class);
             }
             breadcrumb.setParameters(parameters);
@@ -199,16 +180,8 @@ public class SavingAccountSelectionPage extends Page {
         PageParameters parameters = new PageParameters();
         parameters.add("client", this.client.name());
         parameters.add("savingId", this.savingValue.getId());
-        if (this.client == ClientEnum.Client) {
-            parameters.add("clientId", this.clientId);
-        } else if (this.client == ClientEnum.Group) {
-            parameters.add("groupId", this.groupId);
-        } else if (this.client == ClientEnum.Center) {
-            parameters.add("centerId", this.centerId);
-        } else {
-            throw new WicketRuntimeException("Unknown " + this.client);
-        }
-        setResponsePage(SavingAccountCreatePage.class, parameters);
+        parameters.add("clientId", this.clientId);
+        setResponsePage(AccountCreatePage.class, parameters);
     }
 
 }

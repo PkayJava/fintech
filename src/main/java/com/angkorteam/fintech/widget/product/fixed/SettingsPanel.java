@@ -308,8 +308,8 @@ public class SettingsPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_INTEREST_RATE_CHART);
         this.errorSetting.setObject(false);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_INTEREST_RATE_CHART);
     }
 
     protected void nextButtonError(Button button) {

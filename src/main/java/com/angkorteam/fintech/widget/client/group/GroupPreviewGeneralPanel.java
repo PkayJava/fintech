@@ -16,7 +16,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.angkorteam.fintech.ddl.MSavingsAccount;
 import com.angkorteam.fintech.ddl.MSavingsProduct;
 import com.angkorteam.fintech.dto.ClientEnum;
-import com.angkorteam.fintech.pages.client.common.SavingAccountSelectionPage;
+import com.angkorteam.fintech.pages.client.common.saving.AccountSelectionPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
@@ -59,7 +59,7 @@ public class GroupPreviewGeneralPanel extends Panel {
         savingParameters.add("groupId", this.groupId);
         savingParameters.add("client", ClientEnum.Group.name());
 
-        this.groupSavingApplicationLink = new BookmarkablePageLink<>("groupSavingApplicationLink", SavingAccountSelectionPage.class, savingParameters);
+        this.groupSavingApplicationLink = new BookmarkablePageLink<>("groupSavingApplicationLink", AccountSelectionPage.class, savingParameters);
         add(this.groupSavingApplicationLink);
 
         PageParameters parameters = new PageParameters();

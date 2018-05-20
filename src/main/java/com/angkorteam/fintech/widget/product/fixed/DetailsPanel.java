@@ -111,8 +111,8 @@ public class DetailsPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_CURRENCY);
         this.errorDetail.setObject(false);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_CURRENCY);
     }
 
     protected void nextButtonError(Button button) {

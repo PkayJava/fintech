@@ -312,8 +312,8 @@ public class InterestRateChartPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_CHARGE);
         this.errorInterestRateChart.setObject(false);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_CHARGE);
     }
 
     protected void nextButtonError(Button button) {

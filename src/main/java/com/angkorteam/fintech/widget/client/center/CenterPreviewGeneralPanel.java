@@ -26,9 +26,9 @@ import com.angkorteam.fintech.pages.client.common.SavingAccountActivatePage;
 import com.angkorteam.fintech.pages.client.common.SavingAccountApprovePage;
 import com.angkorteam.fintech.pages.client.common.SavingAccountDepositPage;
 import com.angkorteam.fintech.pages.client.common.SavingAccountPreviewPage;
-import com.angkorteam.fintech.pages.client.common.SavingAccountSelectionPage;
 import com.angkorteam.fintech.pages.client.common.SavingAccountUndoApprovePage;
 import com.angkorteam.fintech.pages.client.common.SavingAccountWithdrawPage;
+import com.angkorteam.fintech.pages.client.common.saving.AccountSelectionPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
@@ -116,7 +116,7 @@ public class CenterPreviewGeneralPanel extends Panel {
         savingParameters.add("centerId", this.centerId);
         savingParameters.add("client", ClientEnum.Center.name());
 
-        this.centerSavingApplicationLink = new BookmarkablePageLink<>("centerSavingApplicationLink", SavingAccountSelectionPage.class, savingParameters);
+        this.centerSavingApplicationLink = new BookmarkablePageLink<>("centerSavingApplicationLink", AccountSelectionPage.class, savingParameters);
         add(this.centerSavingApplicationLink);
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", CenterClosePage.class, parameters);

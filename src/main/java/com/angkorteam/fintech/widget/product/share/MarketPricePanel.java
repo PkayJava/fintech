@@ -158,8 +158,8 @@ public class MarketPricePanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(ShareCreatePage.TAB_CHARGE);
         this.errorMarketPrice.setObject(false);
+        this.tab.getObject().setSelectedTab(ShareCreatePage.TAB_CHARGE);
     }
 
     protected void nextButtonError(Button button) {

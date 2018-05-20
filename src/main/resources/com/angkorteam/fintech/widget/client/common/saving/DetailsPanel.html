@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<wicket:panel>
+		<form role="form" wicket:id="form">
+			<div class="box-primary">
+
+				<div class="box-body">
+
+					<div wicket:id="row1">
+						<div wicket:id="detailProductNameBlock" class="form-group">
+							<wicket:container wicket:id="detailProductNameVContainer">
+								<label>Product</label>
+								<div wicket:id="detailProductNameView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="detailSubmittedOnBlock" class="form-group">
+							<wicket:container wicket:id="detailSubmittedOnIContainer">
+								<label wicket:for="detailSubmittedOnField">Submitted On</label>
+								<input wicket:id="detailSubmittedOnField" type="text"
+									class="form-control" />
+								<span wicket:id="detailSubmittedOnFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+					</div>
+
+					<div wicket:id="row2">
+						<div wicket:id="detailOfficerBlock" class="form-group">
+							<wicket:container wicket:id="detailOfficerIContainer">
+								<label wicket:for="detailOfficerField">Field Officer</label>
+								<select wicket:id="detailOfficerField" class="form-control"></select>
+								<span wicket:id="detailOfficerFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="detailExternalIdBlock" class="form-group">
+							<wicket:container wicket:id="detailExternalIdIContainer">
+								<label wicket:for="detailExternalIdField">External ID</label>
+								<input wicket:id="detailExternalIdField" type="text"
+									class="form-control" />
+								<span wicket:id="detailExternalIdFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+					</div>
+				</div>
+
+				<div class="box-footer">
+					<button wicket:id="nextButton" type="submit" class="btn btn-info">Next</button>
+					<a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
+				</div>
+			</div>
+		</form>
+	</wicket:panel>
+</body>
+</html>
