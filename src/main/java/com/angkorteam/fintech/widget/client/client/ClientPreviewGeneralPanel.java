@@ -57,13 +57,13 @@ import com.angkorteam.fintech.pages.client.common.LoanAccountDisbursePage;
 import com.angkorteam.fintech.pages.client.common.LoanAccountPreviewPage;
 import com.angkorteam.fintech.pages.client.common.LoanAccountRepaymentPage;
 import com.angkorteam.fintech.pages.client.common.LoanAccountSelectionPage;
-import com.angkorteam.fintech.pages.client.common.SavingAccountActivatePage;
-import com.angkorteam.fintech.pages.client.common.SavingAccountApprovePage;
-import com.angkorteam.fintech.pages.client.common.SavingAccountDepositPage;
-import com.angkorteam.fintech.pages.client.common.SavingAccountPreviewPage;
-import com.angkorteam.fintech.pages.client.common.SavingAccountUndoApprovePage;
-import com.angkorteam.fintech.pages.client.common.SavingAccountWithdrawPage;
 import com.angkorteam.fintech.pages.client.common.saving.AccountSelectionPage;
+import com.angkorteam.fintech.pages.client.common.saving.AccountUndoApprovePage;
+import com.angkorteam.fintech.pages.client.common.saving.AccountWithdrawPage;
+import com.angkorteam.fintech.pages.client.common.saving.AccountActivatePage;
+import com.angkorteam.fintech.pages.client.common.saving.AccountApprovePage;
+import com.angkorteam.fintech.pages.client.common.saving.AccountDepositPage;
+import com.angkorteam.fintech.pages.client.common.saving.AccountPreviewPage;
 import com.angkorteam.fintech.popup.client.client.ClientUnassignStaffPopup;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
@@ -486,35 +486,35 @@ public class ClientPreviewGeneralPanel extends Panel {
             parameters.add("client", ClientEnum.Client.name());
             parameters.add("clientId", this.clientId);
             parameters.add("savingId", savingId);
-            setResponsePage(SavingAccountApprovePage.class, parameters);
+            setResponsePage(AccountApprovePage.class, parameters);
         } else if ("Undo Approve".equals(column)) {
             String savingId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
             parameters.add("client", ClientEnum.Client.name());
             parameters.add("savingId", savingId);
-            setResponsePage(SavingAccountUndoApprovePage.class, parameters);
+            setResponsePage(AccountUndoApprovePage.class, parameters);
         } else if ("Activate".equals(column)) {
             String savingId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
             parameters.add("client", ClientEnum.Client.name());
             parameters.add("savingId", savingId);
-            setResponsePage(SavingAccountActivatePage.class, parameters);
+            setResponsePage(AccountActivatePage.class, parameters);
         } else if ("Deposit".equals(column)) {
             String savingId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
             parameters.add("client", ClientEnum.Client.name());
             parameters.add("savingId", savingId);
-            setResponsePage(SavingAccountDepositPage.class, parameters);
+            setResponsePage(AccountDepositPage.class, parameters);
         } else if ("Withdraw".equals(column)) {
             String savingId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
             parameters.add("client", ClientEnum.Client.name());
             parameters.add("savingId", savingId);
-            setResponsePage(SavingAccountWithdrawPage.class, parameters);
+            setResponsePage(AccountWithdrawPage.class, parameters);
         }
     }
 
@@ -525,7 +525,7 @@ public class ClientPreviewGeneralPanel extends Panel {
             parameters.add("client", ClientEnum.Client.name());
             parameters.add("clientId", this.clientId);
             parameters.add("savingId", model.get("id"));
-            return new LinkCell(SavingAccountPreviewPage.class, parameters, value);
+            return new LinkCell(AccountPreviewPage.class, parameters, value);
         } else if ("product".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);

@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.pages.client.common;
+package com.angkorteam.fintech.pages.client.common.saving;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +38,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 import com.google.common.collect.Lists;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingAccountPreviewPage extends Page {
+public class AccountPreviewPage extends Page {
 
     protected ClientEnum client;
 
@@ -321,13 +321,13 @@ public class SavingAccountPreviewPage extends Page {
         }
         parameters.add("savingId", this.savingId);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingAccountClosePage.class, parameters);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", AccountClosePage.class, parameters);
         add(this.closeLink);
 
-        this.depositLink = new BookmarkablePageLink<>("depositLink", SavingAccountDepositPage.class, parameters);
+        this.depositLink = new BookmarkablePageLink<>("depositLink", AccountDepositPage.class, parameters);
         add(this.depositLink);
 
-        this.withdrawLink = new BookmarkablePageLink<>("withdrawLink", SavingAccountWithdrawPage.class, parameters);
+        this.withdrawLink = new BookmarkablePageLink<>("withdrawLink", AccountWithdrawPage.class, parameters);
         add(this.withdrawLink);
     }
 

@@ -465,6 +465,15 @@ public class ReviewPanel extends Panel {
 
     @Override
     protected void configureMetaData() {
+
+        boolean visible = this.termOverdraftAllowedValue.getObject() != null && this.termOverdraftAllowedValue.getObject();
+        this.termMinOverdraftRequiredForInterestCalculationBlock.setVisible(visible);
+        this.termNominalAnnualInterestForOverdraftBlock.setVisible(visible);
+        this.termMaximumOverdraftAmountLimitBlock.setVisible(visible);
+
+        this.termEnforceMinimumBalanceBlock.setVisible(!visible);
+        this.termMinimumBalanceBlock.setVisible(!visible);
+
         this.saveButton.setVisible(!this.errorTerm.getObject() && !this.errorDetail.getObject() && !this.errorCharge.getObject());
     }
 
