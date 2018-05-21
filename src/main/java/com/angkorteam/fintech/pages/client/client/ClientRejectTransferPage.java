@@ -49,6 +49,8 @@ public class ClientRejectTransferPage extends Page {
     protected String noteValue;
     protected TextArea<String> noteField;
 
+    protected UIBlock row1Block1;
+
     @Override
     protected void initComponent() {
         PageParameters parameters = new PageParameters();
@@ -71,11 +73,14 @@ public class ClientRejectTransferPage extends Page {
         this.noteField = new TextArea<>("noteField", new PropertyModel<>(this, "noteValue"));
         this.noteIContainer.add(this.noteField);
         this.noteIContainer.newFeedback("noteFeedback", this.noteField);
+
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
     }
 
     @Override
     protected void configureMetaData() {
         this.noteField.setLabel(Model.of("Note"));
+        this.noteField.setRequired(true);
     }
 
     @Override

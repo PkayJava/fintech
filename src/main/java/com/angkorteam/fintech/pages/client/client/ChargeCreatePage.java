@@ -117,6 +117,8 @@ public class ChargeCreatePage extends Page {
         selectQuery.addWhere(MCharge.Field.ID + " = :" + MCharge.Field.ID, this.chargeId);
         selectQuery.addField(MCharge.Field.NAME);
         selectQuery.addField(MCharge.Field.AMOUNT);
+        selectQuery.addField(MCharge.Field.CHARGE_TIME_ENUM);
+        selectQuery.addField(MCharge.Field.CHARGE_CALCULATION_ENUM);
         Map<String, Object> chargeObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
         this.chargeTypeValue = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
