@@ -38,7 +38,7 @@ public class EmbededTomcat extends RunListener {
 
     private Tomcat tomcat;
 
-    private static final int PORT = 9080;
+    private static final int PORT = 7080;
 
     private static EmbededTomcat instance;
 

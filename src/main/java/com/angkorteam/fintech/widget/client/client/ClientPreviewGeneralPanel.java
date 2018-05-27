@@ -56,8 +56,6 @@ import com.angkorteam.fintech.pages.client.common.LoanAccountApprovePage;
 import com.angkorteam.fintech.pages.client.common.LoanAccountDisbursePage;
 import com.angkorteam.fintech.pages.client.common.LoanAccountPreviewPage;
 import com.angkorteam.fintech.pages.client.common.LoanAccountRepaymentPage;
-import com.angkorteam.fintech.pages.client.common.LoanAccountSelectionPage;
-import com.angkorteam.fintech.pages.client.common.saving.AccountSelectionPage;
 import com.angkorteam.fintech.pages.client.common.saving.AccountUndoApprovePage;
 import com.angkorteam.fintech.pages.client.common.saving.AccountWithdrawPage;
 import com.angkorteam.fintech.pages.client.common.saving.AccountActivatePage;
@@ -160,7 +158,7 @@ public class ClientPreviewGeneralPanel extends Panel {
         savingParameters.add("clientId", this.clientId);
         savingParameters.add("client", ClientEnum.Client.name());
 
-        this.newSavingLink = new BookmarkablePageLink<>("newSavingLink", AccountSelectionPage.class, savingParameters);
+        this.newSavingLink = new BookmarkablePageLink<>("newSavingLink", com.angkorteam.fintech.pages.client.common.saving.AccountSelectionPage.class, savingParameters);
         this.buttonGroups.add(this.newSavingLink);
 
         PageParameters parameters = new PageParameters();
@@ -180,7 +178,7 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.editLink = new BookmarkablePageLink<Void>("editLink", ClientTransferPage.class, parameters);
         this.buttonGroups.add(this.editLink);
 
-        this.newLoanLink = new BookmarkablePageLink<Void>("newLoanLink", LoanAccountSelectionPage.class, parameters);
+        this.newLoanLink = new BookmarkablePageLink<Void>("newLoanLink", com.angkorteam.fintech.pages.client.common.loan.AccountSelectionPage.class, parameters);
         this.buttonGroups.add(this.newLoanLink);
 
         this.newShareLink = new BookmarkablePageLink<Void>("newShareLink", ClientTransferPage.class, parameters);

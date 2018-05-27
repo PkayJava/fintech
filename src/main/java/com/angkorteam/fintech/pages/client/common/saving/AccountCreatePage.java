@@ -111,11 +111,10 @@ public class AccountCreatePage extends Page {
         this.errorTerm = true;
         this.errorCharge = true;
 
-        this.client = ClientEnum.valueOf(getPageParameters().get("client").toString());
-
-        this.clientId = getPageParameters().get("clientId").toString();
-
-        this.savingId = getPageParameters().get("savingId").toString();
+        PageParameters parameters = getPageParameters();
+        this.client = ClientEnum.valueOf(parameters.get("client").toString());
+        this.clientId = parameters.get("clientId").toString();
+        this.savingId = parameters.get("savingId").toString();
 
         this.chargeValue = Lists.newLinkedList();
 

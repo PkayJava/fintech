@@ -22,22 +22,20 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<servlet.version>3.1.0</servlet.version>
-		<wicket.version>8.0.0-M9</wicket.version>
-		<jetty9.version>9.4.7.v20170914</jetty9.version>
-		<log4j.version>2.9.1</log4j.version>
-		<junit.version>4.12</junit.version>
+		<wicket.version>8.0.0</wicket.version>
+		<slf4j.version>1.7.25</slf4j.version>
 		<!-- allowed values: R7, 1.0, 1.5, 2.0 or none -->
 		<wtp.version>none</wtp.version>
-		<frmk.version>2.2.8</frmk.version>
+		<frmk.version>3.0.0</frmk.version>
 		<guava.version>25.0-jre</guava.version>
 		<spring.version>5.0.6.RELEASE</spring.version>
 		<spring.integration.version>5.0.5.RELEASE</spring.integration.version>
 		<mysql.version>5.1.46</mysql.version>
-		<commons-dbcp2.version>2.2.0</commons-dbcp2.version>
+		<commons-dbcp2.version>2.3.0</commons-dbcp2.version>
 		<configuration.version>1.10</configuration.version>
 		<jasypt.version>1.9.2</jasypt.version>
 		<selenium.version>3.12.0</selenium.version>
-		<gson.version>2.8.4</gson.version>
+		<gson.version>2.8.5</gson.version>
 		<unirest-java.version>2.2.03</unirest-java.version>
 		<commons-lang3.version>3.7</commons-lang3.version>
 		<commons-text.version>1.3</commons-text.version>
@@ -46,10 +44,17 @@
 		<commons-io.version>2.6</commons-io.version>
 		<reflection.version>0.9.11</reflection.version>
 		<poi.version>3.17</poi.version>
-		<jacoco.version>0.8.1</jacoco.version>
-		<maven-war.version>3.2.0</maven-war.version>
+		<jacoco-maven-plugin.version>0.8.1</jacoco-maven-plugin.version>
+		<maven-war-plugin.version>3.2.1</maven-war-plugin.version>
 		<commons-compress.version>1.16.1</commons-compress.version>
 		<org.apache.tomcat.embed.version>9.0.8</org.apache.tomcat.embed.version>
+		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+		<maven-javadoc-plugin.version>3.0.0</maven-javadoc-plugin.version>
+		<maven-source-plugin.version>3.0.1</maven-source-plugin.version>
+		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+		<maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
+		<maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
+		<maven-failsafe-plugin.version>2.21.0</maven-failsafe-plugin.version>
 	</properties>
 	<dependencies>
 
@@ -191,16 +196,11 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-		<!-- LOGGING DEPENDENCIES - LOG4J -->
+		<!-- LOGGING DEPENDENCIES - SLF4J-SIMPLE -->
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>${log4j.version}</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4j.version}</version>
 		</dependency>
 
 		<!-- TOMCAT -->
@@ -226,23 +226,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- JETTY DEPENDENCIES FOR TESTING -->
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-webapp</artifactId>
-			<scope>test</scope>
-			<version>${jetty9.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-jmx</artifactId>
-			<version>${jetty9.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- uncomment if WebSocket support is needed <dependency> <groupId>org.eclipse.jetty.websocket</groupId> 
-			<artifactId>javax-websocket-server-impl</artifactId> <version>${jetty.version}</version> 
-			<scope>test</scope> </dependency> -->
 	</dependencies>
 	<build>
 		<finalName>fintech</finalName>
@@ -280,38 +263,21 @@
 		</testResources>
 		<plugins>
 			<plugin>
-				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.1</version>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-					<encoding>UTF-8</encoding>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>${jetty9.version}</version>
-				<configuration>
-					<systemProperties>
-						<systemProperty>
-							<name>maven.project.build.directory.test-classes</name>
-							<value>${project.build.directory}/test-classes</value>
-						</systemProperty>
-					</systemProperties>
-					<jettyXml>
-						${project.basedir}/src/test/jetty/jetty.xml,${project.basedir}/src/test/jetty/jetty-ssl.xml,${project.basedir}/src/test/jetty/jetty-http.xml,${project.basedir}/src/test/jetty/jetty-https.xml
-					</jettyXml>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.10</version>
+				<version>${maven-eclipse-plugin.version}</version>
 				<configuration>
 					<downloadSources>true</downloadSources>
 					<wtpversion>${wtp.version}</wtpversion>
@@ -326,7 +292,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.21.0</version>
+				<version>${maven-surefire-plugin.version}</version>
 				<configuration>
 					<trimStackTrace>false</trimStackTrace>
 					<useFile>false</useFile>
@@ -344,7 +310,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.21.0</version>
+				<version>${maven-failsafe-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>integration-test</id>
@@ -377,7 +343,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.version}</version>
+				<version>${jacoco-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>prepare-agent</id>
@@ -417,7 +383,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>${maven-war.version}</version>
+				<version>${maven-war-plugin.version}</version>
 				<configuration>
 					<archive>
 						<manifestEntries>

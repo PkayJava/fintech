@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<wicket:panel>
+		<form role="form" wicket:id="form">
+			<div class="box-primary">
+
+				<div class="box-body">
+
+					<div wicket:id="row1">
+						<div wicket:id="detailProductBlock" class="form-group">
+							<wicket:container wicket:id="detailProductVContainer">
+								<label>Product Name</label>
+								<div wicket:id="detailProductView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="detailLoanOfficerBlock" class="form-group">
+							<wicket:container wicket:id="detailLoanOfficerIContainer">
+								<label wicket:for="detailLoanOfficerField">Loan Officer</label>
+								<select wicket:id="detailLoanOfficerField" class="form-control"></select>
+								<span wicket:id="detailLoanOfficerFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+					</div>
+
+					<div wicket:id="row2">
+						<div wicket:id="detailLoanPurposeBlock" class="form-group">
+							<wicket:container wicket:id="detailLoanPurposeIContainer">
+								<label wicket:for="detailLoanPurposeField">Loan Purpose</label>
+								<select wicket:id="detailLoanPurposeField" class="form-control"></select>
+								<span wicket:id="detailLoanPurposeFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="detailFundBlock" class="form-group">
+							<wicket:container wicket:id="detailFundIContainer">
+								<label wicket:for="detailFundField">Fund</label>
+								<select wicket:id="detailFundField" class="form-control"></select>
+								<span wicket:id="detailFundFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+					</div>
+
+					<div wicket:id="row3">
+						<div wicket:id="detailSubmittedOnBlock" class="form-group">
+							<wicket:container wicket:id="detailSubmittedOnIContainer">
+								<label wicket:for="detailSubmittedOnField">Submitted On</label>
+								<input wicket:id="detailSubmittedOnField" type="text"
+									class="form-control" />
+								<span wicket:id="detailSubmittedOnFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="detailDisbursementOnBlock" class="form-group">
+							<wicket:container wicket:id="detailDisbursementOnIContainer">
+								<label wicket:for="detailDisbursementOnField">Disbursement
+									On</label>
+								<input wicket:id="detailDisbursementOnField" type="text"
+									class="form-control" />
+								<span wicket:id="detailDisbursementOnFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
+					</div>
+
+					<div wicket:id="row4">
+						<div wicket:id="detailExternalIdBlock" class="form-group">
+							<wicket:container wicket:id="detailExternalIdIContainer">
+								<label wicket:for="detailExternalIdField">External ID</label>
+								<input wicket:id="detailExternalIdField" type="text"
+									class="form-control" />
+								<span wicket:id="detailExternalIdFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="row4Block1" class="form-group"></div>
+					</div>
+
+					<div>
+						<h4 class="box-title">Savings Linkage</h4>
+					</div>
+
+					<div wicket:id="row5">
+						<div wicket:id="detailLinkSavingBlock" class="form-group">
+							<wicket:container wicket:id="detailLinkSavingIContainer">
+								<label wicket:for="detailLinkSavingField">Link Saving</label>
+								<select wicket:id="detailLinkSavingField" class="form-control"></select>
+								<span wicket:id="detailLinkSavingFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div
+							wicket:id="detailCreateStandingInstructionAtDisbursementBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="detailCreateStandingInstructionAtDisbursementIContainer">
+								<label>&nbsp;</label>
+								<span style="display: block"> <label> <input
+										type="checkbox"
+										wicket:id="detailCreateStandingInstructionAtDisbursementField">
+										Create Standing Instructions At Disbursement
+								</label>
+								</span>
+								<span
+									wicket:id="detailCreateStandingInstructionAtDisbursementFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="box-footer">
+					<button wicket:id="nextButton" type="submit" class="btn btn-info">Next</button>
+					<a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
+				</div>
+			</div>
+		</form>
+	</wicket:panel>
+</body>
+</html>

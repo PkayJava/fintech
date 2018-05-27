@@ -23,7 +23,7 @@ import org.apache.coyote.http11.Http11Nio2Protocol;
  */
 public class Start {
 
-    private static int PORT = 9080;
+    private static int PORT = 7080;
 
     /**
      * Main function, starts the jetty server.
@@ -43,7 +43,7 @@ public class Start {
         tomcat.getServer().addLifecycleListener(new org.apache.catalina.mbeans.GlobalResourcesLifecycleListener());
         tomcat.getServer().addLifecycleListener(new org.apache.catalina.core.ThreadLocalLeakPreventionListener());
 
-        tomcat.getService().addConnector(http(9080));
+        tomcat.getService().addConnector(http(PORT));
 
         String webapp = "src/main/webapp/";
 
