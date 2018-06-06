@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.junit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -14,11 +15,13 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.core.request.handler.BookmarkableListenerRequestHandler;
 import org.apache.wicket.core.request.handler.ListenerRequestHandler;
 import org.apache.wicket.core.request.handler.PageAndComponentProvider;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.ValidationErrorFeedback;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.mapper.parameter.INamedParameters;
@@ -80,6 +83,21 @@ public class JUnitWicketTester extends WicketTester {
         form.setValue("passwordField", Constants.PWD);
         form.submit("loginButton");
 
+    }
+
+    public List<String> collectFeedbacks(Component component) {
+        List<String> feedbacks = new ArrayList<>();
+        List<FeedbackMessage> fs = getFeedbackMessages(new ComponentFeedbackMessageFilter(component));
+        if (fs != null) {
+            for (FeedbackMessage f : fs) {
+                if (f.getMessage() instanceof ValidationErrorFeedback) {
+                    feedbacks.add((String) ((ValidationErrorFeedback) f.getMessage()).getMessage());
+                } else {
+                    feedbacks.add((String) f.getMessage());
+                }
+            }
+        }
+        return feedbacks;
     }
 
     public void executeBehavior(Select2SingleChoice<?> select) {

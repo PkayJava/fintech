@@ -108,13 +108,14 @@ public class AccountCreatePage extends Page {
     protected Date termFirstRepaymentOnValue;
     protected Date termInterestChargedFromValue;
     protected Double termNominalInterestRateValue;
+    protected Option termNominalInterestTypeValue;
     protected Option termInterestMethodValue;
     protected Boolean termEqualAmortizationValue;
     protected Option termAmortizationValue;
     protected Option termInterestCalculationPeriodValue;
     protected Boolean termCalculateInterestForExactDayInPartialPeriodValue;
     protected Double termArrearsToleranceValue;
-    protected Double termInterestFreePeriodValue;
+    protected Long termInterestFreePeriodValue;
     protected Option termRepaymentStrategyValue;
     protected Long termPrincipalPaymentValue;
     protected Long termInterestPaymentValue;
@@ -122,6 +123,16 @@ public class AccountCreatePage extends Page {
     protected Double termInstallmentAmountValue;
     protected Boolean termTopupLoanValue;
     protected Option termLoanToCloseValue;
+    
+    // Recalculation
+    protected Boolean termRecalculateInterestValue;
+    protected Option termAdvancePaymentValue;
+    protected Option termDayInMonthValue;
+    protected Option termInterestCompoundingValue;
+    protected Option termFrequencyOutstandingValue;
+    protected Option termFrequencyIntervalValue;
+    protected Option termFrequencyCompoundingValue;
+    protected Option termFrequencyIntervalCompoundingValue;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -239,6 +250,8 @@ public class AccountCreatePage extends Page {
         selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.NOMINAL_INTEREST_RATE_PER_PERIOD);
         selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MAX_NOMINAL_INTEREST_RATE_PER_PERIOD);
         selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.INTEREST_PERIOD_FREQUENCY_ENUM);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.IS_EQUAL_AMORTIZATION);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.CAN_USE_FOR_TOPUP);
 
         selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.IS_LINKED_TO_FLOATING_INTEREST_RATES);
 
@@ -343,46 +356,48 @@ public class AccountCreatePage extends Page {
 //        this.currencyInMultiplesOfValue = (Long) loanObject.get("currency_multiplesof");
 //        this.installmentInMultiplesOfValue = (Double) loanObject.get("instalment_amount_in_multiples_of");
 
-//        this.principleValue = (Double) loanObject.get("principal_amount");
+        this.termPrincipalValue = (Double) loanObject.get("principal_amount");
 
-//        this.numberOfRepaymentValue = (Long) loanObject.get("number_of_repayments");
-//        this.repaidEveryValue = (Long) loanObject.get("repay_every");
+        this.termNumberOfRepaymentValue = (Long) loanObject.get("number_of_repayments");
+        this.termRepaidEveryValue = (Long) loanObject.get("repay_every");
 
-//        if (this.numberOfRepaymentValue != null && this.repaidEveryValue != null) {
-//            this.loanTermValue = this.numberOfRepaymentValue * this.repaidEveryValue;
-//        }
+        if (this.termNumberOfRepaymentValue != null && this.termRepaidEveryValue != null) {
+            this.termLoanTermValue = this.termNumberOfRepaymentValue * this.termRepaidEveryValue;
+        }
 
         ChargeFrequency chargeFrequency = ChargeFrequency.parseLiteral(String.valueOf(loanObject.get("repayment_period_frequency_enum")));
+        this.termLoanTermTypeValue = chargeFrequency == null ? null : chargeFrequency.toOption();
 
-//        this.loanTypeValue = chargeFrequency == null ? null : chargeFrequency.toOption();
+        this.termRepaidTypeValue = chargeFrequency == null ? null : chargeFrequency.toOption();
 
-//        this.repaidTypeValue = chargeFrequency == null ? null : chargeFrequency.toOption();
+        this.termFirstRepaymentOnValue = DateTime.now().toDate();
+        this.termInterestChargedFromValue = DateTime.now().toDate();
 
-//        this.firstRepaymentOnValue = DateTime.now().toDate();
-//        this.interestChargedFromValue = DateTime.now().toDate();
+        this.termNominalInterestRateValue = (Double) loanObject.get("nominal_interest_rate_per_period");
 
-//        this.nominalInterestRateValue = (Double) loanObject.get("nominal_interest_rate_per_period");
+        this.termNominalInterestTypeValue = NominalInterestRateType.optionLiteral(String.valueOf(loanObject.get("interest_period_frequency_enum")));
 
-        NominalInterestRateType nominalInterestTypeValue = NominalInterestRateType.parseLiteral(String.valueOf(loanObject.get("interest_period_frequency_enum")));
-//        this.nominalInterestTypeValue = nominalInterestTypeValue == null ? "" : nominalInterestTypeValue.getDescription();
+        this.termInterestMethodValue = InterestMethod.optionLiteral(String.valueOf(loanObject.get("interest_method_enum")));
 
-//        this.interestMethodValue = InterestMethod.optionLiteral(String.valueOf(loanObject.get("interest_method_enum")));
+        this.termAmortizationValue = Amortization.optionLiteral(String.valueOf(loanObject.get("amortization_method_enum")));
+        
+        this.termEqualAmortizationValue = (Boolean) loanObject.get("is_equal_amortization");
 
-//        this.amortizationValue = Amortization.optionLiteral(String.valueOf(loanObject.get("amortization_method_enum")));
+        this.termInterestCalculationPeriodValue = InterestCalculationPeriod.optionLiteral(String.valueOf(loanObject.get("interest_calculated_in_period_enum")));
 
-//        this.interestCalculationPeriodValue = InterestCalculationPeriod.optionLiteral(String.valueOf(loanObject.get("interest_calculated_in_period_enum")));
+        this.termCalculateInterestForExactDayInPartialPeriodValue = (Boolean) loanObject.get("allow_partial_period_interest_calcualtion");
 
-//        this.calculateInterestForExactDayInPartialPeriodValue = (Boolean) loanObject.get("allow_partial_period_interest_calcualtion");
+        this.termArrearsToleranceValue = (Double) loanObject.get("arrearstolerance_amount");
 
-//        this.repaymentStrategyValue = RepaymentStrategy.optionLiteral(String.valueOf(loanObject.get("loan_transaction_strategy_id")));
+        this.termInterestFreePeriodValue = (Long) loanObject.get("grace_interest_free_periods");
 
-//        this.arrearsToleranceValue = (Double) loanObject.get("arrearstolerance_amount");
+        this.termRepaymentStrategyValue = RepaymentStrategy.optionLiteral(String.valueOf(loanObject.get("loan_transaction_strategy_id")));
 
-//        this.interestFreePeriodValue = (Long) loanObject.get("grace_interest_free_periods");
-
-//        this.onArrearsAgingValue = (Long) loanObject.get("grace_on_arrears_ageing");
-//        this.onInterestPaymentValue = (Long) loanObject.get("grace_on_interest_periods");
-//        this.onPrinciplePaymentValue = (Long) loanObject.get("grace_on_principal_periods");
+        this.termArrearsAgingValue = (Long) loanObject.get("grace_on_arrears_ageing");
+        this.termInterestPaymentValue = (Long) loanObject.get("grace_on_interest_periods");
+        this.termPrincipalPaymentValue = (Long) loanObject.get("grace_on_principal_periods");
+        
+        this.termTopupLoanValue = (Boolean) loanObject.get("can_use_for_topup");
 
         Long interest_recalculation_enabled = (Long) loanObject.get("interest_recalculation_enabled");
 //        this.interestRecalculationRecalculateInterestValue = interest_recalculation_enabled == null ? null : interest_recalculation_enabled == 1;

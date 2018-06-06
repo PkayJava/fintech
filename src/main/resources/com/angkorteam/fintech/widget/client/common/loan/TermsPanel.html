@@ -28,7 +28,7 @@
 						</div>
 						<div wicket:id="termLoanTermTypeBlock" class="form-group">
 							<wicket:container wicket:id="termLoanTermTypeIContainer">
-								<label wicket:for="termLoanTermTypeField">Loan Term Type</label>
+								<label wicket:for="termLoanTermTypeField">&nbsp;</label>
 								<select wicket:id="termLoanTermTypeField" class="form-control"></select>
 								<span wicket:id="termLoanTermTypeFeedback" class="help-block"></span>
 							</wicket:container>
@@ -49,13 +49,14 @@
 						<div wicket:id="termRepaidEveryBlock" class="form-group">
 							<wicket:container wicket:id="termRepaidEveryIContainer">
 								<label wicket:for="termRepaidEveryField">Repaid Every</label>
-								<select wicket:id="termRepaidEveryField" class="form-control"></select>
+								<input type="text" wicket:id="termRepaidEveryField"
+									class="form-control" />
 								<span wicket:id="termRepaidEveryFeedback" class="help-block"></span>
 							</wicket:container>
 						</div>
 						<div wicket:id="termRepaidTypeBlock" class="form-group">
 							<wicket:container wicket:id="termRepaidTypeIContainer">
-								<label wicket:for="termRepaidTypeField">Repaid Type</label>
+								<label wicket:for="termRepaidTypeField">&nbsp;</label>
 								<select wicket:id="termRepaidTypeField" class="form-control"></select>
 								<span wicket:id="termRepaidTypeFeedback" class="help-block"></span>
 							</wicket:container>
@@ -69,7 +70,7 @@
 						</div>
 						<div wicket:id="termRepaidDayBlock" class="form-group">
 							<wicket:container wicket:id="termRepaidDayIContainer">
-								<label wicket:for="termRepaidDayField">Day</label>
+								<label wicket:for="termRepaidDayField">&nbsp;</label>
 								<select wicket:id="termRepaidDayField" class="form-control"></select>
 								<span wicket:id="termRepaidDayFeedback" class="help-block"></span>
 							</wicket:container>
@@ -111,13 +112,10 @@
 							</wicket:container>
 						</div>
 						<div wicket:id="termNominalInterestTypeBlock" class="form-group">
-							<wicket:container wicket:id="termNominalInterestTypeIContainer">
-								<label wicket:for="termNominalInterestTypeField">Nominal
-									Interest Type</label>
-								<input wicket:id="termNominalInterestTypeField" type="text"
-									class="form-control" />
-								<span wicket:id="termNominalInterestTypeFeedback"
-									class="help-block"></span>
+							<wicket:container wicket:id="termNominalInterestTypeVContainer">
+								<label>&nbsp;</label>
+								<div wicket:id="termNominalInterestTypeView"
+									class="form-control"></div>
 							</wicket:container>
 						</div>
 						<div wicket:id="termInterestMethodBlock" class="form-group">
@@ -281,6 +279,82 @@
 									Close</label>
 								<select wicket:id="termLoanToCloseField" class="form-control"></select>
 								<span wicket:id="termLoanToCloseFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="box-body">
+
+					<div wicket:id="row11">
+						<div wicket:id="termRecalculateInterestBlock" class="form-group">
+							<wicket:container wicket:id="termRecalculateInterestVContainer">
+								<label>Recalculate Interest</label>
+								<div wicket:id="termRecalculateInterestView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="termDayInYearBlock" class="form-group">
+							<wicket:container wicket:id="termDayInYearVContainer">
+								<label>Day In Year</label>
+								<div wicket:id="termDayInYearView" class="form-control"></div>
+							</wicket:container>
+						</div>
+					</div>
+
+					<div wicket:id="row12">
+						<div wicket:id="termAdvancePaymentBlock" class="form-group">
+							<wicket:container wicket:id="termAdvancePaymentVContainer">
+								<label>Advance Payments Adjustment Type</label>
+								<div wicket:id="termAdvancePaymentView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="termDayInMonthBlock" class="form-group">
+							<wicket:container wicket:id="termDayInMonthVContainer">
+								<label>Day In Month</label>
+								<div wicket:id="termDayInMonthView" class="form-control"></div>
+							</wicket:container>
+						</div>
+					</div>
+					<div wicket:id="row13">
+						<div wicket:id="termInterestCompoundingBlock" class="form-group">
+							<wicket:container wicket:id="termInterestCompoundingVContainer">
+								<label>Interest Recalculation Compounding On</label>
+								<div wicket:id="termInterestCompoundingView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="termFrequencyOutstandingBlock" class="form-group">
+							<wicket:container wicket:id="termFrequencyOutstandingVContainer">
+								<label>Frequency For Recalculate Outstanding Principal</label>
+								<div wicket:id="termFrequencyOutstandingView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+					</div>
+
+					<div wicket:id="row14">
+						<div wicket:id="termFrequencyIntervalBlock" class="form-group">
+							<wicket:container wicket:id="termFrequencyIntervalVContainer">
+								<label>Frequency Interval For Recalculation</label>
+								<div wicket:id="termFrequencyIntervalView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="termFrequencyCompoundingBlock" class="form-group">
+							<wicket:container wicket:id="termFrequencyCompoundingVContainer">
+								<label>Frequency For Compounding</label>
+								<div wicket:id="termFrequencyCompoundingView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="termFrequencyIntervalCompoundingBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="termFrequencyIntervalCompoundingVContainer">
+								<label>Frequency Interval For Compounding</label>
+								<div wicket:id="termFrequencyIntervalCompoundingView"
+									class="form-control"></div>
 							</wicket:container>
 						</div>
 					</div>

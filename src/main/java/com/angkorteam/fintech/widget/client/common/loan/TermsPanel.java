@@ -11,6 +11,8 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.dto.ClientEnum;
+import com.angkorteam.fintech.dto.enums.ChargeFrequency;
+import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
 import com.angkorteam.fintech.layout.Size;
 import com.angkorteam.fintech.layout.UIBlock;
 import com.angkorteam.fintech.layout.UIContainer;
@@ -28,6 +30,8 @@ import com.angkorteam.fintech.provider.loan.InterestMethodProvider;
 import com.angkorteam.fintech.provider.loan.RepaidOnProvider;
 import com.angkorteam.fintech.provider.loan.RepaymentStrategyProvider;
 import com.angkorteam.fintech.widget.Panel;
+import com.angkorteam.fintech.widget.ReadOnlyView;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
@@ -119,9 +123,9 @@ public class TermsPanel extends Panel {
     protected PropertyModel<Double> termNominalInterestRateValue;
 
     protected UIBlock termNominalInterestTypeBlock;
-    protected UIContainer termNominalInterestTypeIContainer;
-    protected TextField<String> termNominalInterestTypeField;
-    protected PropertyModel<String> termNominalInterestTypeValue;
+    protected UIContainer termNominalInterestTypeVContainer;
+    protected ReadOnlyView termNominalInterestTypeView;
+    protected PropertyModel<Option> termNominalInterestTypeValue;
 
     protected InterestMethodProvider termInterestMethodProvider;
     protected UIBlock termInterestMethodBlock;
@@ -166,8 +170,8 @@ public class TermsPanel extends Panel {
 
     protected UIBlock termInterestFreePeriodBlock;
     protected UIContainer termInterestFreePeriodIContainer;
-    protected TextField<Double> termInterestFreePeriodField;
-    protected PropertyModel<Double> termInterestFreePeriodValue;
+    protected TextField<Long> termInterestFreePeriodField;
+    protected PropertyModel<Long> termInterestFreePeriodValue;
 
     protected UIRow row8;
 
@@ -208,7 +212,7 @@ public class TermsPanel extends Panel {
     protected CheckBox termTopupLoanField;
     protected PropertyModel<Boolean> termTopupLoanValue;
 
-    protected SingleChoiceProvider termLoanToCloseProvider;
+    protected ChargeFrequencyProvider termLoanToCloseProvider;
     protected UIBlock termLoanToCloseBlock;
     protected UIContainer termLoanToCloseIContainer;
     protected Select2SingleChoice<Option> termLoanToCloseField;
@@ -226,6 +230,9 @@ public class TermsPanel extends Panel {
 
         this.client = new PropertyModel<ClientEnum>(this.itemPage, "client").getObject();
         this.clientId = new PropertyModel<String>(this.itemPage, "clientId").getObject();
+
+        // TODO : TO BE CHECK
+        this.termLoanToCloseProvider = new ChargeFrequencyProvider();
 
         this.termLoanTermTypeProvider = new ChargeFrequencyProvider();
         this.termRepaidTypeProvider = new ChargeFrequencyProvider();
@@ -247,6 +254,7 @@ public class TermsPanel extends Panel {
         this.termFirstRepaymentOnValue = new PropertyModel<>(this.itemPage, "termFirstRepaymentOnValue");
         this.termInterestChargedFromValue = new PropertyModel<>(this.itemPage, "termInterestChargedFromValue");
         this.termNominalInterestRateValue = new PropertyModel<>(this.itemPage, "termNominalInterestRateValue");
+        this.termNominalInterestTypeValue = new PropertyModel<>(this.itemPage, "termNominalInterestTypeValue");
         this.termInterestMethodValue = new PropertyModel<>(this.itemPage, "termInterestMethodValue");
         this.termEqualAmortizationValue = new PropertyModel<>(this.itemPage, "termEqualAmortizationValue");
         this.termAmortizationValue = new PropertyModel<>(this.itemPage, "termAmortizationValue");
@@ -363,10 +371,9 @@ public class TermsPanel extends Panel {
         this.termNominalInterestRateIContainer.newFeedback("termNominalInterestRateFeedback", this.termNominalInterestRateField);
 
         this.termNominalInterestTypeBlock = this.row4.newUIBlock("termNominalInterestTypeBlock", Size.Three_3);
-        this.termNominalInterestTypeIContainer = this.termNominalInterestTypeBlock.newUIContainer("termNominalInterestTypeIContainer");
-        this.termNominalInterestTypeField = new TextField<>("termNominalInterestTypeField", this.termNominalInterestTypeValue);
-        this.termNominalInterestTypeIContainer.add(this.termNominalInterestTypeField);
-        this.termNominalInterestTypeIContainer.newFeedback("termNominalInterestTypeFeedback", this.termNominalInterestTypeField);
+        this.termNominalInterestTypeVContainer = this.termNominalInterestTypeBlock.newUIContainer("termNominalInterestTypeVContainer");
+        this.termNominalInterestTypeView = new ReadOnlyView("termNominalInterestTypeView", this.termNominalInterestTypeValue);
+        this.termNominalInterestTypeVContainer.add(this.termNominalInterestTypeView);
 
         this.termInterestMethodBlock = this.row4.newUIBlock("termInterestMethodBlock", Size.Three_3);
         this.termInterestMethodIContainer = this.termInterestMethodBlock.newUIContainer("termInterestMethodIContainer");
@@ -456,13 +463,13 @@ public class TermsPanel extends Panel {
 
         this.row10 = UIRow.newUIRow("row10", this.form);
 
-        this.termTopupLoanBlock = this.row9.newUIBlock("termTopupLoanBlock", Size.Six_6);
+        this.termTopupLoanBlock = this.row10.newUIBlock("termTopupLoanBlock", Size.Six_6);
         this.termTopupLoanIContainer = this.termTopupLoanBlock.newUIContainer("termTopupLoanIContainer");
         this.termTopupLoanField = new CheckBox("termTopupLoanField", this.termTopupLoanValue);
         this.termTopupLoanIContainer.add(this.termTopupLoanField);
         this.termTopupLoanIContainer.newFeedback("termTopupLoanFeedback", this.termTopupLoanField);
 
-        this.termLoanToCloseBlock = this.row9.newUIBlock("termLoanToCloseBlock", Size.Six_6);
+        this.termLoanToCloseBlock = this.row10.newUIBlock("termLoanToCloseBlock", Size.Six_6);
         this.termLoanToCloseIContainer = this.termLoanToCloseBlock.newUIContainer("termLoanToCloseIContainer");
         this.termLoanToCloseField = new Select2SingleChoice<>("termLoanToCloseField", this.termLoanToCloseValue, this.termLoanToCloseProvider);
         this.termLoanToCloseIContainer.add(this.termLoanToCloseField);
@@ -472,7 +479,89 @@ public class TermsPanel extends Panel {
 
     @Override
     protected void configureMetaData() {
+        this.termPrincipalField.add(new OnChangeAjaxBehavior());
 
+        this.termLoanTermField.add(new OnChangeAjaxBehavior());
+
+        this.termLoanTermTypeField.add(new OnChangeAjaxBehavior());
+
+        this.termNumberOfRepaymentField.add(new OnChangeAjaxBehavior());
+
+        this.termRepaidEveryField.add(new OnChangeAjaxBehavior());
+
+        this.termRepaidTypeField.setRequired(true);
+        this.termRepaidTypeField.add(new OnChangeAjaxBehavior(this::termRepaidTypeFieldUpdate));
+
+        this.termRepaidDayField.setRequired(true);
+        this.termRepaidDayField.add(new OnChangeAjaxBehavior());
+
+        this.termRepaidTypeField.setRequired(true);
+        this.termRepaidTypeField.add(new OnChangeAjaxBehavior());
+
+        this.termFirstRepaymentOnField.add(new OnChangeAjaxBehavior());
+
+        this.termInterestChargedFromField.add(new OnChangeAjaxBehavior());
+
+        this.termNominalInterestRateField.add(new OnChangeAjaxBehavior());
+
+        this.termInterestMethodField.add(new OnChangeAjaxBehavior());
+
+        this.termEqualAmortizationField.add(new OnChangeAjaxBehavior());
+
+        this.termAmortizationField.add(new OnChangeAjaxBehavior());
+
+        this.termInterestCalculationPeriodField.add(new OnChangeAjaxBehavior(this::termInterestCalculationPeriodFieldUpdate));
+
+        this.termCalculateInterestForExactDayInPartialPeriodField.add(new OnChangeAjaxBehavior());
+
+        this.termTopupLoanField.add(new OnChangeAjaxBehavior(this::termTopupLoanFieldUpdate));
+
+        termRepaidTypeFieldUpdate(null);
+
+        termInterestCalculationPeriodFieldUpdate(null);
+
+        termTopupLoanFieldUpdate(null);
+    }
+
+    protected boolean termTopupLoanFieldUpdate(AjaxRequestTarget target) {
+        boolean visible = this.termTopupLoanValue.getObject() != null && this.termTopupLoanValue.getObject();
+        this.termLoanToCloseIContainer.setVisible(visible);
+        if (target != null) {
+            target.add(this.termLoanToCloseBlock);
+        }
+        return false;
+    }
+
+    protected boolean termInterestCalculationPeriodFieldUpdate(AjaxRequestTarget target) {
+        InterestCalculationPeriod period = null;
+        if (this.termInterestCalculationPeriodValue.getObject() != null) {
+            period = InterestCalculationPeriod.parseLiteral(this.termInterestCalculationPeriodValue.getObject().getId());
+        }
+
+        boolean visible = period == InterestCalculationPeriod.SameAsPayment;
+
+        this.termCalculateInterestForExactDayInPartialPeriodIContainer.setVisible(visible);
+
+        if (target != null) {
+            target.add(this.termCalculateInterestForExactDayInPartialPeriodBlock);
+        }
+
+        return false;
+    }
+
+    protected boolean termRepaidTypeFieldUpdate(AjaxRequestTarget target) {
+        ChargeFrequency chargeFrequency = null;
+        if (this.termRepaidTypeValue.getObject() != null) {
+            chargeFrequency = ChargeFrequency.parseLiteral(this.termRepaidTypeValue.getObject().getId());
+        }
+        boolean visible = chargeFrequency == ChargeFrequency.Month;
+        this.termRepaidDayIContainer.setVisible(visible);
+        this.termRepaidTypeIContainer.setVisible(visible);
+        if (target != null) {
+            target.add(this.termRepaidDayBlock);
+            target.add(this.termRepaidTypeBlock);
+        }
+        return false;
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {

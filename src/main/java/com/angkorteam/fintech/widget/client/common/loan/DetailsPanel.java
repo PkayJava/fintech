@@ -27,6 +27,7 @@ import com.angkorteam.fintech.provider.LoanPurposeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.ReadOnlyView;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -242,10 +243,24 @@ public class DetailsPanel extends Panel {
 
     @Override
     protected void configureMetaData() {
+        this.detailFundField.add(new OnChangeAjaxBehavior());
+
+        this.detailLoanOfficerField.add(new OnChangeAjaxBehavior());
+
+        this.detailLoanPurposeField.add(new OnChangeAjaxBehavior());
+
+        this.detailSubmittedOnField.add(new OnChangeAjaxBehavior());
         this.detailSubmittedOnField.setLabel(Model.of("Submitted On"));
         this.detailSubmittedOnField.setRequired(true);
 
+        this.detailExternalIdField.add(new OnChangeAjaxBehavior());
         this.detailExternalIdField.setLabel(Model.of("External ID"));
+
+        this.detailExternalIdField.add(new OnChangeAjaxBehavior());
+
+        this.detailLinkSavingField.add(new OnChangeAjaxBehavior());
+
+        this.detailCreateStandingInstructionAtDisbursementField.add(new OnChangeAjaxBehavior());
     }
 
     protected void nextButtonSubmit(Button button) {
