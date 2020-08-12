@@ -1,84 +1,65 @@
 package com.angkorteam.fintech.pages;
 
-import java.util.List;
-
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.MasterPage;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.pages.account.AccountBrowsePage;
-import com.angkorteam.fintech.pages.account.AccrualAccountingPage;
-import com.angkorteam.fintech.pages.account.ClosureBrowsePage;
-import com.angkorteam.fintech.pages.account.FinancialActivityBrowsePage;
-import com.angkorteam.fintech.pages.account.JournalPostPage;
-import com.angkorteam.fintech.pages.account.RuleBrowsePage;
-import com.angkorteam.fintech.pages.account.RuleSelectPage;
-import com.angkorteam.fintech.pages.account.SearchJournalPage;
-import com.angkorteam.framework.BackgroundColor;
-import com.angkorteam.framework.Emoji;
-import com.angkorteam.framework.models.InfoBox;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.panels.InfoBoxPanel;
-import com.google.common.collect.Lists;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
-/**
- * Created by socheatkhauv on 6/27/17.
- */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class AccountingPage extends Page {
+public class AccountingPage extends MasterPage {
+
+    private BookmarkablePageLink<Void> frequentPostingsLink;
+
+    private BookmarkablePageLink<Void> chartAccountsLink;
+
+    private BookmarkablePageLink<Void> addJournalEntriesLink;
+
+    private BookmarkablePageLink<Void> closingEntriesLink;
+
+    private BookmarkablePageLink<Void> searchJournalEntriesLink;
+
+    private BookmarkablePageLink<Void> accountingRulesLink;
+
+    private BookmarkablePageLink<Void> accountsLinkedToFinancialActivitiesLink;
+
+    private BookmarkablePageLink<Void> accrualsLink;
+
+    private BookmarkablePageLink<Void> migrateOpeningBalancesLink;
+
+    private BookmarkablePageLink<Void> provisioningEntriesLink;
 
     @Override
-    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
-        {
-            PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Accounting");
-            BREADCRUMB.add(breadcrumb);
-        }
-        return Model.ofList(BREADCRUMB);
-    }
+    protected void onInitHtml(MarkupContainer body) {
+        this.frequentPostingsLink = new BookmarkablePageLink<>("frequentPostingsLink", TodoPage.class);
+        body.add(this.frequentPostingsLink);
 
-    @Override
-    protected void initData() {
-    }
+        this.chartAccountsLink = new BookmarkablePageLink<>("chartAccountsLink", TodoPage.class);
+        body.add(this.chartAccountsLink);
 
-    @Override
-    protected void initComponent() {
-        InfoBoxPanel frequentPostingPage = new InfoBoxPanel("frequentPostingPage", Model.of(new InfoBox().setPage(RuleSelectPage.class).setTitle("Frequent Postings").setDescription("These are predefined postings").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
-        add(frequentPostingPage);
+        this.addJournalEntriesLink = new BookmarkablePageLink<>("addJournalEntriesLink", TodoPage.class);
+        body.add(this.addJournalEntriesLink);
 
-        InfoBoxPanel chartOfAccountPage = new InfoBoxPanel("chartOfAccountPage", Model.of(new InfoBox().setPage(AccountBrowsePage.class).setTitle("Chart of Accounts").setDescription("List of the accounts used by the organization").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
-        add(chartOfAccountPage);
+        this.closingEntriesLink = new BookmarkablePageLink<>("closingEntriesLink", TodoPage.class);
+        body.add(this.closingEntriesLink);
 
-        InfoBoxPanel addJournalEntryPage = new InfoBoxPanel("addJournalEntryPage", Model.of(new InfoBox().setPage(JournalPostPage.class).setTitle("Add Journal Entries").setDescription("Manual journal entry transactions recorded in a journal").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
-        add(addJournalEntryPage);
+        this.searchJournalEntriesLink = new BookmarkablePageLink<>("searchJournalEntriesLink", TodoPage.class);
+        body.add(this.searchJournalEntriesLink);
 
-        InfoBoxPanel closingEntryPage = new InfoBoxPanel("closingEntryPage", Model.of(new InfoBox().setPage(ClosureBrowsePage.class).setTitle("Closing Entries").setDescription("Journal entries made at the end of an accounting period").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
-        add(closingEntryPage);
+        this.accountingRulesLink = new BookmarkablePageLink<>("accountingRulesLink", TodoPage.class);
+        body.add(this.accountingRulesLink);
 
-        InfoBoxPanel searchJournalEntryPage = new InfoBoxPanel("searchJournalEntryPage", Model.of(new InfoBox().setPage(SearchJournalPage.class).setTitle("Search Journal Entries").setDescription("Advance search option for journal entries").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
-        add(searchJournalEntryPage);
+        this.accountsLinkedToFinancialActivitiesLink = new BookmarkablePageLink<>("accountsLinkedToFinancialActivitiesLink", TodoPage.class);
+        body.add(this.accountsLinkedToFinancialActivitiesLink);
 
-        InfoBoxPanel accountingRulePage = new InfoBoxPanel("accountingRulePage", Model.of(new InfoBox().setPage(RuleBrowsePage.class).setTitle("Accounting Rules").setDescription("Lists all accounting rules").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
-        add(accountingRulePage);
+        this.accrualsLink = new BookmarkablePageLink<>("accrualsLink", TodoPage.class);
+        body.add(this.accrualsLink);
 
-        InfoBoxPanel accountLinkedPage = new InfoBoxPanel("accountLinkedPage", Model.of(new InfoBox().setPage(FinancialActivityBrowsePage.class).setTitle("Accounts Linked to Financial Activities").setDescription("List of Financial Activity and GL Account Mappings").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
-        add(accountLinkedPage);
+        this.migrateOpeningBalancesLink = new BookmarkablePageLink<>("migrateOpeningBalancesLink", TodoPage.class);
+        body.add(this.migrateOpeningBalancesLink);
 
-        InfoBoxPanel accrualsPage = new InfoBoxPanel("accrualsPage", Model.of(new InfoBox().setPage(AccrualAccountingPage.class).setTitle("Accruals").setDescription("Accrues income, expenses, and liabilities as on the provided date").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
-        add(accrualsPage);
-
-        InfoBoxPanel migrateOpeningPage = new InfoBoxPanel("migrateOpeningPage", Model.of(new InfoBox().setPage(LoginPage.class).setTitle("Migrate Opening Balances (Office-wise)").setDescription("Set or update office-level opening balances for GL Accounts").setIcon(Emoji.ion_alert)));
-        add(migrateOpeningPage);
-
-        InfoBoxPanel provisionEntryPage = new InfoBoxPanel("provisionEntryPage", Model.of(new InfoBox().setPage(LoginPage.class).setTitle("Provisioning Entries").setDescription("Create Provision Entries").setIcon(Emoji.ion_alert)));
-        add(provisionEntryPage);
-    }
-
-    @Override
-    protected void configureMetaData() {
+        this.provisioningEntriesLink = new BookmarkablePageLink<>("provisioningEntriesLink", TodoPage.class);
+        body.add(this.provisioningEntriesLink);
     }
 
 }

@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>Angkor FinTech</title>
-<!-- Tell the browser to be responsive to screen width -->
-<meta
-	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-	name="viewport">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title><wicket:container wicket:id="appName"/></title>
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
 <body class="hold-transition login-page">
-	<div class="login-box">
-		<div class="login-logo">
-			<a href="#"><b>Admin</b> Dashboard</a>
-		</div>
-		<!-- /.login-logo -->
-		<div class="login-box-body">
+<div class="login-box">
+	<div class="login-logo">
+		<a href="#"><b><wicket:container wicket:id="appName"/></b></a>
+	</div>
+	<div class="card">
+		<div class="card-body login-card-body">
 			<p class="login-box-msg">Sign in to start your session</p>
 
 			<form wicket:id="form">
-				<div class="form-group has-feedback">
-					<select wicket:id="identifierField" class="form-control select2"
-						style="width: 100%;"></select>
+				<span wicket:id="identifierFeedback"></span>
+				<div class="input-group mb-3">
+					<select wicket:id="identifierField" class="form-control"></select>
 				</div>
-				<div class="form-group has-feedback">
-					<input wicket:id="loginField" type="text" class="form-control"
-						placeholder="Login"> <span
-						class="glyphicon glyphicon-user form-control-feedback"></span>
+				<span wicket:id="loginFeedback"></span>
+				<div class="input-group mb-3">
+					<input wicket:id="loginField" type="text" class="form-control" placeholder="Username" autocomplete="off">
+					<div class="input-group-append">
+						<div class="input-group-text">
+							<span class="fas fa-user"></span>
+						</div>
+					</div>
 				</div>
-				<div class="form-group has-feedback">
-					<input wicket:id="passwordField" type="password"
-						class="form-control" placeholder="Password"> <span
-						class="glyphicon glyphicon-lock form-control-feedback"></span>
+				<span wicket:id="passwordFeedback"></span>
+				<div class="input-group mb-3">
+					<input wicket:id="passwordField" type="password" class="form-control" placeholder="Password" autocomplete="off">
+					<div class="input-group-append">
+						<div class="input-group-text">
+							<span class="fas fa-lock"></span>
+						</div>
+					</div>
 				</div>
 				<div class="row">
-					<div class="col-xs-8"></div>
+					<div class="col-8">
+					</div>
 					<!-- /.col -->
-					<div class="col-xs-4">
-						<button wicket:id="loginButton" type="submit"
-							class="btn btn-primary btn-block btn-flat">Login</button>
+					<div class="col-4">
+						<button wicket:id="loginButton" type="submit" class="btn btn-primary btn-block">Sign In</button>
 					</div>
 					<!-- /.col -->
 				</div>
 			</form>
-
-
 		</div>
-		<!-- /.login-box-body -->
-		<br/>
-		<div class="text-center">
-			<p wicket:id="versionView"></p>
-		</div>
+		<!-- /.login-card-body -->
 	</div>
-	<!-- /.login-box -->
-
+</div>
+<!-- /.login-box -->
 
 </body>
 </html>

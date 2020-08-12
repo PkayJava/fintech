@@ -1,55 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
 </head>
 <body>
-	<wicket:extend>
-
-		<div class="row">
-			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-				<wicket:container wicket:id="frequentPostingPage" />
+<wicket:extend>
+	<section class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<a wicket:id="frequentPostingsLink" class="info-box">
+						<span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+						<div class="info-box-content">
+							<span class="info-box-text">Frequent Postings</span>
+							<span class="info-box-number">These are predefined postings</span>
+						</div>
+					</a>
+				</div>
+				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<a wicket:id="chartAccountsLink" class="info-box mb-3">
+						<span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file-csv"></i></span>
+						<div class="info-box-content">
+							<span class="info-box-text">Chart of Accounts</span>
+							<span class="info-box-number">List of the accounts used by the organization</span>
+						</div>
+					</a>
+				</div>
 			</div>
-			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-				<wicket:container wicket:id="chartOfAccountPage" />
+			<div class="row">
+				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<a wicket:id="addJournalEntriesLink" class="info-box">
+						<span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+						<div class="info-box-content">
+							<span class="info-box-text">Add Journal Entries</span>
+							<span class="info-box-number">Manual journal entry transactions recorded in a journal</span>
+						</div>
+					</a>
+				</div>
+				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<a wicket:id="closingEntriesLink" class="info-box mb-3">
+						<span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file-csv"></i></span>
+						<div class="info-box-content">
+							<span class="info-box-text">Closing Entries</span>
+							<span class="info-box-number">Journal entries made at the end of an accounting period</span>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<a wicket:id="searchJournalEntriesLink" class="info-box">
+						<span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+						<div class="info-box-content">
+							<span class="info-box-text">Search Journal Entries</span>
+							<span class="info-box-number">Advance search option for journal entries</span>
+						</div>
+					</a>
+				</div>
+				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<a wicket:id="accountingRulesLink" class="info-box mb-3">
+						<span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file-csv"></i></span>
+						<div class="info-box-content">
+							<span class="info-box-text">Accounting Rules</span>
+							<span class="info-box-number">Lists all accounting rules</span>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<a wicket:id="accountsLinkedToFinancialActivitiesLink" class="info-box">
+						<span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+						<div class="info-box-content">
+							<span class="info-box-text">Accounts Linked to Financial Activities</span>
+							<span class="info-box-number">List of Financial Activity and GL Account Mappings</span>
+						</div>
+					</a>
+				</div>
+				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<a wicket:id="accrualsLink" class="info-box mb-3">
+						<span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file-csv"></i></span>
+						<div class="info-box-content">
+							<span class="info-box-text">Accruals</span>
+							<span class="info-box-number">Accrues income, expenses and liabilities as on the provided date</span>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<a wicket:id="migrateOpeningBalancesLink" class="info-box">
+						<span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+						<div class="info-box-content">
+							<span class="info-box-text">Migrate Opening Balances (Office-wise)</span>
+							<span class="info-box-number">Set or update office-level opening balances for GL Accounts</span>
+						</div>
+					</a>
+				</div>
+				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<a wicket:id="provisioningEntriesLink" class="info-box mb-3">
+						<span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file-csv"></i></span>
+						<div class="info-box-content">
+							<span class="info-box-text">Provisioning Entries</span>
+							<span class="info-box-number">Create Provisioning Entries</span>
+						</div>
+					</a>
+				</div>
 			</div>
 		</div>
-
-		<div class="row">
-			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-				<wicket:container wicket:id="addJournalEntryPage" />
-			</div>
-			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-				<wicket:container wicket:id="closingEntryPage" />
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-				<wicket:container wicket:id="searchJournalEntryPage" />
-			</div>
-			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-				<wicket:container wicket:id="accountingRulePage" />
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-				<wicket:container wicket:id="accountLinkedPage" />
-			</div>
-			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-				<wicket:container wicket:id="accrualsPage" />
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-				<wicket:container wicket:id="migrateOpeningPage" />
-			</div>
-			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-				<wicket:container wicket:id="provisionEntryPage" />
-			</div>
-		</div>
-
-	</wicket:extend>
+	</section>
+</wicket:extend>
 </body>
+
 </html>

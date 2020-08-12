@@ -10,6 +10,7 @@ import io.github.openunirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 6/26/17.
+ * CurrenciesApiResource
  */
 public class CurrencyHelper {
 

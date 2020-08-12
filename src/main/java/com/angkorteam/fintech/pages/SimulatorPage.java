@@ -1,163 +1,173 @@
 package com.angkorteam.fintech.pages;
 
+import com.angkorteam.fintech.MasterPage;
+import com.angkorteam.fintech.boot.AppProperties;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.factory.WebSession;
+import com.angkorteam.fintech.provider.ui.MemoryContentHeaderProvider;
+import com.angkorteam.webui.frmk.common.WicketFactory;
+import com.angkorteam.webui.frmk.model.Breadcrumb;
+import com.angkorteam.webui.frmk.model.ContentHeader;
+import com.angkorteam.webui.frmk.wicket.layout.Size;
+import com.angkorteam.webui.frmk.wicket.layout.UIColumn;
+import com.angkorteam.webui.frmk.wicket.layout.UIContainer;
+import com.angkorteam.webui.frmk.wicket.layout.UIRow;
+import io.github.openunirest.http.HttpResponse;
+import io.github.openunirest.http.Unirest;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.springframework.context.ApplicationContext;
+import org.springframework.http.MediaType;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
-import java.util.List;
-
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.springframework.http.MediaType;
-
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.layout.Size;
-import com.angkorteam.fintech.layout.UIBlock;
-import com.angkorteam.fintech.layout.UIContainer;
-import com.angkorteam.fintech.layout.UIRow;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.google.common.collect.Lists;
-
-import io.github.openunirest.http.HttpResponse;
-import io.github.openunirest.http.Unirest;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SimulatorPage extends Page {
+public class SimulatorPage extends MasterPage {
 
     protected Form<Void> form;
     protected Button simulateButton;
 
     protected UIRow row1;
 
-    protected UIBlock urlBlock;
+    protected UIColumn urlColumn;
     protected UIContainer urlIContainer;
     protected String urlValue;
     protected TextField<String> urlField;
 
-    protected UIBlock methodBlock;
-    protected UIContainer methodIContainer;
+    protected UIColumn methodColumn;
+    protected UIContainer methodContainer;
     protected String methodValue;
     protected DropDownChoice<String> methodField;
 
     protected UIRow row2;
 
-    protected UIBlock requestBlock;
-    protected UIContainer requestIContainer;
+    protected UIColumn requestColumn;
+    protected UIContainer requestContainer;
     protected String requestValue;
     protected TextArea<String> requestField;
 
     protected UIRow row3;
 
-    protected UIBlock statusCodeBlock;
-    protected UIContainer statusCodeIContainer;
+    protected UIColumn statusCodeColumn;
+    protected UIContainer statusCodeContainer;
     protected String statusCodeValue;
     protected TextField<String> statusCodeField;
 
-    protected UIBlock statusTextBlock;
-    protected UIContainer statusTextIContainer;
+    protected UIColumn statusTextColumn;
+    protected UIContainer statusTextContainer;
     protected String statusTextValue;
     protected TextField<String> statusTextField;
 
     protected UIRow row4;
 
-    protected UIBlock responseBlock;
-    protected UIContainer responseIContainer;
+    protected UIColumn responseColumn;
+    protected UIContainer responseContainer;
     protected String responseValue;
     protected TextArea<String> responseField;
 
+//    @Override
+//    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+//        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
+//        {
+//            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+//            breadcrumb.setLabel("Simulator");
+//            BREADCRUMB.add(breadcrumb);
+//        }
+//        return Model.ofList(BREADCRUMB);
+//    }
+
+
     @Override
-    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
-        {
-            PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Simulator");
-            BREADCRUMB.add(breadcrumb);
-        }
-        return Model.ofList(BREADCRUMB);
+    protected void onInitData() {
+        super.onInitData();
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        AppProperties properties = context.getBean(AppProperties.class);
+        this.urlValue = properties.getMifosUrl();
+        this.contentHeaderProvider = new MemoryContentHeaderProvider(new ContentHeader("Simulator", new Breadcrumb("Simulator", SimulatorPage.class)));
     }
 
     @Override
-    protected void initData() {
-    }
-
-    @Override
-    protected void configureMetaData() {
-        this.methodField.setLabel(Model.of("Method"));
-        this.urlField.setLabel(Model.of("URL"));
-        this.urlField.setRequired(true);
-        this.methodField.setRequired(true);
-        this.requestField.setLabel(Model.of("Request"));
-        this.statusCodeField.setLabel(Model.of("Status Code"));
-        this.statusTextField.setLabel(Model.of("Status Text"));
-        this.responseField.setLabel(Model.of("Response"));
-    }
-
-    @Override
-    protected void initComponent() {
+    protected void onInitHtml(MarkupContainer body) {
         this.form = new Form<>("form");
-        add(this.form);
+        body.add(this.form);
 
-        this.simulateButton = new Button("simulateButton");
-        this.simulateButton.setOnSubmit(this::simulateButtonSubmit);
+        this.simulateButton = new Button("simulateButton") {
+            @Override
+            public void onSubmit() {
+                simulateButtonClick();
+            }
+        };
         this.form.add(this.simulateButton);
 
         this.row1 = UIRow.newUIRow("row1", this.form);
 
-        this.methodBlock = this.row1.newUIBlock("methodBlock", Size.Four_4);
-        this.methodIContainer = this.methodBlock.newUIContainer("methodIContainer");
+        this.methodColumn = this.row1.newUIColumn("methodColumn", Size.Four_4);
+        this.methodContainer = this.methodColumn.newUIContainer("methodContainer");
         this.methodField = new DropDownChoice<>("methodField", new PropertyModel<>(this, "methodValue"), Arrays.asList("Get", "Post", "Delete", "Put"));
-        this.methodIContainer.add(this.methodField);
-        this.methodIContainer.newFeedback("methodFeedback", this.methodField);
+        this.methodField.setLabel(Model.of("Method"));
+        this.methodField.setRequired(true);
+        this.methodContainer.add(this.methodField);
+        this.methodContainer.newFeedback("methodFeedback", this.methodField);
 
-        this.urlBlock = this.row1.newUIBlock("urlBlock", Size.Eight_8);
-        this.urlIContainer = this.urlBlock.newUIContainer("urlIContainer");
+        this.urlColumn = this.row1.newUIColumn("urlColumn", Size.Eight_8);
+        this.urlIContainer = this.urlColumn.newUIContainer("urlContainer");
         this.urlField = new TextField<>("urlField", new PropertyModel<>(this, "urlValue"));
+        this.urlField.setLabel(Model.of("URL"));
+        this.urlField.setRequired(true);
         this.urlIContainer.add(this.urlField);
         this.urlIContainer.newFeedback("urlFeedback", this.urlField);
 
+        this.row1.newUIColumn("lastColumn");
+
         this.row2 = UIRow.newUIRow("row2", this.form);
 
-        this.requestBlock = this.row2.newUIBlock("requestBlock", Size.Twelve_12);
-        this.requestIContainer = this.requestBlock.newUIContainer("requestIContainer");
+        this.requestColumn = this.row2.newUIColumn("requestColumn", Size.Twelve_12);
+        this.requestContainer = this.requestColumn.newUIContainer("requestContainer");
         this.requestField = new TextArea<>("requestField", new PropertyModel<>(this, "requestValue"));
-        this.requestIContainer.add(this.requestField);
-        this.requestIContainer.newFeedback("requestFeedback", this.requestField);
+        this.requestField.setLabel(Model.of("Request"));
+        this.requestContainer.add(this.requestField);
+        this.requestContainer.newFeedback("requestFeedback", this.requestField);
+
+        this.row2.newUIColumn("lastColumn");
 
         this.row3 = UIRow.newUIRow("row3", this.form);
 
-        this.statusCodeBlock = this.row3.newUIBlock("statusCodeBlock", Size.Six_6);
-        this.statusCodeIContainer = this.statusCodeBlock.newUIContainer("statusCodeIContainer");
+        this.statusCodeColumn = this.row3.newUIColumn("statusCodeColumn", Size.Six_6);
+        this.statusCodeContainer = this.statusCodeColumn.newUIContainer("statusCodeContainer");
         this.statusCodeField = new TextField<>("statusCodeField", new PropertyModel<>(this, "statusCodeValue"));
-        this.statusCodeIContainer.add(this.statusCodeField);
-        this.statusCodeIContainer.newFeedback("statusCodeFeedback", this.statusCodeField);
+        this.statusCodeField.setLabel(Model.of("Status Code"));
+        this.statusCodeContainer.add(this.statusCodeField);
+        this.statusCodeContainer.newFeedback("statusCodeFeedback", this.statusCodeField);
 
-        this.statusTextBlock = this.row3.newUIBlock("statusTextBlock", Size.Six_6);
-        this.statusTextIContainer = this.statusTextBlock.newUIContainer("statusTextIContainer");
+        this.statusTextColumn = this.row3.newUIColumn("statusTextColumn", Size.Six_6);
+        this.statusTextContainer = this.statusTextColumn.newUIContainer("statusTextContainer");
         this.statusTextField = new TextField<>("statusTextField", new PropertyModel<>(this, "statusTextValue"));
-        this.statusTextIContainer.add(this.statusTextField);
-        this.statusTextIContainer.newFeedback("statusTextFeedback", this.statusTextField);
+        this.statusTextField.setLabel(Model.of("Status Text"));
+        this.statusTextContainer.add(this.statusTextField);
+        this.statusTextContainer.newFeedback("statusTextFeedback", this.statusTextField);
+
+        this.row3.newUIColumn("lastColumn");
 
         this.row4 = UIRow.newUIRow("row4", this.form);
 
-        this.responseBlock = this.row4.newUIBlock("responseBlock", Size.Twelve_12);
-        this.responseIContainer = this.responseBlock.newUIContainer("responseIContainer");
+        this.responseColumn = this.row4.newUIColumn("responseColumn", Size.Twelve_12);
+        this.responseContainer = this.responseColumn.newUIContainer("responseContainer");
         this.responseField = new TextArea<>("responseField", new PropertyModel<>(this, "responseValue"));
-        this.responseIContainer.add(this.responseField);
-        this.responseIContainer.newFeedback("responseFeedback", this.responseField);
+        this.responseField.setLabel(Model.of("Response"));
+        this.responseContainer.add(this.responseField);
+        this.responseContainer.newFeedback("responseFeedback", this.responseField);
 
+        this.row4.newUIColumn("lastColumn");
     }
 
-    protected void simulateButtonSubmit(Button button) {
+    protected void simulateButtonClick() {
         try {
-            Session session = (Session) getSession();
+            WebSession session = getSession();
             String identifier = session.getIdentifier();
             String token = session.getToken();
             HttpResponse<String> resp = null;

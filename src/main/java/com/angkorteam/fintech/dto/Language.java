@@ -1,8 +1,8 @@
 package com.angkorteam.fintech.dto;
 
-import java.util.Locale;
+import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import java.util.Locale;
 
 public enum Language {
 

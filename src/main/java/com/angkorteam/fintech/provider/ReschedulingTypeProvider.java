@@ -1,15 +1,14 @@
 package com.angkorteam.fintech.provider;
 
-import java.util.List;
-
+import com.angkorteam.fintech.dto.enums.ReschedulingType;
+import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.ISingleChoiceProvider;
+import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
+import com.google.common.collect.Lists;
 import org.apache.wicket.model.IModel;
 
-import com.angkorteam.fintech.dto.enums.ReschedulingType;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
-import com.google.common.collect.Lists;
+import java.util.List;
 
-public class ReschedulingTypeProvider extends SingleChoiceProvider<Option> {
+public class ReschedulingTypeProvider extends ISingleChoiceProvider {
 
     @Override
     public Option toChoice(String id) {

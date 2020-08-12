@@ -1,20 +1,19 @@
 package com.angkorteam.fintech.helper;
 
-import java.io.File;
-import java.io.InputStream;
-
-import org.apache.wicket.WicketRuntimeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.MifosDataSourceManager;
-import com.angkorteam.framework.SpringBean;
-
+import com.angkorteam.webui.frmk.common.WicketFactory;
 import io.github.openunirest.http.HttpResponse;
 import io.github.openunirest.http.JsonNode;
 import io.github.openunirest.http.Unirest;
 import io.github.openunirest.http.exceptions.UnirestException;
+import org.apache.wicket.WicketRuntimeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+
+import java.io.File;
+import java.io.InputStream;
 
 public class ClientHelper {
 
@@ -253,7 +252,8 @@ public class ClientHelper {
     }
 
     public static JsonNode postClientDocument(IMifos session, String clientId, String name, String description, File file) {
-        MifosDataSourceManager mifos = SpringBean.getBean(MifosDataSourceManager.class);
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        MifosDataSourceManager mifos = context.getBean(MifosDataSourceManager.class);
         String url = "/api/v1/clients/" + clientId + "/documents";
         String mifosUrl = mifos.getMifosUrl() + url;
         try {

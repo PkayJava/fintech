@@ -1,5 +1,5 @@
-package com.angkorteam.fintech.popup;
-
-public class GroupLoanChargePopup {
-
-}
+//package com.angkorteam.fintech.popup;
+//
+//public class GroupLoanChargePopup {
+//
+//}

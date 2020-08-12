@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+</head>
+<body>
+<wicket:extend>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <form wicket:id="createForm">
+                            <div class="card-header">
+                                <h5 class="card-title">Create Holiday</h5>
+                            </div>
+                            <div class="card-body">
+                                <div wicket:id="row1">
+                                    <div wicket:id="officeColumn">
+                                        <wicket:container wicket:id="officeContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="officeField">Office</label>
+                                                <select wicket:id="officeField" class="form-control"></select>
+                                                <span wicket:id="officeFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="lastColumn"/>
+                                </div>
+                                <div wicket:id="row2">
+                                    <div wicket:id="nameColumn">
+                                        <wicket:container wicket:id="nameContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="nameField">Name</label>
+                                                <input type="text" wicket:id="nameField" class="form-control"/>
+                                                <span wicket:id="nameFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="descriptionColumn">
+                                        <wicket:container wicket:id="descriptionContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="descriptionField">Description</label>
+                                                <input type="text" wicket:id="descriptionField" class="form-control"/>
+                                                <span wicket:id="descriptionFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="lastColumn"/>
+                                </div>
+                                <div wicket:id="row3">
+                                    <div wicket:id="fromDateColumn">
+                                        <wicket:container wicket:id="fromDateContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="fromDateField">From Date</label>
+                                                <input type="text" wicket:id="fromDateField" class="form-control"/>
+                                                <span wicket:id="fromDateFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="toDateColumn">
+                                        <wicket:container wicket:id="toDateContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="toDateField">To Date</label>
+                                                <input type="text" wicket:id="toDateField" class="form-control"/>
+                                                <span wicket:id="toDateFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="lastColumn"/>
+                                </div>
+                                <div wicket:id="row4">
+                                    <div wicket:id="reschedulingTypeColumn">
+                                        <wicket:container wicket:id="reschedulingTypeContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="reschedulingTypeField">Repayment Scheduling Type</label>
+                                                <select wicket:id="reschedulingTypeField" class="form-control"></select>
+                                                <span wicket:id="reschedulingTypeFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="repaymentsRescheduledToColumn">
+                                        <wicket:container wicket:id="repaymentsRescheduledToContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="repaymentsRescheduledToField">Repayment Scheduled To</label>
+                                                <input type="text" wicket:id="repaymentsRescheduledToField" class="form-control"/>
+                                                <span wicket:id="repaymentsRescheduledToFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="lastColumn"/>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button wicket:id="createButton" type="submit" class="btn btn-info">Create</button>
+                                <a wicket:id="cancelButton" class="btn btn-info">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</wicket:extend>
+</body>
+
+</html>

@@ -1,10 +1,8 @@
 package com.angkorteam.fintech.widget;
 
+import com.angkorteam.webui.frmk.wicket.layout.Size;
 import org.apache.http.util.Args;
 import org.apache.wicket.markup.ComponentTag;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
-
-import com.angkorteam.fintech.layout.Size;
 
 @Deprecated
 public class WebMarkupBlock extends WebMarkupContainer {

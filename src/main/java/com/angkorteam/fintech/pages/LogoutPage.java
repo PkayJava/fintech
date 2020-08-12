@@ -1,27 +1,17 @@
 package com.angkorteam.fintech.pages;
 
+import com.angkorteam.fintech.MasterPage;
+import com.angkorteam.fintech.dto.Function;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.Function;
-
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class LogoutPage extends Page {
+public class LogoutPage extends MasterPage {
 
     @Override
-    protected void initData() {
-    }
-
-    @Override
-    protected void initComponent() {
-        Session session = (Session) getSession();
-        session.signOut();
+    protected void onInitHtml(MarkupContainer markupContainer) {
+        getSession().signOut();
         setResponsePage(LoginPage.class);
-    }
-
-    @Override
-    protected void configureMetaData() {
     }
 
 }

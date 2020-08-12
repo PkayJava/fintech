@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+</head>
+<body>
+<wicket:extend>
+	<section class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="card">
+						<form wicket:id="modifyForm">
+							<div class="card-header">
+								<h5 class="card-title">Update Office</h5>
+							</div>
+							<div class="card-body">
+								<div wicket:id="row1">
+									<div wicket:id="officeColumn">
+										<wicket:container wicket:id="officeContainer">
+											<div class="form-group">
+												<label wicket:for="officeField">Office</label>
+												<input type="text" wicket:id="officeField" class="form-control"/>
+												<span wicket:id="officeFeedback"/>
+											</div>
+										</wicket:container>
+									</div>
+									<div wicket:id="lastColumn"/>
+								</div>
+								<div wicket:id="row2">
+									<div wicket:id="parentOfficeColumn">
+										<wicket:container wicket:id="parentOfficeContainer">
+											<div class="form-group">
+												<label wicket:for="parentOfficeField">Parent Office</label>
+												<select type="text" wicket:id="parentOfficeField" class="form-control"></select>
+												<span wicket:id="parentOfficeFeedback"/>
+											</div>
+										</wicket:container>
+									</div>
+									<div wicket:id="lastColumn"/>
+								</div>
+								<div wicket:id="row3">
+									<div wicket:id="openedOnColumn">
+										<wicket:container wicket:id="openedOnContainer">
+											<div class="form-group">
+												<label wicket:for="openedOnField">Opened On</label>
+												<input type="text" wicket:id="openedOnField" class="form-control"/>
+												<span wicket:id="openedOnFeedback"/>
+											</div>
+										</wicket:container>
+									</div>
+									<div wicket:id="lastColumn"/>
+								</div>
+								<div wicket:id="row4">
+									<div wicket:id="externalIdColumn">
+										<wicket:container wicket:id="externalIdContainer">
+											<div class="form-group">
+												<label wicket:for="externalIdField">External ID</label>
+												<input type="text" wicket:id="externalIdField" class="form-control"/>
+												<span wicket:id="externalIdFeedback"/>
+											</div>
+										</wicket:container>
+									</div>
+									<div wicket:id="lastColumn"/>
+								</div>
+							</div>
+							<div class="card-footer">
+								<button wicket:id="updateButton" type="submit" class="btn btn-info">Update</button>
+								<a wicket:id="cancelButton" class="btn btn-info">Cancel</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</wicket:extend>
+</body>
+
+</html>

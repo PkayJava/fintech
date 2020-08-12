@@ -1,19 +1,18 @@
 package com.angkorteam.fintech.helper;
 
-import java.io.InputStream;
-
-import org.apache.wicket.WicketRuntimeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.MifosDataSourceManager;
-import com.angkorteam.framework.SpringBean;
-
+import com.angkorteam.webui.frmk.common.WicketFactory;
 import io.github.openunirest.http.HttpResponse;
 import io.github.openunirest.http.JsonNode;
 import io.github.openunirest.http.Unirest;
 import io.github.openunirest.http.exceptions.UnirestException;
+import org.apache.wicket.WicketRuntimeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+
+import java.io.InputStream;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -31,7 +30,8 @@ public class Helper {
     }
 
     public static JsonNode performServerPost(String identifier, String token, String url, JsonNode body) throws WicketRuntimeException {
-        MifosDataSourceManager mifos = SpringBean.getBean(MifosDataSourceManager.class);
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        MifosDataSourceManager mifos = context.getBean(MifosDataSourceManager.class);
         String mifosUrl = mifos.getMifosUrl() + url;
         try {
             JsonNode response = Unirest.post(mifosUrl).header("Authorization", "Basic " + token).header("Fineract-Platform-TenantId", identifier).header("Content-Type", "application/json").body(body).asJson().getBody();
@@ -46,7 +46,8 @@ public class Helper {
     }
 
     public static JsonNode performServerPost(String identifier, String token, String url, String body) throws WicketRuntimeException {
-        MifosDataSourceManager mifos = SpringBean.getBean(MifosDataSourceManager.class);
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        MifosDataSourceManager mifos = context.getBean(MifosDataSourceManager.class);
         String mifosUrl = mifos.getMifosUrl() + url;
         try {
             JsonNode response = Unirest.post(mifosUrl).header("Authorization", "Basic " + token).header("Fineract-Platform-TenantId", identifier).header("Content-Type", "application/json").body(body).asJson().getBody();
@@ -65,7 +66,8 @@ public class Helper {
     }
 
     public static JsonNode performServerPost(String identifier, String token, String url) throws WicketRuntimeException {
-        MifosDataSourceManager mifos = SpringBean.getBean(MifosDataSourceManager.class);
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        MifosDataSourceManager mifos = context.getBean(MifosDataSourceManager.class);
         String mifosUrl = mifos.getMifosUrl() + url;
         try {
             JsonNode response = Unirest.post(mifosUrl).header("Authorization", "Basic " + token).header("Fineract-Platform-TenantId", identifier).header("Content-Type", "application/json").asJson().getBody();
@@ -88,7 +90,8 @@ public class Helper {
     }
 
     public static HttpResponse<InputStream> performServerGet(String identifier, String token, String url) throws WicketRuntimeException {
-        MifosDataSourceManager mifos = SpringBean.getBean(MifosDataSourceManager.class);
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        MifosDataSourceManager mifos = context.getBean(MifosDataSourceManager.class);
         String mifosUrl = mifos.getMifosUrl() + url;
         try {
             HttpResponse<InputStream> response = Unirest.get(mifosUrl).header("Authorization", "Basic " + token).header("Fineract-Platform-TenantId", identifier).asBinary();
@@ -99,7 +102,8 @@ public class Helper {
     }
 
     public static JsonNode performServerGetJsonNode(String identifier, String token, String url) throws WicketRuntimeException {
-        MifosDataSourceManager mifos = SpringBean.getBean(MifosDataSourceManager.class);
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        MifosDataSourceManager mifos = context.getBean(MifosDataSourceManager.class);
         String mifosUrl = mifos.getMifosUrl() + url;
         try {
             HttpResponse<JsonNode> response = Unirest.get(mifosUrl).header("Authorization", "Basic " + token).header("Fineract-Platform-TenantId", identifier).asJson();
@@ -114,7 +118,8 @@ public class Helper {
     }
 
     public static JsonNode performServerDelete(String identifier, String token, String url) throws WicketRuntimeException {
-        MifosDataSourceManager mifos = SpringBean.getBean(MifosDataSourceManager.class);
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        MifosDataSourceManager mifos = context.getBean(MifosDataSourceManager.class);
         String mifosUrl = mifos.getMifosUrl() + url;
         try {
             JsonNode response = Unirest.delete(mifosUrl).header("Authorization", "Basic " + token).header("Fineract-Platform-TenantId", identifier).header("Content-Type", "application/json").asJson().getBody();
@@ -133,7 +138,8 @@ public class Helper {
     }
 
     public static JsonNode performServerPut(String identifier, String token, String url, JsonNode body) throws WicketRuntimeException {
-        MifosDataSourceManager mifos = SpringBean.getBean(MifosDataSourceManager.class);
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        MifosDataSourceManager mifos = context.getBean(MifosDataSourceManager.class);
         String mifosUrl = mifos.getMifosUrl() + url;
         try {
             JsonNode response = Unirest.put(mifosUrl).header("Authorization", "Basic " + token).header("Fineract-Platform-TenantId", identifier).header("Content-Type", "application/json").body(body).asJson().getBody();

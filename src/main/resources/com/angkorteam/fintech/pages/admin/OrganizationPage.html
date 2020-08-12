@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+</head>
+<body>
+<wicket:extend>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="manageOfficesLink" class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Manage Offices</span>
+                            <span class="info-box-number">Add new office or modify or deactivate office or modify hierarchy</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="currencyConfigurationLink" class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file-csv"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Currency Configuration</span>
+                            <span class="info-box-number">Currencies available across organization for different products</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="manageHolidaysLink" class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Manage Holidays</span>
+                            <span class="info-box-number">Define holidays for office</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="manageFundsLink" class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file-csv"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Manage Funds</span>
+                            <span class="info-box-number">Funds are associated with loans</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="manageEmployeesLink" class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Manage Employees</span>
+                            <span class="info-box-number">An employee represents loan officers with no access to systems</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="bulkLoanReassignmentLink" class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file-csv"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Bulk Loan Reassignment</span>
+                            <span class="info-box-number">Easy way to reassign all the loan from one LO to another LO</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="standingInstructionsHistoryLink" class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Standing Instructions History</span>
+                            <span class="info-box-number">View logged history of standing instructions</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="tellerLink" class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file-csv"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Teller / Cashier Management</span>
+                            <span class="info-box-number">Manage Tellers / Cashiers and Cash Allocation and Settlement</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="fundMappingLink" class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Fund Mapping</span>
+                            <span class="info-box-number">Bulk entry screen for mapping fund sources to loans</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="workingDaysLink" class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file-csv"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Working Days</span>
+                            <span class="info-box-number">Define working days and configure behaviour of payments due on holidays</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="passwordPreferencesLink" class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Password Preferences</span>
+                            <span class="info-box-number">Define standards for enforcing the usage of stronger passwords</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="paymentTypeLink" class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file-csv"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Payment Type</span>
+                            <span class="info-box-number">Manage payment types</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="loanProvisioningCriteriaLink" class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Loan Provisioning Criteria</span>
+                            <span class="info-box-number">Define Loan Provisioning Criteria for Organization</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="smsCampaignsLink" class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file-csv"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">SMS Campaigns</span>
+                            <span class="info-box-number">Define SMS Campaigns for Organization</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="entityDataTableChecksLink" class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Entity Data Table Checks</span>
+                            <span class="info-box-number">Define Entity Data Table Checks for Organization</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="adHocQueryLink" class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file-csv"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">AdHocQuery</span>
+                            <span class="info-box-number">Define AdHocQuery for Organization</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <a wicket:id="bulkImportLink" class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file-csv"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Bulk Import</span>
+                            <span class="info-box-number">Bulk data import using excel spreadsheet templates for clients, offices, etc.</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</wicket:extend>
+</body>
+
+</html>

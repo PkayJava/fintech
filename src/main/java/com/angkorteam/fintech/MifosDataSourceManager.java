@@ -1,16 +1,19 @@
 package com.angkorteam.fintech;
 
-import java.sql.Connection;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
+import com.angkorteam.fintech.meta.TenantServerConnection;
+import com.angkorteam.fintech.meta.Tenant;
+import com.google.common.collect.Maps;
+import com.mysql.cj.jdbc.Driver;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.metamodel.DataContext;
+import org.apache.metamodel.data.DataSet;
+import org.apache.metamodel.data.Row;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.google.common.collect.Maps;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.util.Map;
 
 public class MifosDataSourceManager implements DisposableBean, InitializingBean {
 
@@ -18,7 +21,7 @@ public class MifosDataSourceManager implements DisposableBean, InitializingBean 
 
     private Map<String, BasicDataSource> dataSources = Maps.newHashMap();
 
-    private DataSource delegate;
+    private DataContext delegate;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -38,30 +41,36 @@ public class MifosDataSourceManager implements DisposableBean, InitializingBean 
         this.mifosUrl = mifosUrl;
     }
 
-    public void setDelegate(DataSource delegate) {
+    public void setDelegate(DataContext delegate) {
         this.delegate = delegate;
     }
 
     public DataSource getDataSource(String identifier) {
         if (!this.dataSources.containsKey(identifier)) {
-            JdbcTemplate jdbcTemplate = new JdbcTemplate(this.delegate);
-            Map<String, Object> tenantObject = jdbcTemplate.queryForMap("select * from tenants where identifier = ?", identifier);
-            Map<String, Object> connectionObject = jdbcTemplate.queryForMap("select * from tenant_server_connections where id = ?", tenantObject.get("id"));
-            BasicDataSource dataSource = new BasicDataSource();
-            dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-            dataSource.setUsername((String) connectionObject.get("schema_username"));
-            dataSource.setPassword((String) connectionObject.get("schema_password"));
-            dataSource.setMaxIdle(((Number) connectionObject.get("pool_max_idle")).intValue());
-            dataSource.setMinIdle(((Number) connectionObject.get("pool_min_idle")).intValue());
-            dataSource.setMaxWaitMillis(5000);
-            dataSource.setMaxTotal(200);
-            dataSource.setInitialSize(30);
-            dataSource.setDefaultTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-            dataSource.setDefaultAutoCommit(false);
-            dataSource.setEnableAutoCommitOnReturn(true);
-            String jdbcUrl = "jdbc:mysql://" + connectionObject.get("schema_server") + ":" + String.valueOf(connectionObject.get("schema_server_port")) + "/" + connectionObject.get("schema_name") + "?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&serverTimezone=UTC";
-            dataSource.setUrl(jdbcUrl);
-            this.dataSources.put(identifier, dataSource);
+            Tenant tenants = Tenant.staticInitialize(this.delegate);
+            TenantServerConnection tenantServerConnections = TenantServerConnection.staticInitialize(this.delegate);
+            Row tenantObject = null;
+            try (DataSet tenantDataSet = this.delegate.query().from(tenants).selectAll().where(tenants.IDENTIFIER).eq(identifier).execute()) {
+                tenantDataSet.next();
+                tenantObject = tenantDataSet.getRow();
+            }
+
+            try (DataSet connectionDataSet = this.delegate.query().from(tenantServerConnections).selectAll().where(tenantServerConnections.ID).eq(tenantObject.getValue(tenants.ID)).execute()) {
+                connectionDataSet.next();
+                Row connectionObject = connectionDataSet.getRow();
+                BasicDataSource dataSource = new BasicDataSource();
+                dataSource.setDriverClassName(Driver.class.getName());
+                dataSource.setUsername((String) connectionObject.getValue(tenantServerConnections.SCHEMA_USERNAME));
+                dataSource.setPassword((String) connectionObject.getValue(tenantServerConnections.SCHEMA_PASSWORD));
+                dataSource.setMaxIdle(((Number) connectionObject.getValue(tenantServerConnections.POOL_MAX_IDLE)).intValue());
+                dataSource.setMinIdle(((Number) connectionObject.getValue(tenantServerConnections.POOL_MIN_IDLE)).intValue());
+                dataSource.setInitialSize(((Number) connectionObject.getValue(tenantServerConnections.POOL_INITIAL_SIZE)).intValue());
+                dataSource.setDefaultTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+                dataSource.setDefaultAutoCommit(false);
+                String jdbcUrl = "jdbc:mysql://" + connectionObject.getValue(tenantServerConnections.SCHEMA_SERVER) + ":" + connectionObject.getValue(tenantServerConnections.SCHEMA_SERVER_PORT) + "/" + connectionObject.getValue(tenantServerConnections.SCHEMA_NAME) + "?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=true&serverTimezone=UTC";
+                dataSource.setUrl(jdbcUrl);
+                this.dataSources.put(identifier, dataSource);
+            }
         }
         return this.dataSources.get(identifier);
     }

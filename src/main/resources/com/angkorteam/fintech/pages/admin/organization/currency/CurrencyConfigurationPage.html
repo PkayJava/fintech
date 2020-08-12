@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+</head>
+<body>
+<wicket:extend>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <form wicket:id="configurationForm">
+                            <div class="card-header">
+                                <h5 class="card-title">Currency Configuration</h5>
+                            </div>
+                            <div class="card-body">
+                                <div wicket:id="row1">
+                                    <div wicket:id="currencyColumn">
+                                        <wicket:container wicket:id="currencyContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="currencyField">Currency</label>
+                                                <select type="text" wicket:id="currencyField" class="form-control"></select>
+                                                <span wicket:id="currencyFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="lastColumn"/>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button wicket:id="addButton" type="submit" class="btn btn-info">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Currency Support</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <form wicket:id="currencyBrowseForm">
+                                <table wicket:id="currencyBrowseTable"></table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</wicket:extend>
+</body>
+
+</html>

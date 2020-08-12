@@ -1,80 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
 </head>
 <body>
-	<wicket:extend>
-		<form role="form" wicket:id="form">
-			<div class="box box-primary">
-				<div class="box-header with-border">
-					<h3 class="box-title">Simulator</h3>
-				</div>
-				<div class="box-body">
+<wicket:extend>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <form wicket:id="form">
+                            <div class="card-body">
+                                <div wicket:id="row1">
+                                    <div wicket:id="methodColumn">
+                                        <wicket:container wicket:id="methodContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="methodField">Method</label>
+                                                <select wicket:id="methodField" class="form-control"></select>
+                                                <span wicket:id="methodFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="urlColumn">
+                                        <wicket:container wicket:id="urlContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="urlField">URL</label>
+                                                <input wicket:id="urlField" type="text" class="form-control"/>
+                                                <span wicket:id="urlFeedback"></span>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="lastColumn"/>
+                                </div>
 
-					<div wicket:id="row1">
-						<div wicket:id="methodBlock" class="form-group">
-							<wicket:container wicket:id="methodIContainer">
-								<label wicket:for="methodField">Method</label>
-								<select wicket:id="methodField" class="form-control"></select>
-								<span wicket:id="methodFeedback" class="help-block"></span>
-							</wicket:container>
-						</div>
-						<div wicket:id="urlBlock" class="form-group">
-							<wicket:container wicket:id="urlIContainer">
-								<label wicket:for="urlField">URL</label>
-								<input wicket:id="urlField" type="text" class="form-control" />
-								<span wicket:id="urlFeedback" class="help-block"></span>
-							</wicket:container>
-						</div>
-					</div>
+                                <div wicket:id="row2">
+                                    <div wicket:id="requestColumn">
+                                        <wicket:container wicket:id="requestContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="requestField">Request</label>
+                                                <textarea wicket:id="requestField" rows="15"
+                                                          class="form-control"></textarea>
+                                                <span wicket:id="requestFeedback"></span>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="lastColumn"/>
+                                </div>
 
-					<div wicket:id="row2">
-						<div wicket:id="requestBlock" class="form-group">
-							<wicket:container wicket:id="requestIContainer">
-								<label wicket:for="requestField">Request</label>
-								<textarea wicket:id="requestField" rows="15"
-									class="form-control"></textarea>
-								<span wicket:id="requestFeedback" class="help-block"></span>
-							</wicket:container>
-						</div>
-					</div>
+                                <div wicket:id="row3">
+                                    <div wicket:id="statusCodeColumn">
+                                        <wicket:container wicket:id="statusCodeContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="statusCodeField">Status Code</label>
+                                                <input wicket:id="statusCodeField" type="text"
+                                                       class="form-control"/>
+                                                <span wicket:id="statusCodeFeedback"></span>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="statusTextColumn">
+                                        <wicket:container wicket:id="statusTextContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="statusTextField">Status Text</label>
+                                                <input wicket:id="statusTextField" type="text"
+                                                       class="form-control"/>
+                                                <span wicket:id="statusTextFeedback"></span>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="lastColumn"/>
+                                </div>
 
-					<div wicket:id="row3">
-						<div wicket:id="statusCodeBlock" class="form-group">
-							<wicket:container wicket:id="statusCodeIContainer">
-								<label wicket:for="statusCodeField">Status Code</label>
-								<input wicket:id="statusCodeField" type="text"
-									class="form-control" />
-								<span wicket:id="statusCodeFeedback" class="help-block"></span>
-							</wicket:container>
-						</div>
-						<div wicket:id="statusTextBlock" class="form-group">
-							<wicket:container wicket:id="statusTextIContainer">
-								<label wicket:for="statusTextField">Status Text</label>
-								<input wicket:id="statusTextField" type="text"
-									class="form-control" />
-								<span wicket:id="statusTextFeedback" class="help-block"></span>
-							</wicket:container>
-						</div>
-					</div>
+                                <div wicket:id="row4">
+                                    <div wicket:id="responseColumn">
+                                        <wicket:container wicket:id="responseContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="responseField">Response</label>
+                                                <textarea wicket:id="responseField" rows="15"
+                                                          class="form-control"></textarea>
+                                                <span wicket:id="responseFeedback"></span>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                </div>
 
-					<div wicket:id="row4">
-						<div wicket:id="responseBlock" class="form-group">
-							<wicket:container wicket:id="responseIContainer">
-								<label wicket:for="responseField">Response</label>
-								<textarea wicket:id="responseField" rows="15"
-									class="form-control"></textarea>
-								<span wicket:id="responseFeedback" class="help-block"></span>
-							</wicket:container>
-						</div>
-					</div>
-				</div>
-				<div class="box-footer">
-					<button wicket:id="simulateButton" type="submit"
-						class="btn btn-info">Simulate</button>
-				</div>
-			</div>
-		</form>
-	</wicket:extend>
+                            </div>
+                            <div class="card-footer">
+                                <button wicket:id="simulateButton" type="submit" class="btn btn-info">Simulate</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</wicket:extend>
 </body>
+
 </html>

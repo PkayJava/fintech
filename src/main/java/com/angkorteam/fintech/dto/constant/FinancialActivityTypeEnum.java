@@ -1,7 +1,7 @@
 package com.angkorteam.fintech.dto.constant;
 
 import com.angkorteam.fintech.dto.enums.AccountType;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 
 public enum FinancialActivityTypeEnum {
 
