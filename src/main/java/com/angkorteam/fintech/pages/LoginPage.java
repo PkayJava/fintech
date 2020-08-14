@@ -1,15 +1,16 @@
 package com.angkorteam.fintech.pages;
 
 import com.angkorteam.fintech.boot.AppProperties;
-import com.angkorteam.fintech.ddl.Tenants;
-import com.angkorteam.fintech.factory.WebSession;
 import com.angkorteam.fintech.data.MifosSingleChoiceProvider;
+import com.angkorteam.fintech.factory.WebSession;
+import com.angkorteam.fintech.meta.infrastructure.Tenant;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.webui.frmk.wicket.markup.html.panel.ComponentFeedbackPanel;
 import com.angkorteam.webui.frmk.wicket.resource.AdminLteMinJS;
 import com.angkorteam.webui.frmk.wicket.resource.ICheckBootstrapMinCSS;
+import org.apache.metamodel.DataContext;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -51,6 +52,8 @@ public class LoginPage extends WebPage {
         super.onInitialize();
 
         ApplicationContext context = WicketFactory.getApplicationContext();
+        DataContext delegateDataContext = (DataContext) context.getBean("delegateDataContext");
+        Tenant tenant = Tenant.staticInitialize(delegateDataContext);
         AppProperties properties = context.getBean(AppProperties.class);
 
         this.appName = new Label("appName", properties.getName());
@@ -59,7 +62,7 @@ public class LoginPage extends WebPage {
         this.form = new Form<>("form");
         this.add(this.form);
 
-        this.identifierProvider = new MifosSingleChoiceProvider(Tenants.NAME, Tenants.Field.IDENTIFIER, Tenants.Field.NAME);
+        this.identifierProvider = new MifosSingleChoiceProvider(tenant.getName(), tenant.IDENTIFIER.getName(), tenant.NAME.getName());
         this.identifierField = new Select2SingleChoice("identifierField", new PropertyModel<>(this, "identifierValue"), this.identifierProvider);
         this.identifierField.setRequired(true);
         this.form.add(this.identifierField);
@@ -109,4 +112,5 @@ public class LoginPage extends WebPage {
         response.render(JavaScriptHeaderItem.forReference(AdminLteMinJS.INSTANCE));
         response.render(OnDomReadyHeaderItem.forScript("document.getElementById(\"" + this.loginField.getMarkupId(true) + "\").focus();"));
     }
+
 }

@@ -11,4 +11,15 @@ public interface OrganisationApi {
     FineractResponse officeUpdate(String tenant, String token, long officeId, PutOfficeRequest requestBody);
 
     FineractResponse officeCreate(String tenant, String token, PostOfficeRequest requestBody);
+
+    FineractResponse workingDayUpdate(String tenant, String token, PutWorkingDaysRequest requestBody);
+
+    FineractResponse currencyUpdate(String tenant, String token, PutCurrenciesRequest requestBody);
+
+    FineractResponse tellerCreate(String tenant, String token, PostTellersRequest requestBody);
+
+    FineractResponse holidayCreate(String tenant, String token, PostHolidaysRequest requestBody);
+
+    FineractResponse staffCreate(String tenant, String token, PostStaffRequest requestBody);
+
 }

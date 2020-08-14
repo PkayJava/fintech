@@ -1,11 +1,11 @@
 package com.angkorteam.fintech.dto.constant;
 
-import com.angkorteam.fintech.dto.enums.AccountType;
+import com.angkorteam.fintech.dto.enums.GLAccountType;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 
 public enum FinancialActivityTypeEnum {
 
-    AssetTransfer("100", "Asset Transfer", AccountType.Asset), CashAtMainvault("101", "Main Cash Account or Cash at Vault", AccountType.Asset), CashAtTeller("102", "Cash at Tellers/Cashiers", AccountType.Asset), AssetFundSource("103", "Fund Source", AccountType.Asset), LiabilityTransfer("200", "Liability Transfer", AccountType.Liability), PayableDividends("201", "Payable Dividends", AccountType.Liability), OpeningBalancesTransferContra("300", "Opening Balances Transfer Contra", AccountType.Equity);
+    AssetTransfer("100", "Asset Transfer", GLAccountType.Asset), CashAtMainvault("101", "Main Cash Account or Cash at Vault", GLAccountType.Asset), CashAtTeller("102", "Cash at Tellers/Cashiers", GLAccountType.Asset), AssetFundSource("103", "Fund Source", GLAccountType.Asset), LiabilityTransfer("200", "Liability Transfer", GLAccountType.Liability), PayableDividends("201", "Payable Dividends", GLAccountType.Liability), OpeningBalancesTransferContra("300", "Opening Balances Transfer Contra", GLAccountType.Equity);
 
     public static final String ID = "financial_activity_type_enum";
 
@@ -15,13 +15,13 @@ public enum FinancialActivityTypeEnum {
 
     private final Long enumType;
 
-    private AccountType accountType;
+    private GLAccountType accountType;
 
-    FinancialActivityTypeEnum(String literal, String description, AccountType accountType) {
+    FinancialActivityTypeEnum(String literal, String description, GLAccountType accountType) {
         this(literal, description, accountType, 0l);
     }
 
-    FinancialActivityTypeEnum(String literal, String description, AccountType accountType, Long enumType) {
+    FinancialActivityTypeEnum(String literal, String description, GLAccountType accountType, Long enumType) {
         this.literal = literal;
         this.description = description;
         this.enumType = enumType;
@@ -40,7 +40,7 @@ public enum FinancialActivityTypeEnum {
         return enumType;
     }
 
-    public AccountType getAccountType() {
+    public GLAccountType getAccountType() {
         return accountType;
     }
 

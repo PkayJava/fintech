@@ -4,7 +4,11 @@ import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 
 public enum TellerStatus {
 
-    Active("300", "Active"), Inactive("400", "Inactive");
+    Invalid("0", "Invalid", 0L),
+    Pending("100", "Pending", 100L),
+    Active("300", "Active", 300L),
+    Closed("600", "Closed", 600L),
+    Inactive("400", "Inactive", 400L);
 
     public static final String ID = "teller_status";
 
@@ -12,13 +16,9 @@ public enum TellerStatus {
 
     private final String description;
 
-    private final Long enumType;
+    private final long enumType;
 
-    TellerStatus(String literal, String description) {
-        this(literal, description, 0l);
-    }
-
-    TellerStatus(String literal, String description, Long enumType) {
+    TellerStatus(String literal, String description, long enumType) {
         this.literal = literal;
         this.description = description;
         this.enumType = enumType;
@@ -32,7 +32,7 @@ public enum TellerStatus {
         return description;
     }
 
-    public Long getEnumType() {
+    public long getEnumType() {
         return enumType;
     }
 

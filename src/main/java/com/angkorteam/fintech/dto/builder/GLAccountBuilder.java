@@ -2,7 +2,7 @@ package com.angkorteam.fintech.dto.builder;
 
 import java.io.Serializable;
 
-import com.angkorteam.fintech.dto.enums.AccountType;
+import com.angkorteam.fintech.dto.enums.GLAccountType;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
 
 import io.github.openunirest.http.JsonNode;
@@ -24,7 +24,7 @@ public class GLAccountBuilder implements Serializable {
     private boolean manualEntriesAllowed;
     private boolean hasManualEntriesAllowed;
 
-    private AccountType type;
+    private GLAccountType type;
     private boolean hasType;
 
     private AccountUsage usage;
@@ -63,7 +63,7 @@ public class GLAccountBuilder implements Serializable {
         return this;
     }
 
-    public GLAccountBuilder withType(AccountType type) {
+    public GLAccountBuilder withType(GLAccountType type) {
         this.type = type;
         this.hasType = true;
         return this;

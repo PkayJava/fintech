@@ -2,7 +2,7 @@ package com.angkorteam.fintech.client.dto;
 
 import java.util.Date;
 
-public class PostGlClosureRequest {
+public class PostGLClosureRequest {
 
     private long officeId;
 

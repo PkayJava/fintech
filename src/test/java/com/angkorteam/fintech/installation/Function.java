@@ -1,159 +1,115 @@
-//package com.angkorteam.fintech.installation;
-//
-//import java.io.File;
-//import java.io.IOException;
-//import java.sql.Connection;
-//import java.sql.ResultSet;
-//import java.sql.ResultSetMetaData;
-//import java.sql.SQLException;
-//import java.sql.Statement;
-//import java.text.DateFormat;
-//import java.text.ParseException;
-//import java.text.SimpleDateFormat;
-//import java.time.format.DateTimeFormatter;
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.Date;
-//import java.util.List;
-//import java.util.Map;
-//
-//import javax.sql.DataSource;
-//
-//import org.apache.commons.io.FileUtils;
-//import org.apache.commons.lang3.StringUtils;
-//import org.joda.time.DateTime;
-//
-//import com.angkorteam.fintech.IMifos;
-//import com.angkorteam.fintech.dto.Dropdown;
-//import com.angkorteam.fintech.dto.builder.AccountRuleBuilder;
-//import com.angkorteam.fintech.dto.builder.CodeValueBuilder;
-//import com.angkorteam.fintech.dto.builder.FinancialActivityBuilder;
-//import com.angkorteam.fintech.dto.builder.FloatingRateBuilder;
-//import com.angkorteam.fintech.dto.builder.FundBuilder;
-//import com.angkorteam.fintech.dto.builder.GLAccountBuilder;
-//import com.angkorteam.fintech.dto.builder.HolidayBuilder;
-//import com.angkorteam.fintech.dto.builder.OfficeBuilder;
-//import com.angkorteam.fintech.dto.builder.TaxComponentBuilder;
-//import com.angkorteam.fintech.dto.builder.TaxGroupBuilder;
-//import com.angkorteam.fintech.dto.builder.WorkingDayBuilder;
-//import com.angkorteam.fintech.dto.constant.FinancialActivityTypeEnum;
-//import com.angkorteam.fintech.dto.enums.AccountType;
-//import com.angkorteam.fintech.dto.enums.AccountUsage;
-//import com.angkorteam.fintech.dto.enums.RepaymentOption;
-//import com.angkorteam.fintech.dto.enums.ReschedulingType;
-//import com.angkorteam.fintech.helper.AccountingRuleHelper;
-//import com.angkorteam.fintech.helper.CodeHelper;
-//import com.angkorteam.fintech.helper.CurrencyHelper;
-//import com.angkorteam.fintech.helper.FinancialActivityHelper;
-//import com.angkorteam.fintech.helper.FloatingRateHelper;
-//import com.angkorteam.fintech.helper.FundHelper;
-//import com.angkorteam.fintech.helper.GLAccountHelper;
-//import com.angkorteam.fintech.helper.HolidayHelper;
-//import com.angkorteam.fintech.helper.OfficeHelper;
-//import com.angkorteam.fintech.helper.TaxComponentHelper;
-//import com.angkorteam.fintech.helper.WorkingDayHelper;
-//import com.angkorteam.fintech.spring.StringGenerator;
-//import com.angkorteam.framework.spring.JdbcTemplate;
-//import com.google.common.collect.Lists;
-//import com.google.common.collect.Maps;
-//
-//import io.github.openunirest.http.exceptions.UnirestException;
-//
-//public class Function {
-//
-//    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-//    public static final DateFormat DATE_FORMAT_1 = new SimpleDateFormat("dd MMM yyyy");
-//    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd MMM yyyy");
-//
-//    private final static Map<String, List<String>> IDS = Maps.newHashMap();
-//
-//    static {
-//        IDS.put("c_external_service_properties", Lists.newArrayList("name", "external_service_id"));
-//        IDS.put("m_appuser_role", Lists.newArrayList("appuser_id", "role_id"));
-//        IDS.put("m_deposit_product_interest_rate_chart", Lists.newArrayList("deposit_product_id", "interest_rate_chart_id"));
-//        IDS.put("m_group_client", Lists.newArrayList("group_id", "client_id"));
-//        IDS.put("m_holiday_office", Lists.newArrayList("office_id", "holiday_id"));
-//        IDS.put("m_loan_arrears_aging", Lists.newArrayList("loan_id"));
-//        IDS.put("m_loan_paid_in_advance", Lists.newArrayList("loan_id"));
-//        IDS.put("m_product_loan_charge", Lists.newArrayList("product_loan_id", "charge_id"));
-//        IDS.put("m_role_permission", Lists.newArrayList("role_id", "permission_id"));
-//        IDS.put("m_savings_product_charge", Lists.newArrayList("savings_product_id", "charge_id"));
-//        IDS.put("m_share_product_charge", Lists.newArrayList("product_id", "charge_id"));
-//        IDS.put("m_template_m_templatemappers", Lists.newArrayList("m_template_id", "mappers_id"));
-//        // IDS.put("oauth_access_token", Lists.newArrayList("token_id",
-//        // "authentication_id", "client_id"));
-//        // IDS.put("oauth_client_details", Lists.newArrayList("client_id"));
-//        // IDS.put("oauth_refresh_token", Lists.newArrayList("token_id"));
-//        IDS.put("x_registered_table", Lists.newArrayList("registered_table_name"));
-//        IDS.put("x_table_column_code_mappings", Lists.newArrayList("column_alias_name"));
-//    }
-//
-//    public static void setupOffice(IMifos mifos, JdbcTemplate jdbcTemplate, Date openingDate, List<String> offices, StringGenerator generator) throws ParseException, UnirestException {
-//        for (String office : offices) {
-//            boolean hasOffice = jdbcTemplate.queryForObject("select count(*) from m_office where name = ?", Boolean.class, office);
-//            if (!hasOffice) {
-//                OfficeBuilder builder = new OfficeBuilder();
-//                builder.withExternalId(generator.externalId());
-//                builder.withOpeningDate(openingDate);
-//                builder.withName(office);
-//                OfficeHelper.create(mifos, builder.build());
-//            }
-//        }
-//    }
-//
-//    public static void setupWorkingDay(IMifos session) throws UnirestException {
-//        WorkingDayBuilder builder = new WorkingDayBuilder();
-//        builder.withMonday(true);
-//        builder.withTuesday(true);
-//        builder.withWednesday(true);
-//        builder.withThursday(true);
-//        builder.withFriday(true);
-//        builder.withSaturday(false);
-//        builder.withSunday(false);
-//        builder.withExtendTermForDailyRepayments(false);
-//        builder.withRepaymentRescheduleType(RepaymentOption.MoveToPreviousWorkingDay);
-//        WorkingDayHelper.update(session, builder.build());
-//    }
-//
-//    public static void setupCurrency(IMifos session, JdbcTemplate jdbcTemplate, List<String> currencies) throws UnirestException {
-//        List<String> codes = new ArrayList<>();
-//        for (String currency : currencies) {
-//            boolean hasCurrency = jdbcTemplate.queryForObject("SELECT count(*) FROM m_currency where code = ?", Boolean.class, currency);
-//            if (hasCurrency) {
-//                boolean configured = jdbcTemplate.queryForObject("SELECT count(*) FROM m_organisation_currency where code = ?", Boolean.class, currency);
-//                if (configured) {
-//                    // continue;
-//                }
-//            }
-//            codes.add(currency);
-//        }
-//        if (!codes.isEmpty()) {
-//            CurrencyHelper.update(session, codes);
-//        }
-//    }
-//
-//    public static void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate, String officeId, List<String> values) throws UnirestException, ParseException {
-//        for (String temps : values) {
-//            String temp[] = StringUtils.split(temps, "=>");
-//            String name = temp[0];
-//            if (!jdbcTemplate.queryForObject("select count(*) from m_holiday where name = ?", Boolean.class, name)) {
-//                String dateForm = temp[1];
-//                String dateTo = temp[2];
-//                String rescheduled = temp[3];
-//                HolidayBuilder builder = new HolidayBuilder();
-//                builder.withName(name);
-//                builder.withDescription(name);
-//                builder.withReschedulingType(ReschedulingType.SpecifiedDate);
-//                builder.withOffice(officeId);
-//                builder.withFromDate(DATE_FORMAT.parse(dateForm));
-//                builder.withToDate(DATE_FORMAT.parse(dateTo));
-//                builder.withRepaymentsRescheduledTo(DATE_FORMAT.parse(rescheduled));
-//                HolidayHelper.create(session, builder.build());
-//            }
-//        }
-//    }
-//
-//    public static void setupFinancialActivity(IMifos session, JdbcTemplate jdbcTemplate, List<String> values) throws UnirestException, ParseException {
+package com.angkorteam.fintech.installation;
+
+import com.angkorteam.fintech.client.FineractClient;
+import com.angkorteam.fintech.client.dto.*;
+import com.angkorteam.fintech.dto.Dropdown;
+import com.angkorteam.fintech.dto.builder.FloatingRateBuilder;
+import com.angkorteam.fintech.dto.enums.AccountUsage;
+import com.angkorteam.fintech.dto.enums.GLAccountType;
+import com.angkorteam.fintech.dto.enums.RepaymentOption;
+import com.angkorteam.fintech.dto.enums.ReschedulingType;
+import com.angkorteam.fintech.helper.FloatingRateHelper;
+import com.angkorteam.fintech.meta.tenant.*;
+import com.angkorteam.fintech.spring.StringGenerator;
+import io.github.openunirest.http.exceptions.UnirestException;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.metamodel.data.DataSet;
+import org.apache.metamodel.jdbc.JdbcDataContext;
+import org.apache.metamodel.query.FunctionType;
+import org.apache.metamodel.schema.Column;
+import org.apache.metamodel.schema.Table;
+import org.joda.time.DateTime;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+public class Function {
+
+    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    public static final DateFormat DATE_FORMAT_1 = new SimpleDateFormat("dd MMM yyyy");
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd MMM yyyy");
+
+    public static void setupOffice(FineractClient client, String tenant, String token, JdbcDataContext appDataContext, Date openingDate, List<String> offices, StringGenerator generator) throws ParseException, UnirestException {
+        MOffice mOffice = MOffice.staticInitialize(appDataContext);
+        long headOfficeId = 0L;
+        try (DataSet rows = appDataContext.query().from(mOffice).select(mOffice.ID).where(mOffice.NAME).eq("Head Office").execute()) {
+            rows.next();
+            headOfficeId = (long) rows.getRow().getValue(mOffice.ID);
+        }
+        for (String office : offices) {
+            try (DataSet rows = appDataContext.query().from(mOffice).select(FunctionType.COUNT, mOffice.ID).where(mOffice.NAME).eq(office).execute()) {
+                rows.next();
+                long count = (long) rows.getRow().getValue(0);
+                boolean hasOffice = count > 0L;
+                if (!hasOffice) {
+                    PostOfficeRequest request = new PostOfficeRequest();
+                    request.setName(office);
+                    request.setOpeningDate(openingDate);
+                    request.setParentId(headOfficeId);
+                    request.setExternalId(generator.externalId());
+                    client.officeCreate(tenant, token, request);
+                }
+            }
+        }
+    }
+
+    public static void setupWorkingDay(FineractClient client, String tenant, String token) throws UnirestException {
+        List<String> days = Arrays.asList("MO", "TU", "WE", "TH", "FR");
+        String recurrence = "FREQ=WEEKLY;INTERVAL=1;BYDAY=" + StringUtils.join(days, ",");
+        PutWorkingDaysRequest request = new PutWorkingDaysRequest();
+        request.setRecurrence(recurrence);
+        request.setExtendTermForDailyRepayments(false);
+        request.setExtendTermForRepaymentsOnHolidays(false);
+        request.setRepaymentRescheduleType(RepaymentOption.MoveToPreviousWorkingDay);
+        client.workingDayUpdate(tenant, token, request);
+    }
+
+    public static void setupCurrency(FineractClient client, String tenant, String token, JdbcDataContext appDataContext, List<String> currencies) throws UnirestException {
+        PutCurrenciesRequest request = new PutCurrenciesRequest();
+        request.getCurrencies().addAll(currencies);
+        client.currencyUpdate(tenant, token, request);
+    }
+
+    public static void setupHoliday(FineractClient client, String tenant, String token, JdbcDataContext appDataContext, long officeId, List<String> values) throws UnirestException, ParseException {
+        MHoliday mHoliday = MHoliday.staticInitialize(appDataContext);
+
+        for (String temps : values) {
+            String temp[] = StringUtils.split(temps, "=>");
+            String name = temp[0];
+            try (DataSet rows = appDataContext.query().from(mHoliday).select(FunctionType.COUNT, mHoliday.ID).where(mHoliday.NAME).eq(name).execute()) {
+                rows.next();
+                long count = (long) rows.getRow().getValue(0);
+                if (count <= 0L) {
+                    String dateForm = temp[1];
+                    String dateTo = temp[2];
+                    String rescheduled = temp[3];
+
+                    PostHolidaysRequest request = new PostHolidaysRequest();
+                    request.setName(name);
+                    request.setDescription(name);
+                    request.setReschedulingType(ReschedulingType.SpecifiedDate);
+                    request.setOffices(Arrays.asList(new PostHolidaysRequest.Office(officeId)));
+                    request.setFromDate(DATE_FORMAT.parse(dateForm));
+                    request.setToDate(DATE_FORMAT.parse(dateTo));
+                    request.setRepaymentsRescheduledTo(DATE_FORMAT.parse(rescheduled));
+
+                    client.holidayCreate(tenant, token, request);
+                }
+            }
+        }
+    }
+
+    public static void setupFinancialActivity(FineractClient client, String tenant, String token, JdbcDataContext appDataContext, List<String> values) throws UnirestException, ParseException {
 //        for (String temps : values) {
 //            String temp[] = StringUtils.split(temps, "=>");
 //            FinancialActivityTypeEnum type = FinancialActivityTypeEnum.valueOf(temp[0]);
@@ -166,363 +122,403 @@
 //                FinancialActivityHelper.create(session, builder.build());
 //            }
 //        }
-//    }
-//
-//    public static void setupAccountingRule(IMifos session, JdbcTemplate jdbcTemplate, String officeId, String debitId, String creditId, List<String> names) throws UnirestException {
-//        for (String name : names) {
-//            if (!jdbcTemplate.queryForObject("select count(*) from acc_accounting_rule where name = ?", Boolean.class, name)) {
-//                AccountRuleBuilder builder = new AccountRuleBuilder();
-//                builder.withName(name);
-//                builder.withDescription(name);
-//                builder.withOfficeId(officeId);
-//                builder.withAccountToDebit(debitId);
-//                builder.withAccountToCredit(creditId);
-//                AccountingRuleHelper.create(session, builder.build());
-//            }
-//        }
-//    }
-//
-//    public static void setupGLAccount(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, StringGenerator generator) throws UnirestException {
-//        for (String temps : values) {
-//            String temp[] = StringUtils.split(temps, "=>");
-//            String name = temp[0];
-//            if (!jdbcTemplate.queryForObject("select count(*) from acc_gl_account where name = ?", Boolean.class, name)) {
-//                String tag = temp[1];
-//                String tagId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code.id = m_code_value.code_id where m_code.code_name = ? limit 1", String.class, tag);
-//                GLAccountBuilder builder = new GLAccountBuilder();
-//                builder.withName(name);
-//                builder.withDescription(name);
-//                builder.withGlCode(StringUtils.upperCase(generator.generate(5)));
-//                builder.withManualEntriesAllowed(true);
-//                builder.withTagId(tagId);
-//                builder.withUsage(AccountUsage.Detail);
-//                if (Dropdown.AssetAccountTags.equals(tag)) {
-//                    builder.withType(AccountType.Asset);
-//                } else if (Dropdown.EquityAccountTags.equals(tag)) {
-//                    builder.withType(AccountType.Equity);
-//                } else if (Dropdown.LiabilityAccountTags.equals(tag)) {
-//                    builder.withType(AccountType.Liability);
-//                } else if (Dropdown.IncomeAccountTags.equals(tag)) {
-//                    builder.withType(AccountType.Income);
-//                } else if (Dropdown.ExpenseAccountTags.equals(tag)) {
-//                    builder.withType(AccountType.Expense);
-//                }
-//                GLAccountHelper.create(session, builder.build());
-//            }
-//        }
-//
-//    }
-//
-//    public static void setupTaxComponent(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, StringGenerator generator) throws UnirestException {
-//        for (String temps : values) {
-//            String temp[] = StringUtils.split(temps, "=>");
-//            String name = temp[0];
-//            boolean has = jdbcTemplate.queryForObject("select count(*) from m_tax_component where name = ?", boolean.class, name);
-//            if (!has) {
-//                TaxComponentBuilder builder = new TaxComponentBuilder();
-//                builder.withName(name);
-//                builder.withPercentage(Double.valueOf(temp[1]));
-//                builder.withCreditAccountType(AccountType.valueOf(temp[2]));
-//                String creditAccountId = jdbcTemplate.queryForObject("select id from acc_gl_account where name = ?", String.class, temp[3]);
-//                builder.withCreditAccountId(creditAccountId);
-//                builder.withStartDate(DateTime.now().toDate());
-//                TaxComponentHelper.create(session, builder.build());
-//            }
-//        }
-//    }
-//
-//    public static void setupFloatingRate(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, StringGenerator generator) throws UnirestException {
-//        for (String temps : values) {
-//            String temp[] = StringUtils.split(temps, "=>");
-//            String name = temp[0];
-//            boolean has = jdbcTemplate.queryForObject("select count(*) from m_floating_rates WHERE name = ?", boolean.class, name);
-//            if (!has) {
-//                boolean base = Boolean.valueOf(temp[1]);
-//                boolean differential = Boolean.valueOf(temp[2]);
-//                Double rate = Double.valueOf(temp[3]);
-//                FloatingRateBuilder builder = new FloatingRateBuilder();
-//                builder.withName(name);
-//                builder.withActive(true);
-//                builder.withBaseLendingRate(base);
-//                builder.withRatePeriod(DateTime.now().plusDays(1).toDate(), rate, differential);
-//                FloatingRateHelper.create(session, builder.build());
-//            }
-//        }
-//    }
-//
-//    public static void setupTaxGroup(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, StringGenerator generator) throws UnirestException {
-//        for (String temps : values) {
-//            String name = temps;
-//            boolean has = jdbcTemplate.queryForObject("select count(*) from m_tax_group where name = ?", boolean.class, name);
-//            if (!has) {
-//                TaxGroupBuilder builder = new TaxGroupBuilder();
-//                builder.withName(name);
-//                List<String> ids = jdbcTemplate.queryForList("select id from m_tax_component", String.class);
-//                for (String id : ids) {
-//                    builder.withTaxComponent(null, id, DateTime.now().plusDays(1).toDate(), null);
-//                }
-//            }
-//        }
-//    }
-//
-//    public static void setupSystemParameter(IMifos session, JdbcTemplate jdbcTemplate, List<String> values) throws UnirestException {
-//        for (String temps : values) {
-//            String temp[] = StringUtils.split(temps, "=>");
-//            String code = temp[0];
-//            String value = temp[1];
-//            String codeId = jdbcTemplate.queryForObject("select id from m_code where code_name = ?", String.class, code);
-//            if (!jdbcTemplate.queryForObject("select count(*) from m_code_value where code_id = ? and code_value = ?", Boolean.class, codeId, value)) {
-//                String description = temp[2];
-//                CodeValueBuilder builder = new CodeValueBuilder();
-//                builder.withCodeId(codeId);
-//                builder.withName(value);
-//                builder.withDescription(description);
-//                builder.withActive(true);
-//                CodeHelper.createValue(session, builder.build());
-//            }
-//        }
-//    }
-//
-//    public static void setupFund(IMifos session, JdbcTemplate jdbcTemplate, List<String> funds, StringGenerator generator) throws UnirestException {
-//        for (String fund : funds) {
-//            boolean hasFund = jdbcTemplate.queryForObject("select count(*) from m_fund where name = ?", Boolean.class, fund);
-//            if (!hasFund) {
-//                FundBuilder builder = new FundBuilder();
-//                builder.withExternalId(generator.externalId());
-//                builder.withName(fund);
-//                FundHelper.create(session, builder.build());
-//            }
-//        }
-//    }
-//
-//    public static void triggerData(boolean fileout, DataSource dataSource) throws SQLException, IOException {
-//        String delimiter = "";
-//        String newline = " ";
-//
-//        if (fileout) {
-//            delimiter = "%%";
-//            newline = "\n";
-//        }
-//
-//        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-//
-//        if (!fileout) {
-//            jdbcTemplate.execute("DROP TABLE IF EXISTS `tbl_audit`");
-//            jdbcTemplate.execute("CREATE TABLE `tbl_audit` (  `id` varchar(100) NOT NULL,  `log_date` datetime NOT NULL,  `log_event` varchar(20) NOT NULL,  `log_table` varchar(100) NOT NULL,  `log_script` TEXT,  PRIMARY KEY (`id`),  KEY `tbl_audit_001` (`log_date`),  KEY `tbl_audit_002` (`log_event`),  KEY `tbl_audit_003` (`log_table`))");
-//            jdbcTemplate.execute("DROP TABLE IF EXISTS `tbl_audit_value`");
-//            jdbcTemplate.execute("CREATE TABLE `tbl_audit_value` (  `id` varchar(100) NOT NULL,  `audit_id` varchar(100) DEFAULT NULL,  `field_name` varchar(255) DEFAULT NULL,  `before_value` text,  `after_value` text,  PRIMARY KEY (`id`),  KEY `tbl_audit_value_001` (`audit_id`),  KEY `tbl_audit_value_002` (`field_name`))");
-//        }
-//
-//        Connection connection = dataSource.getConnection();
-//        List<String> tables = jdbcTemplate.queryForList("show tables", String.class);
-//        List<String> customTable = jdbcTemplate.queryForList("SELECT registered_table_name FROM x_registered_table", String.class);
-//        StringBuffer sql = new StringBuffer();
-//        sql.append("delimiter %%").append(newline);
-//        for (String table : tables) {
-//            if ("tbl_audit".equals(table) || "tbl_audit_value".equals(table)) {
-//                continue;
-//            }
-//
-//            if (customTable.contains(table)) {
-//                continue;
-//            }
-//
-//            System.out.println(table);
-//
-//            ResultSet resultSet = connection.createStatement().executeQuery("select * from " + table + " limit 1");
-//            ResultSetMetaData metaData = resultSet.getMetaData();
-//
-//            boolean hasId = false;
-//            for (int i = 1; i <= metaData.getColumnCount(); i++) {
-//                String fieldName = metaData.getColumnName(i);
-//                if (fieldName.equals("id")) {
-//                    hasId = true;
-//                    break;
-//                }
-//            }
-//
-//            List<String> idFields = null;
-//            if (!hasId) {
-//                hasId = IDS.containsKey(table);
-//                idFields = IDS.get(table);
-//                if (idFields == null) {
-//                    idFields = Arrays.asList("id");
-//                }
-//            } else {
-//                idFields = Lists.newArrayList("id");
-//            }
-//
-//            if (!hasId) {
-//                System.out.println(table);
-//            }
-//
-//            {
-//                StringBuffer delete = new StringBuffer();
-//                delete.append("DROP TRIGGER IF EXISTS " + table + "_d").append(delimiter).append(newline);
-//                if (!fileout) {
-//                    try (Statement statement = connection.createStatement()) {
-//                        statement.execute(delete.toString());
-//                        delete.delete(0, delete.length());
-//                    }
-//                }
-//                delete.append("CREATE TRIGGER `" + table + "_d`").append(newline);
-//                delete.append("BEFORE DELETE").append(newline);
-//                delete.append("  ON ").append(table).append(newline);
-//                delete.append("FOR").append(newline);
-//                delete.append("EACH ROW").append(newline);
-//                delete.append("  BEGIN").append(newline);
-//                delete.append("    DECLARE _id VARCHAR(100);").append(newline);
-//                delete.append("    DECLARE _log_script TEXT;").append(newline);
-//                delete.append("    SELECT uuid() INTO _id FROM dual;").append(newline);
-//                String field = idFields.get(0);
-//                String logScript = "CONCAT('DELETE FROM " + table + " WHERE " + field + " = ''', OLD." + field + ", ''''";
-//                for (int i = 1; i < idFields.size(); i++) {
-//                    String f = idFields.get(i);
-//                    logScript = logScript + ", ' AND " + f + " = ''', OLD." + f + ", ''''";
-//                }
-//                logScript = logScript + ")";
-//
-//                if (hasId) {
-//                    delete.append("    SELECT " + logScript + " INTO _log_script FROM dual;").append(newline);
-//                    delete.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', '" + table + "', _log_script);").append(newline);
-//                } else {
-//                    delete.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', '" + table + "', NULL);").append(newline);
-//                }
-//                for (int i = 1; i <= metaData.getColumnCount(); i++) {
-//                    String fieldName = metaData.getColumnName(i);
-//                    delete.append("    INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, '" + fieldName + "', OLD." + fieldName + ", NULL);").append(newline);
-//                }
-//                delete.append("  END").append(delimiter).append(newline);
-//                sql.append(delete);
-//                if (!fileout) {
-//                    try (Statement statement = connection.createStatement()) {
-//                        statement.execute(delete.toString());
-//                    }
-//                }
-//            }
-//
-//            {
-//                StringBuffer insert = new StringBuffer();
-//                insert.append("DROP TRIGGER IF EXISTS " + table + "_i").append(delimiter).append(newline);
-//                if (!fileout) {
-//                    try (Statement statement = connection.createStatement()) {
-//                        statement.execute(insert.toString());
-//                        insert.delete(0, insert.length());
-//                    }
-//                }
-//                insert.append("CREATE TRIGGER `" + table + "_i`").append(newline);
-//                insert.append("AFTER INSERT").append(newline);
-//                insert.append("  ON ").append(table).append(newline);
-//                insert.append("FOR").append(newline);
-//                insert.append("EACH ROW").append(newline);
-//                insert.append("  BEGIN").append(newline);
-//                insert.append("    DECLARE _id VARCHAR(100);").append(newline);
-//                insert.append("    DECLARE _log_script TEXT;").append(newline);
-//                insert.append("    SELECT uuid() INTO _id FROM dual;").append(newline);
-//                String logScript = "CONCAT('INSERT INTO " + table + "(";
-//                for (int i = 1; i <= metaData.getColumnCount(); i++) {
-//                    if (i == metaData.getColumnCount()) {
-//                        String fieldName = metaData.getColumnName(i);
-//                        logScript = logScript + fieldName;
-//                    } else {
-//                        String fieldName = metaData.getColumnName(i);
-//                        logScript = logScript + fieldName + ", ";
-//                    }
-//                }
-//                logScript = logScript + ") VALUES(', ";
-//                for (int i = 1; i <= metaData.getColumnCount(); i++) {
-//                    String fieldName = metaData.getColumnName(i);
-//                    String value = "NEW." + fieldName;
-//                    if (i == metaData.getColumnCount()) {
-//                        String fieldValue = "IF(" + value + " IS NULL, 'NULL', CONCAT('''', " + value + ", ''''))";
-//                        logScript = logScript + fieldValue + ", ";
-//                    } else {
-//                        String fieldValue = "IF(" + value + " IS NULL, 'NULL, ', CONCAT('''', " + value + ", ''', '))";
-//                        logScript = logScript + fieldValue + ", ";
-//                    }
-//                }
-//                logScript = logScript + "')'";
-//                logScript = logScript + ")";
-//                if (hasId) {
-//                    insert.append("    SELECT " + logScript + " INTO _log_script FROM dual;").append(newline);
-//                    insert.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', '" + table + "', _log_script);").append(newline);
-//                } else {
-//                    insert.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', '" + table + "', NULL);").append(newline);
-//                }
-//                for (int i = 1; i <= metaData.getColumnCount(); i++) {
-//                    String fieldName = metaData.getColumnName(i);
-//                    insert.append("    INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, '" + fieldName + "', NEW." + fieldName + ", NULL);").append(newline);
-//                }
-//                insert.append("  END").append(delimiter).append(newline);
-//                sql.append(insert);
-//                if (!fileout) {
-//                    try (Statement statement = connection.createStatement()) {
-//                        statement.execute(insert.toString());
-//                    }
-//                }
-//            }
-//
-//            {
-//                StringBuffer update = new StringBuffer();
-//                update.append("DROP TRIGGER IF EXISTS " + table + "_u").append(delimiter).append(newline);
-//                if (!fileout) {
-//                    try (Statement statement = connection.createStatement()) {
-//                        statement.execute(update.toString());
-//                        update.delete(0, update.length());
-//                    }
-//                }
-//                update.append("CREATE TRIGGER `" + table + "_u`").append(newline);
-//                update.append("AFTER UPDATE").append(newline);
-//                update.append("  ON ").append(table).append(newline);
-//                update.append("FOR").append(newline);
-//                update.append("EACH ROW").append(newline);
-//                update.append("  BEGIN").append(newline);
-//                update.append("    DECLARE _id VARCHAR(100);").append(newline);
-//                update.append("    DECLARE _log_script TEXT;").append(newline);
-//                update.append("    SELECT uuid() INTO _id FROM dual;").append(newline);
-//                String logScript = "CONCAT('UPDATE " + table + " SET ";
-//                for (int i = 1; i <= metaData.getColumnCount(); i++) {
-//                    String fieldName = metaData.getColumnName(i);
-//                    String value = "NEW." + fieldName;
-//                    String fieldValue = "IF(" + value + " IS NULL, 'NULL', CONCAT('''', " + value + ", ''''))";
-//                    if (i == metaData.getColumnCount()) {
-//                        logScript = logScript + fieldName + " = ', " + fieldValue + ", ' ";
-//                    } else {
-//                        logScript = logScript + fieldName + " = ', " + fieldValue + ", '" + ", ";
-//                    }
-//                }
-//
-//                String field = idFields.get(0);
-//                logScript = logScript + "WHERE " + field + " = ''', NEW." + field + ", ''''";
-//                for (int i = 1; i < idFields.size(); i++) {
-//                    String f = idFields.get(i);
-//                    logScript = logScript + ", ' AND " + f + " = ''', OLD." + f + ", ''''";
-//                }
-//                logScript = logScript + ")";
-//                if (hasId) {
-//                    update.append("    SELECT " + logScript + " INTO _log_script FROM dual;").append(newline);
-//                    update.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', '" + table + "', _log_script);").append(newline);
-//                } else {
-//                    update.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', '" + table + "', NULL);").append(newline);
-//                }
-//                for (int i = 1; i <= metaData.getColumnCount(); i++) {
-//                    String fieldName = metaData.getColumnName(i);
-//                    update.append("    INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, '" + fieldName + "', OLD." + fieldName + ", NEW." + fieldName + ");").append(newline);
-//                }
-//                update.append("  END").append(delimiter).append(newline);
-//                sql.append(update);
-//                if (!fileout) {
-//                    try (Statement statement = connection.createStatement()) {
-//                        statement.execute(update.toString());
-//                    }
-//                }
-//            }
-//            sql.append("\n\n");
-//            resultSet.close();
-//        }
-//        if (fileout) {
-//            FileUtils.write(new File("src/test/resources/trigger.sql"), sql.toString(), "UTF-8");
-//        }
-//    }
-//
-//}
+    }
+
+    public static void setupAccountingRule(FineractClient client, String tenant, String token, JdbcDataContext appDataContext, long officeId, long debitId, long creditId, List<String> names) throws UnirestException {
+        AccAccountingRule accAccountingRule = AccAccountingRule.staticInitialize(appDataContext);
+        for (String name : names) {
+            try (DataSet rows = appDataContext.query().from(accAccountingRule).select(FunctionType.COUNT, accAccountingRule.ID).where(accAccountingRule.NAME).eq(name).execute()) {
+                rows.next();
+                long count = (long) rows.getRow().getValue(0);
+                if (count <= 0) {
+                    PostAccountingRulesRequest request = new PostAccountingRulesRequest();
+                    request.setName(name);
+                    request.setDescription(name);
+                    request.setOfficeId(officeId);
+                    request.setAccountToCredit(creditId);
+                    request.setAccountToDebit(debitId);
+                    client.accountingRuleCreate(tenant, token, request);
+                }
+            }
+        }
+    }
+
+    public static void setupGLAccount(FineractClient client, String tenant, String token, JdbcDataContext appDataContext, List<String> values, StringGenerator generator) throws UnirestException {
+        AccGLAccount accGLAccount = AccGLAccount.staticInitialize(appDataContext);
+        MCodeValue mCodeValue = MCodeValue.staticInitialize(appDataContext);
+        MCode mCode = MCode.staticInitialize(appDataContext);
+        for (String temps : values) {
+            String temp[] = StringUtils.split(temps, "=>");
+            String name = temp[0];
+            try (DataSet rows = appDataContext.query().from(accGLAccount).select(FunctionType.COUNT, accGLAccount.ID).where(accGLAccount.NAME).eq(name).execute()) {
+                rows.next();
+                long count = (long) rows.getRow().getValue(0);
+                if (count <= 0L) {
+                    String tag = temp[1];
+                    try (DataSet rows1 = appDataContext.query().from(mCodeValue).innerJoin(mCode).on(mCodeValue.CODE_ID, mCode.ID).select(mCodeValue.ID).where(mCode.CODE_NAME).eq(tag).limit(1).execute()) {
+                        rows1.next();
+                        int tagId = (int) rows1.getRow().getValue(0);
+                        PostGLAccountsRequest request = new PostGLAccountsRequest();
+                        request.setName(name);
+                        request.setDescription(name);
+                        request.setGlCode(StringUtils.upperCase(generator.generate(5)));
+                        request.setManualEntriesAllowed(true);
+                        request.setTagId(tagId);
+                        request.setUsage(AccountUsage.Detail);
+                        if (Dropdown.AssetAccountTags.equals(tag)) {
+                            request.setType(GLAccountType.Asset);
+                        } else if (Dropdown.EquityAccountTags.equals(tag)) {
+                            request.setType(GLAccountType.Equity);
+                        } else if (Dropdown.LiabilityAccountTags.equals(tag)) {
+                            request.setType(GLAccountType.Liability);
+                        } else if (Dropdown.IncomeAccountTags.equals(tag)) {
+                            request.setType(GLAccountType.Income);
+                        } else if (Dropdown.ExpenseAccountTags.equals(tag)) {
+                            request.setType(GLAccountType.Expense);
+                        }
+                        client.glAccountCreate(tenant, token, request);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void setupTaxComponent(FineractClient client, String tenant, String token, JdbcDataContext appDataContext, List<String> values, StringGenerator generator) throws UnirestException {
+        MTaxComponent mTaxComponent = MTaxComponent.staticInitialize(appDataContext);
+        AccGLAccount accGLAccount = AccGLAccount.staticInitialize(appDataContext);
+        for (String temps : values) {
+            String temp[] = StringUtils.split(temps, "=>");
+            String name = temp[0];
+            try (DataSet rows = appDataContext.query().from(mTaxComponent).select(FunctionType.COUNT, mTaxComponent.ID).where(mTaxComponent.NAME).eq(name).execute()) {
+                rows.next();
+                long count = (long) rows.getRow().getValue(0);
+                boolean has = count > 0;
+                if (!has) {
+                    // taxComponentCreate
+                    long creditAccountId = 0;
+                    try (DataSet rows1 = appDataContext.query().from(accGLAccount).select(accGLAccount.ID).where(accGLAccount.NAME).eq(temp[3]).execute()) {
+                        rows1.next();
+                        creditAccountId = (long) rows1.getRow().getValue(accGLAccount.ID);
+                    }
+
+                    PostTaxesComponentsRequest request = new PostTaxesComponentsRequest();
+                    request.setCreditAccountId(creditAccountId);
+                    request.setCreditAccountType(GLAccountType.valueOf(temp[2]));
+                    request.setPercentage(Double.valueOf(temp[1]));
+                    request.setName(name);
+                    request.setStartDate(new Date());
+                    client.taxComponentCreate(tenant, token, request);
+                }
+            }
+        }
+    }
+
+    public static void setupFloatingRate(FineractClient client, String tenant, String token, JdbcDataContext appDataContext, List<String> values, StringGenerator generator) throws UnirestException {
+        for (String temps : values) {
+            String temp[] = StringUtils.split(temps, "=>");
+            String name = temp[0];
+            boolean has = jdbcTemplate.queryForObject("select count(*) from m_floating_rates WHERE name = ?", boolean.class, name);
+            if (!has) {
+                boolean base = Boolean.valueOf(temp[1]);
+                boolean differential = Boolean.valueOf(temp[2]);
+                Double rate = Double.valueOf(temp[3]);
+                FloatingRateBuilder builder = new FloatingRateBuilder();
+                builder.withName(name);
+                builder.withActive(true);
+                builder.withBaseLendingRate(base);
+                builder.withRatePeriod(DateTime.now().plusDays(1).toDate(), rate, differential);
+                FloatingRateHelper.create(session, builder.build());
+            }
+        }
+    }
+
+    public static void setupTaxGroup(FineractClient client, String tenant, String token, JdbcDataContext appDataContext, List<String> values, StringGenerator generator) throws UnirestException {
+        MTaxGroup mTaxGroup = MTaxGroup.staticInitialize(appDataContext);
+        MTaxComponent mTaxComponent = MTaxComponent.staticInitialize(appDataContext);
+        for (String temps : values) {
+            String name = temps;
+            try (DataSet rows = appDataContext.query().from(mTaxGroup).select(FunctionType.COUNT, mTaxGroup.ID).where(mTaxGroup.NAME).eq(name).execute()) {
+                rows.next();
+                long count = (long) rows.getRow().getValue(0);
+                boolean has = count > 0L;
+                if (!has) {
+                    PostTaxesGroupRequest request = new PostTaxesGroupRequest();
+                    request.setName(name);
+                    List<Long> ids = new ArrayList<>();
+                    try (DataSet rows1 = appDataContext.query().from(mTaxComponent).select(mTaxComponent.ID).execute()) {
+                        while (rows1.next()) {
+                            ids.add((long) rows1.getRow().getValue(mTaxComponent.ID));
+                        }
+                    }
+                    for (Long id : ids) {
+                        request.getTaxComponents().add(new PostTaxesGroupRequest.TaxComponent(0, id, DateTime.now().plusDays(1).toDate(), null));
+                    }
+                    client.taxGroupCreate(tenant, token, request);
+                }
+            }
+        }
+    }
+
+    public static void setupSystemParameter(FineractClient client, String tenant, String token, JdbcDataContext appDataContext, List<String> values) throws UnirestException {
+        MCode mCode = MCode.staticInitialize(appDataContext);
+        MCodeValue mCodeValue = MCodeValue.staticInitialize(appDataContext);
+        for (String temps : values) {
+            String temp[] = StringUtils.split(temps, "=>");
+            String code = temp[0];
+            String value = temp[1];
+            try (DataSet rows = appDataContext.query().from(mCode).selectAll().where(mCode.CODE_NAME).eq(code).execute()) {
+                rows.next();
+                int codeId = (int) rows.getRow().getValue(mCode.ID);
+                try (DataSet rows1 = appDataContext.query().from(mCodeValue).select(FunctionType.COUNT, mCodeValue.ID).where(mCodeValue.CODE_ID).eq(codeId).and(mCodeValue.CODE_VALUE).eq(value).execute()) {
+                    rows1.next();
+                    long count = (long) rows1.getRow().getValue(0);
+                    boolean has = count > 0L;
+                    if (!has) {
+                        String description = temp[2];
+                        PostCodeValuesDataRequest request = new PostCodeValuesDataRequest();
+                        request.setActive(true);
+                        request.setName(value);
+                        request.setDescription(description);
+                        client.codeValueCreate(tenant, token, codeId, request);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void setupFund(FineractClient client, String tenant, String token, JdbcDataContext appDataContext, List<String> funds, StringGenerator generator) throws UnirestException {
+        MFund mFund = MFund.staticInitialize(appDataContext);
+        for (String fund : funds) {
+            try (DataSet rows = appDataContext.query().from(mFund).select(FunctionType.COUNT, mFund.ID).where(mFund.NAME).eq(fund).execute()) {
+                rows.next();
+                long count = (long) rows.getRow().getValue(0);
+                boolean hasFund = count > 0L;
+                if (!hasFund) {
+                    PostFundsRequest request = new PostFundsRequest();
+                    request.setName(fund);
+                    request.setExternalId(generator.externalId());
+                    client.fundCreate(tenant, token, request);
+                }
+            }
+        }
+    }
+
+    public static void triggerData(boolean fileout, String tenant, String token, JdbcDataContext appDataContext) throws SQLException, IOException {
+        String delimiter = "";
+        String newline = " ";
+
+        if (fileout) {
+            delimiter = "%%";
+            newline = "\n";
+        }
+
+        if (!fileout) {
+            try (DataSet rows = appDataContext.executeQuery("DROP TABLE IF EXISTS `tbl_audit`")) {
+            }
+            try (DataSet rows = appDataContext.executeQuery("CREATE TABLE `tbl_audit` (  `id` varchar(100) NOT NULL,  `log_date` datetime NOT NULL,  `log_event` varchar(20) NOT NULL,  `log_table` varchar(100) NOT NULL,  `log_script` TEXT,  PRIMARY KEY (`id`),  KEY `tbl_audit_001` (`log_date`),  KEY `tbl_audit_002` (`log_event`),  KEY `tbl_audit_003` (`log_table`))")) {
+            }
+            try (DataSet rows = appDataContext.executeQuery("DROP TABLE IF EXISTS `tbl_audit_value`")) {
+            }
+            try (DataSet rows = appDataContext.executeQuery("CREATE TABLE `tbl_audit_value` (  `id` varchar(100) NOT NULL,  `audit_id` varchar(100) DEFAULT NULL,  `field_name` varchar(255) DEFAULT NULL,  `before_value` text,  `after_value` text,  PRIMARY KEY (`id`),  KEY `tbl_audit_value_001` (`audit_id`),  KEY `tbl_audit_value_002` (`field_name`))")) {
+            }
+        }
+
+        XRegisteredTable xRegisteredTable = XRegisteredTable.staticInitialize(appDataContext);
+
+        List<String> tableNames = appDataContext.getDefaultSchema().getTableNames();
+        List<String> customTable = new ArrayList<>();
+        try (DataSet rows = appDataContext.query().from(xRegisteredTable).select(xRegisteredTable.REGISTERED_TABLE_NAME).execute()) {
+            while (rows.next()) {
+                customTable.add((String) rows.getRow().getValue(0));
+            }
+        }
+        StringBuffer sql = new StringBuffer();
+        sql.append("delimiter %%").append(newline);
+        for (String tableName : tableNames) {
+            if ("tbl_audit".equals(tableName) || "tbl_audit_value".equals(tableName)) {
+                continue;
+            }
+
+            if (customTable.contains(tableName)) {
+                continue;
+            }
+
+            System.out.println(tableName);
+
+            Table table = appDataContext.getDefaultSchema().getTableByName(tableName);
+
+            List<String> idFields = new ArrayList<>();
+            for (Column column : table.getColumns()) {
+                if (column.isPrimaryKey()) {
+                    idFields.add(column.getName());
+                }
+            }
+
+            boolean hasId = !idFields.isEmpty();
+
+            if (!hasId) {
+                System.out.println(tableName);
+            }
+
+            {
+                StringBuffer delete = new StringBuffer();
+                delete.append("DROP TRIGGER IF EXISTS " + tableName + "_d").append(delimiter).append(newline);
+                if (!fileout) {
+                    try (DataSet rows = appDataContext.executeQuery(delete.toString())) {
+                        delete.delete(0, delete.length());
+                    }
+                }
+                delete.append("CREATE TRIGGER `" + tableName + "_d`").append(newline);
+                delete.append("BEFORE DELETE").append(newline);
+                delete.append("  ON ").append(tableName).append(newline);
+                delete.append("FOR").append(newline);
+                delete.append("EACH ROW").append(newline);
+                delete.append("  BEGIN").append(newline);
+                delete.append("    DECLARE _id VARCHAR(100);").append(newline);
+                delete.append("    DECLARE _log_script TEXT;").append(newline);
+                delete.append("    SELECT uuid() INTO _id FROM dual;").append(newline);
+                String field = idFields.get(0);
+                String logScript = "CONCAT('DELETE FROM " + tableName + " WHERE " + field + " = ''', OLD." + field + ", ''''";
+                for (int i = 1; i < idFields.size(); i++) {
+                    String f = idFields.get(i);
+                    logScript = logScript + ", ' AND " + f + " = ''', OLD." + f + ", ''''";
+                }
+                logScript = logScript + ")";
+
+                if (hasId) {
+                    delete.append("    SELECT " + logScript + " INTO _log_script FROM dual;").append(newline);
+                    delete.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', '" + tableName + "', _log_script);").append(newline);
+                } else {
+                    delete.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', '" + tableName + "', NULL);").append(newline);
+                }
+                for (Column column : table.getColumns()) {
+                    String fieldName = column.getName();
+                    delete.append("    INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, '" + fieldName + "', OLD." + fieldName + ", NULL);").append(newline);
+                }
+                delete.append("  END").append(delimiter).append(newline);
+                sql.append(delete);
+                if (!fileout) {
+                    try (DataSet rows = appDataContext.executeQuery(delete.toString())) {
+                    }
+                }
+            }
+
+            {
+                StringBuffer insert = new StringBuffer();
+                insert.append("DROP TRIGGER IF EXISTS " + tableName + "_i").append(delimiter).append(newline);
+                if (!fileout) {
+                    try (DataSet rows = appDataContext.executeQuery(insert.toString())) {
+                        insert.delete(0, insert.length());
+                    }
+                }
+                insert.append("CREATE TRIGGER `" + tableName + "_i`").append(newline);
+                insert.append("AFTER INSERT").append(newline);
+                insert.append("  ON ").append(tableName).append(newline);
+                insert.append("FOR").append(newline);
+                insert.append("EACH ROW").append(newline);
+                insert.append("  BEGIN").append(newline);
+                insert.append("    DECLARE _id VARCHAR(100);").append(newline);
+                insert.append("    DECLARE _log_script TEXT;").append(newline);
+                insert.append("    SELECT uuid() INTO _id FROM dual;").append(newline);
+                String logScript = "CONCAT('INSERT INTO " + tableName + "(";
+                for (int i = 0; i < table.getColumns().size(); i++) {
+                    String fieldName = table.getColumns().get(i).getName();
+                    if (i + 1 == table.getColumns().size()) {
+                        logScript = logScript + fieldName;
+                    } else {
+                        logScript = logScript + fieldName + ", ";
+                    }
+                }
+                logScript = logScript + ") VALUES(', ";
+                for (int i = 0; i < table.getColumns().size(); i++) {
+                    String fieldName = table.getColumns().get(i).getName();
+                    String value = "NEW." + fieldName;
+                    if (i + 1 == table.getColumns().size()) {
+                        String fieldValue = "IF(" + value + " IS NULL, 'NULL', CONCAT('''', " + value + ", ''''))";
+                        logScript = logScript + fieldValue + ", ";
+                    } else {
+                        String fieldValue = "IF(" + value + " IS NULL, 'NULL, ', CONCAT('''', " + value + ", ''', '))";
+                        logScript = logScript + fieldValue + ", ";
+                    }
+                }
+                logScript = logScript + "')'";
+                logScript = logScript + ")";
+                if (hasId) {
+                    insert.append("    SELECT " + logScript + " INTO _log_script FROM dual;").append(newline);
+                    insert.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', '" + tableName + "', _log_script);").append(newline);
+                } else {
+                    insert.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', '" + tableName + "', NULL);").append(newline);
+                }
+                for (int i = 0; i < table.getColumns().size(); i++) {
+                    String fieldName = table.getColumns().get(i).getName();
+                    insert.append("    INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, '" + fieldName + "', NEW." + fieldName + ", NULL);").append(newline);
+                }
+                insert.append("  END").append(delimiter).append(newline);
+                sql.append(insert);
+                if (!fileout) {
+                    try (DataSet rows = appDataContext.executeQuery(insert.toString())) {
+                    }
+                }
+            }
+
+            {
+                StringBuffer update = new StringBuffer();
+                update.append("DROP TRIGGER IF EXISTS " + tableName + "_u").append(delimiter).append(newline);
+                if (!fileout) {
+                    try (DataSet rows = appDataContext.executeQuery(update.toString())) {
+                        update.delete(0, update.length());
+                    }
+                }
+                update.append("CREATE TRIGGER `" + tableName + "_u`").append(newline);
+                update.append("AFTER UPDATE").append(newline);
+                update.append("  ON ").append(tableName).append(newline);
+                update.append("FOR").append(newline);
+                update.append("EACH ROW").append(newline);
+                update.append("  BEGIN").append(newline);
+                update.append("    DECLARE _id VARCHAR(100);").append(newline);
+                update.append("    DECLARE _log_script TEXT;").append(newline);
+                update.append("    SELECT uuid() INTO _id FROM dual;").append(newline);
+                String logScript = "CONCAT('UPDATE " + tableName + " SET ";
+                for (int i = 0; i < table.getColumns().size(); i++) {
+                    String fieldName = table.getColumns().get(i).getName();
+                    String value = "NEW." + fieldName;
+                    String fieldValue = "IF(" + value + " IS NULL, 'NULL', CONCAT('''', " + value + ", ''''))";
+                    if (i + 1 == table.getColumns().size()) {
+                        logScript = logScript + fieldName + " = ', " + fieldValue + ", ' ";
+                    } else {
+                        logScript = logScript + fieldName + " = ', " + fieldValue + ", '" + ", ";
+                    }
+                }
+
+                String field = idFields.get(0);
+                logScript = logScript + "WHERE " + field + " = ''', NEW." + field + ", ''''";
+                for (int i = 1; i < idFields.size(); i++) {
+                    String f = idFields.get(i);
+                    logScript = logScript + ", ' AND " + f + " = ''', OLD." + f + ", ''''";
+                }
+                logScript = logScript + ")";
+                if (hasId) {
+                    update.append("    SELECT " + logScript + " INTO _log_script FROM dual;").append(newline);
+                    update.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', '" + tableName + "', _log_script);").append(newline);
+                } else {
+                    update.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', '" + tableName + "', NULL);").append(newline);
+                }
+                for (int i = 0; i < table.getColumns().size(); i++) {
+                    String fieldName = table.getColumns().get(i).getName();
+                    update.append("    INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, '" + fieldName + "', OLD." + fieldName + ", NEW." + fieldName + ");").append(newline);
+                }
+                update.append("  END").append(delimiter).append(newline);
+                sql.append(update);
+                if (!fileout) {
+                    try (DataSet rows = appDataContext.executeQuery(update.toString())) {
+                    }
+                }
+            }
+            sql.append("\n\n");
+        }
+        if (fileout) {
+            FileUtils.write(new File("src/test/resources/trigger.sql"), sql.toString(), "UTF-8");
+        }
+    }
+
+}

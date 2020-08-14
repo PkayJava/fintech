@@ -16,10 +16,16 @@ import java.util.List;
 public class MetaModelProgram {
 
     public static void main(String[] args) {
+        String publicIp = "vpn.i365work.com";
+        String privateIp = "192.168.1.6";
+        String ip = publicIp;
+        int privatePort = 3306;
+        int publicPort = 21631;
+        int port = publicPort;
         {
             DataContextPropertiesImpl properties = new DataContextPropertiesImpl();
             properties.put("type", "jdbc");
-            properties.put("url", "jdbc:mysql://192.168.1.6:3306/fineract_tenants?useSSL=true");
+            properties.put("url", "jdbc:mysql://" + ip + ":" + port + "/fineract_tenants?useSSL=true");
             properties.put("driver-class", Driver.class.getName());
             properties.put("username", "bank");
             properties.put("password", "password");
@@ -33,7 +39,7 @@ public class MetaModelProgram {
         {
             DataContextPropertiesImpl properties = new DataContextPropertiesImpl();
             properties.put("type", "jdbc");
-            properties.put("url", "jdbc:mysql://192.168.1.6:3306/fineract_default?useSSL=true");
+            properties.put("url", "jdbc:mysql://" + ip + ":" + port + "/fineract_default?useSSL=true");
             properties.put("driver-class", Driver.class.getName());
             properties.put("username", "bank");
             properties.put("password", "password");

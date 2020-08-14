@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.client.dto;
 
-public class PutGlClosureRequest {
+public class PutGLClosureRequest {
 
     /**
      * limit to 500

@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import com.angkorteam.fintech.dto.enums.AccountType;
+import com.angkorteam.fintech.dto.enums.GLAccountType;
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -16,7 +16,7 @@ public class TaxComponentBuilder implements Serializable {
     private String id;
     private boolean hasId;
 
-    private AccountType creditAccountType;
+    private GLAccountType creditAccountType;
     private boolean hasCreditAccountType;
 
     private String creditAccountId;
@@ -116,7 +116,7 @@ public class TaxComponentBuilder implements Serializable {
         return this;
     }
 
-    public TaxComponentBuilder withCreditAccountType(AccountType creditAccountType) {
+    public TaxComponentBuilder withCreditAccountType(GLAccountType creditAccountType) {
         this.creditAccountType = creditAccountType;
         this.hasCreditAccountType = true;
         return this;

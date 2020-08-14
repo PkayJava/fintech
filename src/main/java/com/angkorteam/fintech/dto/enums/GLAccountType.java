@@ -5,9 +5,13 @@ import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 /**
  * Created by socheatkhauv on 7/12/17.
  */
-public enum AccountType {
+public enum GLAccountType {
 
-    Asset("1", "Asset", "AssetAccountTags"), Liability("2", "Liability", "LiabilityAccountTags"), Equity("3", "Equity", "EquityAccountTags"), Income("4", "Income", "IncomeAccountTags"), Expense("5", "Expense", "ExpenseAccountTags");
+    Asset("1", "Asset", "AssetAccountTags"),
+    Liability("2", "Liability", "LiabilityAccountTags"),
+    Equity("3", "Equity", "EquityAccountTags"),
+    Income("4", "Income", "IncomeAccountTags"),
+    Expense("5", "Expense", "ExpenseAccountTags");
 
     private String literal;
 
@@ -15,7 +19,7 @@ public enum AccountType {
 
     private String tag;
 
-    AccountType(String literal, String description, String tag) {
+    GLAccountType(String literal, String description, String tag) {
         this.literal = literal;
         this.description = description;
         this.tag = tag;
@@ -37,8 +41,8 @@ public enum AccountType {
         return new Option(this.name(), this.description);
     }
 
-    public static AccountType parseLiteral(String literal) {
-        for (AccountType value : AccountType.values()) {
+    public static GLAccountType parseLiteral(String literal) {
+        for (GLAccountType value : GLAccountType.values()) {
             if (value.getLiteral().equals(literal)) {
                 return value;
             }
@@ -47,7 +51,7 @@ public enum AccountType {
     }
 
     public static Option optionLiteral(String literal) {
-        AccountType value = parseLiteral(literal);
+        GLAccountType value = parseLiteral(literal);
         if (value == null) {
             return null;
         }

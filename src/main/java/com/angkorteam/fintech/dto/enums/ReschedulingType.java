@@ -4,7 +4,9 @@ import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 
 public enum ReschedulingType {
 
-    NextRepaymentDate("1", "Reschedule to next repayment date"), SpecifiedDate("2", "Reschedule to specified date");
+    Invalid("0", "Invalid"),
+    NextRepaymentDate("1", "Reschedule to next repayment date"),
+    SpecifiedDate("2", "Reschedule to specified date");
 
     private String literal;
 
