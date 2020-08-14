@@ -14,6 +14,14 @@ public abstract class AbstractTable implements Table {
         this.delegate = dataContext.getDefaultSchema().getTableByName(name);
     }
 
+    protected Column getInternalColumnByName(String columnName) {
+        Column column = this.delegate.getColumnByName(columnName);
+        if (column == null) {
+            throw new IllegalArgumentException(columnName + " is not found");
+        }
+        return column;
+    }
+
     @Override
     public final String getName() {
         return delegate.getName();

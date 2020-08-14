@@ -1,5 +1,9 @@
 package com.angkorteam.fintech.client;
 
+import com.angkorteam.fintech.client.dto.*;
+import com.angkorteam.fintech.client.function.AccountingApi;
+import com.angkorteam.fintech.client.function.InfrastructureApi;
+import com.angkorteam.fintech.client.function.OrganisationApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -21,7 +25,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FineractClient implements Closeable {
+public class FineractClient implements Closeable,
+        OrganisationApi,
+        InfrastructureApi,
+        AccountingApi {
 
     private static final String DATE_FORMAT_KEY = "dateFormat";
     private static final String DATE_FORMAT_VALUE = "yyyy-MM-dd";
@@ -40,6 +47,7 @@ public class FineractClient implements Closeable {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
+    @Override
     public PostAuthenticationResponse authentication(String tenant, AuthenticateRequest requestBody) {
         EntityBuilder entityBuilder = EntityBuilder.create();
         entityBuilder.setContentType(ContentType.APPLICATION_JSON);
@@ -68,6 +76,7 @@ public class FineractClient implements Closeable {
         }
     }
 
+    @Override
     public FineractResponse officeCreate(String tenant, String token, PostOfficeRequest requestBody) throws AppException, SysException {
         Map<String, Object> internalRequestBody = new HashMap<>();
         internalRequestBody.put(LOCALE_KEY, LOCALE_VALUE);
@@ -108,6 +117,7 @@ public class FineractClient implements Closeable {
         }
     }
 
+    @Override
     public FineractResponse officeUpdate(String tenant, String token, long officeId, PutOfficeRequest requestBody) throws AppException, SysException {
         Map<String, Object> internalRequestBody = new HashMap<>();
         internalRequestBody.put(LOCALE_KEY, LOCALE_VALUE);
@@ -148,6 +158,7 @@ public class FineractClient implements Closeable {
         }
     }
 
+    @Override
     public FineractResponse officeTransactionCreate(String tenant, String token, PostOfficeTransactionRequest requestBody) {
         Map<String, Object> internalRequestBody = new HashMap<>();
         internalRequestBody.put(LOCALE_KEY, LOCALE_VALUE);
@@ -191,6 +202,7 @@ public class FineractClient implements Closeable {
         }
     }
 
+    @Override
     public FineractResponse officeTransactionDelete(String tenant, String token, long transactionId) {
         RequestBuilder requestBuilder = RequestBuilder.create("DELETE");
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
@@ -213,6 +225,7 @@ public class FineractClient implements Closeable {
         }
     }
 
+    @Override
     public FineractResponse runAccrualCreate(String tenant, String token, PostRunAccrualRequest requestBody) {
         Map<String, Object> internalRequestBody = new HashMap<>();
         internalRequestBody.put(LOCALE_KEY, LOCALE_VALUE);
@@ -251,6 +264,7 @@ public class FineractClient implements Closeable {
         }
     }
 
+    @Override
     public FineractResponse glClosureCreate(String tenant, String token, PostGlClosureRequest requestBody) {
         Map<String, Object> internalRequestBody = new HashMap<>();
         internalRequestBody.put(LOCALE_KEY, LOCALE_VALUE);
@@ -291,6 +305,7 @@ public class FineractClient implements Closeable {
         }
     }
 
+    @Override
     public FineractResponse glClosureUpdate(String tenant, String token, long glClosureId, PutGlClosureRequest requestBody) throws AppException, SysException {
         EntityBuilder entityBuilder = EntityBuilder.create();
         entityBuilder.setContentType(ContentType.APPLICATION_JSON);
@@ -320,6 +335,7 @@ public class FineractClient implements Closeable {
         }
     }
 
+    @Override
     public FineractResponse glClosureDelete(String tenant, String token, long glClosureId) {
         RequestBuilder requestBuilder = RequestBuilder.create("DELETE");
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);

@@ -2,7 +2,7 @@ package com.angkorteam.fintech.pages.admin.organization.funds;
 
 import com.angkorteam.fintech.MifosDataContextManager;
 import com.angkorteam.fintech.factory.WebSession;
-import com.angkorteam.fintech.meta.MFund;
+import com.angkorteam.fintech.meta.tenant.MFund;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.data.DataSet;

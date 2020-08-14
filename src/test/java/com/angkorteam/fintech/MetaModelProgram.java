@@ -1,75 +1,259 @@
 package com.angkorteam.fintech;
 
-import com.angkorteam.fintech.meta.Tenant;
-import org.apache.metamodel.data.DataSet;
+import com.angkorteam.fintech.meta.infrastructure.Tenant;
+import com.angkorteam.fintech.meta.infrastructure.TenantServerConnection;
+import com.angkorteam.fintech.meta.infrastructure.TimeZone;
+import com.angkorteam.fintech.meta.tenant.*;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
 import org.apache.metamodel.factory.DataContextPropertiesImpl;
 import org.apache.metamodel.jdbc.JdbcDataContext;
-import org.apache.metamodel.query.FunctionType;
+import org.apache.metamodel.schema.Table;
 
 import java.sql.Driver;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MetaModelProgram {
 
     public static void main(String[] args) {
-        DataContextPropertiesImpl properties = new DataContextPropertiesImpl();
-        properties.put("type", "jdbc");
-        properties.put("url", "jdbc:mysql://192.168.1.6:3306/fineract_tenants?useSSL=true");
-        properties.put("driver-class", Driver.class.getName());
-        properties.put("username", "bank");
-        properties.put("password", "password");
-        JdbcDataContext dataContext = (JdbcDataContext) DataContextFactoryRegistryImpl.getDefaultInstance().createDataContext(properties);
+        {
+            DataContextPropertiesImpl properties = new DataContextPropertiesImpl();
+            properties.put("type", "jdbc");
+            properties.put("url", "jdbc:mysql://192.168.1.6:3306/fineract_tenants?useSSL=true");
+            properties.put("driver-class", Driver.class.getName());
+            properties.put("username", "bank");
+            properties.put("password", "password");
+            JdbcDataContext infrastructureDataContext = (JdbcDataContext) DataContextFactoryRegistryImpl.getDefaultInstance().createDataContext(properties);
 
-        Tenant tenants = Tenant.staticInitialize(dataContext);
-        try (DataSet rows = dataContext.query().from(tenants).select(FunctionType.COUNT, tenants.ID).where().where(tenants.IDENTIFIER).eq("default").execute()) {
-            rows.next();
-            System.out.println(rows.getRow().getValue(0));
+            List<Table> infrastructures = new ArrayList<>();
+            infrastructures.add(Tenant.staticInitialize(infrastructureDataContext));
+            infrastructures.add(TenantServerConnection.staticInitialize(infrastructureDataContext));
+            infrastructures.add(TimeZone.staticInitialize(infrastructureDataContext));
         }
+        {
+            DataContextPropertiesImpl properties = new DataContextPropertiesImpl();
+            properties.put("type", "jdbc");
+            properties.put("url", "jdbc:mysql://192.168.1.6:3306/fineract_default?useSSL=true");
+            properties.put("driver-class", Driver.class.getName());
+            properties.put("username", "bank");
+            properties.put("password", "password");
+            JdbcDataContext appDataContext = (JdbcDataContext) DataContextFactoryRegistryImpl.getDefaultInstance().createDataContext(properties);
 
-//        List<Schema> schemas = dataContext.getSchemas();
-//        Schema skhauv = null;
-//        for (Schema schema : schemas) {
-//            if ("skhauv".equalsIgnoreCase(schema.getName())) {
-//                skhauv = schema;
-//                break;
-//            }
-//        }
-//        if (skhauv == null) {
-//            return;
-//        }
-//        Table table = skhauv.getTableByName("TBL_COUNTRY");
-//        Column name = table.getColumnByName("NAME");
-//        Column phone = table.getColumnByName("PHONE_CODE");
-//
-//
-//        Tenants tenants = Tenants.INSTANCE;
-//        Query query = dataContext.query().from(tenants).select(FunctionType.MAX, tenants.NAME).groupBy(tenants.NAME).firstRow(1).maxRows(10).toQuery();
-//        System.out.println(query.toSql());
-
-//        Query q = new Query();
-//        q.from(table);
-//        q.select(name);
-//
-//        // Execute the Query
-//        DataSet ds = dataContext.executeQuery(query);
-//        while (ds.next()) {
-//            Row row = ds.getRow();
-//            System.out.println(row.getValue(0));
-//        }
-//
-////        Schema finalSkhauv = skhauv;
-////        dataContext.executeUpdate(callback -> {
-////            // CREATE a table
-////            String tableName = "TEST" + RandomStringUtils.randomAlphabetic(5);
-////            Table pp = callback.createTable(finalSkhauv, tableName)
-////                    .withColumn("id").ofType(ColumnType.INTEGER)
-////                    .withColumn("ts").ofType(ColumnType.TIMESTAMP)
-////                    .withColumn("d").ofType(ColumnType.ROWID.DATE)
-//////                    .withColumn("t").ofType(ColumnType.TIME)
-////                    .withColumn("name").ofType(ColumnType.VARCHAR).ofSize(100).execute();
-//////            callback.dropTable(pp).execute();
-////
-////        });
+            List<Table> apps = new ArrayList<>();
+            apps.add(AccAccountingRule.staticInitialize(appDataContext));
+            apps.add(AccGLAccount.staticInitialize(appDataContext));
+            apps.add(AccGLClosure.staticInitialize(appDataContext));
+            apps.add(AccGLFinancialActivityAccount.staticInitialize(appDataContext));
+            apps.add(AccGLJournalEntry.staticInitialize(appDataContext));
+            apps.add(AccProductMapping.staticInitialize(appDataContext));
+            apps.add(AccRuleTag.staticInitialize(appDataContext));
+            apps.add(CAccountNumberFormat.staticInitialize(appDataContext));
+            apps.add(CCache.staticInitialize(appDataContext));
+            apps.add(CConfiguration.staticInitialize(appDataContext));
+            apps.add(CExternalService.staticInitialize(appDataContext));
+            apps.add(CExternalServiceProperty.staticInitialize(appDataContext));
+            apps.add(ClientDeviceRegistration.staticInitialize(appDataContext));
+            apps.add(GlimAccount.staticInitialize(appDataContext));
+            apps.add(GsimAccount.staticInitialize(appDataContext));
+            apps.add(InteropIdentifier.staticInitialize(appDataContext));
+            apps.add(Job.staticInitialize(appDataContext));
+            apps.add(JobParameter.staticInitialize(appDataContext));
+            apps.add(JobRunHistory.staticInitialize(appDataContext));
+            apps.add(MAccountTransferDetail.staticInitialize(appDataContext));
+            apps.add(MAccountTransferStandingInstruction.staticInitialize(appDataContext));
+            apps.add(MAccountTransferStandingInstructionHistory.staticInitialize(appDataContext));
+            apps.add(MAccountTransferTransaction.staticInitialize(appDataContext));
+            apps.add(MAddress.staticInitialize(appDataContext));
+            apps.add(MAdhoc.staticInitialize(appDataContext));
+            apps.add(MAppUser.staticInitialize(appDataContext));
+            apps.add(MAppUserPreviousPassword.staticInitialize(appDataContext));
+            apps.add(MAppUserRole.staticInitialize(appDataContext));
+            apps.add(MCalendar.staticInitialize(appDataContext));
+            apps.add(MCalendarHistory.staticInitialize(appDataContext));
+            apps.add(MCalendarInstance.staticInitialize(appDataContext));
+            apps.add(MCashier.staticInitialize(appDataContext));
+            apps.add(MCashierTransaction.staticInitialize(appDataContext));
+            apps.add(MCharge.staticInitialize(appDataContext));
+            apps.add(MClient.staticInitialize(appDataContext));
+            apps.add(MClientAddress.staticInitialize(appDataContext));
+            apps.add(MClientAttendance.staticInitialize(appDataContext));
+            apps.add(MClientCharge.staticInitialize(appDataContext));
+            apps.add(MClientChargePaidBy.staticInitialize(appDataContext));
+            apps.add(MClientIdentifier.staticInitialize(appDataContext));
+            apps.add(MClientNonPerson.staticInitialize(appDataContext));
+            apps.add(MClientTransaction.staticInitialize(appDataContext));
+            apps.add(MClientTransferDetail.staticInitialize(appDataContext));
+            apps.add(MCode.staticInitialize(appDataContext));
+            apps.add(MCodeValue.staticInitialize(appDataContext));
+            apps.add(MCreditBureau.staticInitialize(appDataContext));
+            apps.add(MCreditBureauConfiguration.staticInitialize(appDataContext));
+            apps.add(MCreditBureauLoanProductMapping.staticInitialize(appDataContext));
+            apps.add(MCurrency.staticInitialize(appDataContext));
+            apps.add(MDepositAccountOnHoldTransaction.staticInitialize(appDataContext));
+            apps.add(MDepositAccountRecurringDetail.staticInitialize(appDataContext));
+            apps.add(MDepositAccountTermAndPreClosure.staticInitialize(appDataContext));
+            apps.add(MDepositProductInterestRateChart.staticInitialize(appDataContext));
+            apps.add(MDepositProductRecurringDetail.staticInitialize(appDataContext));
+            apps.add(MDepositProductTermAndPreClosure.staticInitialize(appDataContext));
+            apps.add(MDocument.staticInitialize(appDataContext));
+            apps.add(MEntityDatatableCheck.staticInitialize(appDataContext));
+            apps.add(MEntityRelation.staticInitialize(appDataContext));
+            apps.add(MEntityToEntityAccess.staticInitialize(appDataContext));
+            apps.add(MEntityToEntityMapping.staticInitialize(appDataContext));
+            apps.add(MFamilyMember.staticInitialize(appDataContext));
+            apps.add(MFieldConfiguration.staticInitialize(appDataContext));
+            apps.add(MFloatingRate.staticInitialize(appDataContext));
+            apps.add(MFloatingRatePeriod.staticInitialize(appDataContext));
+            apps.add(MFund.staticInitialize(appDataContext));
+            apps.add(MGroup.staticInitialize(appDataContext));
+            apps.add(MGroupClient.staticInitialize(appDataContext));
+            apps.add(MGroupLevel.staticInitialize(appDataContext));
+            apps.add(MGroupRole.staticInitialize(appDataContext));
+            apps.add(MGuarantor.staticInitialize(appDataContext));
+            apps.add(MGuarantorFundingDetail.staticInitialize(appDataContext));
+            apps.add(MGuarantorTransaction.staticInitialize(appDataContext));
+            apps.add(MHoliday.staticInitialize(appDataContext));
+            apps.add(MHolidayOffice.staticInitialize(appDataContext));
+            apps.add(MHook.staticInitialize(appDataContext));
+            apps.add(MHookConfiguration.staticInitialize(appDataContext));
+            apps.add(MHookRegisteredEvent.staticInitialize(appDataContext));
+            apps.add(MHookSchema.staticInitialize(appDataContext));
+            apps.add(MHookTemplate.staticInitialize(appDataContext));
+            apps.add(MImage.staticInitialize(appDataContext));
+            apps.add(MImportDocument.staticInitialize(appDataContext));
+            apps.add(MInterestIncentive.staticInitialize(appDataContext));
+            apps.add(MInterestRateChart.staticInitialize(appDataContext));
+            apps.add(MInterestRateSlab.staticInitialize(appDataContext));
+            apps.add(MixTaxonomy.staticInitialize(appDataContext));
+            apps.add(MixTaxonomyMapping.staticInitialize(appDataContext));
+            apps.add(MixXbrlNamespace.staticInitialize(appDataContext));
+            apps.add(MLoan.staticInitialize(appDataContext));
+            apps.add(MLoanArrearsAging.staticInitialize(appDataContext));
+            apps.add(MLoanCharge.staticInitialize(appDataContext));
+            apps.add(MLoanChargePaidBy.staticInitialize(appDataContext));
+            apps.add(MLoanCollateral.staticInitialize(appDataContext));
+            apps.add(MLoanDisbursementDetail.staticInitialize(appDataContext));
+            apps.add(MLoanInstallmentCharge.staticInitialize(appDataContext));
+            apps.add(MLoanInterestRecalculationAdditionalDetail.staticInitialize(appDataContext));
+            apps.add(MLoanOfficerAssignmentHistory.staticInitialize(appDataContext));
+            apps.add(MLoanOverdueInstallmentCharge.staticInitialize(appDataContext));
+            apps.add(MLoanPaidInAdvance.staticInitialize(appDataContext));
+            apps.add(MLoanProductProvisioningEntry.staticInitialize(appDataContext));
+            apps.add(MLoanProductProvisioningMapping.staticInitialize(appDataContext));
+            apps.add(MLoanRate.staticInitialize(appDataContext));
+            apps.add(MLoanRecalculationDetail.staticInitialize(appDataContext));
+            apps.add(MLoanRepaymentSchedule.staticInitialize(appDataContext));
+            apps.add(MLoanRepaymentScheduleHistory.staticInitialize(appDataContext));
+            apps.add(MLoanRescheduleRequest.staticInitialize(appDataContext));
+            apps.add(MLoanRescheduleRequestTermVariationMapping.staticInitialize(appDataContext));
+            apps.add(MLoanTermVariation.staticInitialize(appDataContext));
+            apps.add(MLoanTopup.staticInitialize(appDataContext));
+            apps.add(MLoanTrancheCharge.staticInitialize(appDataContext));
+            apps.add(MLoanTrancheDisbursementCharge.staticInitialize(appDataContext));
+            apps.add(MLoanTransaction.staticInitialize(appDataContext));
+            apps.add(MLoanTransactionRepaymentScheduleMapping.staticInitialize(appDataContext));
+            apps.add(MMandatorySavingSchedule.staticInitialize(appDataContext));
+            apps.add(MMeeting.staticInitialize(appDataContext));
+            apps.add(MNote.staticInitialize(appDataContext));
+            apps.add(MOffice.staticInitialize(appDataContext));
+            apps.add(MOfficeTransaction.staticInitialize(appDataContext));
+            apps.add(MOrganisationCreditBureau.staticInitialize(appDataContext));
+            apps.add(MOrganisationCurrency.staticInitialize(appDataContext));
+            apps.add(MPasswordValidationPolicy.staticInitialize(appDataContext));
+            apps.add(MPaymentDetail.staticInitialize(appDataContext));
+            apps.add(MPaymentType.staticInitialize(appDataContext));
+            apps.add(MPermission.staticInitialize(appDataContext));
+            apps.add(MPocket.staticInitialize(appDataContext));
+            apps.add(MPocketAccountMapping.staticInitialize(appDataContext));
+            apps.add(MPortfolioAccountAssociation.staticInitialize(appDataContext));
+            apps.add(MPortfolioCommandSource.staticInitialize(appDataContext));
+            apps.add(MProductLoan.staticInitialize(appDataContext));
+            apps.add(MProductLoanCharge.staticInitialize(appDataContext));
+            apps.add(MProductLoanConfigurableAttribute.staticInitialize(appDataContext));
+            apps.add(MProductLoanFloatingRate.staticInitialize(appDataContext));
+            apps.add(MProductLoanGuaranteeDetail.staticInitialize(appDataContext));
+            apps.add(MProductLoanRate.staticInitialize(appDataContext));
+            apps.add(MProductLoanRecalculationDetail.staticInitialize(appDataContext));
+            apps.add(MProductLoanVariableInstallmentConfig.staticInitialize(appDataContext));
+            apps.add(MProductLoanVariationBorrowerCycle.staticInitialize(appDataContext));
+            apps.add(MProductMix.staticInitialize(appDataContext));
+            apps.add(MProvisionCategory.staticInitialize(appDataContext));
+            apps.add(MProvisioningCriteria.staticInitialize(appDataContext));
+            apps.add(MProvisioningCriteriaDefinition.staticInitialize(appDataContext));
+            apps.add(MProvisioningHistory.staticInitialize(appDataContext));
+            apps.add(MRate.staticInitialize(appDataContext));
+            apps.add(MReportMailingJob.staticInitialize(appDataContext));
+            apps.add(MReportMailingJobConfiguration.staticInitialize(appDataContext));
+            apps.add(MReportMailingJobRunHistory.staticInitialize(appDataContext));
+            apps.add(MRole.staticInitialize(appDataContext));
+            apps.add(MRolePermission.staticInitialize(appDataContext));
+            apps.add(MSavingAccount.staticInitialize(appDataContext));
+            apps.add(MSavingAccountCharge.staticInitialize(appDataContext));
+            apps.add(MSavingAccountChargePaidBy.staticInitialize(appDataContext));
+            apps.add(MSavingAccountInterestRateChart.staticInitialize(appDataContext));
+            apps.add(MSavingAccountInterestRateSlab.staticInitialize(appDataContext));
+            apps.add(MSavingAccountTransaction.staticInitialize(appDataContext));
+            apps.add(MSavingAccountTransactionTaxDetail.staticInitialize(appDataContext));
+            apps.add(MSavingInterestIncentive.staticInitialize(appDataContext));
+            apps.add(MSavingOfficerAssignmentHistory.staticInitialize(appDataContext));
+            apps.add(MSavingProduct.staticInitialize(appDataContext));
+            apps.add(MSavingProductCharge.staticInitialize(appDataContext));
+            apps.add(MSelfServiceBeneficiaryTpt.staticInitialize(appDataContext));
+            apps.add(MSelfServiceUserClientMapping.staticInitialize(appDataContext));
+            apps.add(MShareAccount.staticInitialize(appDataContext));
+            apps.add(MShareAccountCharge.staticInitialize(appDataContext));
+            apps.add(MShareAccountChargePaidBy.staticInitialize(appDataContext));
+            apps.add(MShareAccountDividendDetail.staticInitialize(appDataContext));
+            apps.add(MShareAccountTransaction.staticInitialize(appDataContext));
+            apps.add(MShareProduct.staticInitialize(appDataContext));
+            apps.add(MShareProductCharge.staticInitialize(appDataContext));
+            apps.add(MShareProductDividendPayOut.staticInitialize(appDataContext));
+            apps.add(MShareProductMarketPrice.staticInitialize(appDataContext));
+            apps.add(MStaff.staticInitialize(appDataContext));
+            apps.add(MStaffAssignmentHistory.staticInitialize(appDataContext));
+            apps.add(MSurvey.staticInitialize(appDataContext));
+            apps.add(MSurveyComponent.staticInitialize(appDataContext));
+            apps.add(MSurveyLookupTable.staticInitialize(appDataContext));
+            apps.add(MSurveyQuestion.staticInitialize(appDataContext));
+            apps.add(MSurveyResponse.staticInitialize(appDataContext));
+            apps.add(MSurveyScoreCard.staticInitialize(appDataContext));
+            apps.add(MTaxComponent.staticInitialize(appDataContext));
+            apps.add(MTaxComponentHistory.staticInitialize(appDataContext));
+            apps.add(MTaxGroup.staticInitialize(appDataContext));
+            apps.add(MTaxGroupMapping.staticInitialize(appDataContext));
+            apps.add(MTeller.staticInitialize(appDataContext));
+            apps.add(MTemplate.staticInitialize(appDataContext));
+            apps.add(MTemplateMapper.staticInitialize(appDataContext));
+            apps.add(MTemplateMTemplateMapper.staticInitialize(appDataContext));
+            apps.add(MTrialBalance.staticInitialize(appDataContext));
+            apps.add(MWorkingDay.staticInitialize(appDataContext));
+            apps.add(NotificationGenerator.staticInitialize(appDataContext));
+            apps.add(NotificationMapper.staticInitialize(appDataContext));
+            apps.add(OauthAccessToken.staticInitialize(appDataContext));
+            apps.add(OauthClientDetail.staticInitialize(appDataContext));
+            apps.add(OauthRefreshToken.staticInitialize(appDataContext));
+            apps.add(PpiLikelihood.staticInitialize(appDataContext));
+            apps.add(PpiLikelihoodPpi.staticInitialize(appDataContext));
+            apps.add(PpiScore.staticInitialize(appDataContext));
+            apps.add(RefLoanTransactionProcessingStrategy.staticInitialize(appDataContext));
+            apps.add(REnumValue.staticInitialize(appDataContext));
+            apps.add(RequestAuditTable.staticInitialize(appDataContext));
+            apps.add(RptSequence.staticInitialize(appDataContext));
+            apps.add(ScheduledEmailCampaign.staticInitialize(appDataContext));
+            apps.add(ScheduledEmailConfiguration.staticInitialize(appDataContext));
+            apps.add(ScheduledEmailMessageOutbound.staticInitialize(appDataContext));
+            apps.add(SchedulerDetail.staticInitialize(appDataContext));
+            apps.add(SmsCampaign.staticInitialize(appDataContext));
+            apps.add(SmsMessageOutbound.staticInitialize(appDataContext));
+            apps.add(StretchyParameter.staticInitialize(appDataContext));
+            apps.add(StretchyReportParameter.staticInitialize(appDataContext));
+            apps.add(Topic.staticInitialize(appDataContext));
+            apps.add(TopicSubscriber.staticInitialize(appDataContext));
+            apps.add(TwoFactorAccessToken.staticInitialize(appDataContext));
+            apps.add(TwoFactorConfiguration.staticInitialize(appDataContext));
+            apps.add(XRegisteredTable.staticInitialize(appDataContext));
+            apps.add(XTableColumnCodeMapping.staticInitialize(appDataContext));
+        }
     }
 
 }

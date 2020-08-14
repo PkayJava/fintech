@@ -3,7 +3,7 @@ package com.angkorteam.fintech.data;
 import com.angkorteam.fintech.MifosDataContextManager;
 import com.angkorteam.fintech.MifosDataSourceManager;
 import com.angkorteam.fintech.factory.WebSession;
-import com.angkorteam.fintech.meta.MOffice;
+import com.angkorteam.fintech.meta.tenant.MOffice;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import org.apache.metamodel.DataContext;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableTreeProvider;

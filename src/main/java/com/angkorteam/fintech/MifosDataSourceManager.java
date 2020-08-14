@@ -1,7 +1,7 @@
 package com.angkorteam.fintech;
 
-import com.angkorteam.fintech.meta.TenantServerConnection;
-import com.angkorteam.fintech.meta.Tenant;
+import com.angkorteam.fintech.meta.infrastructure.TenantServerConnection;
+import com.angkorteam.fintech.meta.infrastructure.Tenant;
 import com.google.common.collect.Maps;
 import com.mysql.cj.jdbc.Driver;
 import org.apache.commons.dbcp2.BasicDataSource;

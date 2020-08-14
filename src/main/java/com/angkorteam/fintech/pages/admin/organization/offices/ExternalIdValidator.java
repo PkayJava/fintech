@@ -2,7 +2,7 @@ package com.angkorteam.fintech.pages.admin.organization.offices;
 
 import com.angkorteam.fintech.MifosDataContextManager;
 import com.angkorteam.fintech.factory.WebSession;
-import com.angkorteam.fintech.meta.MOffice;
+import com.angkorteam.fintech.meta.tenant.MOffice;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.data.DataSet;

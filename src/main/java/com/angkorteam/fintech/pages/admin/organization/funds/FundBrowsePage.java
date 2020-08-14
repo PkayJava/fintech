@@ -4,7 +4,7 @@ import com.angkorteam.fintech.MasterPage;
 import com.angkorteam.fintech.MifosDataContextManager;
 import com.angkorteam.fintech.data.MySQLDataProvider;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.meta.MFund;
+import com.angkorteam.fintech.meta.tenant.MFund;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import com.angkorteam.webui.frmk.provider.QueryDataProvider;
 import com.angkorteam.webui.frmk.wicket.extensions.markup.html.repeater.data.table.AbstractDataTable;

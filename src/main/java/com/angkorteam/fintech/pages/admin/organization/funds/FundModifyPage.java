@@ -5,7 +5,7 @@ import com.angkorteam.fintech.MifosDataContextManager;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.FundBuilder;
 import com.angkorteam.fintech.helper.FundHelper;
-import com.angkorteam.fintech.meta.MFund;
+import com.angkorteam.fintech.meta.tenant.MFund;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import com.angkorteam.webui.frmk.wicket.layout.Size;
 import com.angkorteam.webui.frmk.wicket.layout.UIColumn;

@@ -1,10 +1,10 @@
 package com.angkorteam.fintech.factory;
 
 import com.angkorteam.fintech.IMifos;
-import com.angkorteam.fintech.client.AuthenticateRequest;
+import com.angkorteam.fintech.client.dto.AuthenticateRequest;
 import com.angkorteam.fintech.client.FineractClient;
-import com.angkorteam.fintech.client.PostAuthenticationResponse;
-import com.angkorteam.fintech.client.RoleData;
+import com.angkorteam.fintech.client.dto.PostAuthenticationResponse;
+import com.angkorteam.fintech.client.dto.RoleData;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.Language;
 import com.angkorteam.webui.frmk.common.WicketFactory;

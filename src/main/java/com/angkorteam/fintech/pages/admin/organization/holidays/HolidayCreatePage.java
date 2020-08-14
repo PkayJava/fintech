@@ -7,7 +7,7 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.HolidayBuilder;
 import com.angkorteam.fintech.dto.enums.ReschedulingType;
 import com.angkorteam.fintech.helper.HolidayHelper;
-import com.angkorteam.fintech.meta.MOffice;
+import com.angkorteam.fintech.meta.tenant.MOffice;
 import com.angkorteam.fintech.pages.admin.organization.funds.NameValidator;
 import com.angkorteam.fintech.provider.ReschedulingTypeProvider;
 import com.angkorteam.webui.frmk.common.WicketFactory;
