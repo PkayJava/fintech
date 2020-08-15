@@ -5,11 +5,11 @@ import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import com.angkorteam.fintech.dto.enums.ChargeCalculationType;
-import com.angkorteam.fintech.dto.enums.ChargeFrequency;
-import com.angkorteam.fintech.dto.enums.ChargePaymentMode;
-import com.angkorteam.fintech.dto.enums.ChargeTimeType;
-import com.angkorteam.fintech.dto.enums.ChargeAppliesTo;
+import com.angkorteam.fintech.client.enums.ChargeCalculationType;
+import com.angkorteam.fintech.client.enums.ChargeFrequency;
+import com.angkorteam.fintech.client.enums.ChargePaymentMode;
+import com.angkorteam.fintech.client.enums.ChargeTimeType;
+import com.angkorteam.fintech.client.enums.ChargeAppliesTo;
 import io.github.openunirest.http.JsonNode;
 
 public class ChargeBuilder implements Serializable {

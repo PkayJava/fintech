@@ -2,7 +2,7 @@ package com.angkorteam.fintech.pages;
 
 import com.angkorteam.fintech.MasterPage;
 import com.angkorteam.fintech.boot.AppProperties;
-import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.factory.WebSession;
 import com.angkorteam.fintech.provider.ui.MemoryContentHeaderProvider;
 import com.angkorteam.webui.frmk.common.WicketFactory;

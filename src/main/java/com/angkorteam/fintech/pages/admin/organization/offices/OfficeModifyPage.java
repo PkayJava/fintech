@@ -7,7 +7,7 @@ import com.angkorteam.fintech.client.FineractClient;
 import com.angkorteam.fintech.client.dto.PutOfficeRequest;
 import com.angkorteam.fintech.data.OptionMapper;
 import com.angkorteam.fintech.data.SingleChoiceProvider;
-import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.factory.WebSession;
 import com.angkorteam.fintech.meta.tenant.MOffice;
 import com.angkorteam.jdbc.query.SelectQuery;

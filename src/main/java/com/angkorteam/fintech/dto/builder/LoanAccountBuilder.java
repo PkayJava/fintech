@@ -10,13 +10,13 @@ import java.util.Map;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.json.JSONObject;
 
-import com.angkorteam.fintech.dto.enums.ChargeFrequency;
-import com.angkorteam.fintech.dto.enums.loan.Amortization;
-import com.angkorteam.fintech.dto.enums.loan.FrequencyDay;
-import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
-import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
-import com.angkorteam.fintech.dto.enums.loan.RepaidOn;
-import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
+import com.angkorteam.fintech.client.enums.ChargeFrequency;
+import com.angkorteam.fintech.client.enums.loan.Amortization;
+import com.angkorteam.fintech.client.enums.loan.FrequencyDay;
+import com.angkorteam.fintech.client.enums.loan.InterestCalculationPeriod;
+import com.angkorteam.fintech.client.enums.loan.InterestMethod;
+import com.angkorteam.fintech.client.enums.loan.RepaidOn;
+import com.angkorteam.fintech.client.enums.loan.RepaymentStrategy;
 import com.google.common.collect.Maps;
 import io.github.openunirest.http.JsonNode;
 

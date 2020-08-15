@@ -8,9 +8,9 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import com.angkorteam.fintech.dto.enums.AccountingType;
-import com.angkorteam.fintech.dto.enums.LockInType;
-import com.angkorteam.fintech.dto.enums.MinimumActivePeriod;
+import com.angkorteam.fintech.client.enums.AccountingType;
+import com.angkorteam.fintech.client.enums.LockInType;
+import com.angkorteam.fintech.client.enums.MinimumActivePeriod;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.github.openunirest.http.JsonNode;

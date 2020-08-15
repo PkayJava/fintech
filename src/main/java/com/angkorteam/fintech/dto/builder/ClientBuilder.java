@@ -9,7 +9,7 @@ import java.util.Map;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.json.JSONObject;
 
-import com.angkorteam.fintech.dto.enums.LegalForm;
+import com.angkorteam.fintech.client.enums.LegalForm;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.github.openunirest.http.JsonNode;

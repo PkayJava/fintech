@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.provider;
 
-import com.angkorteam.fintech.dto.enums.ReschedulingType;
+import com.angkorteam.fintech.client.enums.ReschedulingType;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.ISingleChoiceProvider;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;

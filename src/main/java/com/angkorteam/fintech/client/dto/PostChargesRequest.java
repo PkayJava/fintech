@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.client.dto;
 
-import com.angkorteam.fintech.dto.enums.*;
+import com.angkorteam.fintech.client.enums.*;
 
 import java.util.Date;
 

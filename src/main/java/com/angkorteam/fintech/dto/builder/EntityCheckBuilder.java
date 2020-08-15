@@ -2,7 +2,7 @@ package com.angkorteam.fintech.dto.builder;
 
 import java.io.Serializable;
 
-import com.angkorteam.fintech.dto.enums.EntityStatus;
+import com.angkorteam.fintech.client.enums.EntityStatus;
 import io.github.openunirest.http.JsonNode;
 
 /**

@@ -3,7 +3,7 @@ package com.angkorteam.fintech.pages.admin;
 import com.angkorteam.fintech.MasterPage;
 import com.angkorteam.fintech.MifosDataContextManager;
 import com.angkorteam.fintech.data.MySQLDataProvider;
-import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.meta.tenant.MAppUser;
 import com.angkorteam.fintech.meta.tenant.MOffice;
 import com.angkorteam.webui.frmk.common.WicketFactory;

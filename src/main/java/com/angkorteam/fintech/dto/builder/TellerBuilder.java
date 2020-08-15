@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import com.angkorteam.fintech.dto.constant.TellerStatus;
+import com.angkorteam.fintech.client.renums.TellerStatus;
 import io.github.openunirest.http.JsonNode;
 
 /**

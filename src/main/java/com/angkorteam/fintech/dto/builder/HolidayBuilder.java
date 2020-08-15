@@ -9,7 +9,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.angkorteam.fintech.dto.enums.ReschedulingType;
+import com.angkorteam.fintech.client.enums.ReschedulingType;
 import com.google.common.collect.Lists;
 import io.github.openunirest.http.JsonNode;
 

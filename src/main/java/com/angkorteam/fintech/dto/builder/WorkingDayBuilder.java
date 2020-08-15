@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
-import com.angkorteam.fintech.dto.enums.RepaymentOption;
+import com.angkorteam.fintech.client.enums.RepaymentOption;
 import com.google.common.collect.Lists;
 import io.github.openunirest.http.JsonNode;
 

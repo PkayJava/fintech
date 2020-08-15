@@ -2,7 +2,7 @@ package com.angkorteam.fintech.dto.builder;
 
 import java.io.Serializable;
 
-import com.angkorteam.fintech.dto.constant.FinancialActivityTypeEnum;
+import com.angkorteam.fintech.client.renums.FinancialActivityTypeEnum;
 import io.github.openunirest.http.JsonNode;
 
 /**

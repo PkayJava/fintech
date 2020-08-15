@@ -5,7 +5,7 @@ import com.angkorteam.fintech.MifosDataContextManager;
 import com.angkorteam.fintech.client.FineractClient;
 import com.angkorteam.fintech.client.dto.PostOfficeRequest;
 import com.angkorteam.fintech.data.SingleChoiceProvider;
-import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.meta.tenant.MOffice;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import com.angkorteam.webui.frmk.wicket.layout.Size;

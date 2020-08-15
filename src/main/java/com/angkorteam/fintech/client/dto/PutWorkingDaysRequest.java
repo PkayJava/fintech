@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.client.dto;
 
-import com.angkorteam.fintech.dto.enums.RepaymentOption;
+import com.angkorteam.fintech.client.enums.RepaymentOption;
 
 public class PutWorkingDaysRequest {
 

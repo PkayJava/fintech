@@ -1,7 +1,7 @@
 package com.angkorteam.fintech.pages.admin;
 
 import com.angkorteam.fintech.MasterPage;
-import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.pages.SimulatorPage;
 import com.angkorteam.fintech.pages.admin.organization.currency.CurrencyConfigurationPage;
 import com.angkorteam.fintech.pages.admin.organization.funds.FundBrowsePage;

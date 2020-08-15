@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
-import com.angkorteam.fintech.dto.enums.TableType;
+import com.angkorteam.fintech.client.enums.TableType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.github.openunirest.http.JsonNode;

@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.client.dto;
 
-import com.angkorteam.fintech.dto.enums.ReschedulingType;
+import com.angkorteam.fintech.client.enums.ReschedulingType;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -1,11 +1,7 @@
 package com.angkorteam.fintech.pages.admin.system.configuration;
 
 import com.angkorteam.fintech.MasterPage;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.builder.OfficeBuilder;
-import com.angkorteam.fintech.helper.GlobalConfigurationHelper;
-import com.angkorteam.fintech.helper.OfficeHelper;
-import com.angkorteam.fintech.pages.admin.organization.offices.OfficeTablePage;
+import com.angkorteam.fintech.client.Function;
 import com.angkorteam.webui.frmk.wicket.layout.Size;
 import com.angkorteam.webui.frmk.wicket.layout.UIColumn;
 import com.angkorteam.webui.frmk.wicket.layout.UIContainer;

@@ -5,14 +5,14 @@ import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import com.angkorteam.fintech.dto.enums.Destination;
-import com.angkorteam.fintech.dto.enums.InstructionType;
-import com.angkorteam.fintech.dto.enums.Priority;
-import com.angkorteam.fintech.dto.enums.RecurrenceFrequency;
-import com.angkorteam.fintech.dto.enums.RecurrenceType;
-import com.angkorteam.fintech.dto.enums.StandingInstructionAccountType;
-import com.angkorteam.fintech.dto.enums.Status;
-import com.angkorteam.fintech.dto.enums.TransferType;
+import com.angkorteam.fintech.client.enums.Destination;
+import com.angkorteam.fintech.client.enums.InstructionType;
+import com.angkorteam.fintech.client.enums.Priority;
+import com.angkorteam.fintech.client.enums.RecurrenceFrequency;
+import com.angkorteam.fintech.client.enums.RecurrenceType;
+import com.angkorteam.fintech.client.enums.StandingInstructionAccountType;
+import com.angkorteam.fintech.client.enums.Status;
+import com.angkorteam.fintech.client.enums.TransferType;
 import io.github.openunirest.http.JsonNode;
 
 public class StandingInstructionBuilder implements Serializable {

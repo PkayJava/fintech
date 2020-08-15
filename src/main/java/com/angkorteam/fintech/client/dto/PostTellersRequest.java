@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.client.dto;
 
-import com.angkorteam.fintech.dto.constant.TellerStatus;
+import com.angkorteam.fintech.client.renums.TellerStatus;
 
 import java.util.Date;
 

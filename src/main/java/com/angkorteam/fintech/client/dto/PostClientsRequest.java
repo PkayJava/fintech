@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.client.dto;
 
-import com.angkorteam.fintech.dto.enums.LegalForm;
+import com.angkorteam.fintech.client.enums.LegalForm;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;

@@ -6,12 +6,12 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.angkorteam.fintech.dto.enums.AccountingType;
-import com.angkorteam.fintech.dto.enums.DayInYear;
-import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
-import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
-import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
-import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.client.enums.AccountingType;
+import com.angkorteam.fintech.client.enums.DayInYear;
+import com.angkorteam.fintech.client.enums.InterestCalculatedUsing;
+import com.angkorteam.fintech.client.enums.InterestCompoundingPeriod;
+import com.angkorteam.fintech.client.enums.InterestPostingPeriod;
+import com.angkorteam.fintech.client.enums.LockInType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.github.openunirest.http.JsonNode;

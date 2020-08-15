@@ -2,10 +2,10 @@ package com.angkorteam.fintech.installation;
 
 import com.angkorteam.fintech.client.FineractClient;
 import com.angkorteam.fintech.client.dto.*;
-import com.angkorteam.fintech.dto.Dropdown;
+import com.angkorteam.fintech.client.enums.*;
+import com.angkorteam.fintech.client.Dropdown;
 import com.angkorteam.fintech.dto.builder.StaffBuilder;
-import com.angkorteam.fintech.dto.constant.TellerStatus;
-import com.angkorteam.fintech.dto.enums.*;
+import com.angkorteam.fintech.client.renums.TellerStatus;
 import com.angkorteam.fintech.meta.tenant.*;
 import com.angkorteam.fintech.spring.NumberGenerator;
 import com.angkorteam.fintech.spring.NumberGeneratorImpl;

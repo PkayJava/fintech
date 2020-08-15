@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import com.angkorteam.fintech.dto.enums.GLAccountType;
+import com.angkorteam.fintech.client.enums.GLAccountType;
 import io.github.openunirest.http.JsonNode;
 
 /**

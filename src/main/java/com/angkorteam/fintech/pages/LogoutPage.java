@@ -1,7 +1,7 @@
 package com.angkorteam.fintech.pages;
 
 import com.angkorteam.fintech.MasterPage;
-import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.client.Function;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 
