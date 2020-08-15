@@ -5,19 +5,19 @@ import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import com.angkorteam.fintech.dto.enums.ChargeCalculation;
+import com.angkorteam.fintech.dto.enums.ChargeCalculationType;
 import com.angkorteam.fintech.dto.enums.ChargeFrequency;
-import com.angkorteam.fintech.dto.enums.ChargePayment;
-import com.angkorteam.fintech.dto.enums.ChargeTime;
-import com.angkorteam.fintech.dto.enums.ChargeType;
+import com.angkorteam.fintech.dto.enums.ChargePaymentMode;
+import com.angkorteam.fintech.dto.enums.ChargeTimeType;
+import com.angkorteam.fintech.dto.enums.ChargeAppliesTo;
 import io.github.openunirest.http.JsonNode;
 
 public class ChargeBuilder implements Serializable {
 
-    private ChargeType chargeAppliesTo;
+    private ChargeAppliesTo chargeAppliesTo;
     private boolean hasChargeAppliesTo;
 
-    private ChargeTime chargeTimeType;
+    private ChargeTimeType chargeTimeType;
     private boolean hasChargeTimeType;
 
     private String name;
@@ -26,10 +26,10 @@ public class ChargeBuilder implements Serializable {
     private String currencyCode;
     private boolean hasCurrencyCode;
 
-    private ChargeCalculation chargeCalculationType;
+    private ChargeCalculationType chargeCalculationType;
     private boolean hasChargeCalculationType;
 
-    private ChargePayment chargePaymentMode;
+    private ChargePaymentMode chargePaymentMode;
     private boolean hasChargePaymentMode;
 
     private String taxGroupId;
@@ -171,13 +171,13 @@ public class ChargeBuilder implements Serializable {
         return this;
     }
 
-    public ChargeBuilder withChargeAppliesTo(ChargeType chargeAppliesTo) {
+    public ChargeBuilder withChargeAppliesTo(ChargeAppliesTo chargeAppliesTo) {
         this.chargeAppliesTo = chargeAppliesTo;
         this.hasChargeAppliesTo = true;
         return this;
     }
 
-    public ChargeBuilder withChargeTimeType(ChargeTime chargeTimeType) {
+    public ChargeBuilder withChargeTimeType(ChargeTimeType chargeTimeType) {
         this.chargeTimeType = chargeTimeType;
         this.hasChargeTimeType = true;
         return this;
@@ -195,13 +195,13 @@ public class ChargeBuilder implements Serializable {
         return this;
     }
 
-    public ChargeBuilder withChargeCalculationType(ChargeCalculation chargeCalculationType) {
+    public ChargeBuilder withChargeCalculationType(ChargeCalculationType chargeCalculationType) {
         this.chargeCalculationType = chargeCalculationType;
         this.hasChargeCalculationType = true;
         return this;
     }
 
-    public ChargeBuilder withChargePaymentMode(ChargePayment chargePaymentMode) {
+    public ChargeBuilder withChargePaymentMode(ChargePaymentMode chargePaymentMode) {
         this.chargePaymentMode = chargePaymentMode;
         this.hasChargePaymentMode = true;
         return this;

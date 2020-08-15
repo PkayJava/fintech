@@ -5,7 +5,7 @@ import com.angkorteam.fintech.client.dto.*;
 import com.angkorteam.fintech.dto.Dropdown;
 import com.angkorteam.fintech.dto.builder.StaffBuilder;
 import com.angkorteam.fintech.dto.constant.TellerStatus;
-import com.angkorteam.fintech.dto.enums.GLAccountType;
+import com.angkorteam.fintech.dto.enums.*;
 import com.angkorteam.fintech.meta.tenant.*;
 import com.angkorteam.fintech.spring.NumberGenerator;
 import com.angkorteam.fintech.spring.NumberGeneratorImpl;
@@ -15,11 +15,13 @@ import com.google.common.collect.Lists;
 import io.github.openunirest.http.exceptions.UnirestException;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.metamodel.DataContext;
 import org.apache.metamodel.data.DataSet;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
 import org.apache.metamodel.factory.DataContextPropertiesImpl;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.apache.metamodel.query.FunctionType;
+import org.joda.time.DateTime;
 
 import java.sql.Driver;
 import java.text.DecimalFormat;
@@ -710,10 +712,10 @@ public class SampleData {
     public static void main(String[] args) throws ParseException {
         String publicIp = "vpn.i365work.com";
         String privateIp = "192.168.1.6";
-        String ip = publicIp;
+        String ip = privateIp;
         int privatePort = 3306;
         int publicPort = 21631;
-        int port = publicPort;
+        int port = privatePort;
 
         JdbcDataContext infrastructureDataContext = null;
         {
@@ -752,255 +754,416 @@ public class SampleData {
         StringGenerator stringGenerator = new StringGeneratorImpl();
         NumberGenerator numberGenerator = new NumberGeneratorImpl();
 
-//        Function.setupSystemParameter(client, tenant, token, appDataContext, PARAMS);
-//        setupOffice(client, tenant, token, appDataContext, stringGenerator);
-//        Function.setupWorkingDay(client, tenant, token);
-//        setupCurrency(client, tenant, token, appDataContext);
-//        setupFund(client, tenant, token, appDataContext, stringGenerator);
-//        setupTeller(client, tenant, token, appDataContext);
-//        setupPaymentType(client, tenant, token, appDataContext);
-//        setupHoliday(client, tenant, token, appDataContext);
-//        setupEmployee(client, tenant, token, appDataContext, stringGenerator, numberGenerator);
-//        Function.setupGLAccount(client, tenant, token, appDataContext, ACCOUNTS, stringGenerator);
-//        setupAccountingRule(client, tenant, token, appDataContext);
-//        Function.setupTaxComponent(client, tenant, token, appDataContext, TAX_COMPONENTS, stringGenerator);
-//        Function.setupTaxGroup(client, tenant, token, appDataContext, TAX_GROUPS, stringGenerator);
-        Function.setupFloatingRate(this, this.wicket.getJdbcTemplate(), FLOATING_RATES, this.wicket.getStringGenerator());
-//        setupCharge(this, this.wicket.getJdbcTemplate());
-//        setupFixedDepositProduct(this, this.wicket.getJdbcTemplate());
-//        setupClient(this, this.wicket.getJdbcTemplate(), this.wicket.getStringGenerator());
-//        setupGroup(this, this.wicket.getJdbcTemplate(), this.wicket.getStringGenerator());
-//        setupCenter(this, this.wicket.getJdbcTemplate(), this.wicket.getStringGenerator());
+        Function.setupSystemParameter(client, tenant, token, appDataContext, PARAMS);
+        setupOffice(client, tenant, token, appDataContext, stringGenerator);
+        Function.setupWorkingDay(client, tenant, token);
+        setupCurrency(client, tenant, token, appDataContext);
+        setupFund(client, tenant, token, appDataContext, stringGenerator);
+        setupTeller(client, tenant, token, appDataContext);
+        setupPaymentType(client, tenant, token, appDataContext);
+        setupHoliday(client, tenant, token, appDataContext);
+        setupEmployee(client, tenant, token, appDataContext, stringGenerator, numberGenerator);
+        Function.setupGLAccount(client, tenant, token, appDataContext, ACCOUNTS, stringGenerator);
+        setupAccountingRule(client, tenant, token, appDataContext);
+        Function.setupTaxComponent(client, tenant, token, appDataContext, TAX_COMPONENTS, stringGenerator);
+        Function.setupTaxGroup(client, tenant, token, appDataContext, TAX_GROUPS, stringGenerator);
+        Function.setupFloatingRate(client, tenant, token, appDataContext, FLOATING_RATES, stringGenerator);
+        setupCharge(client, tenant, token, appDataContext);
+        // setupFixedDepositProduct(this, this.wicket.getJdbcTemplate());
+        setupClient(client, tenant, token, appDataContext, stringGenerator);
+        setupGroup(client, tenant, token, appDataContext, stringGenerator);
+        setupCenter(client, tenant, token, appDataContext, stringGenerator);
     }
 
-//    protected void setupCenter(IMifos session, JdbcTemplate jdbcTemplate, StringGenerator generator) throws UnirestException {
-//        if (jdbcTemplate.queryForObject("select count(*) from m_group where display_name = ?", boolean.class, "Weekend Startup")) {
-//            return;
-//        }
-//
-//        String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, "Phnom Penh");
-//        String staffId = jdbcTemplate.queryForObject("select id from m_staff where office_id = ? limit 1", String.class, officeId);
-//        String groupId = jdbcTemplate.queryForObject("select id from m_group where display_name = ?", String.class, "IT Group");
-//
-//        CenterBuilder builder = new CenterBuilder();
-//        builder.withOfficeId(officeId);
-//
-//        builder.withExternalId(generator.externalId());
-//        builder.withName("Weekend Startup");
-//        builder.withSubmittedOnDate(DateTime.now().toDate());
-//        builder.withStaffId(staffId);
-//
-//        builder.withActive(true);
-//        builder.withActivationDate(DateTime.now().toDate());
-//        builder.withGroupMember(groupId);
-//
-//        ClientHelper.createCenter(session, builder.build());
-//    }
+    protected static void setupCenter(FineractClient client, String tenant, String token, DataContext appDataContext, StringGenerator generator) throws UnirestException {
+        MGroup mGroup = MGroup.staticInitialize(appDataContext);
+        MOffice mOffice = MOffice.staticInitialize(appDataContext);
+        MStaff mStaff = MStaff.staticInitialize(appDataContext);
+        MClient mClient = MClient.staticInitialize(appDataContext);
+        long count = 0L;
 
-//    protected void setupGroup(IMifos session, JdbcTemplate jdbcTemplate, StringGenerator generator) throws UnirestException {
-//        if (jdbcTemplate.queryForObject("select count(*) from m_group where display_name = ?", boolean.class, "IT Group")) {
-//            return;
-//        }
-//
-//        String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, "Phnom Penh");
-//        String staffId = jdbcTemplate.queryForObject("select id from m_staff where office_id = ? limit 1", String.class, officeId);
-//        String clientId = jdbcTemplate.queryForObject("select id from m_client where fullname = ?", String.class, "Angkor Team");
-//
-//        GroupBuilder builder = new GroupBuilder();
-//        builder.withOfficeId(officeId);
-//        builder.withExternalId(generator.externalId());
-//        builder.withName("IT Group");
-//        builder.withSubmittedOnDate(DateTime.now().toDate());
-//        builder.withStaffId(staffId);
-//        builder.withActive(true);
-//        builder.withActivationDate(DateTime.now().toDate());
-//
-//        builder.withClientMember(clientId);
-//
-//        ClientHelper.createGroup(session, builder.build());
-//
-//    }
+        try (DataSet rows = appDataContext.query().from(mGroup).select(FunctionType.COUNT, mGroup.ID).where(mGroup.DISPLAY_NAME).eq("Weekend Startup").execute()) {
+            rows.next();
+            count = (long) rows.getRow().getValue(0);
+        }
 
-//    protected void setupClient(IMifos session, JdbcTemplate jdbcTemplate, StringGenerator generator) throws UnirestException {
-//        setupClientSocheatKHAUV(session, jdbcTemplate, generator);
-//        setupClientAngkorTeam(session, jdbcTemplate, generator);
-//    }
+        if (count > 0L) {
+            return;
+        }
 
-//    protected void setupClientAngkorTeam(IMifos session, JdbcTemplate jdbcTemplate, StringGenerator generator) throws UnirestException {
-//        if (jdbcTemplate.queryForObject("select count(*) from m_client where fullname = ?", boolean.class, "Angkor Team")) {
-//            return;
-//        }
-//        String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, "Phnom Penh");
-//        String staffId = jdbcTemplate.queryForObject("select id from m_staff where office_id = ? limit 1", String.class, officeId);
-//        String clientTypeId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? limit 1", String.class, "ClientType");
-//        String clientClassificationId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? limit 1", String.class, "ClientClassification");
-//        String mainBusinessLineId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? limit 1", String.class, "MainBusinessLine");
-//        String constitutionId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? limit 1", String.class, "Constitution");
-//
-//        ClientBuilder builder = new ClientBuilder();
-//        builder.withLegalFormId(LegalForm.Person);
-//
-//        builder.withFullName("Angkor Team");
-//        builder.withDateOfBirth(DateTime.now().toDate());
-//        String incorpNumber = generator.generate(5);
-//        String remarks = "Remarks";
-//        Date incorpValidityTillDate = DateTime.now().plusYears(10).toDate();
-//        builder.withClientNonPersonDetails(mainBusinessLineId, incorpNumber, constitutionId, remarks, incorpValidityTillDate);
-//
-//        builder.withOfficeId(officeId);
-//        builder.withClientClassificationId(clientClassificationId);
-//        builder.withStaffId(staffId);
-//        builder.withMobileNo("+85593777091");
-//        builder.withClientTypeId(clientTypeId);
-//        builder.withExternalId(generator.externalId());
-//        builder.withActive(true);
-//        builder.withActivationDate(DateTime.now().toDate());
-//        builder.withSubmittedOnDate(DateTime.now().toDate());
-//
-//        ClientHelper.createClient(session, builder.build());
-//
-//    }
+        long officeId = 0L;
+        try (DataSet rows = appDataContext.query().from(mOffice).select(mOffice.ID).where(mOffice.NAME).eq("Phnom Penh").execute()) {
+            rows.next();
+            officeId = (long) rows.getRow().getValue(mOffice.ID);
+        }
 
-//    protected void setupClientSocheatKHAUV(IMifos session, JdbcTemplate jdbcTemplate, StringGenerator generator) throws UnirestException {
-//        if (jdbcTemplate.queryForObject("select count(*) from m_client where firstname = ? and lastname = ?", boolean.class, "Socheat", "KHAUV")) {
-//            return;
-//        }
-//        String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, "Phnom Penh");
-//        String staffId = jdbcTemplate.queryForObject("select id from m_staff where office_id = ? limit 1", String.class, officeId);
-//        String genderId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ?", String.class, "Gender", "M");
-//        String clientTypeId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? limit 1", String.class, "ClientType");
-//        String clientClassificationId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? limit 1", String.class, "ClientClassification");
-//
-//        ClientBuilder builder = new ClientBuilder();
-//        builder.withLegalFormId(LegalForm.Person);
-//        builder.withFirstName("Socheat");
-//        builder.withStaff(false);
-//        builder.withLastName("KHAUV");
-//        builder.withDateOfBirth(DateTime.now().minusYears(20).toDate());
-//        builder.withGenderId(genderId);
-//        builder.withOfficeId(officeId);
-//        builder.withClientClassificationId(clientClassificationId);
-//        builder.withStaffId(staffId);
-//        builder.withMobileNo("+85577777091");
-//        builder.withClientTypeId(clientTypeId);
-//        builder.withExternalId(generator.externalId());
-//        builder.withActive(true);
-//        builder.withActivationDate(DateTime.now().toDate());
-//        builder.withSubmittedOnDate(DateTime.now().toDate());
-//
-//        ClientHelper.createClient(session, builder.build());
-//
-//    }
+        long staffId = 0L;
+        try (DataSet rows = appDataContext.query().from(mStaff).select(mStaff.ID).where(mStaff.OFFICE_ID).eq(officeId).limit(1).execute()) {
+            rows.next();
+            staffId = (long) rows.getRow().getValue(mStaff.ID);
+        }
+
+        long groupId = 0L;
+        try (DataSet rows = appDataContext.query().from(mGroup).select(mGroup.ID).where(mGroup.DISPLAY_NAME).eq("IT Group").limit(1).execute()) {
+            rows.next();
+            groupId = (long) rows.getRow().getValue(mGroup.ID);
+        }
+
+        PostCentersRequest request = new PostCentersRequest();
+        request.setOfficeId(officeId);
+
+        request.setExternalId(generator.externalId());
+        request.setName("Weekend Startup");
+        request.setSubmittedOnDate(DateTime.now().toDate());
+        request.setStaffId(staffId);
+
+        request.setActive(true);
+        request.setActivationDate(DateTime.now().toDate());
+        request.getGroupMembers().add(groupId);
+
+        client.centerCreate(tenant, token, request);
+    }
+
+    protected static void setupGroup(FineractClient client, String tenant, String token, DataContext appDataContext, StringGenerator generator) throws UnirestException {
+        MGroup mGroup = MGroup.staticInitialize(appDataContext);
+        MOffice mOffice = MOffice.staticInitialize(appDataContext);
+        MStaff mStaff = MStaff.staticInitialize(appDataContext);
+        MClient mClient = MClient.staticInitialize(appDataContext);
+        long count = 0L;
+
+        try (DataSet rows = appDataContext.query().from(mGroup).select(FunctionType.COUNT, mGroup.ID).where(mGroup.DISPLAY_NAME).eq("IT Group").execute()) {
+            rows.next();
+            count = (long) rows.getRow().getValue(0);
+        }
+
+        if (count > 0L) {
+            return;
+        }
+
+        long officeId = 0L;
+        try (DataSet rows = appDataContext.query().from(mOffice).select(mOffice.ID).where(mOffice.NAME).eq("Phnom Penh").execute()) {
+            rows.next();
+            officeId = (long) rows.getRow().getValue(mOffice.ID);
+        }
+
+        long staffId = 0L;
+        try (DataSet rows = appDataContext.query().from(mStaff).select(mStaff.ID).where(mStaff.OFFICE_ID).eq(officeId).limit(1).execute()) {
+            rows.next();
+            staffId = (long) rows.getRow().getValue(mStaff.ID);
+        }
+
+        long clientId = 0L;
+        try (DataSet rows = appDataContext.query().from(mClient).select(mClient.ID).where(mClient.FULL_NAME).eq("Angkor Team").limit(1).execute()) {
+            rows.next();
+            clientId = (long) rows.getRow().getValue(mClient.ID);
+        }
+
+        PostGroupsRequest request = new PostGroupsRequest();
+        request.setOfficeId(officeId);
+        request.setExternalId(generator.externalId());
+        request.setName("IT Group");
+        request.setSubmittedOnDate(DateTime.now().toDate());
+        request.setStaffId(staffId);
+        request.setActive(true);
+        request.setActivationDate(DateTime.now().toDate());
+
+        request.getClientMembers().add(clientId);
+        client.groupCreate(tenant, token, request);
+    }
+
+    protected static void setupClient(FineractClient client, String tenant, String token, DataContext appDataContext, StringGenerator generator) throws UnirestException {
+        setupClientSocheatKHAUV(client, tenant, token, appDataContext, generator);
+        setupClientAngkorTeam(client, tenant, token, appDataContext, generator);
+    }
+
+    protected static void setupClientAngkorTeam(FineractClient client, String tenant, String token, DataContext appDataContext, StringGenerator generator) throws UnirestException {
+        MClient mClient = MClient.staticInitialize(appDataContext);
+        MStaff mStaff = MStaff.staticInitialize(appDataContext);
+        MCodeValue mCodeValue = MCodeValue.staticInitialize(appDataContext);
+        MCode mCode = MCode.staticInitialize(appDataContext);
+        MOffice mOffice = MOffice.staticInitialize(appDataContext);
+
+        long count = 0L;
+        try (DataSet rows = appDataContext.query().from(mClient).select(FunctionType.COUNT, mClient.ID).where(mClient.FULL_NAME).eq("Angkor Team").execute()) {
+            rows.next();
+            count = (long) rows.getRow().getValue(0);
+        }
+        if (count > 0L) {
+            return;
+        }
+
+        long officeId = 0L;
+        try (DataSet rows = appDataContext.query().from(mOffice).select(mOffice.ID).where(mOffice.NAME).eq("Phnom Penh").execute()) {
+            rows.next();
+            officeId = (long) rows.getRow().getValue(mOffice.ID);
+        }
+
+        long staffId = 0;
+        try (DataSet rows = appDataContext.query().from(mStaff).select(mStaff.ID).where(mStaff.OFFICE_ID).eq(officeId).limit(1).execute()) {
+            rows.next();
+            staffId = (long) rows.getRow().getValue(mStaff.ID);
+        }
+
+        int clientTypeId = 0;
+        try (DataSet rows = appDataContext.query().from(mCodeValue).innerJoin(mCode).on(mCodeValue.CODE_ID, mCode.ID).select(mCodeValue.ID).where(mCode.CODE_NAME).eq("ClientType").limit(1).execute()) {
+            rows.next();
+            clientTypeId = (int) rows.getRow().getValue(mCodeValue.ID);
+        }
+
+        int clientClassificationId = 0;
+        try (DataSet rows = appDataContext.query().from(mCodeValue).innerJoin(mCode).on(mCodeValue.CODE_ID, mCode.ID).select(mCodeValue.ID).where(mCode.CODE_NAME).eq("ClientClassification").limit(1).execute()) {
+            rows.next();
+            clientClassificationId = (int) rows.getRow().getValue(mCodeValue.ID);
+        }
+
+        int mainBusinessLineId = 0;
+        try (DataSet rows = appDataContext.query().from(mCodeValue).innerJoin(mCode).on(mCodeValue.CODE_ID, mCode.ID).select(mCodeValue.ID).where(mCode.CODE_NAME).eq("Main Business Line").limit(1).execute()) {
+            rows.next();
+            mainBusinessLineId = (int) rows.getRow().getValue(mCodeValue.ID);
+        }
+
+        int constitutionId = 0;
+        try (DataSet rows = appDataContext.query().from(mCodeValue).innerJoin(mCode).on(mCodeValue.CODE_ID, mCode.ID).select(mCodeValue.ID).where(mCode.CODE_NAME).eq("Constitution").limit(1).execute()) {
+            rows.next();
+            constitutionId = (int) rows.getRow().getValue(mCodeValue.ID);
+        }
+
+        PostClientsRequest request = new PostClientsRequest();
+        request.setLegalForm(LegalForm.Person);
+        request.setFullName("Angkor Team");
+        request.setDateOfBirth(DateTime.now().toDate());
+        String incorpNumber = generator.generate(5);
+        String remarks = "Remarks";
+        Date incorpValidityTillDate = DateTime.now().plusYears(10).toDate();
+        request.setClientNonPersonDetail(new PostClientsRequest.ClientNonPersonDetail(incorpNumber, remarks, incorpValidityTillDate, constitutionId, mainBusinessLineId));
+
+        request.setOfficeId(officeId);
+        request.setClientClassificationId(clientClassificationId);
+        request.setStaffId(staffId);
+        request.setMobileNo("+85593777091");
+        request.setClientTypeId(clientTypeId);
+        request.setExternalId(generator.externalId());
+        request.setActive(true);
+        request.setActivationDate(DateTime.now().toDate());
+        request.setSubmittedOnDate(DateTime.now().toDate());
+
+        client.clientCreate(tenant, token, request);
+    }
+
+    protected static void setupClientSocheatKHAUV(FineractClient client, String tenant, String token, DataContext appDataContext, StringGenerator generator) throws UnirestException {
+        MClient mClient = MClient.staticInitialize(appDataContext);
+        MStaff mStaff = MStaff.staticInitialize(appDataContext);
+        MCodeValue mCodeValue = MCodeValue.staticInitialize(appDataContext);
+        MCode mCode = MCode.staticInitialize(appDataContext);
+        MOffice mOffice = MOffice.staticInitialize(appDataContext);
+        long count = 0L;
+        try (DataSet rows = appDataContext.query().from(mClient).select(FunctionType.COUNT, mClient.ID).where(mClient.FIRST_NAME).eq("Socheat").and(mClient.LAST_NAME).eq("KHAUV").execute()) {
+            rows.next();
+            count = (long) rows.getRow().getValue(0);
+        }
+        if (count > 0L) {
+            return;
+        }
+
+        long officeId = 0L;
+        try (DataSet rows = appDataContext.query().from(mOffice).select(mOffice.ID).where(mOffice.NAME).eq("Phnom Penh").execute()) {
+            rows.next();
+            officeId = (long) rows.getRow().getValue(mOffice.ID);
+        }
+
+        long staffId = 0L;
+        try (DataSet rows = appDataContext.query().from(mStaff).select(mStaff.ID).where(mStaff.OFFICE_ID).eq(officeId).limit(1).execute()) {
+            rows.next();
+            staffId = (long) rows.getRow().getValue(mStaff.ID);
+        }
+
+        int genderId = 0;
+        try (DataSet rows = appDataContext.query().from(mCodeValue).innerJoin(mCode).on(mCodeValue.CODE_ID, mCode.ID).select(mCodeValue.ID).where(mCode.CODE_NAME).eq("Gender").and(mCodeValue.CODE_VALUE).eq("M").execute()) {
+            rows.next();
+            genderId = (int) rows.getRow().getValue(mCodeValue.ID);
+        }
+
+        int clientTypeId = 0;
+        try (DataSet rows = appDataContext.query().from(mCodeValue).innerJoin(mCode).on(mCodeValue.CODE_ID, mCode.ID).select(mCodeValue.ID).where(mCode.CODE_NAME).eq("ClientType").limit(1).execute()) {
+            rows.next();
+            clientTypeId = (int) rows.getRow().getValue(mCodeValue.ID);
+        }
+
+        int clientClassificationId = 0;
+        try (DataSet rows = appDataContext.query().from(mCodeValue).innerJoin(mCode).on(mCodeValue.CODE_ID, mCode.ID).select(mCodeValue.ID).where(mCode.CODE_NAME).eq("ClientClassification").limit(1).execute()) {
+            rows.next();
+            clientClassificationId = (int) rows.getRow().getValue(mCodeValue.ID);
+        }
+
+        PostClientsRequest request = new PostClientsRequest();
+
+        request.setLegalForm(LegalForm.Person);
+        request.setFirstName("Socheat");
+        request.setStaff(false);
+        request.setLastName("KHAUV");
+        request.setDateOfBirth(DateTime.now().minusYears(20).toDate());
+        request.setGenderId(genderId);
+        request.setOfficeId(officeId);
+        request.setClientClassificationId(clientClassificationId);
+        request.setStaffId(staffId);
+        request.setMobileNo("+85577777091");
+        request.setClientTypeId(clientTypeId);
+        request.setExternalId(generator.externalId());
+        request.setActive(true);
+        request.setActivationDate(DateTime.now().toDate());
+        request.setSubmittedOnDate(DateTime.now().toDate());
+
+        client.clientCreate(tenant, token, request);
+
+    }
 
 //    protected void setupFixedDepositProduct(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
 //
 //    }
 
-//    protected void setupCharge(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
-//        List<String> currencies = jdbcTemplate.queryForList("select code from m_organisation_currency", String.class);
-//        String taxGroupId = jdbcTemplate.queryForObject("select id from m_tax_group where name = ?", String.class, "T.G. 01");
-//        String accountId = jdbcTemplate.queryForObject("select id from acc_gl_account where name = ?", String.class, "Account Charge");
-//        for (String currency : currencies) {
-//            // Loan
-//            for (boolean penalty : new boolean[]{true, false}) {
-//                for (ChargeTime chargeTime : new ChargeTime[]{ChargeTime.Disbursement, ChargeTime.SpecifiedDueDate, ChargeTime.InstallmentFee, ChargeTime.OverdueFees, ChargeTime.TrancheDisbursement}) {
-//                    for (ChargePayment chargePayment : new ChargePayment[]{ChargePayment.RegularMode, ChargePayment.AccountTransferMode}) {
-//                        if ((chargeTime == ChargeTime.Disbursement || chargeTime == ChargeTime.TrancheDisbursement) && penalty) {
-//                            continue;
-//
-//                        }
-//                        if ((chargeTime == ChargeTime.OverdueFees) && !penalty) {
-//                            continue;
-//                        }
-//                        String name = "Charge [LOAN] [" + currency + "] " + chargeTime.getDescription() + " Flat " + chargePayment.getDescription() + " " + (penalty ? "Penalty" : "");
-//                        boolean has = jdbcTemplate.queryForObject("select count(*) from m_charge where name = ?", boolean.class, name);
-//                        if (!has) {
-//                            ChargeBuilder builder = new ChargeBuilder();
-//                            builder.withChargeAppliesTo(ChargeType.Loan);
-//                            if (chargeTime == ChargeTime.OverdueFees) {
-//                                builder.withFeeInterval(1l);
-//                                builder.withFeeFrequency(ChargeFrequency.Day);
-//                            }
-//                            builder.withName(name);
-//                            builder.withCurrencyCode(currency);
-//                            builder.withChargeTimeType(chargeTime);
-//                            builder.withChargeCalculationType(ChargeCalculation.Flat);
-//                            builder.withChargePaymentMode(chargePayment);
-//                            builder.withPenalty(penalty);
-//                            builder.withAmount(1d);
-//                            builder.withActive(true);
-//                            builder.withTaxGroupId(taxGroupId);
-//                            ChargeHelper.create(session, builder.build());
-//                        }
-//                    }
-//                }
-//            }
-//            // Saving & Deposit
-//            for (boolean penalty : new boolean[]{true, false}) {
-//                for (ChargeTime chargeTime : new ChargeTime[]{ChargeTime.SpecifiedDueDate, ChargeTime.SavingsActivation, ChargeTime.WithdrawalFee, ChargeTime.AnnualFee, ChargeTime.MonthlyFee, ChargeTime.WeeklyFee, ChargeTime.OverdraftFee, ChargeTime.SavingNoActivityFee}) {
-//                    String name = "Charge [S.D.] [" + currency + "] " + chargeTime.getDescription() + " Flat " + (penalty ? "Penalty" : "");
-//                    boolean has = jdbcTemplate.queryForObject("select count(*) from m_charge where name = ?", boolean.class, name);
-//                    if (!has) {
-//                        ChargeBuilder builder = new ChargeBuilder();
-//                        builder.withChargeAppliesTo(ChargeType.SavingDeposit);
-//                        if (chargeTime == ChargeTime.AnnualFee) {
-//                            builder.withFeeOnMonthDay(DateTime.now().toDate());
-//                        } else if (chargeTime == ChargeTime.MonthlyFee) {
-//                            builder.withFeeOnMonthDay(DateTime.now().toDate());
-//                            builder.withFeeInterval(1l);
-//                        } else if (chargeTime == ChargeTime.WeeklyFee) {
-//                            builder.withFeeInterval(1l);
-//                        }
-//                        builder.withName(name);
-//                        builder.withCurrencyCode(currency);
-//                        builder.withChargeTimeType(chargeTime);
-//                        builder.withChargeCalculationType(ChargeCalculation.Flat);
-//                        builder.withPenalty(penalty);
-//                        builder.withAmount(1d);
-//                        builder.withActive(true);
-//                        builder.withTaxGroupId(taxGroupId);
-//                        ChargeHelper.create(session, builder.build());
-//                    }
-//                }
-//            }
-//            // Client
-//            for (boolean penalty : new boolean[]{true, false}) {
-//                String name = "Charge [Client] [" + currency + "] " + ChargeTime.SpecifiedDueDate.getDescription() + " Flat " + (penalty ? "Penalty" : "");
-//                boolean has = jdbcTemplate.queryForObject("select count(*) from m_charge where name = ?", boolean.class, name);
-//                if (!has) {
-//                    ChargeBuilder builder = new ChargeBuilder();
-//                    builder.withChargeAppliesTo(ChargeType.Client);
-//                    builder.withName(name);
-//                    builder.withCurrencyCode(currency);
-//                    builder.withChargeTimeType(ChargeTime.SpecifiedDueDate);
-//                    builder.withChargeCalculationType(ChargeCalculation.Flat);
-//                    builder.withPenalty(penalty);
-//                    builder.withAmount(1d);
-//                    builder.withActive(true);
-//                    builder.withIncomeAccountId(accountId);
-//                    builder.withTaxGroupId(taxGroupId);
-//                    ChargeHelper.create(session, builder.build());
-//                }
-//            }
-//            // Share
-//            for (ChargeTime chargeTime : new ChargeTime[]{ChargeTime.ShareAccountActivate, ChargeTime.SharePurchase, ChargeTime.ShareRedeem}) {
-//                String name = "Charge [Share] [" + currency + "] " + chargeTime.getDescription() + " Flat";
-//                boolean has = jdbcTemplate.queryForObject("select count(*) from m_charge where name = ?", boolean.class, name);
-//                if (!has) {
-//                    ChargeBuilder builder = new ChargeBuilder();
-//                    builder.withChargeAppliesTo(ChargeType.Share);
-//                    builder.withName(name);
-//                    builder.withCurrencyCode(currency);
-//                    builder.withChargeTimeType(chargeTime);
-//                    builder.withChargeCalculationType(ChargeCalculation.Flat);
-//                    builder.withAmount(1d);
-//                    builder.withActive(true);
-//                    builder.withTaxGroupId(taxGroupId);
-//                    ChargeHelper.create(session, builder.build());
-//                }
-//            }
-//        }
-//    }
+    protected static void setupCharge(FineractClient client, String tenant, String token, JdbcDataContext appDataContext) throws UnirestException {
+        MOrganisationCurrency mOrganisationCurrency = MOrganisationCurrency.staticInitialize(appDataContext);
+        MTaxGroup mTaxGroup = MTaxGroup.staticInitialize(appDataContext);
+        AccGLAccount accGLAccount = AccGLAccount.staticInitialize(appDataContext);
+        MCharge mCharge = MCharge.staticInitialize(appDataContext);
+
+        List<String> currencies = new ArrayList<>();
+        try (DataSet rows = appDataContext.query().from(mOrganisationCurrency).select(mOrganisationCurrency.CODE).execute()) {
+            while (rows.next()) {
+                currencies.add((String) rows.getRow().getValue(mOrganisationCurrency.CODE));
+            }
+        }
+
+        long taxGroupId = 0L;
+        try (DataSet rows = appDataContext.query().from(mTaxGroup).select(mTaxGroup.ID).where(mTaxGroup.NAME).eq("T.G. 01").execute()) {
+            rows.next();
+            taxGroupId = (long) rows.getRow().getValue(0);
+        }
+
+        long accountId = 0L;
+        try (DataSet rows = appDataContext.query().from(accGLAccount).select(accGLAccount.ID).where(accGLAccount.NAME).eq("Account Charge").execute()) {
+            rows.next();
+            accountId = (long) rows.getRow().getValue(0);
+        }
+
+
+        for (String currency : currencies) {
+            // Loan
+            for (boolean penalty : new boolean[]{true, false}) {
+                for (ChargeTimeType chargeTime : new ChargeTimeType[]{ChargeTimeType.Disbursement, ChargeTimeType.SpecifiedDueDate, ChargeTimeType.InstallmentFee, ChargeTimeType.OverdueInstallment, ChargeTimeType.TrancheDisbursement}) {
+                    for (ChargePaymentMode chargePayment : new ChargePaymentMode[]{ChargePaymentMode.Regular, ChargePaymentMode.AccountTransfer}) {
+                        if ((chargeTime == ChargeTimeType.Disbursement || chargeTime == ChargeTimeType.TrancheDisbursement) && penalty) {
+                            continue;
+
+                        }
+                        if ((chargeTime == ChargeTimeType.OverdueInstallment) && !penalty) {
+                            continue;
+                        }
+                        String name = "Charge [LOAN] [" + currency + "] " + chargeTime.getDescription() + " Flat " + chargePayment.getDescription() + " " + (penalty ? "Penalty" : "");
+                        try (DataSet rows = appDataContext.query().from(mCharge).select(FunctionType.COUNT, mCharge.ID).where(mCharge.NAME).eq(name).execute()) {
+                            rows.next();
+                            long count = (long) rows.getRow().getValue(0);
+                            boolean has = count > 0L;
+                            if (!has) {
+                                PostChargesRequest request = new PostChargesRequest();
+                                request.setChargeAppliesTo(ChargeAppliesTo.Loan);
+                                if (chargeTime == ChargeTimeType.OverdueInstallment) {
+                                    request.setFeeInterval(1);
+                                    request.setFeeFrequency(ChargeFrequency.Day);
+                                }
+                                request.setName(name);
+                                request.setCurrencyCode(currency);
+                                request.setChargeTimeType(chargeTime);
+                                request.setChargeCalculationType(ChargeCalculationType.Flat);
+                                request.setChargePaymentMode(chargePayment);
+                                request.setPenalty(penalty);
+                                request.setAmount(1d);
+                                request.setActive(true);
+                                request.setTaxGroupId(taxGroupId);
+                                client.chargeCreate(tenant, token, request);
+                            }
+                        }
+                    }
+                }
+            }
+            // Saving & Deposit
+            for (boolean penalty : new boolean[]{true, false}) {
+                for (ChargeTimeType chargeTime : new ChargeTimeType[]{ChargeTimeType.SpecifiedDueDate, ChargeTimeType.SavingActivation, ChargeTimeType.WithdrawalFee, ChargeTimeType.AnnualFee, ChargeTimeType.MonthlyFee, ChargeTimeType.WeeklyFee, ChargeTimeType.OverdraftFee, ChargeTimeType.SavingNoActivityFee}) {
+                    String name = "Charge [S.D.] [" + currency + "] " + chargeTime.getDescription() + " Flat " + (penalty ? "Penalty" : "");
+                    try (DataSet rows = appDataContext.query().from(mCharge).select(FunctionType.COUNT, mCharge.ID).where(mCharge.NAME).eq(name).execute()) {
+                        rows.next();
+                        long count = (long) rows.getRow().getValue(0);
+                        boolean has = count > 0L;
+                        if (!has) {
+                            PostChargesRequest request = new PostChargesRequest();
+                            request.setChargeAppliesTo(ChargeAppliesTo.SavingDeposit);
+                            if (chargeTime == ChargeTimeType.AnnualFee) {
+                                request.setFeeOnMonthDay(DateTime.now().toDate());
+                            } else if (chargeTime == ChargeTimeType.MonthlyFee) {
+                                request.setFeeOnMonthDay(DateTime.now().toDate());
+                                request.setFeeInterval(1);
+                            } else if (chargeTime == ChargeTimeType.WeeklyFee) {
+                                request.setFeeInterval(1);
+                            }
+                            request.setName(name);
+                            request.setCurrencyCode(currency);
+                            request.setChargeTimeType(chargeTime);
+                            request.setChargeCalculationType(ChargeCalculationType.Flat);
+                            request.setPenalty(penalty);
+                            request.setAmount(1d);
+                            request.setActive(true);
+                            request.setTaxGroupId(taxGroupId);
+                            client.chargeCreate(tenant, token, request);
+                        }
+                    }
+                }
+            }
+            // Client
+            for (boolean penalty : new boolean[]{true, false}) {
+                String name = "Charge [Client] [" + currency + "] " + ChargeTimeType.SpecifiedDueDate.getDescription() + " Flat " + (penalty ? "Penalty" : "");
+                try (DataSet rows = appDataContext.query().from(mCharge).select(FunctionType.COUNT, mCharge.ID).where(mCharge.NAME).eq(name).execute()) {
+                    rows.next();
+                    long count = (long) rows.getRow().getValue(0);
+                    boolean has = count > 0L;
+                    if (!has) {
+                        PostChargesRequest request = new PostChargesRequest();
+                        request.setChargeAppliesTo(ChargeAppliesTo.Client);
+                        request.setName(name);
+                        request.setCurrencyCode(currency);
+                        request.setChargeTimeType(ChargeTimeType.SpecifiedDueDate);
+                        request.setChargeCalculationType(ChargeCalculationType.Flat);
+                        request.setPenalty(penalty);
+                        request.setAmount(1d);
+                        request.setActive(true);
+                        request.setIncomeAccountId(accountId);
+                        request.setTaxGroupId(taxGroupId);
+                        client.chargeCreate(tenant, token, request);
+                    }
+                }
+            }
+            // Share
+            for (ChargeTimeType chargeTime : new ChargeTimeType[]{ChargeTimeType.ShareAccountActivate, ChargeTimeType.SharePurchase, ChargeTimeType.ShareRedeem}) {
+                String name = "Charge [Share] [" + currency + "] " + chargeTime.getDescription() + " Flat";
+                try (DataSet rows = appDataContext.query().from(mCharge).select(FunctionType.COUNT, mCharge.ID).where(mCharge.NAME).eq(name).execute()) {
+                    rows.next();
+                    long count = (long) rows.getRow().getValue(0);
+                    boolean has = count > 0L;
+                    if (!has) {
+                        PostChargesRequest request = new PostChargesRequest();
+                        request.setChargeAppliesTo(ChargeAppliesTo.Share);
+                        request.setName(name);
+                        request.setCurrencyCode(currency);
+                        request.setChargeTimeType(chargeTime);
+                        request.setChargeCalculationType(ChargeCalculationType.Flat);
+                        request.setAmount(1d);
+                        request.setActive(true);
+                        request.setTaxGroupId(taxGroupId);
+                        client.chargeCreate(tenant, token, request);
+                    }
+                }
+            }
+        }
+    }
 
     protected static void setupHoliday(FineractClient client, String tenant, String token, JdbcDataContext appDataContext) throws UnirestException, ParseException {
         MOffice mOffice = MOffice.staticInitialize(appDataContext);

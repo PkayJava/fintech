@@ -18,4 +18,14 @@ public interface PortfolioApi {
 
     FineractResponse taxGroupCreate(String tenant, String token, PostTaxesGroupRequest requestBody);
 
+    FineractResponse floatingRateCreate(String tenant, String token, PostFloatingRatesRequest requestBody);
+
+    FineractResponse chargeCreate(String tenant, String token, PostChargesRequest requestBody);
+
+    FineractResponse clientCreate(String tenant, String token, PostClientsRequest requestBody);
+
+    FineractResponse groupCreate(String tenant, String token, PostGroupsRequest requestBody);
+
+    FineractResponse centerCreate(String tenant, String token, PostCentersRequest requestBody);
+
 }

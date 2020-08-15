@@ -3,20 +3,21 @@ package com.angkorteam.fintech.dto.enums;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 
 /**
- * charge_calculation_enum
+ * charge_payment_mode_enum
  * 
  * @author socheat
  *
  */
-public enum ChargeCalculation {
+public enum ChargePaymentMode {
 
-    Flat("1", "Flat"), ApprovedAmount("2", "% Approved Amount"), LoanAmountInterest("3", "% Loan Amount + Interest"), Interest("4", "% Interest"), DisbursementAmount("5", "% Disbursement Amount");
+    Regular("0", "Regular"),
+    AccountTransfer("1", "Account Transfer");
 
     private String literal;
 
     private String description;
 
-    ChargeCalculation(String literal, String description) {
+    ChargePaymentMode(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
@@ -33,8 +34,8 @@ public enum ChargeCalculation {
         return new Option(this.name(), this.description);
     }
 
-    public static ChargeCalculation parseLiteral(String literal) {
-        for (ChargeCalculation value : ChargeCalculation.values()) {
+    public static ChargePaymentMode parseLiteral(String literal) {
+        for (ChargePaymentMode value : ChargePaymentMode.values()) {
             if (value.getLiteral().equals(literal)) {
                 return value;
             }
@@ -43,7 +44,7 @@ public enum ChargeCalculation {
     }
 
     public static Option optionLiteral(String literal) {
-        ChargeCalculation value = parseLiteral(literal);
+        ChargePaymentMode value = parseLiteral(literal);
         if (value == null) {
             return null;
         }

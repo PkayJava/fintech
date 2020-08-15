@@ -3,12 +3,10 @@ package com.angkorteam.fintech.installation;
 import com.angkorteam.fintech.client.FineractClient;
 import com.angkorteam.fintech.client.dto.*;
 import com.angkorteam.fintech.dto.Dropdown;
-import com.angkorteam.fintech.dto.builder.FloatingRateBuilder;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.dto.enums.GLAccountType;
 import com.angkorteam.fintech.dto.enums.RepaymentOption;
 import com.angkorteam.fintech.dto.enums.ReschedulingType;
-import com.angkorteam.fintech.helper.FloatingRateHelper;
 import com.angkorteam.fintech.meta.tenant.*;
 import com.angkorteam.fintech.spring.StringGenerator;
 import io.github.openunirest.http.exceptions.UnirestException;
@@ -20,6 +18,7 @@ import org.apache.metamodel.query.FunctionType;
 import org.apache.metamodel.schema.Column;
 import org.apache.metamodel.schema.Table;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import java.io.File;
 import java.io.IOException;
@@ -214,20 +213,25 @@ public class Function {
     }
 
     public static void setupFloatingRate(FineractClient client, String tenant, String token, JdbcDataContext appDataContext, List<String> values, StringGenerator generator) throws UnirestException {
+        MFloatingRate mFloatingRate = MFloatingRate.staticInitialize(appDataContext);
         for (String temps : values) {
             String temp[] = StringUtils.split(temps, "=>");
             String name = temp[0];
-            boolean has = jdbcTemplate.queryForObject("select count(*) from m_floating_rates WHERE name = ?", boolean.class, name);
-            if (!has) {
-                boolean base = Boolean.valueOf(temp[1]);
-                boolean differential = Boolean.valueOf(temp[2]);
-                Double rate = Double.valueOf(temp[3]);
-                FloatingRateBuilder builder = new FloatingRateBuilder();
-                builder.withName(name);
-                builder.withActive(true);
-                builder.withBaseLendingRate(base);
-                builder.withRatePeriod(DateTime.now().plusDays(1).toDate(), rate, differential);
-                FloatingRateHelper.create(session, builder.build());
+            try (DataSet rows = appDataContext.query().from(mFloatingRate).select(FunctionType.COUNT, mFloatingRate.ID).where(mFloatingRate.NAME).eq(name).execute()) {
+                rows.next();
+                long count = (long) rows.getRow().getValue(0);
+                boolean has = count > 0L;
+                if (!has) {
+                    boolean base = Boolean.valueOf(temp[1]);
+                    boolean differential = Boolean.valueOf(temp[2]);
+                    Double rate = Double.valueOf(temp[3]);
+                    PostFloatingRatesRequest request = new PostFloatingRatesRequest();
+                    request.setName(name);
+                    request.setActive(true);
+                    request.setBaseLendingRate(base);
+                    request.getRatePeriods().add(new PostFloatingRatesRequest.RatePeriod(LocalDate.now().plusDays(1).toDate(), rate, differential));
+                    client.floatingRateCreate(tenant, token, request);
+                }
             }
         }
     }

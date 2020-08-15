@@ -34,6 +34,9 @@ public class FineractClient implements Closeable,
 
     private static final String DATE_FORMAT_KEY = "dateFormat";
     private static final String DATE_FORMAT_VALUE = "yyyy-MM-dd";
+    private static final String MONTH_DAY_FORMAT_KEY = "monthDayFormat";
+    private static final String MONTH_DAY_FORMAT_VALUE = "dd MMMM";
+
     private static final String LOCALE_KEY = "locale";
     private static final String LOCALE_VALUE = "en";
 
@@ -1156,6 +1159,478 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/taxes/group");
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                System.out.println(responseText);
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse floatingRateCreate(String tenant, String token, PostFloatingRatesRequest requestBody) {
+        Map<String, Object> internalRequestBody = new HashMap<>();
+        internalRequestBody.put("name", requestBody.getName());
+        internalRequestBody.put("isBaseLendingRate", requestBody.isBaseLendingRate());
+        internalRequestBody.put("isActive", requestBody.isActive());
+        if (requestBody.getRatePeriods() != null && !requestBody.getRatePeriods().isEmpty()) {
+            List<Map<String, Object>> ratePeriods = new ArrayList<>();
+            internalRequestBody.put("ratePeriods", ratePeriods);
+            for (PostFloatingRatesRequest.RatePeriod o : requestBody.getRatePeriods()) {
+                Map<String, Object> ratePeriod = new HashMap<>();
+                ratePeriod.put(LOCALE_KEY, LOCALE_VALUE);
+                ratePeriod.put(DATE_FORMAT_KEY, DATE_FORMAT_VALUE);
+                ratePeriod.put("interestRate", o.getInterestRate());
+                if (o.getFromDate() != null) {
+                    ratePeriod.put("fromDate", DateFormatUtils.format(o.getFromDate(), DATE_FORMAT_VALUE));
+                } else {
+                    ratePeriod.put("fromDate", null);
+                }
+                ratePeriod.put("isDifferentialToBaseLendingRate", o.isDifferentialToBaseLendingRate());
+                ratePeriods.add(ratePeriod);
+            }
+        }
+
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(internalRequestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/floatingrates");
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                System.out.println(responseText);
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse chargeCreate(String tenant, String token, PostChargesRequest requestBody) {
+        Map<String, Object> internalRequestBody = new HashMap<>();
+        internalRequestBody.put(LOCALE_KEY, LOCALE_VALUE);
+        internalRequestBody.put(MONTH_DAY_FORMAT_KEY, MONTH_DAY_FORMAT_VALUE);
+        if (requestBody.getIncomeAccountId() > 0) {
+            internalRequestBody.put("incomeAccountId", requestBody.getIncomeAccountId());
+        } else {
+            internalRequestBody.put("incomeAccountId", null);
+        }
+        if (requestBody.getTaxGroupId() > 0) {
+            internalRequestBody.put("taxGroupId", requestBody.getTaxGroupId());
+        } else {
+            internalRequestBody.put("taxGroupId", null);
+        }
+        internalRequestBody.put("name", requestBody.getName());
+        internalRequestBody.put("amount", requestBody.getAmount());
+        internalRequestBody.put("currencyCode", requestBody.getCurrencyCode());
+        if (requestBody.getChargeAppliesTo() != null) {
+            internalRequestBody.put("chargeAppliesTo", Integer.valueOf(requestBody.getChargeAppliesTo().getLiteral()));
+        } else {
+            internalRequestBody.put("chargeAppliesTo", null);
+        }
+        if (requestBody.getChargeTimeType() != null) {
+            internalRequestBody.put("chargeTimeType", Integer.valueOf(requestBody.getChargeTimeType().getLiteral()));
+        } else {
+            internalRequestBody.put("chargeTimeType", null);
+        }
+        if (requestBody.getChargeCalculationType() != null) {
+            internalRequestBody.put("chargeCalculationType", Integer.valueOf(requestBody.getChargeCalculationType().getLiteral()));
+        } else {
+            internalRequestBody.put("chargeCalculationType", null);
+        }
+        if (requestBody.getChargePaymentMode() != null) {
+            internalRequestBody.put("chargePaymentMode", Integer.valueOf(requestBody.getChargePaymentMode().getLiteral()));
+        } else {
+            internalRequestBody.put("chargePaymentMode", null);
+        }
+        internalRequestBody.put("penalty", requestBody.isPenalty());
+        internalRequestBody.put("active", requestBody.isActive());
+        if (requestBody.getFeeOnMonthDay() != null) {
+            internalRequestBody.put("feeOnMonthDay", DateFormatUtils.format(requestBody.getFeeOnMonthDay(), MONTH_DAY_FORMAT_VALUE));
+        } else {
+            internalRequestBody.put("feeOnMonthDay", null);
+        }
+        if (requestBody.getFeeInterval() > 0) {
+            internalRequestBody.put("feeInterval", requestBody.getFeeInterval());
+        } else {
+            internalRequestBody.put("feeInterval", null);
+        }
+        if (requestBody.getMinCap() > 0) {
+            internalRequestBody.put("minCap", requestBody.getMinCap());
+        } else {
+            internalRequestBody.put("minCap", null);
+        }
+        if (requestBody.getMaxCap() > 0) {
+            internalRequestBody.put("maxCap", requestBody.getMaxCap());
+        } else {
+            internalRequestBody.put("maxCap", null);
+        }
+        if (requestBody.getFeeFrequency() != null) {
+            internalRequestBody.put("feeFrequency", Integer.valueOf(requestBody.getFeeFrequency().getLiteral()));
+        } else {
+            internalRequestBody.put("feeFrequency", null);
+        }
+
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(internalRequestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/charges");
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                System.out.println(responseText);
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse clientCreate(String tenant, String token, PostClientsRequest requestBody) {
+        Map<String, Object> internalRequestBody = new HashMap<>();
+        internalRequestBody.put(LOCALE_KEY, LOCALE_VALUE);
+        internalRequestBody.put(DATE_FORMAT_KEY, DATE_FORMAT_VALUE);
+        if (requestBody.getOfficeId() > 0) {
+            internalRequestBody.put("officeId", requestBody.getOfficeId());
+        } else {
+            internalRequestBody.put("officeId", null);
+        }
+        internalRequestBody.put("fullname", requestBody.getFullName());
+        if (requestBody.getGroupId() > 0) {
+            internalRequestBody.put("groupId", requestBody.getGroupId());
+        } else {
+            internalRequestBody.put("groupId", null);
+        }
+        internalRequestBody.put("active", requestBody.isActive());
+        if (requestBody.getActivationDate() != null) {
+            internalRequestBody.put("activationDate", DateFormatUtils.format(requestBody.getActivationDate(), DATE_FORMAT_VALUE));
+        } else {
+            internalRequestBody.put("activationDate", null);
+        }
+        internalRequestBody.put("isStaff", requestBody.isStaff());
+        if (requestBody.getStaffId() > 0) {
+            internalRequestBody.put("staffId", requestBody.getStaffId());
+        } else {
+            internalRequestBody.put("staffId", null);
+        }
+        if (requestBody.getGenderId() > 0) {
+            internalRequestBody.put("genderId", requestBody.getGenderId());
+        } else {
+            internalRequestBody.put("genderId", null);
+        }
+        if (requestBody.getClientTypeId() > 0) {
+            internalRequestBody.put("clientTypeId", requestBody.getClientTypeId());
+        }
+        internalRequestBody.put("accountNo", requestBody.getAccountNo());
+        internalRequestBody.put("externalId", requestBody.getExternalId());
+        internalRequestBody.put("mobileNo", requestBody.getMobileNo());
+        internalRequestBody.put("emailAddress", requestBody.getEmailAddress());
+        internalRequestBody.put("firstname", requestBody.getFirstName());
+        internalRequestBody.put("middlename", requestBody.getMiddleName());
+        internalRequestBody.put("lastname", requestBody.getLastName());
+        if (requestBody.getDateOfBirth() != null) {
+            internalRequestBody.put("dateOfBirth", DateFormatUtils.format(requestBody.getDateOfBirth(), DATE_FORMAT_VALUE));
+        } else {
+            internalRequestBody.put("dateOfBirth", null);
+        }
+        if (requestBody.getSubmittedOnDate() != null) {
+            internalRequestBody.put("submittedOnDate", DateFormatUtils.format(requestBody.getSubmittedOnDate(), DATE_FORMAT_VALUE));
+        } else {
+            internalRequestBody.put("submittedOnDate", null);
+        }
+        if (requestBody.getClientTypeId() > 0) {
+            internalRequestBody.put("clientTypeId", requestBody.getClientTypeId());
+        } else {
+            internalRequestBody.put("clientTypeId", null);
+        }
+        if (requestBody.getClientClassificationId() > 0) {
+            internalRequestBody.put("clientClassificationId", requestBody.getClientClassificationId());
+        } else {
+            internalRequestBody.put("clientClassificationId", null);
+        }
+        if (requestBody.getSavingProductId() > 0) {
+            internalRequestBody.put("savingsProductId", requestBody.getSavingProductId());
+        } else {
+            internalRequestBody.put("savingsProductId", null);
+        }
+        if (requestBody.getLegalForm() != null) {
+            internalRequestBody.put("legalFormId", Integer.valueOf(requestBody.getLegalForm().getLiteral()));
+        } else {
+            internalRequestBody.put("legalFormId", null);
+        }
+        if (requestBody.getClientNonPersonDetail() != null) {
+            Map<String, Object> clientNonPersonDetail = new HashMap<>();
+            internalRequestBody.put("clientNonPersonDetails", clientNonPersonDetail);
+            clientNonPersonDetail.put(LOCALE_KEY, LOCALE_VALUE);
+            clientNonPersonDetail.put(DATE_FORMAT_KEY, DATE_FORMAT_VALUE);
+            clientNonPersonDetail.put("incorpNumber", requestBody.getClientNonPersonDetail().getIncorpNumber());
+            clientNonPersonDetail.put("remarks", requestBody.getClientNonPersonDetail().getRemark());
+            if (requestBody.getClientNonPersonDetail().getConstitutionId() > 0) {
+                clientNonPersonDetail.put("constitutionId", requestBody.getClientNonPersonDetail().getConstitutionId());
+            } else {
+                clientNonPersonDetail.put("constitutionId", null);
+            }
+            if (requestBody.getClientNonPersonDetail().getMainBusinessLineId() > 0) {
+                clientNonPersonDetail.put("mainBusinessLineId", requestBody.getClientNonPersonDetail().getMainBusinessLineId());
+            } else {
+                clientNonPersonDetail.put("mainBusinessLineId", null);
+            }
+            if (requestBody.getClientNonPersonDetail().getIncorpValidityTillDate() != null) {
+                clientNonPersonDetail.put("incorpValidityTillDate", DateFormatUtils.format(requestBody.getClientNonPersonDetail().getIncorpValidityTillDate(), DATE_FORMAT_VALUE));
+            } else {
+                clientNonPersonDetail.put("incorpValidityTillDate", null);
+            }
+        } else {
+            internalRequestBody.put("clientNonPersonDetail", null);
+        }
+        if (requestBody.getAddress() != null && !requestBody.getAddress().isEmpty()) {
+            List<Map<String, Object>> addresses = new ArrayList<>();
+            internalRequestBody.put("address", addresses);
+            for (PostClientsRequest.Address o : requestBody.getAddress()) {
+                Map<String, Object> address = new HashMap<>();
+                addresses.add(address);
+                if (o.getStateProvinceId() > 0) {
+                    address.put("stateProvinceId", o.getStateProvinceId());
+                } else {
+                    address.put("stateProvinceId", null);
+                }
+                if (o.getCountryId() > 0) {
+                    address.put("countryId", o.getCountryId());
+                } else {
+                    address.put("countryId", null);
+                }
+                if (o.getAddressTypeId() > 0) {
+                    address.put("addressTypeId", o.getAddressTypeId());
+                } else {
+                    address.put("addressTypeId", null);
+                }
+                address.put("isActive", o.isActive());
+                address.put("street", o.getStreet());
+                address.put("addressLine1", o.getAddressLine1());
+                address.put("addressLine2", o.getAddressLine2());
+                address.put("addressLine3", o.getAddressLine3());
+                address.put("townVillage", o.getTownVillage());
+                address.put("city", o.getCity());
+                address.put("countyDistrict", o.getCountyDistrict());
+                address.put("postalCode", o.getPostalCode());
+                address.put("latitude", o.getLatitude());
+                address.put("longitude", o.getLongitude());
+                address.put("createdBy", o.getCreatedBy());
+                address.put("updatedBy", o.getUpdatedBy());
+                if (o.getCreatedOn() != null) {
+                    address.put("createdOn", DateFormatUtils.format(o.getCreatedOn(), "yyyy-MM-dd"));
+                } else {
+                    address.put("createdOn", null);
+                }
+                if (o.getUpdatedOn() != null) {
+                    address.put("updatedOn", DateFormatUtils.format(o.getUpdatedOn(), "yyyy-MM-dd"));
+                } else {
+                    address.put("updatedOn", null);
+                }
+            }
+        } else {
+            internalRequestBody.put("address", null);
+        }
+
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(internalRequestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/clients");
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                System.out.println(responseText);
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse groupCreate(String tenant, String token, PostGroupsRequest requestBody) {
+        Map<String, Object> internalRequestBody = new HashMap<>();
+        internalRequestBody.put(LOCALE_KEY, LOCALE_VALUE);
+        internalRequestBody.put(DATE_FORMAT_KEY, DATE_FORMAT_VALUE);
+        if (requestBody.getOfficeId() > 0) {
+            internalRequestBody.put("officeId", requestBody.getOfficeId());
+        } else {
+            internalRequestBody.put("officeId", null);
+        }
+        internalRequestBody.put("name", requestBody.getName());
+        internalRequestBody.put("active", requestBody.isActive());
+        internalRequestBody.put("accountNo", requestBody.getAccountNo());
+        internalRequestBody.put("externalId", requestBody.getExternalId());
+        if (requestBody.getActivationDate() != null) {
+            internalRequestBody.put("activationDate", DateFormatUtils.format(requestBody.getActivationDate(), DATE_FORMAT_VALUE));
+        } else {
+            internalRequestBody.put("activationDate", null);
+        }
+        if (requestBody.getStaffId() > 0) {
+            internalRequestBody.put("staffId", requestBody.getStaffId());
+        } else {
+            internalRequestBody.put("staffId", null);
+        }
+        if (requestBody.getSubmittedOnDate() != null) {
+            internalRequestBody.put("submittedOnDate", DateFormatUtils.format(requestBody.getSubmittedOnDate(), DATE_FORMAT_VALUE));
+        } else {
+            internalRequestBody.put("submittedOnDate", null);
+        }
+        if (requestBody.getClientMembers() != null && !requestBody.getClientMembers().isEmpty()) {
+            internalRequestBody.put("clientMembers", requestBody.getClientMembers());
+        } else {
+            internalRequestBody.put("clientMembers", null);
+        }
+        if (requestBody.getGroupMembers() != null && !requestBody.getGroupMembers().isEmpty()) {
+            internalRequestBody.put("groupMembers", requestBody.getGroupMembers());
+        } else {
+            internalRequestBody.put("groupMembers", null);
+        }
+        if (requestBody.getDatatables() != null && !requestBody.getDatatables().isEmpty()) {
+            internalRequestBody.put("datatables", requestBody.getDatatables());
+        } else {
+            internalRequestBody.put("datatables", null);
+        }
+
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(internalRequestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/groups");
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                System.out.println(responseText);
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse centerCreate(String tenant, String token, PostCentersRequest requestBody) {
+        Map<String, Object> internalRequestBody = new HashMap<>();
+        internalRequestBody.put(LOCALE_KEY, LOCALE_VALUE);
+        internalRequestBody.put(DATE_FORMAT_KEY, DATE_FORMAT_VALUE);
+        if (requestBody.getOfficeId() > 0) {
+            internalRequestBody.put("officeId", requestBody.getOfficeId());
+        } else {
+            internalRequestBody.put("officeId", null);
+        }
+        internalRequestBody.put("name", requestBody.getName());
+        internalRequestBody.put("active", requestBody.isActive());
+        internalRequestBody.put("accountNo", requestBody.getAccountNo());
+        internalRequestBody.put("externalId", requestBody.getExternalId());
+        if (requestBody.getActivationDate() != null) {
+            internalRequestBody.put("activationDate", DateFormatUtils.format(requestBody.getActivationDate(), DATE_FORMAT_VALUE));
+        } else {
+            internalRequestBody.put("activationDate", null);
+        }
+        if (requestBody.getStaffId() > 0) {
+            internalRequestBody.put("staffId", requestBody.getStaffId());
+        } else {
+            internalRequestBody.put("staffId", null);
+        }
+        if (requestBody.getSubmittedOnDate() != null) {
+            internalRequestBody.put("submittedOnDate", DateFormatUtils.format(requestBody.getSubmittedOnDate(), DATE_FORMAT_VALUE));
+        } else {
+            internalRequestBody.put("submittedOnDate", null);
+        }
+        if (requestBody.getClientMembers() != null && !requestBody.getClientMembers().isEmpty()) {
+            internalRequestBody.put("clientMembers", requestBody.getClientMembers());
+        } else {
+            internalRequestBody.put("clientMembers", null);
+        }
+        if (requestBody.getGroupMembers() != null && !requestBody.getGroupMembers().isEmpty()) {
+            internalRequestBody.put("groupMembers", requestBody.getGroupMembers());
+        } else {
+            internalRequestBody.put("groupMembers", null);
+        }
+        if (requestBody.getDatatables() != null && !requestBody.getDatatables().isEmpty()) {
+            internalRequestBody.put("datatables", requestBody.getDatatables());
+        } else {
+            internalRequestBody.put("datatables", null);
+        }
+
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(internalRequestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/centers");
         HttpUriRequest request = requestBuilder.build();
         try (CloseableHttpResponse response = this.client.execute(request)) {
             String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
