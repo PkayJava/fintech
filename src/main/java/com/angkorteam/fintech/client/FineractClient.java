@@ -30,6 +30,8 @@ public class FineractClient implements Closeable,
         AdministrationApi,
         InfrastructureApi,
         PortfolioApi,
+        AdhocApi,
+        BatchApi,
         AccountingApi {
 
     private static final String DATE_FORMAT_KEY = "dateFormat";
@@ -2284,6 +2286,129 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/accountingrules/" + accountingRuleId);
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                System.out.println(responseText);
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse adhocCreate(String tenant, String token, PostAdhocRequest requestBody) {
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(requestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/adhocquery");
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                System.out.println(responseText);
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse adhocUpdate(String tenant, String token, long adhocId, PutAdhocRequest requestBody) {
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(requestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("PUT");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/adhocquery/" + adhocId);
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                System.out.println(responseText);
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse adhocDelete(String tenant, String token, long adhocId) {
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("DELETE");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/adhocquery/" + adhocId);
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                System.out.println(responseText);
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse batchRequest(String tenant, String token, boolean enclosingTransaction, PostBatchesRequest requestBody) {
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(requestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/batches?enclosingTransaction=" + enclosingTransaction);
         HttpUriRequest request = requestBuilder.build();
         try (CloseableHttpResponse response = this.client.execute(request)) {
             String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
