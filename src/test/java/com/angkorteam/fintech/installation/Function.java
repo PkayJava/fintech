@@ -1,12 +1,12 @@
 package com.angkorteam.fintech.installation;
 
+import com.angkorteam.fintech.client.Dropdown;
 import com.angkorteam.fintech.client.FineractClient;
 import com.angkorteam.fintech.client.dto.*;
-import com.angkorteam.fintech.client.Dropdown;
 import com.angkorteam.fintech.client.enums.AccountUsage;
-import com.angkorteam.fintech.client.enums.GLAccountType;
 import com.angkorteam.fintech.client.enums.RepaymentOption;
 import com.angkorteam.fintech.client.enums.ReschedulingType;
+import com.angkorteam.fintech.client.renums.GLAccountType;
 import com.angkorteam.fintech.meta.tenant.*;
 import com.angkorteam.fintech.spring.StringGenerator;
 import io.github.openunirest.http.exceptions.UnirestException;

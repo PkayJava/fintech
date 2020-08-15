@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.client.renums;
 
-public enum GLAccountTypeEnum {
+public enum GLAccountType {
 
     Asset("1", "Asset"),
     Liability("2", "Liability"),
@@ -16,11 +16,11 @@ public enum GLAccountTypeEnum {
 
     private final Long enumType;
 
-    GLAccountTypeEnum(String literal, String description) {
+    GLAccountType(String literal, String description) {
         this(literal, description, 0l);
     }
 
-    GLAccountTypeEnum(String literal, String description, Long enumType) {
+    GLAccountType(String literal, String description, Long enumType) {
         this.literal = literal;
         this.description = description;
         this.enumType = enumType;

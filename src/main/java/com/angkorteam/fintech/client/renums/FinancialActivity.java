@@ -3,7 +3,7 @@ package com.angkorteam.fintech.client.renums;
 import com.angkorteam.fintech.client.enums.GLAccountType;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 
-public enum FinancialActivityTypeEnum {
+public enum FinancialActivity {
 
     AssetTransfer("100", "Asset Transfer", GLAccountType.Asset),
     CashAtMainVault("101", "Main Cash Account or Cash at Vault", GLAccountType.Asset),
@@ -23,11 +23,11 @@ public enum FinancialActivityTypeEnum {
 
     private GLAccountType accountType;
 
-    FinancialActivityTypeEnum(String literal, String description, GLAccountType accountType) {
+    FinancialActivity(String literal, String description, GLAccountType accountType) {
         this(literal, description, accountType, 0l);
     }
 
-    FinancialActivityTypeEnum(String literal, String description, GLAccountType accountType, Long enumType) {
+    FinancialActivity(String literal, String description, GLAccountType accountType, Long enumType) {
         this.literal = literal;
         this.description = description;
         this.enumType = enumType;
@@ -54,8 +54,8 @@ public enum FinancialActivityTypeEnum {
         return new Option(this.name(), this.description);
     }
 
-    public static FinancialActivityTypeEnum parseLiteral(String literal) {
-        for (FinancialActivityTypeEnum value : FinancialActivityTypeEnum.values()) {
+    public static FinancialActivity parseLiteral(String literal) {
+        for (FinancialActivity value : FinancialActivity.values()) {
             if (value.getLiteral().equals(literal)) {
                 return value;
             }
@@ -64,7 +64,7 @@ public enum FinancialActivityTypeEnum {
     }
 
     public static Option optionLiteral(String literal) {
-        FinancialActivityTypeEnum value = parseLiteral(literal);
+        FinancialActivity value = parseLiteral(literal);
         if (value == null) {
             return null;
         }

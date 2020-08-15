@@ -712,10 +712,10 @@ public class SampleData {
     public static void main(String[] args) throws ParseException {
         String publicIp = "vpn.i365work.com";
         String privateIp = "192.168.1.6";
-        String ip = privateIp;
+        String ip = publicIp;
         int privatePort = 3306;
         int publicPort = 21631;
-        int port = privatePort;
+        int port = publicPort;
 
         JdbcDataContext infrastructureDataContext = null;
         {

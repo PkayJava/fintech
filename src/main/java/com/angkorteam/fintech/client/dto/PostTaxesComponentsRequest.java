@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.client.dto;
 
-import com.angkorteam.fintech.client.enums.GLAccountType;
+import com.angkorteam.fintech.client.renums.GLAccountType;
 
 import java.util.Date;
 

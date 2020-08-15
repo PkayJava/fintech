@@ -1,7 +1,7 @@
 package com.angkorteam.fintech.client.dto;
 
-import com.angkorteam.fintech.client.enums.GLAccountType;
 import com.angkorteam.fintech.client.enums.AccountUsage;
+import com.angkorteam.fintech.client.renums.GLAccountType;
 
 public class PostGLAccountsRequest {
 

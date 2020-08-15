@@ -2,7 +2,7 @@ package com.angkorteam.fintech.dto.builder;
 
 import java.io.Serializable;
 
-import com.angkorteam.fintech.client.renums.FinancialActivityTypeEnum;
+import com.angkorteam.fintech.client.renums.FinancialActivity;
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -13,7 +13,7 @@ public class FinancialActivityBuilder implements Serializable {
     private String id;
     private boolean hasId;
 
-    private FinancialActivityTypeEnum financialActivityId;
+    private FinancialActivity financialActivityId;
     private boolean hasFinancialActivityId;
 
     private String glAccountId;
@@ -43,7 +43,7 @@ public class FinancialActivityBuilder implements Serializable {
         return this;
     }
 
-    public FinancialActivityBuilder withFinancialActivityId(FinancialActivityTypeEnum financialActivityId) {
+    public FinancialActivityBuilder withFinancialActivityId(FinancialActivity financialActivityId) {
         this.hasFinancialActivityId = true;
         this.financialActivityId = financialActivityId;
         return this;
