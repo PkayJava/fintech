@@ -1,15 +1,17 @@
 package com.angkorteam.fintech.client.dto;
 
+import com.angkorteam.fintech.client.enums.ValidationPolicy;
+
 public class PutPasswordPreferencesTemplateRequest {
 
-    private Long validationPolicyId;
+    private ValidationPolicy validationPolicy;
 
-    public Long getValidationPolicyId() {
-        return validationPolicyId;
+    public ValidationPolicy getValidationPolicy() {
+        return validationPolicy;
     }
 
-    public void setValidationPolicyId(Long validationPolicyId) {
-        this.validationPolicyId = validationPolicyId;
+    public void setValidationPolicy(ValidationPolicy validationPolicy) {
+        this.validationPolicy = validationPolicy;
     }
 
 }

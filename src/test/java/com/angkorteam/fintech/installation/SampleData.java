@@ -1,17 +1,20 @@
 package com.angkorteam.fintech.installation;
 
+import com.angkorteam.fintech.client.Dropdown;
 import com.angkorteam.fintech.client.FineractClient;
 import com.angkorteam.fintech.client.dto.*;
 import com.angkorteam.fintech.client.enums.*;
-import com.angkorteam.fintech.client.Dropdown;
-import com.angkorteam.fintech.dto.builder.StaffBuilder;
+import com.angkorteam.fintech.client.renums.GLAccountType;
 import com.angkorteam.fintech.client.renums.TellerStatus;
+import com.angkorteam.fintech.dto.builder.StaffBuilder;
 import com.angkorteam.fintech.meta.tenant.*;
 import com.angkorteam.fintech.spring.NumberGenerator;
 import com.angkorteam.fintech.spring.NumberGeneratorImpl;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.spring.StringGeneratorImpl;
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.github.openunirest.http.exceptions.UnirestException;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +25,7 @@ import org.apache.metamodel.factory.DataContextPropertiesImpl;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.apache.metamodel.query.FunctionType;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import java.sql.Driver;
 import java.text.DecimalFormat;
@@ -712,10 +716,10 @@ public class SampleData {
     public static void main(String[] args) throws ParseException {
         String publicIp = "vpn.i365work.com";
         String privateIp = "192.168.1.6";
-        String ip = publicIp;
+        String ip = privateIp;
         int privatePort = 3306;
         int publicPort = 21631;
-        int port = publicPort;
+        int port = privatePort;
 
         JdbcDataContext infrastructureDataContext = null;
         {
@@ -754,25 +758,59 @@ public class SampleData {
         StringGenerator stringGenerator = new StringGeneratorImpl();
         NumberGenerator numberGenerator = new NumberGeneratorImpl();
 
-        Function.setupSystemParameter(client, tenant, token, appDataContext, PARAMS);
-        setupOffice(client, tenant, token, appDataContext, stringGenerator);
-        Function.setupWorkingDay(client, tenant, token);
-        setupCurrency(client, tenant, token, appDataContext);
-        setupFund(client, tenant, token, appDataContext, stringGenerator);
-        setupTeller(client, tenant, token, appDataContext);
-        setupPaymentType(client, tenant, token, appDataContext);
-        setupHoliday(client, tenant, token, appDataContext);
-        setupEmployee(client, tenant, token, appDataContext, stringGenerator, numberGenerator);
-        Function.setupGLAccount(client, tenant, token, appDataContext, ACCOUNTS, stringGenerator);
-        setupAccountingRule(client, tenant, token, appDataContext);
-        Function.setupTaxComponent(client, tenant, token, appDataContext, TAX_COMPONENTS, stringGenerator);
-        Function.setupTaxGroup(client, tenant, token, appDataContext, TAX_GROUPS, stringGenerator);
-        Function.setupFloatingRate(client, tenant, token, appDataContext, FLOATING_RATES, stringGenerator);
-        setupCharge(client, tenant, token, appDataContext);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        passwordPreferenceUpdate(client, tenant, token);
+
+        {
+            PostStaffRequest request = new PostStaffRequest();
+            request.setActive(true);
+            request.setExternalId(stringGenerator.externalId());
+            request.setFirstName("firstName " + stringGenerator.externalId());
+            request.setJoiningDate(LocalDate.now().minusMonths(1).toDate());
+            request.setLastName("lastName " + stringGenerator.externalId());
+            request.setLoanOfficer(true);
+            request.setOfficeId(1);
+            request.setMobileNo(numberGenerator.generate(12));
+
+            FineractResponse staffResponse = client.staffCreate(tenant, token, request);
+
+//            client.clientCreate();
+
+        }
+
+//        Function.setupSystemParameter(client, tenant, token, appDataContext, PARAMS);
+//        setupOffice(client, tenant, token, appDataContext, stringGenerator);
+//        Function.setupWorkingDay(client, tenant, token);
+//        setupCurrency(client, tenant, token, appDataContext);
+//        setupFund(client, tenant, token, appDataContext, stringGenerator);
+//        setupTeller(client, tenant, token, appDataContext);
+//        setupPaymentType(client, tenant, token, appDataContext);
+//        setupHoliday(client, tenant, token, appDataContext);
+//        setupEmployee(client, tenant, token, appDataContext, stringGenerator, numberGenerator);
+//        Function.setupGLAccount(client, tenant, token, appDataContext, ACCOUNTS, stringGenerator);
+//        setupAccountingRule(client, tenant, token, appDataContext);
+//        Function.setupTaxComponent(client, tenant, token, appDataContext, TAX_COMPONENTS, stringGenerator);
+//        Function.setupTaxGroup(client, tenant, token, appDataContext, TAX_GROUPS, stringGenerator);
+//        Function.setupFloatingRate(client, tenant, token, appDataContext, FLOATING_RATES, stringGenerator);
+//        setupCharge(client, tenant, token, appDataContext);
         // setupFixedDepositProduct(this, this.wicket.getJdbcTemplate());
-        setupClient(client, tenant, token, appDataContext, stringGenerator);
-        setupGroup(client, tenant, token, appDataContext, stringGenerator);
-        setupCenter(client, tenant, token, appDataContext, stringGenerator);
+//        setupClient(client, tenant, token, appDataContext, stringGenerator);
+//        setupGroup(client, tenant, token, appDataContext, stringGenerator);
+//        setupCenter(client, tenant, token, appDataContext, stringGenerator);
+    }
+
+    protected static void passwordPreferenceUpdate(FineractClient client, String tenant, String token) {
+        {
+            PutPasswordPreferencesTemplateRequest request = new PutPasswordPreferencesTemplateRequest();
+            request.setValidationPolicy(ValidationPolicy.Secure);
+            client.passwordPreferenceUpdate(tenant, token, request);
+        }
+        {
+            PutPasswordPreferencesTemplateRequest request = new PutPasswordPreferencesTemplateRequest();
+            request.setValidationPolicy(ValidationPolicy.Simple);
+            client.passwordPreferenceUpdate(tenant, token, request);
+        }
     }
 
     protected static void setupCenter(FineractClient client, String tenant, String token, DataContext appDataContext, StringGenerator generator) throws UnirestException {

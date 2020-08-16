@@ -22,4 +22,6 @@ public interface OrganisationApi {
 
     FineractResponse staffCreate(String tenant, String token, PostStaffRequest requestBody);
 
+    FineractResponse staffUpdate(String tenant, String token, long staffId, PutStaffRequest requestBody);
+
 }

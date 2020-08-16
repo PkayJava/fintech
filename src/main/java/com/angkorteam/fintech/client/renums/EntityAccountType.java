@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.client.renums;
 
-public enum EntityAccountTypeEnum {
+public enum EntityAccountType {
 
     Client("1", "Client"),
     Loan("2", "Loan"),
@@ -17,11 +17,11 @@ public enum EntityAccountTypeEnum {
 
     private final Long enumType;
 
-    EntityAccountTypeEnum(String literal, String description) {
+    EntityAccountType(String literal, String description) {
         this(literal, description, 0l);
     }
 
-    EntityAccountTypeEnum(String literal, String description, Long enumType) {
+    EntityAccountType(String literal, String description, Long enumType) {
         this.literal = literal;
         this.description = description;
         this.enumType = enumType;
@@ -38,4 +38,5 @@ public enum EntityAccountTypeEnum {
     public Long getEnumType() {
         return enumType;
     }
+
 }

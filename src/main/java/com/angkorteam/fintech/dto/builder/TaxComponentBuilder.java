@@ -1,12 +1,11 @@
 package com.angkorteam.fintech.dto.builder;
 
-import java.io.Serializable;
-import java.util.Date;
-
+import com.angkorteam.fintech.client.renums.GLAccountType;
+import io.github.openunirest.http.JsonNode;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import com.angkorteam.fintech.client.enums.GLAccountType;
-import io.github.openunirest.http.JsonNode;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by socheatkhauv on 7/17/17.

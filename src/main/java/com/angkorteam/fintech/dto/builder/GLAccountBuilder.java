@@ -1,11 +1,10 @@
 package com.angkorteam.fintech.dto.builder;
 
-import java.io.Serializable;
-
-import com.angkorteam.fintech.client.enums.GLAccountType;
 import com.angkorteam.fintech.client.enums.AccountUsage;
-
+import com.angkorteam.fintech.client.renums.GLAccountType;
 import io.github.openunirest.http.JsonNode;
+
+import java.io.Serializable;
 
 /**
  * Created by socheatkhauv on 6/27/17.

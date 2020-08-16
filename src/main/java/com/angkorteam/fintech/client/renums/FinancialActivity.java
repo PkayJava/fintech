@@ -1,6 +1,5 @@
 package com.angkorteam.fintech.client.renums;
 
-import com.angkorteam.fintech.client.enums.GLAccountType;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 
 public enum FinancialActivity {
