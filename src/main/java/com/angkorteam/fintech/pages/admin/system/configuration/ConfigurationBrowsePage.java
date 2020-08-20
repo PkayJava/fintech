@@ -5,6 +5,7 @@ import com.angkorteam.fintech.MifosDataContextManager;
 import com.angkorteam.fintech.data.MySQLDataProvider;
 import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.meta.tenant.CConfiguration;
+import com.angkorteam.webui.frmk.common.Bookmark;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import com.angkorteam.webui.frmk.provider.QueryDataProvider;
 import com.angkorteam.webui.frmk.wicket.extensions.markup.html.repeater.data.table.AbstractDataTable;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
+@Bookmark("/admin/system/configuration/browse")
 public class ConfigurationBrowsePage extends MasterPage {
 
     protected Form<Void> filterForm;

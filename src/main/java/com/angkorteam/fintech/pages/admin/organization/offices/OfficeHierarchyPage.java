@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.admin.organization.offices;
 import com.angkorteam.fintech.MasterPage;
 import com.angkorteam.fintech.data.OfficeHierarchyProvider;
 import com.angkorteam.fintech.client.Function;
+import com.angkorteam.webui.frmk.common.Bookmark;
 import com.angkorteam.webui.frmk.wicket.extensions.markup.html.repeater.tree.NestedTree;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -15,6 +16,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
+@Bookmark("/admin/organization/offices/tree")
 public class OfficeHierarchyPage extends MasterPage {
 
     protected BookmarkablePageLink<Void> createLink;

@@ -11,6 +11,7 @@ import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.factory.WebSession;
 import com.angkorteam.fintech.meta.tenant.MOffice;
 import com.angkorteam.jdbc.query.SelectQuery;
+import com.angkorteam.webui.frmk.common.Bookmark;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import com.angkorteam.webui.frmk.wicket.layout.Size;
 import com.angkorteam.webui.frmk.wicket.layout.UIColumn;
@@ -39,6 +40,7 @@ import javax.sql.DataSource;
 import java.util.Date;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
+@Bookmark("/admin/organization/offices/modify")
 public class OfficeModifyPage extends MasterPage {
 
     protected Long officeId;

@@ -7,6 +7,7 @@ import com.angkorteam.fintech.client.dto.PostOfficeRequest;
 import com.angkorteam.fintech.data.SingleChoiceProvider;
 import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.meta.tenant.MOffice;
+import com.angkorteam.webui.frmk.common.Bookmark;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import com.angkorteam.webui.frmk.wicket.layout.Size;
 import com.angkorteam.webui.frmk.wicket.layout.UIColumn;
@@ -30,6 +31,7 @@ import org.springframework.context.ApplicationContext;
 import java.util.Date;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
+@Bookmark("/admin/organization/offices/create")
 public class OfficeCreatePage extends MasterPage {
 
     protected Form<Void> createForm;

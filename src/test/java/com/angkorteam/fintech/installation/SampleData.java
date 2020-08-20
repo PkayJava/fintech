@@ -15,6 +15,7 @@ import com.angkorteam.fintech.spring.StringGeneratorImpl;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mysql.cj.jdbc.Driver;
 import io.github.openunirest.http.exceptions.UnirestException;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +28,6 @@ import org.apache.metamodel.query.FunctionType;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
-import java.sql.Driver;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;

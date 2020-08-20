@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+</head>
+<body>
+<wicket:extend>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <form wicket:id="createForm">
+                            <div class="card-header">
+                                <h5 class="card-title">Data Table</h5>
+                            </div>
+                            <div class="card-body">
+                                <div wicket:id="row1">
+                                    <div wicket:id="tableNameColumn">
+                                        <wicket:container wicket:id="tableNameContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="tableNameField">Table Name</label>
+                                                <input type="text" wicket:id="tableNameField" class="form-control"/>
+                                                <span wicket:id="tableNameFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="associatedTableColumn">
+                                        <wicket:container wicket:id="associatedTableContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="associatedTableField">Associated Table</label>
+                                                <select wicket:id="associatedTableField" class="form-control"></select>
+                                                <span wicket:id="associatedTableFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="multiRowColumn">
+                                        <wicket:container wicket:id="multiRowContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="multiRowField">Multi Row</label>
+                                                <select wicket:id="multiRowField" class="form-control"></select>
+                                                <span wicket:id="multiRowFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="lastColumn"/>
+                                </div>
+                                <div wicket:id="row2">
+                                    <div wicket:id="fieldColumn">
+                                        <wicket:container wicket:id="fieldContainer">
+                                            <div class="form-group">
+                                                <label><a wicket:id="fieldAddMoreLink" class="btn btn-default">Add More Field</a></label>
+                                                <table wicket:id="fieldBrowseTable"></table>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="lastColumn"/>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button wicket:id="createButton" type="submit" class="btn btn-info">Create</button>
+                                <a wicket:id="cancelButton" class="btn btn-info">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div wicket:id="popup"/>
+</wicket:extend>
+</body>
+
+</html>

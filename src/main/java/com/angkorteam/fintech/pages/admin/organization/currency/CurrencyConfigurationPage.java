@@ -2,12 +2,15 @@ package com.angkorteam.fintech.pages.admin.organization.currency;
 
 import com.angkorteam.fintech.MasterPage;
 import com.angkorteam.fintech.MifosDataContextManager;
+import com.angkorteam.fintech.client.FineractClient;
+import com.angkorteam.fintech.client.Function;
+import com.angkorteam.fintech.client.dto.PutCurrenciesRequest;
 import com.angkorteam.fintech.data.MySQLDataProvider;
 import com.angkorteam.fintech.data.SingleChoiceProvider;
-import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.helper.CurrencyHelper;
 import com.angkorteam.fintech.meta.tenant.MCurrency;
 import com.angkorteam.fintech.meta.tenant.MOrganisationCurrency;
+import com.angkorteam.webui.frmk.common.Bookmark;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import com.angkorteam.webui.frmk.provider.QueryDataProvider;
 import com.angkorteam.webui.frmk.wicket.extensions.markup.html.repeater.data.table.AbstractDataTable;
@@ -20,7 +23,6 @@ import com.angkorteam.webui.frmk.wicket.layout.UIRow;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
-import io.github.openunirest.http.JsonNode;
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.data.DataSet;
 import org.apache.wicket.MarkupContainer;
@@ -39,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
+@Bookmark("/admin/organization/currency/browse")
 public class CurrencyConfigurationPage extends MasterPage {
 
     protected Form<Void> configurationForm;
@@ -142,6 +145,7 @@ public class CurrencyConfigurationPage extends MasterPage {
     protected void addButtonSubmit() {
         ApplicationContext context = WicketFactory.getApplicationContext();
         MifosDataContextManager mifosDataContextManager = context.getBean(MifosDataContextManager.class);
+        FineractClient client = context.getBean(FineractClient.class);
         DataContext dataContext = mifosDataContextManager.getDataContext(getSession().getIdentifier());
         MOrganisationCurrency mOrganisationCurrency = MOrganisationCurrency.staticInitialize(dataContext);
 
@@ -154,11 +158,11 @@ public class CurrencyConfigurationPage extends MasterPage {
         List<String> codes = Lists.newArrayList(temp);
         codes.add(this.currencyValue.getId());
 
-        JsonNode node = CurrencyHelper.update(getSession(), codes);
+        PutCurrenciesRequest request = new PutCurrenciesRequest();
+        request.getCurrencies().addAll(codes);
 
-        if (reportError(node)) {
-            return;
-        }
+        client.currencyUpdate(getSession().getIdentifier(), getSession().getToken(), request);
+
         setResponsePage(CurrencyConfigurationPage.class);
     }
 

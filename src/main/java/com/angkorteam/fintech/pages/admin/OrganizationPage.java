@@ -7,11 +7,13 @@ import com.angkorteam.fintech.pages.admin.organization.currency.CurrencyConfigur
 import com.angkorteam.fintech.pages.admin.organization.funds.FundBrowsePage;
 import com.angkorteam.fintech.pages.admin.organization.holidays.HolidayBrowsePage;
 import com.angkorteam.fintech.pages.admin.organization.offices.OfficeTablePage;
+import com.angkorteam.webui.frmk.common.Bookmark;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
+@Bookmark("/admin/organization")
 public class OrganizationPage extends MasterPage {
 
     private BookmarkablePageLink<Void> manageOfficesLink;

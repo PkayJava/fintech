@@ -2,14 +2,15 @@ package com.angkorteam.fintech.pages.admin.organization.holidays;
 
 import com.angkorteam.fintech.MasterPage;
 import com.angkorteam.fintech.MifosDataContextManager;
-import com.angkorteam.fintech.data.MultipleChoiceProvider;
+import com.angkorteam.fintech.client.FineractClient;
 import com.angkorteam.fintech.client.Function;
-import com.angkorteam.fintech.dto.builder.HolidayBuilder;
+import com.angkorteam.fintech.client.dto.PostHolidaysRequest;
 import com.angkorteam.fintech.client.enums.ReschedulingType;
-import com.angkorteam.fintech.helper.HolidayHelper;
+import com.angkorteam.fintech.data.MultipleChoiceProvider;
 import com.angkorteam.fintech.meta.tenant.MOffice;
 import com.angkorteam.fintech.pages.admin.organization.funds.NameValidator;
 import com.angkorteam.fintech.provider.ReschedulingTypeProvider;
+import com.angkorteam.webui.frmk.common.Bookmark;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import com.angkorteam.webui.frmk.wicket.layout.Size;
 import com.angkorteam.webui.frmk.wicket.layout.UIColumn;
@@ -19,7 +20,6 @@ import com.angkorteam.webui.frmk.wicket.markup.html.form.DateTextField;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Select2MultipleChoice;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Select2SingleChoice;
-import io.github.openunirest.http.JsonNode;
 import org.apache.metamodel.DataContext;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
+@Bookmark("/admin/organization/holiday/create")
 public class HolidayCreatePage extends MasterPage {
 
     protected Form<Void> createForm;
@@ -208,10 +209,14 @@ public class HolidayCreatePage extends MasterPage {
     }
 
     protected void createButtonSubmit() {
-        HolidayBuilder builder = new HolidayBuilder();
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        FineractClient client = context.getBean(FineractClient.class);
+
+        PostHolidaysRequest request = new PostHolidaysRequest();
+
         if (this.officeValue != null) {
             for (Option office : this.officeValue) {
-                builder.withOffice(office.getId());
+                request.getOffices().add(new PostHolidaysRequest.Office(Integer.valueOf(office.getId())));
             }
         }
 
@@ -219,22 +224,18 @@ public class HolidayCreatePage extends MasterPage {
         if (this.reschedulingTypeValue != null) {
             reschedulingType = ReschedulingType.valueOf(reschedulingTypeValue.getId());
         }
+        request.setReschedulingType(reschedulingType);
 
         if (reschedulingType == ReschedulingType.SpecifiedDate) {
-            builder.withRepaymentsRescheduledTo(this.repaymentsRescheduledToValue);
+            request.setRepaymentsRescheduledTo(this.repaymentsRescheduledToValue);
         }
+        request.setDescription(this.descriptionValue);
+        request.setFromDate(this.fromDateValue);
+        request.setToDate(this.toDateValue);
+        request.setName(this.nameValue);
 
-        builder.withReschedulingType(reschedulingType);
-        builder.withDescription(this.descriptionValue);
-        builder.withFromDate(this.fromDateValue);
-        builder.withToDate(this.toDateValue);
-        builder.withName(this.nameValue);
+        client.holidayCreate(getSession().getIdentifier(), getSession().getToken(), request);
 
-        JsonNode node = HolidayHelper.create(getSession(), builder.build());
-
-        if (reportError(node)) {
-            return;
-        }
         setResponsePage(HolidayBrowsePage.class);
     }
 

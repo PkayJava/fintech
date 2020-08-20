@@ -1,0 +1,147 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="1">
+        <createTable tableName="schema_version">
+            <column name="installed_rank" type="INT">
+                <constraints notNullConstraintName="null_key_1" nullable="false" primaryKey="true"
+                             primaryKeyName="primary_key_1"/>
+            </column>
+            <column name="version" type="VARCHAR(50)"/>
+            <column name="description" type="VARCHAR(200)">
+                <constraints notNullConstraintName="null_key_2" nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(20)">
+                <constraints notNullConstraintName="null_key_3" nullable="false"/>
+            </column>
+            <column name="script" type="VARCHAR(1000)">
+                <constraints notNullConstraintName="null_key_4" nullable="false"/>
+            </column>
+            <column name="checksum" type="INT"/>
+            <column name="installed_by" type="VARCHAR(100)">
+                <constraints notNullConstraintName="null_key_5" nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="installed_on" type="timestamp">
+                <constraints notNullConstraintName="null_key_6" nullable="false"/>
+            </column>
+            <column name="execution_time" type="INT">
+                <constraints notNullConstraintName="null_key_7" nullable="false"/>
+            </column>
+            <column name="success" type="BIT(1)">
+                <constraints notNullConstraintName="null_key_8" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Socheat KHAUV" id="2">
+        <createTable tableName="tenant_server_connections">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints notNullConstraintName="null_key_9" nullable="false" primaryKey="true"
+                             primaryKeyName="primary_key_2"/>
+            </column>
+            <column defaultValue="localhost" name="schema_server" type="VARCHAR(100)">
+                <constraints notNullConstraintName="null_key_10" nullable="false"/>
+            </column>
+            <column name="schema_name" type="VARCHAR(100)">
+                <constraints notNullConstraintName="null_key_11" nullable="false"/>
+            </column>
+            <column defaultValue="3306" name="schema_server_port" type="VARCHAR(10)">
+                <constraints notNullConstraintName="null_key_12" nullable="false"/>
+            </column>
+            <column defaultValue="root" name="schema_username" type="VARCHAR(100)">
+                <constraints notNullConstraintName="null_key_13" nullable="false"/>
+            </column>
+            <column defaultValue="mysql" name="schema_password" type="VARCHAR(100)">
+                <constraints notNullConstraintName="null_key_14" nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="auto_update" type="TINYINT(3)">
+                <constraints notNullConstraintName="null_key_15" nullable="false"/>
+            </column>
+            <column defaultValueNumeric="5" name="pool_initial_size" type="INT"/>
+            <column defaultValueNumeric="30000" name="pool_validation_interval" type="INT"/>
+            <column defaultValueNumeric="1" name="pool_remove_abandoned" type="TINYINT(3)"/>
+            <column defaultValueNumeric="60" name="pool_remove_abandoned_timeout" type="INT"/>
+            <column defaultValueNumeric="1" name="pool_log_abandoned" type="TINYINT(3)"/>
+            <column defaultValueNumeric="50" name="pool_abandon_when_percentage_full" type="INT"/>
+            <column defaultValueNumeric="1" name="pool_test_on_borrow" type="TINYINT(3)"/>
+            <column defaultValueNumeric="40" name="pool_max_active" type="INT"/>
+            <column defaultValueNumeric="20" name="pool_min_idle" type="INT"/>
+            <column defaultValueNumeric="10" name="pool_max_idle" type="INT"/>
+            <column defaultValueNumeric="60" name="pool_suspect_timeout" type="INT"/>
+            <column defaultValueNumeric="34000" name="pool_time_between_eviction_runs_millis" type="INT"/>
+            <column defaultValueNumeric="60000" name="pool_min_evictable_idle_time_millis" type="INT"/>
+            <column defaultValueNumeric="0" name="deadlock_max_retries" type="INT"/>
+            <column defaultValueNumeric="1" name="deadlock_max_retry_interval" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Socheat KHAUV" id="3">
+        <createTable tableName="tenants">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints notNullConstraintName="null_key_16" nullable="false" primaryKey="true"
+                             primaryKeyName="primary_key_3"/>
+            </column>
+            <column name="identifier" type="VARCHAR(100)">
+                <constraints notNullConstraintName="null_key_17" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints notNullConstraintName="null_key_18" nullable="false"/>
+            </column>
+            <column name="timezone_id" type="VARCHAR(100)">
+                <constraints notNullConstraintName="null_key_19" nullable="false"/>
+            </column>
+            <column name="country_id" type="INT"/>
+            <column name="joined_date" type="date"/>
+            <column name="created_date" type="datetime"/>
+            <column name="lastmodified_date" type="datetime"/>
+            <column name="oltp_id" type="BIGINT">
+                <constraints notNullConstraintName="null_key_20" nullable="false"/>
+            </column>
+            <column name="report_id" type="BIGINT">
+                <constraints notNullConstraintName="null_key_21" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Socheat KHAUV" id="4">
+        <createTable tableName="timezones">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints notNullConstraintName="null_key_22" nullable="false" primaryKey="true"
+                             primaryKeyName="primary_key_4"/>
+            </column>
+            <column name="country_code" type="VARCHAR(2)">
+                <constraints notNullConstraintName="null_key_23" nullable="false"/>
+            </column>
+            <column name="timezonename" type="VARCHAR(100)">
+                <constraints notNullConstraintName="null_key_24" nullable="false"/>
+            </column>
+            <column name="comments" type="VARCHAR(150)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Socheat KHAUV" id="5">
+        <createIndex indexName="index_1" tableName="tenants">
+            <column name="oltp_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Socheat KHAUV" id="6">
+        <createIndex indexName="index_2" tableName="tenants">
+            <column name="report_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Socheat KHAUV" id="7">
+        <createIndex indexName="index_3" tableName="schema_version">
+            <column name="success"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Socheat KHAUV" id="8">
+        <addForeignKeyConstraint baseColumnNames="oltp_id" baseTableName="tenants" constraintName="constraint_1"
+                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="tenant_server_connections"
+                                 validate="true"/>
+    </changeSet>
+    <changeSet author="Socheat KHAUV" id="9">
+        <addForeignKeyConstraint baseColumnNames="report_id" baseTableName="tenants" constraintName="constraint_2"
+                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="tenant_server_connections"
+                                 validate="true"/>
+    </changeSet>
+</databaseChangeLog>

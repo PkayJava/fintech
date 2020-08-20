@@ -1,10 +1,11 @@
-package com.angkorteam.fintech.pages.admin.organization.offices;
+package com.angkorteam.fintech.pages.admin.system.table;
 
 import com.angkorteam.fintech.MasterPage;
 import com.angkorteam.fintech.MifosDataContextManager;
 import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.data.MySQLDataProvider;
-import com.angkorteam.fintech.meta.tenant.MOffice;
+import com.angkorteam.fintech.meta.tenant.CConfiguration;
+import com.angkorteam.fintech.meta.tenant.XRegisteredTable;
 import com.angkorteam.webui.frmk.common.Bookmark;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import com.angkorteam.webui.frmk.provider.QueryDataProvider;
@@ -28,7 +29,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
@@ -36,8 +36,8 @@ import java.util.List;
 import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-@Bookmark("/admin/organization/offices/browse")
-public class OfficeTablePage extends MasterPage {
+@Bookmark("/admin/system/datatable/browse")
+public class DataTableBrowsePage extends MasterPage {
 
     protected Form<Void> filterForm;
 
@@ -52,12 +52,11 @@ public class OfficeTablePage extends MasterPage {
     protected BookmarkablePageLink<Void> clearButton;
 
     protected BookmarkablePageLink<Void> createLink;
-    protected BookmarkablePageLink<Void> treeviewLink;
 
-    protected FilterForm<Map<String, Expression>> officeBrowseForm;
-    protected QueryDataProvider officeBrowseProvider;
-    protected List<IColumn<Map<String, Object>, String>> officeBrowseColumn;
-    protected AbstractDataTable<Map<String, Object>, String> officeBrowseTable;
+    protected FilterForm<Map<String, Expression>> dataBrowseForm;
+    protected QueryDataProvider dataBrowseProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataBrowseColumn;
+    protected AbstractDataTable<Map<String, Object>, String> dataBrowseTable;
 
     @Override
     protected void onInitData() {
@@ -65,20 +64,18 @@ public class OfficeTablePage extends MasterPage {
         ApplicationContext context = WicketFactory.getApplicationContext();
         MifosDataContextManager mifosDataContextManager = context.getBean(MifosDataContextManager.class);
         DataContext dataContext = mifosDataContextManager.getDataContext(getSession().getIdentifier());
-        MOffice mOffice = MOffice.staticInitialize(dataContext);
+        XRegisteredTable xRegisteredTable = XRegisteredTable.staticInitialize(dataContext);
 
-        this.officeBrowseProvider = new MySQLDataProvider(mOffice.getName() + " office");
-        this.officeBrowseProvider.applyJoin("m_office", "LEFT JOIN " + mOffice.getName() + " parent ON office." + mOffice.PARENT_ID.getName() + " = parent." + mOffice.ID.getName());
+        this.dataBrowseProvider = new MySQLDataProvider(xRegisteredTable.getName());
 
-        this.officeBrowseProvider.setCountField("office." + mOffice.ID.getName());
-        this.officeBrowseProvider.selectField("office." + mOffice.ID.getName(), "officeId");
+        this.dataBrowseProvider.setCountField(xRegisteredTable.getName() + "." + xRegisteredTable.REGISTERED_TABLE_NAME.getName());
+        this.dataBrowseProvider.selectField(xRegisteredTable.getName() + "." + xRegisteredTable.REGISTERED_TABLE_NAME.getName(), "dataId");
 
-        this.officeBrowseColumn = new ArrayList<>();
-        this.officeBrowseColumn.add(Column.text(Model.of("External ID"), "office." + mOffice.EXTERNAL_ID.getName(), "externalId", this.officeBrowseProvider));
-        this.officeBrowseColumn.add(Column.text(Model.of("Office Name"), "office." + mOffice.NAME.getName(), "officeName", this.officeBrowseProvider));
-        this.officeBrowseColumn.add(Column.text(Model.of("Parent Office"), "parent." + mOffice.NAME.getName(), "parentOffice", this.officeBrowseProvider));
-        this.officeBrowseColumn.add(Column.datetime(Model.of("Opened On"), "office." + mOffice.OPENING_DATE.getName(), "openedOn", this.officeBrowseProvider, "dd MMM yyyy"));
-        this.officeBrowseColumn.add(new ActionFilteredColumn<>(Model.of("Action"), this::officeBrowseActionLink, this::officeBrowseActionClick));
+        this.dataBrowseColumn = new ArrayList<>();
+        this.dataBrowseColumn.add(Column.text(Model.of("Table Name"), xRegisteredTable.getName() + "." + xRegisteredTable.REGISTERED_TABLE_NAME.getName(), "tableName", this.dataBrowseProvider));
+        this.dataBrowseColumn.add(Column.text(Model.of("Associated"), xRegisteredTable.getName() + "." + xRegisteredTable.APPLICATION_TABLE_NAME.getName(), "associated", this.dataBrowseProvider));
+        this.dataBrowseColumn.add(Column.number(Model.of("Category"), xRegisteredTable.getName() + "." + xRegisteredTable.CATEGORY.getName(), "category", this.dataBrowseProvider));
+        this.dataBrowseColumn.add(new ActionFilteredColumn<>(Model.of("Action"), this::dataBrowseActionLink, this::dataBrowseActionClick));
     }
 
     @Override
@@ -105,43 +102,41 @@ public class OfficeTablePage extends MasterPage {
         };
         this.filterForm.add(this.searchButton);
 
-        this.clearButton = new BookmarkablePageLink<>("clearButton", OfficeTablePage.class);
+        this.clearButton = new BookmarkablePageLink<>("clearButton", DataTableBrowsePage.class);
         this.filterForm.add(this.clearButton);
 
-        this.createLink = new BookmarkablePageLink<>("createLink", OfficeCreatePage.class);
+        this.createLink = new BookmarkablePageLink<>("createLink", DataTableCreatePage.class);
         body.add(this.createLink);
-        this.treeviewLink = new BookmarkablePageLink<>("treeviewLink", OfficeHierarchyPage.class);
-        body.add(this.treeviewLink);
 
-        this.officeBrowseForm = new FilterForm<>("officeBrowseForm", this.officeBrowseProvider);
-        body.add(this.officeBrowseForm);
+        this.dataBrowseForm = new FilterForm<>("dataBrowseForm", this.dataBrowseProvider);
+        body.add(this.dataBrowseForm);
 
-        this.officeBrowseTable = new DataTable<>("officeBrowseTable", this.officeBrowseColumn, this.officeBrowseProvider, 20);
-        this.officeBrowseForm.add(this.officeBrowseTable);
+        this.dataBrowseTable = new DataTable<>("dataBrowseTable", this.dataBrowseColumn, this.dataBrowseProvider, 20);
+        this.dataBrowseForm.add(this.dataBrowseTable);
     }
 
-    protected List<ActionItem> officeBrowseActionLink(String link, Map<String, Object> model) {
+    protected List<ActionItem> dataBrowseActionLink(String link, Map<String, Object> model) {
         List<ActionItem> actions = new ArrayList<>();
         actions.add(new ActionItem("Edit", Model.of("Edit"), ItemCss.WARNING));
         return actions;
     }
 
-    protected void officeBrowseActionClick(String link, Map<String, Object> model, AjaxRequestTarget target) {
-        long officeId = (long) model.get("officeId");
-        PageParameters parameters = new PageParameters();
-        parameters.add("officeId", officeId);
-        setResponsePage(OfficeModifyPage.class, parameters);
+    protected void dataBrowseActionClick(String link, Map<String, Object> model, AjaxRequestTarget target) {
+//        long dataId = (long) model.get("dataId");
+//        PageParameters parameters = new PageParameters();
+//        parameters.add("dataId", dataId);
+//        setResponsePage(ConfigurationModifyPage.class, parameters);
     }
 
     protected void searchButtonSubmit() {
         ApplicationContext context = WicketFactory.getApplicationContext();
         MifosDataContextManager mifosDataContextManager = context.getBean(MifosDataContextManager.class);
         DataContext dataContext = mifosDataContextManager.getDataContext(getSession().getIdentifier());
-        MOffice mOffice = MOffice.staticInitialize(dataContext);
+        CConfiguration cConfiguration = CConfiguration.staticInitialize(dataContext);
 
-        this.officeBrowseProvider.removeWhere("name");
+        this.dataBrowseProvider.removeWhere("name");
         if (this.nameValue != null && !"".equals(this.nameValue)) {
-            this.officeBrowseProvider.applyWhere("name", "office." + mOffice.NAME.getName() + " LIKE '" + StringEscapeUtils.escapeSql(this.nameValue) + "%'");
+            this.dataBrowseProvider.applyWhere("name", cConfiguration.getName() + "." + cConfiguration.NAME.getName() + " LIKE '" + StringEscapeUtils.escapeSql(this.nameValue) + "%'");
         }
     }
 

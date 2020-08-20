@@ -2,16 +2,16 @@ package com.angkorteam.fintech.pages.admin.organization.funds;
 
 import com.angkorteam.fintech.MasterPage;
 import com.angkorteam.fintech.MifosDataContextManager;
+import com.angkorteam.fintech.client.FineractClient;
 import com.angkorteam.fintech.client.Function;
-import com.angkorteam.fintech.dto.builder.FundBuilder;
-import com.angkorteam.fintech.helper.FundHelper;
+import com.angkorteam.fintech.client.dto.PutFundsFundIdRequest;
 import com.angkorteam.fintech.meta.tenant.MFund;
+import com.angkorteam.webui.frmk.common.Bookmark;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import com.angkorteam.webui.frmk.wicket.layout.Size;
 import com.angkorteam.webui.frmk.wicket.layout.UIColumn;
 import com.angkorteam.webui.frmk.wicket.layout.UIContainer;
 import com.angkorteam.webui.frmk.wicket.layout.UIRow;
-import io.github.openunirest.http.JsonNode;
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.data.DataSet;
 import org.apache.wicket.MarkupContainer;
@@ -26,6 +26,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.springframework.context.ApplicationContext;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
+@Bookmark("/admin/organization/funds/modify")
 public class FundModifyPage extends MasterPage {
 
     protected long fundId;
@@ -111,16 +112,12 @@ public class FundModifyPage extends MasterPage {
     }
 
     protected void updateButtonSubmit() {
-        FundBuilder builder = new FundBuilder();
-        builder.withId(String.valueOf(this.fundId));
-        builder.withName(this.nameValue);
-        builder.withExternalId(this.externalIdValue);
-
-        JsonNode node = FundHelper.update(getSession(), builder.build());
-
-        if (reportError(node)) {
-            return;
-        }
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        FineractClient client = context.getBean(FineractClient.class);
+        PutFundsFundIdRequest request = new PutFundsFundIdRequest();
+        request.setName(this.nameValue);
+        request.setExternalId(this.externalIdValue);
+        client.fundUpdate(getSession().getIdentifier(), getSession().getToken(), this.fundId, request);
         setResponsePage(FundBrowsePage.class);
     }
 

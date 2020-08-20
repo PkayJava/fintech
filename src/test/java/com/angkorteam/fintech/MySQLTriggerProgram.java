@@ -10,7 +10,7 @@ import org.apache.metamodel.jdbc.JdbcDataContext;
 
 import java.sql.Driver;
 
-public class TriggerProgram {
+public class MySQLTriggerProgram {
 
     public static void main(String[] args) throws Exception {
         String publicIp = "vpn.i365work.com";

@@ -1,14 +1,15 @@
 package com.angkorteam.fintech.pages.admin.organization.funds;
 
 import com.angkorteam.fintech.MasterPage;
+import com.angkorteam.fintech.client.FineractClient;
 import com.angkorteam.fintech.client.Function;
-import com.angkorteam.fintech.dto.builder.FundBuilder;
-import com.angkorteam.fintech.helper.FundHelper;
+import com.angkorteam.fintech.client.dto.PostFundsRequest;
+import com.angkorteam.webui.frmk.common.Bookmark;
+import com.angkorteam.webui.frmk.common.WicketFactory;
 import com.angkorteam.webui.frmk.wicket.layout.Size;
 import com.angkorteam.webui.frmk.wicket.layout.UIColumn;
 import com.angkorteam.webui.frmk.wicket.layout.UIContainer;
 import com.angkorteam.webui.frmk.wicket.layout.UIRow;
-import io.github.openunirest.http.JsonNode;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.Button;
@@ -17,8 +18,10 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.springframework.context.ApplicationContext;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
+@Bookmark("/admin/organization/funds/create")
 public class FundCreatePage extends MasterPage {
 
     protected Form<Void> createForm;
@@ -84,15 +87,13 @@ public class FundCreatePage extends MasterPage {
     }
 
     protected void createButtonSubmit() {
-        FundBuilder builder = new FundBuilder();
-        builder.withName(this.nameValue);
-        builder.withExternalId(this.externalIdValue);
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        FineractClient client = context.getBean(FineractClient.class);
+        PostFundsRequest request = new PostFundsRequest();
+        request.setExternalId(this.externalIdValue);
+        request.setName(this.nameValue);
+        client.fundCreate(getSession().getIdentifier(), getSession().getToken(), request);
 
-        JsonNode node = FundHelper.create(getSession(), builder.build());
-
-        if (reportError(node)) {
-            return;
-        }
         setResponsePage(FundBrowsePage.class);
     }
 

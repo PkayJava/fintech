@@ -4,6 +4,7 @@ import com.angkorteam.fintech.boot.AppProperties;
 import com.angkorteam.fintech.data.MifosSingleChoiceProvider;
 import com.angkorteam.fintech.factory.WebSession;
 import com.angkorteam.fintech.meta.infrastructure.Tenant;
+import com.angkorteam.webui.frmk.common.Bookmark;
 import com.angkorteam.webui.frmk.common.WicketFactory;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Select2SingleChoice;
@@ -27,6 +28,7 @@ import org.springframework.context.ApplicationContext;
 /**
  * Created by socheatkhauv on 6/17/17.
  */
+@Bookmark("/login")
 public class LoginPage extends WebPage {
 
     protected Label appName;

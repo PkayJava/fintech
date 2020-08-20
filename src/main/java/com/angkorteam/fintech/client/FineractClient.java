@@ -32,7 +32,9 @@ public class FineractClient implements Closeable,
         PortfolioApi,
         AdhocApi,
         BatchApi,
-        MakerCheckerApi,
+        CommandApi,
+        NotificationApi,
+        InteroperationApi,
         AccountingApi {
 
     private static final String DATE_FORMAT_KEY = "dateFormat";
@@ -2837,7 +2839,73 @@ public class FineractClient implements Closeable,
 
     @Override
     public FineractResponse emailCampaignCreate(String tenant, String token, PostEmailCampaignRequest requestBody) {
-        return null;
+        Map<String, Object> internalRequestBody = new HashMap<>();
+        internalRequestBody.put(LOCALE_KEY, LOCALE_VALUE);
+        internalRequestBody.put(DATE_FORMAT_KEY, DATE_FORMAT_VALUE);
+        if (requestBody.getBusinessRuleId() > 0) {
+            internalRequestBody.put("businessRuleId", requestBody.getBusinessRuleId());
+        } else {
+            internalRequestBody.put("businessRuleId", null);
+        }
+        if (requestBody.getStretchyReportId() > 0) {
+            internalRequestBody.put("stretchyReportId", requestBody.getStretchyReportId());
+        } else {
+            internalRequestBody.put("stretchyReportId", null);
+        }
+        internalRequestBody.put("campaignName", requestBody.getCampaignName());
+        if (requestBody.getCampaignType() > 0) {
+            internalRequestBody.put("campaignType", requestBody.getCampaignType());
+        } else {
+            internalRequestBody.put("campaignType", null);
+        }
+        internalRequestBody.put("paramValue", requestBody.getParamValue());
+        internalRequestBody.put("emailSubject", requestBody.getEmailSubject());
+        internalRequestBody.put("emailMessage", requestBody.getEmailMessage());
+        internalRequestBody.put("stretchyReportParamMap", requestBody.getStretchyReportParamMap());
+        if (requestBody.getEmailAttachmentFileFormatId() > 0) {
+            internalRequestBody.put("emailAttachmentFileFormatId", requestBody.getEmailAttachmentFileFormatId());
+        } else {
+            internalRequestBody.put("emailAttachmentFileFormatId", null);
+        }
+        internalRequestBody.put("recurrence", requestBody.getRecurrence());
+        if (requestBody.getSubmittedOnDate() != null) {
+            internalRequestBody.put("submittedOnDate", DateFormatUtils.format(requestBody.getSubmittedOnDate(), DATE_FORMAT_VALUE));
+        } else {
+            internalRequestBody.put("submittedOnDate", null);
+        }
+        if (requestBody.getRecurrenceStartDate() != null) {
+            internalRequestBody.put("recurrenceStartDate", DateFormatUtils.format(requestBody.getRecurrenceStartDate(), DATE_FORMAT_VALUE));
+        } else {
+            internalRequestBody.put("recurrenceStartDate", null);
+        }
+
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(internalRequestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("PUT");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/email/campaign");
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                System.out.println(responseText);
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
     }
 
     @Override
@@ -2867,6 +2935,376 @@ public class FineractClient implements Closeable,
 
     @Override
     public FineractResponse emailCampaignDelete(String tenant, String token, long resourceId) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse smsCampaignCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse smsCampaignUpdate(String tenant, String token, long campaignId) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse smsCampaignDelete(String tenant, String token, long campaignId) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse smsCampaignPreview(String tenant, String token, long campaignId) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse smsCampaignReactivate(String tenant, String token, long campaignId) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse smsCampaignActivate(String tenant, String token, long campaignId) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse smsCampaignClose(String tenant, String token, long campaignId) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse codeCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse codeUpdate(String tenant, String token, long codeId) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse codeDelete(String tenant, String token, long codeId) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse externalServiceUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse configurationUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse creditBureauUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse creditBureauMappingUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse creditBureauOrganisationCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse creditBureauProductMappingCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse datatableCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse datatableUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse datatableDelete(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse datatableRegister(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse datatableDeregister(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse datatableEntryCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse datatableEntryOne2OneUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse datatableEntryOne2ManyUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse datatableEntryDelete(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse datatableEntryDelete(String tenant, String token, long id) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse datatableEntityCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse datatableEntityDelete(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse reportCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse reportUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse reportDelete(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse documentCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse documentUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse documentDelete(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse imageCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse imageCreate(String tenant, String token, long abc) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse imageUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse imageUpdate(String tenant, String token, long abc) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse imageDelete(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse entityCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse entityUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse entityDelete(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse deviceRegistration(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse deviceUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse deviceDelete(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse hookCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse hookUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse hookDelete(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse jobStart(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse jobStop(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse jobExecute(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse jobDetailUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse reportMailingCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse reportMailingUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse reportMailingDelete(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public PostAuthenticationResponse tokenRequest(String tenant, AuthenticateRequest requestBody) {
+        return null;
+    }
+
+    @Override
+    public PostAuthenticationResponse tokenValidation(String tenant, AuthenticateRequest requestBody) {
+        return null;
+    }
+
+    @Override
+    public PostAuthenticationResponse tokenUpdate(String tenant, AuthenticateRequest requestBody) {
+        return null;
+    }
+
+    @Override
+    public PostAuthenticationResponse twoFactorConfigurationUpdate(String tenant, AuthenticateRequest requestBody) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse smsCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse smsUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse smsDelete(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse likelihoodUpdate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse surveyCreate(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse surveyRegister(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse surveyDelete(String tenant, String token) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse interoperationTransfer(String tenant, String token, long staffId, PutStaffRequest requestBody) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse interoperationQuoteCreate(String tenant, String token, long staffId, PutStaffRequest requestBody) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse interoperationTransactionCreate(String tenant, String token, long staffId, PutStaffRequest requestBody) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse accountIdentifierDelete(String tenant, String token, long staffId, PutStaffRequest requestBody) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse accountIdentifierDelete(String tenant, String token, long staffId, PutStaffRequest requestBody, long abc) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse accountIdentifierRegister(String tenant, String token, long staffId, PutStaffRequest requestBody) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse accountIdentifierRegister(String tenant, String token, long staffId, PutStaffRequest requestBody, long abc) {
+        return null;
+    }
+
+    @Override
+    public FineractResponse notificationUpdate(String tenant, String token, long auditId) {
         return null;
     }
 

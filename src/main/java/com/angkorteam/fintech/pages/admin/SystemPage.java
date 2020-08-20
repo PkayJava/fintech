@@ -4,11 +4,14 @@ import com.angkorteam.fintech.MasterPage;
 import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.pages.TodoPage;
 import com.angkorteam.fintech.pages.admin.system.configuration.ConfigurationBrowsePage;
+import com.angkorteam.fintech.pages.admin.system.table.DataTableBrowsePage;
+import com.angkorteam.webui.frmk.common.Bookmark;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
+@Bookmark("/admin/system")
 public class SystemPage extends MasterPage {
 
     private BookmarkablePageLink<Void> manageDataTablesLink;
@@ -41,7 +44,7 @@ public class SystemPage extends MasterPage {
 
     @Override
     protected void onInitHtml(MarkupContainer body) {
-        this.manageDataTablesLink = new BookmarkablePageLink<>("manageDataTablesLink", TodoPage.class);
+        this.manageDataTablesLink = new BookmarkablePageLink<>("manageDataTablesLink", DataTableBrowsePage.class);
         body.add(this.manageDataTablesLink);
 
         this.auditTrailsLink = new BookmarkablePageLink<>("auditTrailsLink", TodoPage.class);

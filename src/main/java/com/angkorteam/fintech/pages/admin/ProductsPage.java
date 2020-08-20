@@ -3,11 +3,13 @@ package com.angkorteam.fintech.pages.admin;
 import com.angkorteam.fintech.MasterPage;
 import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.pages.TodoPage;
+import com.angkorteam.webui.frmk.common.Bookmark;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
+@Bookmark("/admin/products")
 public class ProductsPage extends MasterPage {
 
     private BookmarkablePageLink<Void> loanProductsLink;

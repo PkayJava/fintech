@@ -1,6 +1,5 @@
 package com.angkorteam.fintech.provider;
 
-import com.angkorteam.fintech.client.enums.ColumnType;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.ISingleChoiceProvider;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
@@ -11,7 +10,7 @@ import java.util.List;
 /**
  * Created by socheatkhauv on 6/26/17.
  */
-public class ColumnTypeOptionProvider extends ISingleChoiceProvider {
+public class YesNoOptionProvider extends ISingleChoiceProvider {
 
     @Override
     public Option toChoice(String id) {
@@ -27,9 +26,8 @@ public class ColumnTypeOptionProvider extends ISingleChoiceProvider {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (ColumnType value : ColumnType.values()) {
-            options.add(value.toOption());
-        }
+        options.add(new Option("Yes", "Yes"));
+        options.add(new Option("No", "No"));
         return options;
     }
 
@@ -57,4 +55,5 @@ public class ColumnTypeOptionProvider extends ISingleChoiceProvider {
         }
         return null;
     }
+
 }

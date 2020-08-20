@@ -2,7 +2,7 @@ package com.angkorteam.fintech.client.function;
 
 import com.angkorteam.fintech.client.dto.FineractResponse;
 
-public interface MakerCheckerApi {
+public interface CommandApi {
 
     FineractResponse makerCheckerApprove(String tenant, String token, long auditId);
 

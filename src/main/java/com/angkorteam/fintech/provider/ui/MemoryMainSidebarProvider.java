@@ -32,7 +32,7 @@ public class MemoryMainSidebarProvider implements IMainSidebarProvider {
     public MainSidebar fetchMainSidebar() {
         ApplicationContext context = WicketFactory.getApplicationContext();
         AppProperties properties = context.getBean(AppProperties.class);
-        Brand brand = new Brand(properties.getName(), new PackageResourceReference(BootApplication.class, "hr-logo.png"), (Class<? extends WebPage>) WebApplication.get().getHomePage());
+        Brand brand = new Brand(properties.getName(), new PackageResourceReference(BootApplication.class, "logo.png"), (Class<? extends WebPage>) WebApplication.get().getHomePage());
         UserPanel userPanel = new UserPanel(new PackageResourceReference(BootApplication.class, "user.png"), "N/A", SimulatorPage.class);
         List<SidebarMenu> children = new ArrayList<>();
 

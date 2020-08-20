@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.admin.system.configuration;
 
 import com.angkorteam.fintech.MasterPage;
 import com.angkorteam.fintech.client.Function;
+import com.angkorteam.webui.frmk.common.Bookmark;
 import com.angkorteam.webui.frmk.wicket.layout.Size;
 import com.angkorteam.webui.frmk.wicket.layout.UIColumn;
 import com.angkorteam.webui.frmk.wicket.layout.UIContainer;
@@ -22,6 +23,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
+@Bookmark("/admin/system/configuration/create")
 public class ConfigurationCreatePage extends MasterPage {
 
     protected Form<Void> createForm;
