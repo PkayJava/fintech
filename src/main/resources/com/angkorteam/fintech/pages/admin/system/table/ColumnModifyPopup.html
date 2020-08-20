@@ -3,7 +3,7 @@
 <body>
 <wicket:panel>
     <wicket:extend>
-        <form role="form" wicket:id="form">
+        <form role="form" wicket:id="modifyForm">
             <div class="modal-content">
                 <div class="modal-body">
 
@@ -28,7 +28,7 @@
                         <div wicket:id="typeColumn" class="form-group">
                             <wicket:container wicket:id="typeContainer">
                                 <label wicket:for="typeField">Type</label>
-                                <select wicket:id="typeField" class="form-control"></select>
+                                <input type="text" wicket:id="typeField" class="form-control">
                                 <span wicket:id="typeFeedback"/>
                             </wicket:container>
                         </div>

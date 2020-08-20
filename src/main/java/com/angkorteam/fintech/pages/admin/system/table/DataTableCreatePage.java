@@ -1,8 +1,11 @@
 package com.angkorteam.fintech.pages.admin.system.table;
 
 import com.angkorteam.fintech.MasterPage;
+import com.angkorteam.fintech.client.FineractClient;
 import com.angkorteam.fintech.client.Function;
+import com.angkorteam.fintech.client.dto.PostDataTableRequest;
 import com.angkorteam.fintech.client.enums.ColumnType;
+import com.angkorteam.fintech.client.enums.TableTypeEnum;
 import com.angkorteam.fintech.provider.AppTableOptionProvider;
 import com.angkorteam.fintech.provider.YesNoOptionProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
@@ -21,8 +24,6 @@ import com.angkorteam.webui.frmk.wicket.layout.UIRow;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import io.github.openunirest.http.JsonNode;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -76,7 +77,7 @@ public class DataTableCreatePage extends MasterPage {
     protected ListDataProvider fieldBrowseProvider;
     protected List<IColumn<Map<String, Object>, String>> fieldBrowseColumn;
 
-    protected ColumnPopup popup;
+    protected ColumnCreatePopup columnCreatePopup;
 
     protected Button createButton;
     protected BookmarkablePageLink<Void> cancelButton;
@@ -110,6 +111,7 @@ public class DataTableCreatePage extends MasterPage {
         this.tableNameContainer = this.tableNameColumn.newUIContainer("tableNameContainer");
         this.tableNameField = new TextField<>("tableNameField", new PropertyModel<>(this, "tableNameValue"));
         this.tableNameField.setLabel(Model.of("Table Name"));
+        this.tableNameField.add(new TableNameValidator());
         this.tableNameField.setRequired(true);
         this.tableNameContainer.add(this.tableNameField);
         this.tableNameContainer.newFeedback("tableNameFeedback", this.tableNameField);
@@ -159,16 +161,26 @@ public class DataTableCreatePage extends MasterPage {
         this.cancelButton = new BookmarkablePageLink<>("cancelButton", DataTableBrowsePage.class);
         this.createForm.add(this.cancelButton);
 
-        this.popup = new ColumnPopup("popup", this::popupEvent);
-        this.popup.setOutputMarkupId(true);
-        this.popup.setVisibleContent(false);
-        body.add(this.popup);
+        this.createForm.add(new CreateFormValidator(this.fieldValue, this.associatedTableField, this.multiRowField));
+
+        this.columnCreatePopup = new ColumnCreatePopup("columnCreatePopup", this::columnCreatePopupEvent);
+        this.columnCreatePopup.setOutputMarkupId(true);
+        this.columnCreatePopup.setVisibleContent(false);
+        body.add(this.columnCreatePopup);
     }
 
-    private void popupEvent(String name, Map<String, Object> data, AjaxRequestTarget target) {
+    private void columnCreatePopupEvent(String name, Map<String, Object> data, AjaxRequestTarget target) {
+        target.add(getMessageContainer());
         ApplicationContext context = WicketFactory.getApplicationContext();
         StringGenerator generator = context.getBean(StringGenerator.class);
-        Map<String, Object> column = Maps.newHashMap();
+        for (Map<String, Object> v : this.fieldValue) {
+            String nameValue = (String) data.get("nameValue");
+            if (v.get("name").equals(nameValue)) {
+                setMessage(nameValue + " is not available");
+                return;
+            }
+        }
+        Map<String, Object> column = new HashMap<>();
         column.put("uuid", generator.externalId());
         column.put("name", data.get("nameValue"));
         ColumnType columnType = null;
@@ -183,8 +195,9 @@ public class DataTableCreatePage extends MasterPage {
         }
         column.put("mandatory", ((Option) data.get("mandatoryValue")).getId());
         if (columnType == ColumnType.DropDown && data.get("codeValue") != null) {
-            column.put("code", ((Option) data.get("codeValue")).getId());
+            column.put("code", ((Option) data.get("codeValue")).getText());
         }
+        column.put("will", "Create");
         this.fieldValue.add(column);
         target.add(this.fieldBrowseTable);
     }
@@ -210,16 +223,42 @@ public class DataTableCreatePage extends MasterPage {
 
     protected void fieldAddMoreLinkClick(AjaxRequestTarget target) {
         Map<String, Object> data = new HashMap<>();
-        this.popup.show(target, data);
+        this.columnCreatePopup.show(target, data);
     }
 
     protected void createButtonSubmit() {
-        JsonNode node = null;
-        // node = GlobalConfigurationHelper.updateValueForGlobalConfiguration(getSession(), this.nameValue.getId(), String.valueOf(this.valueValue));
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        FineractClient client = context.getBean(FineractClient.class);
+        PostDataTableRequest request = new PostDataTableRequest();
+        request.setApptableName(TableTypeEnum.valueOf(this.associatedTableValue.getId()));
+        request.setDatatableName(this.tableNameValue);
+        request.setMultiRow("Yes".equals(this.multiRowValue.getId()));
 
-        if (reportError(node)) {
-            return;
+        if (this.fieldValue != null) {
+            for (Map<String, Object> column : this.fieldValue) {
+                String type = (String) column.get("type");
+                if ("String".equals(type)) {
+                    request.getColumns().add(PostDataTableRequest.Column.string((String) column.get("name"), "Yes".equals(column.get("mandatory")), (int) column.get("length")));
+                } else if ("Number".equals(type)) {
+                    request.getColumns().add(PostDataTableRequest.Column.number((String) column.get("name"), "Yes".equals(column.get("mandatory"))));
+                } else if ("Decimal".equals(type)) {
+                    request.getColumns().add(PostDataTableRequest.Column.decimal((String) column.get("name"), "Yes".equals(column.get("mandatory"))));
+                } else if ("Boolean".equals(type)) {
+                    request.getColumns().add(PostDataTableRequest.Column.yesno((String) column.get("name"), "Yes".equals(column.get("mandatory"))));
+                } else if ("Date".equals(type)) {
+                    request.getColumns().add(PostDataTableRequest.Column.date((String) column.get("name"), "Yes".equals(column.get("mandatory"))));
+                } else if ("DateTime".equals(type)) {
+                    request.getColumns().add(PostDataTableRequest.Column.datetime((String) column.get("name"), "Yes".equals(column.get("mandatory"))));
+                } else if ("Text".equals(type)) {
+                    request.getColumns().add(PostDataTableRequest.Column.text((String) column.get("name"), "Yes".equals(column.get("mandatory"))));
+                } else if ("DropDown".equals(type)) {
+                    request.getColumns().add(PostDataTableRequest.Column.dropdown((String) column.get("name"), "Yes".equals(column.get("mandatory")), (String) column.get("code")));
+                }
+            }
         }
+
+        client.datatableCreate(getSession().getIdentifier(), getSession().getToken(), request);
+
         setResponsePage(DataTableBrowsePage.class);
     }
 }

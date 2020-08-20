@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
-import com.angkorteam.fintech.client.enums.TableType;
+import com.angkorteam.fintech.client.enums.TableTypeEnum;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.github.openunirest.http.JsonNode;
@@ -51,7 +51,7 @@ public class DataTableBuilder implements Serializable {
         return this;
     }
 
-    public DataTableBuilder withAppTableName(TableType apptableName) {
+    public DataTableBuilder withAppTableName(TableTypeEnum apptableName) {
         this.apptableName = apptableName.getLiteral();
         this.hasApptableName = true;
         return this;

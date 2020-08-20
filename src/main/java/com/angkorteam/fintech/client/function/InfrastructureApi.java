@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.client.function;
 
 import com.angkorteam.fintech.client.dto.*;
+import com.angkorteam.fintech.client.enums.TableTypeEnum;
 
 public interface InfrastructureApi {
 
@@ -72,15 +73,15 @@ public interface InfrastructureApi {
 
     FineractResponse creditBureauProductMappingCreate(String tenant, String token);
 
-    FineractResponse datatableCreate(String tenant, String token);
+    FineractResponse datatableCreate(String tenant, String token, PostDataTableRequest requestBody);
 
-    FineractResponse datatableUpdate(String tenant, String token);
+    FineractResponse datatableUpdate(String tenant, String token, String datatableName, PutDataTableRequest requestBody);
 
-    FineractResponse datatableDelete(String tenant, String token);
+    FineractResponse datatableDelete(String tenant, String token, String datatableName);
 
-    FineractResponse datatableRegister(String tenant, String token);
+    FineractResponse datatableRegister(String tenant, String token, String datatable, TableTypeEnum apptable, PostDataTableRegisterRequest requestBody);
 
-    FineractResponse datatableDeregister(String tenant, String token);
+    FineractResponse datatableDeregister(String tenant, String token, String datatable);
 
     FineractResponse datatableEntryCreate(String tenant, String token);
 

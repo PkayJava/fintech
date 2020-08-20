@@ -3,6 +3,8 @@ package com.angkorteam.fintech.pages.admin.system.table;
 import com.angkorteam.fintech.MasterPage;
 import com.angkorteam.fintech.MifosDataContextManager;
 import com.angkorteam.fintech.client.Function;
+import com.angkorteam.fintech.client.enums.TableTypeEnum;
+import com.angkorteam.fintech.client.renums.DataTableCategoryEnum;
 import com.angkorteam.fintech.data.MySQLDataProvider;
 import com.angkorteam.fintech.meta.tenant.CConfiguration;
 import com.angkorteam.fintech.meta.tenant.XRegisteredTable;
@@ -17,6 +19,7 @@ import com.angkorteam.webui.frmk.wicket.layout.UIColumn;
 import com.angkorteam.webui.frmk.wicket.layout.UIContainer;
 import com.angkorteam.webui.frmk.wicket.layout.UIRow;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.metamodel.DataContext;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -29,6 +32,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
@@ -73,8 +77,22 @@ public class DataTableBrowsePage extends MasterPage {
 
         this.dataBrowseColumn = new ArrayList<>();
         this.dataBrowseColumn.add(Column.text(Model.of("Table Name"), xRegisteredTable.getName() + "." + xRegisteredTable.REGISTERED_TABLE_NAME.getName(), "tableName", this.dataBrowseProvider));
-        this.dataBrowseColumn.add(Column.text(Model.of("Associated"), xRegisteredTable.getName() + "." + xRegisteredTable.APPLICATION_TABLE_NAME.getName(), "associated", this.dataBrowseProvider));
-        this.dataBrowseColumn.add(Column.number(Model.of("Category"), xRegisteredTable.getName() + "." + xRegisteredTable.CATEGORY.getName(), "category", this.dataBrowseProvider));
+        {
+            List<String> whens = new ArrayList<>();
+            for (TableTypeEnum c : TableTypeEnum.values()) {
+                whens.add("WHEN '" + c.getLiteral() + "' THEN '" + c.getDescription() + "'");
+            }
+            whens.add("ELSE 'N/A'");
+            this.dataBrowseColumn.add(Column.text(Model.of("Associated"), "CASE " + xRegisteredTable.getName() + "." + xRegisteredTable.APPLICATION_TABLE_NAME.getName() + " " + StringUtils.join(whens, " ") + " END", "associated", this.dataBrowseProvider));
+        }
+        {
+            List<String> whens = new ArrayList<>();
+            for (DataTableCategoryEnum c : DataTableCategoryEnum.values()) {
+                whens.add("WHEN " + c.getLiteral() + " THEN '" + c.getDescription() + "'");
+            }
+            whens.add("ELSE 'N/A'");
+            this.dataBrowseColumn.add(Column.text(Model.of("Category"), "CASE " + xRegisteredTable.getName() + "." + xRegisteredTable.CATEGORY.getName() + " " + StringUtils.join(whens, " ") + " END", "category", this.dataBrowseProvider));
+        }
         this.dataBrowseColumn.add(new ActionFilteredColumn<>(Model.of("Action"), this::dataBrowseActionLink, this::dataBrowseActionClick));
     }
 
@@ -122,10 +140,10 @@ public class DataTableBrowsePage extends MasterPage {
     }
 
     protected void dataBrowseActionClick(String link, Map<String, Object> model, AjaxRequestTarget target) {
-//        long dataId = (long) model.get("dataId");
-//        PageParameters parameters = new PageParameters();
-//        parameters.add("dataId", dataId);
-//        setResponsePage(ConfigurationModifyPage.class, parameters);
+        String tableName = (String) model.get("tableName");
+        PageParameters parameters = new PageParameters();
+        parameters.add("tableName", tableName);
+        setResponsePage(DataTableModifyPage.class, parameters);
     }
 
     protected void searchButtonSubmit() {

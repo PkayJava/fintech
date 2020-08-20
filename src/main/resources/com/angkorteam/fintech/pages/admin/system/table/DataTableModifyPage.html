@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
-                        <form wicket:id="createForm">
+                        <form wicket:id="modifyForm">
                             <div class="card-header">
                                 <h5 class="card-title">Data Table</h5>
                             </div>
@@ -40,7 +40,7 @@
                                         <wicket:container wicket:id="multiRowContainer">
                                             <div class="form-group">
                                                 <label wicket:for="multiRowField">Multi Row</label>
-                                                <select wicket:id="multiRowField" class="form-control"></select>
+                                                <input type="text" wicket:id="multiRowField" class="form-control">
                                                 <span wicket:id="multiRowFeedback"/>
                                             </div>
                                         </wicket:container>
@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button wicket:id="createButton" type="submit" class="btn btn-info">Create</button>
+                                <button wicket:id="updateButton" type="submit" class="btn btn-info">Update</button>
                                 <a wicket:id="cancelButton" class="btn btn-info">Cancel</a>
                             </div>
                         </form>
@@ -70,6 +70,7 @@
         </div>
     </section>
     <div wicket:id="columnCreatePopup"/>
+    <div wicket:id="columnModifyPopup"/>
 </wicket:extend>
 </body>
 

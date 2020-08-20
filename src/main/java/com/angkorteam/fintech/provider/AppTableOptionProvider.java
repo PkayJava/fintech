@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.provider;
 
-import com.angkorteam.fintech.client.enums.TableType;
+import com.angkorteam.fintech.client.enums.TableTypeEnum;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.ISingleChoiceProvider;
 import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
@@ -27,7 +27,7 @@ public class AppTableOptionProvider extends ISingleChoiceProvider {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (TableType value : TableType.values()) {
+        for (TableTypeEnum value : TableTypeEnum.values()) {
             options.add(value.toOption());
         }
         return options;

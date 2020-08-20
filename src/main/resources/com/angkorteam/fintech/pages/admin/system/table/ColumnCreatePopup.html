@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:panel>
+    <wicket:extend>
+        <form role="form" wicket:id="createForm">
+            <div class="modal-content">
+                <div class="modal-body">
+
+                    <div wicket:id="row1">
+                        <div wicket:id="nameColumn" class="form-group">
+                            <wicket:container wicket:id="nameContainer">
+                                <label wicket:for="nameField">Name</label>
+                                <input wicket:id="nameField" type="text" class="form-control"/>
+                                <span wicket:id="nameFeedback"/>
+                            </wicket:container>
+                        </div>
+                        <div wicket:id="mandatoryColumn" class="form-group">
+                            <wicket:container wicket:id="mandatoryContainer">
+                                <label wicket:for="mandatoryField">Mandatory</label>
+                                <select wicket:id="mandatoryField" class="form-control"></select>
+                                <span wicket:id="mandatoryFeedback"/>
+                            </wicket:container>
+                        </div>
+                    </div>
+
+                    <div wicket:id="row2">
+                        <div wicket:id="typeColumn" class="form-group">
+                            <wicket:container wicket:id="typeContainer">
+                                <label wicket:for="typeField">Type</label>
+                                <select wicket:id="typeField" class="form-control"></select>
+                                <span wicket:id="typeFeedback"/>
+                            </wicket:container>
+                        </div>
+                        <div wicket:id="lengthCodeColumn" class="form-group">
+                            <wicket:container wicket:id="lengthContainer">
+                                <label wicket:for="lengthField">Length</label>
+                                <input wicket:id="lengthField" type="text" class="form-control"/>
+                                <span wicket:id="lengthFeedback"/>
+                            </wicket:container>
+                            <wicket:container wicket:id="codeContainer">
+                                <label wicket:for="codeField">Code</label>
+                                <select wicket:id="codeField" class="form-control"></select>
+                                <span wicket:id="codeFeedback"/>
+                            </wicket:container>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a wicket:id="cancelButton" class="btn btn-info">Cancel</a>
+                    <button wicket:id="okayButton" type="submit" class="btn btn-info">Okay</button>
+                </div>
+            </div>
+
+        </form>
+    </wicket:extend>
+</wicket:panel>
+</body>
+</html>

@@ -32,9 +32,9 @@ import org.springframework.context.ApplicationContext;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ColumnPopup extends Popup {
+public class ColumnCreatePopup extends Popup {
 
-    protected Form<Void> form;
+    protected Form<Void> createForm;
 
     protected UIRow row1;
 
@@ -64,17 +64,17 @@ public class ColumnPopup extends Popup {
     protected Option codeValue;
 
     protected UIContainer lengthContainer;
-    protected TextField<Long> lengthField;
-    protected Long lengthValue;
+    protected TextField<Integer> lengthField;
+    protected Integer lengthValue;
 
     protected AjaxLink<Void> cancelButton;
     protected AjaxButton okayButton;
 
-    public ColumnPopup(String id) {
+    public ColumnCreatePopup(String id) {
         super(id);
     }
 
-    public ColumnPopup(String id, WicketTriConsumer<String, Map<String, Object>, AjaxRequestTarget> event) {
+    public ColumnCreatePopup(String id, WicketTriConsumer<String, Map<String, Object>, AjaxRequestTarget> event) {
         super(id, event);
     }
 
@@ -86,21 +86,22 @@ public class ColumnPopup extends Popup {
         MCode mCode = MCode.staticInitialize(dataContext);
 
         this.typeProvider = new ColumnTypeOptionProvider();
-        this.codeProvider = new SingleChoiceProvider(mCode.getName(), mCode.ID.getName(), mCode.CODE_NAME.getName());
+        this.codeProvider = new SingleChoiceProvider(mCode.getName(), mCode.CODE_NAME.getName(), mCode.CODE_NAME.getName());
         this.mandatoryProvider = new YesNoOptionProvider();
     }
 
     @Override
     protected void onInitHtml(MarkupContainer body) {
-        this.form = new Form<>("form");
-        body.add(this.form);
+        this.createForm = new Form<>("createForm");
+        body.add(this.createForm);
 
-        this.row1 = UIRow.newUIRow("row1", this.form);
+        this.row1 = UIRow.newUIRow("row1", this.createForm);
 
         this.nameColumn = this.row1.newUIColumn("nameColumn", Size.Six_6);
         this.nameContainer = this.nameColumn.newUIContainer("nameContainer");
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameField.setRequired(true);
+        this.nameField.add(new ColumnNameValidator());
         this.nameField.setLabel(Model.of("Name"));
         this.nameContainer.add(this.nameField);
         this.nameContainer.newFeedback("nameFeedback", this.nameField);
@@ -113,15 +114,15 @@ public class ColumnPopup extends Popup {
         this.mandatoryContainer.add(this.mandatoryField);
         this.mandatoryContainer.newFeedback("mandatoryFeedback", this.mandatoryField);
 
-        this.row2 = UIRow.newUIRow("row2", this.form);
+        this.row2 = UIRow.newUIRow("row2", this.createForm);
 
         this.lengthCodeColumn = this.row2.newUIColumn("lengthCodeColumn", Size.Six_6);
 
         this.lengthContainer = this.lengthCodeColumn.newUIContainer("lengthContainer");
         this.lengthField = new TextField<>("lengthField", new PropertyModel<>(this, "lengthValue"));
-        this.lengthField.setType(long.class);
+        this.lengthField.setType(int.class);
         this.lengthField.setLabel(Model.of("Length"));
-        this.lengthField.add(RangeValidator.minimum(1L));
+        this.lengthField.add(RangeValidator.minimum(1));
         this.lengthContainer.add(this.lengthField);
         this.lengthContainer.newFeedback("lengthFeedback", this.lengthField);
 
@@ -152,7 +153,7 @@ public class ColumnPopup extends Popup {
             }
 
         };
-        this.form.add(this.okayButton);
+        this.createForm.add(this.okayButton);
 
         this.cancelButton = new AjaxLink<Void>("cancelButton") {
             @Override
@@ -160,7 +161,7 @@ public class ColumnPopup extends Popup {
                 cancelButtonClick(target);
             }
         };
-        this.form.add(cancelButton);
+        this.createForm.add(cancelButton);
 
         typeFieldUpdate(null);
     }
@@ -192,7 +193,7 @@ public class ColumnPopup extends Popup {
     protected void restoreData(Map<String, Object> data) {
         this.nameValue = (String) data.get("nameValue");
         this.codeValue = (Option) data.get("codeValue");
-        this.lengthValue = (Long) data.get("lengthValue");
+        this.lengthValue = (Integer) data.get("lengthValue");
         this.mandatoryValue = (Option) data.get("mandatoryValue");
         this.typeValue = (Option) data.get("typeValue");
     }
@@ -209,6 +210,6 @@ public class ColumnPopup extends Popup {
     }
 
     protected void okayButtonError(AjaxRequestTarget target) {
-        target.add(this.form);
+        target.add(this.createForm);
     }
 }
