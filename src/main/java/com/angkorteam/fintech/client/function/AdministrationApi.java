@@ -1,18 +1,30 @@
 package com.angkorteam.fintech.client.function;
 
-import com.angkorteam.fintech.client.dto.FineractResponse;
-import com.angkorteam.fintech.client.dto.PostRolesRequest;
-import com.angkorteam.fintech.client.dto.PutPasswordPreferencesTemplateRequest;
-import com.angkorteam.fintech.client.dto.PutPermissionsRequest;
+import com.angkorteam.fintech.client.dto.*;
+import com.angkorteam.fintech.client.enums.PutUserRequest;
+
+import java.util.Map;
 
 public interface AdministrationApi {
 
     FineractResponse passwordPreferenceUpdate(String tenant, String token, PutPasswordPreferencesTemplateRequest requestBody);
 
-    FineractResponse permissionUpdate(String tenant, String token, PutPermissionsRequest requestBody);
+    FineractResponse userCreate(String tenant, String token, PostUserRequest requestBody);
 
-    FineractResponse roleCreate(String tenant, String token, PostRolesRequest requestBody);
+    FineractResponse userUpdate(String tenant, String token, long userId, PutUserRequest requestBody);
 
-    FineractResponse roleCommand(String tenant, String token, long roleId, String command);
+    FineractResponse userDelete(String tenant, String token, long userId);
+
+    FineractResponse makerCheckerPermissionUpdate(String tenant, String token, Map<String, Boolean> requestBody);
+
+    FineractResponse roleCreate(String tenant, String token, PostRoleRequest requestBody);
+
+    FineractResponse roleDisable(String tenant, String token, long roleId);
+
+    FineractResponse roleEnable(String tenant, String token, long roleId);
+
+    FineractResponse roleDelete(String tenant, String token, long roleId);
+
+    FineractResponse rolePermissionUpdate(String tenant, String token, long roleId, Map<String, Boolean> permissions);
 
 }

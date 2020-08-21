@@ -2,7 +2,7 @@ package com.angkorteam.fintech.dto.builder;
 
 import java.io.Serializable;
 
-import com.angkorteam.fintech.client.enums.EntityStatus;
+import com.angkorteam.fintech.client.enums.EntityStatusEnum;
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -16,7 +16,7 @@ public class EntityCheckBuilder implements Serializable {
     private String entity;
     private boolean hasEntity;
 
-    private EntityStatus status;
+    private EntityStatusEnum status;
     private boolean hasStatus;
 
     private String datatableName;
@@ -49,7 +49,7 @@ public class EntityCheckBuilder implements Serializable {
         return this;
     }
 
-    public EntityCheckBuilder withStatus(EntityStatus status) {
+    public EntityCheckBuilder withStatus(EntityStatusEnum status) {
         this.status = status;
         this.hasStatus = true;
         return this;

@@ -3,6 +3,8 @@ package com.angkorteam.fintech.client.function;
 import com.angkorteam.fintech.client.dto.*;
 import com.angkorteam.fintech.client.enums.TableTypeEnum;
 
+import java.util.Map;
+
 public interface InfrastructureApi {
 
     FineractResponse accountNumberFormatCreate(String tenant, String token, PostAccountNumberFormatsRequest requestBody);
@@ -83,19 +85,19 @@ public interface InfrastructureApi {
 
     FineractResponse datatableDeregister(String tenant, String token, String datatable);
 
-    FineractResponse datatableEntryCreate(String tenant, String token);
+    FineractResponse datatableEntryCreate(String tenant, String token, String datatable, long apptableId, Map<String, Object> requestBody);
 
-    FineractResponse datatableEntryOne2OneUpdate(String tenant, String token);
+    FineractResponse datatableEntryOne2OneUpdate(String tenant, String token, String datatable, long apptableId, Map<String, Object> requestBody);
 
-    FineractResponse datatableEntryOne2ManyUpdate(String tenant, String token);
+    FineractResponse datatableEntryOne2ManyUpdate(String tenant, String token, String datatable, long apptableId, long datatableId, Map<String, Object> requestBody);
 
-    FineractResponse datatableEntryDelete(String tenant, String token);
+    FineractResponse datatableEntryClear(String tenant, String token, String datatable, long apptableId);
 
-    FineractResponse datatableEntryDelete(String tenant, String token, long id);
+    FineractResponse datatableEntryDelete(String tenant, String token, String datatable, long apptableId, long datatableId);
 
-    FineractResponse datatableEntityCreate(String tenant, String token);
+    FineractResponse datatableEntityCheckCreate(String tenant, String token, PostDatatableEntityCheckRequest requestBody);
 
-    FineractResponse datatableEntityDelete(String tenant, String token);
+    FineractResponse datatableEntityCheckDelete(String tenant, String token, long entityDatatableCheckId);
 
     FineractResponse reportCreate(String tenant, String token);
 

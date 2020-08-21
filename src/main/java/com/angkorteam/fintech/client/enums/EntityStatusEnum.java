@@ -5,7 +5,7 @@ import com.angkorteam.webui.frmk.wicket.markup.html.form.select2.Option;
 /**
  * Created by socheatkhauv on 7/15/17.
  */
-public enum EntityStatus {
+public enum EntityStatusEnum {
 
     Create("100", "Create"),
     Approve("200", "Approve"),
@@ -20,7 +20,7 @@ public enum EntityStatus {
 
     private String description;
 
-    EntityStatus(String literal, String description) {
+    EntityStatusEnum(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
@@ -37,8 +37,8 @@ public enum EntityStatus {
         return new Option(this.name(), this.description);
     }
 
-    public static EntityStatus parseLiteral(String literal) {
-        for (EntityStatus value : EntityStatus.values()) {
+    public static EntityStatusEnum parseLiteral(String literal) {
+        for (EntityStatusEnum value : EntityStatusEnum.values()) {
             if (value.getLiteral().equals(literal)) {
                 return value;
             }
@@ -47,7 +47,7 @@ public enum EntityStatus {
     }
 
     public static Option optionLiteral(String literal) {
-        EntityStatus value = parseLiteral(literal);
+        EntityStatusEnum value = parseLiteral(literal);
         if (value == null) {
             return null;
         }
