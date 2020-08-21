@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+</head>
+<body>
+<wicket:extend>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <form wicket:id="permissionForm">
+                            <div class="card-body">
+                                <div wicket:id="row1">
+                                    <div wicket:id="accessColumn">
+                                        <wicket:container wicket:id="accessContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="accessField">Name</label>
+                                                <select wicket:id="accessField" class="form-control"></select>
+                                                <span wicket:id="accessFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="lastColumn"/>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button wicket:id="grantButton" type="submit" class="btn btn-info">Grant</button>
+                                <a wicket:id="cancelButton" class="btn btn-info">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <form wicket:id="permissionBrowseForm">
+                                <table wicket:id="permissionBrowseTable"></table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</wicket:extend>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.client.dto;
 
-public class PostRoleRequest {
+public class RoleRequest {
 
     private String name;
 

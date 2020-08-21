@@ -5,6 +5,7 @@ import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.pages.TodoPage;
 import com.angkorteam.fintech.pages.admin.system.code.CodeBrowsePage;
 import com.angkorteam.fintech.pages.admin.system.configuration.ConfigurationBrowsePage;
+import com.angkorteam.fintech.pages.admin.system.role.RoleBrowsePage;
 import com.angkorteam.fintech.pages.admin.system.table.DataTableBrowsePage;
 import com.angkorteam.webui.frmk.common.Bookmark;
 import org.apache.wicket.MarkupContainer;
@@ -57,7 +58,7 @@ public class SystemPage extends MasterPage {
         this.manageReportsLink = new BookmarkablePageLink<>("manageReportsLink", TodoPage.class);
         body.add(this.manageReportsLink);
 
-        this.manageRolesAndPermissionsLink = new BookmarkablePageLink<>("manageRolesAndPermissionsLink", TodoPage.class);
+        this.manageRolesAndPermissionsLink = new BookmarkablePageLink<>("manageRolesAndPermissionsLink", RoleBrowsePage.class);
         body.add(this.manageRolesAndPermissionsLink);
 
         this.schedulerJobsLink = new BookmarkablePageLink<>("schedulerJobsLink", TodoPage.class);

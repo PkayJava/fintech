@@ -445,7 +445,7 @@ public class FineractClient implements Closeable,
     }
 
     @Override
-    public FineractResponse roleCreate(String tenant, String token, PostRoleRequest requestBody) {
+    public FineractResponse roleCreate(String tenant, String token, RoleRequest requestBody) {
         EntityBuilder entityBuilder = EntityBuilder.create();
         entityBuilder.setContentType(ContentType.APPLICATION_JSON);
         entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
@@ -457,6 +457,36 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/roles");
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse roleUpdate(String tenant, String token, long roleId, RoleRequest requestBody) {
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(requestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("PUT");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/roles/" + roleId);
         HttpUriRequest request = requestBuilder.build();
         try (CloseableHttpResponse response = this.client.execute(request)) {
             String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);

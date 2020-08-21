@@ -17,7 +17,9 @@ public interface AdministrationApi {
 
     FineractResponse makerCheckerPermissionUpdate(String tenant, String token, Map<String, Boolean> requestBody);
 
-    FineractResponse roleCreate(String tenant, String token, PostRoleRequest requestBody);
+    FineractResponse roleCreate(String tenant, String token, RoleRequest requestBody);
+
+    FineractResponse roleUpdate(String tenant, String token, long roleId, RoleRequest requestBody);
 
     FineractResponse roleDisable(String tenant, String token, long roleId);
 
