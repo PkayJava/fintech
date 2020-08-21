@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.admin;
 import com.angkorteam.fintech.MasterPage;
 import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.pages.TodoPage;
+import com.angkorteam.fintech.pages.admin.system.code.CodeBrowsePage;
 import com.angkorteam.fintech.pages.admin.system.configuration.ConfigurationBrowsePage;
 import com.angkorteam.fintech.pages.admin.system.table.DataTableBrowsePage;
 import com.angkorteam.webui.frmk.common.Bookmark;
@@ -50,7 +51,7 @@ public class SystemPage extends MasterPage {
         this.auditTrailsLink = new BookmarkablePageLink<>("auditTrailsLink", TodoPage.class);
         body.add(this.auditTrailsLink);
 
-        this.manageCodesLink = new BookmarkablePageLink<>("manageCodesLink", TodoPage.class);
+        this.manageCodesLink = new BookmarkablePageLink<>("manageCodesLink", CodeBrowsePage.class);
         body.add(this.manageCodesLink);
 
         this.manageReportsLink = new BookmarkablePageLink<>("manageReportsLink", TodoPage.class);

@@ -37,6 +37,7 @@ public class FineractClient implements Closeable,
         CommandApi,
         NotificationApi,
         InteroperationApi,
+        SpmApi,
         AccountingApi {
 
     private static final String DATE_FORMAT_KEY = "dateFormat";
@@ -573,7 +574,7 @@ public class FineractClient implements Closeable,
     }
 
     @Override
-    public FineractResponse codeValueCreate(String tenant, String token, long codeId, PostCodeValuesDataRequest requestBody) {
+    public FineractResponse codeValueCreate(String tenant, String token, long codeId, PostCodeValueRequest requestBody) {
         EntityBuilder entityBuilder = EntityBuilder.create();
         entityBuilder.setContentType(ContentType.APPLICATION_JSON);
         entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
@@ -603,7 +604,7 @@ public class FineractClient implements Closeable,
     }
 
     @Override
-    public FineractResponse codeValueUpdate(String tenant, String token, long codeId, long codeValueId, PutCodeValuesDataRequest requestBody) {
+    public FineractResponse codeValueUpdate(String tenant, String token, long codeId, long codeValueId, PutCodeValueRequest requestBody) {
         EntityBuilder entityBuilder = EntityBuilder.create();
         entityBuilder.setContentType(ContentType.APPLICATION_JSON);
         entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
@@ -2950,18 +2951,89 @@ public class FineractClient implements Closeable,
     }
 
     @Override
-    public FineractResponse codeCreate(String tenant, String token) {
-        return null;
+    public FineractResponse codeCreate(String tenant, String token, CodeRequest requestBody) {
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(requestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/codes");
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                System.out.println(responseText);
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
     }
 
     @Override
-    public FineractResponse codeUpdate(String tenant, String token, long codeId) {
-        return null;
+    public FineractResponse codeUpdate(String tenant, String token, long codeId, CodeRequest requestBody) {
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(requestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("PUT");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/codes/" + codeId);
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                System.out.println(responseText);
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
     }
 
     @Override
     public FineractResponse codeDelete(String tenant, String token, long codeId) {
-        return null;
+        RequestBuilder requestBuilder = RequestBuilder.create("DELETE");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setUri(this.baseUrl + "/codes/" + codeId);
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                System.out.println(responseText);
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
     }
 
     @Override
@@ -3902,6 +3974,172 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/roles/" + roleId + "/permissions");
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse surveyCreate(String tenant, String token, SurveyRequest requestBody) {
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(requestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/surveys");
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse surveyUpdate(String tenant, String token, long surveyId, SurveyRequest requestBody) {
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(requestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("PUT");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/surveys/" + surveyId);
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse surveyDeactivate(String tenant, String token, long surveyId) {
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setUri(this.baseUrl + "/surveys/" + surveyId + "?command=deactivate");
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse surveyActivate(String tenant, String token, long surveyId) {
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setUri(this.baseUrl + "/surveys/" + surveyId + "?command=activate");
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse surveyScoreCreate(String tenant, String token, long surveyId, PostScoreRequest requestBody) {
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(requestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/surveys/scorecards/" + surveyId);
+        HttpUriRequest request = requestBuilder.build();
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, FineractResponse.class);
+            } else {
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public FineractResponse surveyLookupTableCreate(String tenant, String token, long surveyId, PostLookupTableRequest requestBody) {
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(requestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/surveys/" + surveyId + "/lookuptables");
         HttpUriRequest request = requestBuilder.build();
         try (CloseableHttpResponse response = this.client.execute(request)) {
             String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);

@@ -2,7 +2,7 @@ package com.angkorteam.fintech.client.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PostCodeValuesDataRequest {
+public class PostCodeValueRequest {
 
     private String name;
 

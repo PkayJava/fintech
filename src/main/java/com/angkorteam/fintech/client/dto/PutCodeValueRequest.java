@@ -2,7 +2,7 @@ package com.angkorteam.fintech.client.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PutCodeValuesDataRequest {
+public class PutCodeValueRequest {
 
     private String name;
 
@@ -44,5 +44,5 @@ public class PutCodeValuesDataRequest {
     public void setActive(boolean active) {
         this.active = active;
     }
-
+    
 }

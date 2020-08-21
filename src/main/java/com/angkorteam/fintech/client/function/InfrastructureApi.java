@@ -51,15 +51,15 @@ public interface InfrastructureApi {
 
     FineractResponse smsCampaignClose(String tenant, String token, long campaignId);
 
-    FineractResponse codeCreate(String tenant, String token);
+    FineractResponse codeCreate(String tenant, String token, CodeRequest requestBody);
 
-    FineractResponse codeUpdate(String tenant, String token, long codeId);
+    FineractResponse codeUpdate(String tenant, String token, long codeId, CodeRequest requestBody);
 
     FineractResponse codeDelete(String tenant, String token, long codeId);
 
-    FineractResponse codeValueCreate(String tenant, String token, long codeId, PostCodeValuesDataRequest requestBody);
+    FineractResponse codeValueCreate(String tenant, String token, long codeId, PostCodeValueRequest requestBody);
 
-    FineractResponse codeValueUpdate(String tenant, String token, long codeId, long codeValueId, PutCodeValuesDataRequest requestBody);
+    FineractResponse codeValueUpdate(String tenant, String token, long codeId, long codeValueId, PutCodeValueRequest requestBody);
 
     FineractResponse codeValueDelete(String tenant, String token, long codeId, long codeValueId);
 

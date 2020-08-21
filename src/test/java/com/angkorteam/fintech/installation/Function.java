@@ -279,7 +279,7 @@ public class Function {
                     boolean has = count > 0L;
                     if (!has) {
                         String description = temp[2];
-                        PostCodeValuesDataRequest request = new PostCodeValuesDataRequest();
+                        PostCodeValueRequest request = new PostCodeValueRequest();
                         request.setActive(true);
                         request.setName(value);
                         request.setDescription(description);

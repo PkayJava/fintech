@@ -85,12 +85,12 @@ public class TestProgram {
 //        request.getColumns().add(PostDataTableRequest.Column.string("aaaaaaaaa", true, 100));
 //        client.datatableCreate(tenant, token, request);
 
-        Map<String, Object> request2 = new HashMap<>();
-        request2.put("aaaaaaaaa", "Hello");
+//        Map<String, Object> request2 = new HashMap<>();
+//        request2.put("aaaaaaaaa", "Hello");
 
 //        client.datatableDelete(tenant, token, "sssssssssssss");
 
-         client.datatableEntryCreate(tenant, token, "sssssssssssss", 1L, request2);
+//         client.datatableEntryCreate(tenant, token, "sssssssssssss", 1L, request2);
 
 //
 
