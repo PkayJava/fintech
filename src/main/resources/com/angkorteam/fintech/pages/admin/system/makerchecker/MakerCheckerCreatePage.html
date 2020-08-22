@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta code="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+</head>
+<body>
+<wicket:extend>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <form wicket:id="createForm">
+                            <div class="card-header">
+                                <h5 class="card-title">Create Permission</h5>
+                            </div>
+                            <div class="card-body">
+                                <div wicket:id="row1">
+                                    <div wicket:id="codeColumn">
+                                        <wicket:container wicket:id="codeContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="codeField">Code</label>
+                                                <input type="text" wicket:id="codeField" class="form-control"/>
+                                                <span wicket:id="codeFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="lastColumn"/>
+                                </div>
+                                <div wicket:id="row2">
+                                    <div wicket:id="groupingColumn">
+                                        <wicket:container wicket:id="groupingContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="groupingField">Grouping</label>
+                                                <input type="text" wicket:id="groupingField" class="form-control"/>
+                                                <span wicket:id="groupingFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="entityColumn">
+                                        <wicket:container wicket:id="entityContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="entityField">Entity</label>
+                                                <input type="text" wicket:id="entityField" class="form-control"/>
+                                                <span wicket:id="entityFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="actionColumn">
+                                        <wicket:container wicket:id="actionContainer">
+                                            <div class="form-group">
+                                                <label wicket:for="actionField">Action</label>
+                                                <input type="text" wicket:id="actionField" class="form-control"/>
+                                                <span wicket:id="actionFeedback"/>
+                                            </div>
+                                        </wicket:container>
+                                    </div>
+                                    <div wicket:id="lastColumn"/>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button wicket:id="createButton" type="submit" class="btn btn-info">Create</button>
+                                <a wicket:id="cancelButton" class="btn btn-info">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</wicket:extend>
+</body>
+
+</html>

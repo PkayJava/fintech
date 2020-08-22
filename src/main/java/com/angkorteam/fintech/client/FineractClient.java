@@ -17,6 +17,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.wicket.WicketRuntimeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import java.io.Closeable;
@@ -39,6 +41,8 @@ public class FineractClient implements Closeable,
         InteroperationApi,
         SpmApi,
         AccountingApi {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FineractClient.class);
 
     private static final String DATE_FORMAT_KEY = "dateFormat";
     private static final String DATE_FORMAT_VALUE = "yyyy-MM-dd";
@@ -66,6 +70,24 @@ public class FineractClient implements Closeable,
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
+    protected <T> T execute(Class<T> classOfT, HttpUriRequest request) {
+        try (CloseableHttpResponse response = this.client.execute(request)) {
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                return this.gson.fromJson(responseText, classOfT);
+            } else {
+                LOGGER.info(responseText);
+                if (responseText.contains("developerMessage")) {
+                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                } else {
+                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                }
+            }
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
     @Override
     public PostAuthenticationResponse authentication(String tenant, AuthenticateRequest requestBody) {
         EntityBuilder entityBuilder = EntityBuilder.create();
@@ -78,21 +100,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/authentication");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, PostAuthenticationResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(PostAuthenticationResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -119,21 +127,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/offices");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -160,21 +154,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/offices/" + officeId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -204,21 +184,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/officetransactions");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -227,21 +193,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/officetransactions/" + transactionId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -266,21 +218,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/runaccruals");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -307,21 +245,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/glclosures");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -337,21 +261,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/glclosures/" + glClosureId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -360,21 +270,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/glclosures/" + glClosureId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -393,22 +289,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/passwordpreferences");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -427,21 +308,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/permissions");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -457,21 +324,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/roles");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -487,21 +340,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/roles/" + roleId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -526,21 +365,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/workingdays");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -556,21 +381,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/funds");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -586,21 +397,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/funds/" + fundId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -616,21 +413,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/codes/" + codeId + "/codevalues");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -646,21 +429,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/codes/" + codeId + "/codevalues/" + codeValueId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -669,21 +438,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/codes/" + codeId + "/codevalues/" + codeValueId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -699,21 +454,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/currencies");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -751,21 +492,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/tellers");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -781,21 +508,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/paymenttypes");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -811,21 +524,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/paymenttypes/" + paymentTypeId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -834,21 +533,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/paymenttypes/" + paymentTypeId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -895,21 +580,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/holidays");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -941,22 +612,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/staff");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -988,22 +644,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/staff/" + staffId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1046,22 +687,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/glaccounts");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1096,22 +722,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/accountingrules");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1158,22 +769,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/taxes/component");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1222,22 +818,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/taxes/group");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1275,22 +856,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/floatingrates");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1370,22 +936,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/charges");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1546,22 +1097,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/clients");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1620,22 +1156,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/groups");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1694,22 +1215,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/centers");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1737,22 +1243,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/financialactivityaccounts");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1780,22 +1271,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/financialactivityaccounts/" + mappingId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1804,22 +1280,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/financialactivityaccounts/" + mappingId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1862,22 +1323,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/glaccounts/" + glAccountId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1886,22 +1332,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/glaccounts/" + glAccountId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -1984,22 +1415,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/journalentries?command=createOpeningBalance");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2015,22 +1431,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/journalentries?command=updateRunningBalance");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2113,22 +1514,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/journalentries?command=defineOpeningBalance");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2144,22 +1530,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/journalentries/" + transactionId + "?command=reverse");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2185,22 +1556,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/provisioningentries");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2215,22 +1571,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/provisioningentries/" + entryId + "?command=createjournalentry");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2245,22 +1586,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/provisioningentries/" + entryId + "?command=recreateprovisioningentry");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2305,22 +1631,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/accountingrules/" + accountingRuleId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2329,22 +1640,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/accountingrules/" + accountingRuleId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2360,22 +1656,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/adhocquery");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2391,22 +1672,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/adhocquery/" + adhocId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2415,22 +1681,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/adhocquery/" + adhocId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2446,22 +1697,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/batches?enclosingTransaction=" + enclosingTransaction);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2470,22 +1706,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/makercheckers/" + auditId + "?command=approve");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2494,22 +1715,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/makercheckers/" + auditId + "?command=reject");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2518,22 +1724,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/makercheckers/" + auditId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2561,22 +1752,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/accountnumberformats");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2599,22 +1775,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/accountnumberformats/" + accountNumberFormatId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2623,22 +1784,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/accountnumberformats/" + accountNumberFormatId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2661,22 +1807,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/caches");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2730,22 +1861,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/email");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2761,22 +1877,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/email/" + resourceId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2785,22 +1886,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/email/" + resourceId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2826,22 +1912,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/email/configuration");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2897,22 +1968,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/email/campaign");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2993,22 +2049,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/codes");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3024,22 +2065,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/codes/" + codeId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3048,22 +2074,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/codes/" + codeId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3135,22 +2146,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/datatables");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3218,22 +2214,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/datatables/" + datatableName);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3242,22 +2223,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/datatables/" + datatableName);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3277,22 +2243,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/datatables/register/" + datatable + "/" + apptable.getLiteral());
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3301,22 +2252,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/datatables/deregister/" + datatable);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3337,22 +2273,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/datatables/" + datatable + "/" + apptableId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3373,22 +2294,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/datatables/" + datatable + "/" + apptableId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3409,22 +2315,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/datatables/" + datatable + "/" + apptableId + "/" + datatableId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3433,22 +2324,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/datatables/" + datatable + "/" + apptableId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3457,22 +2333,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/datatables/" + datatable + "/" + apptableId + "/" + datatableId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3502,22 +2363,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/entityDatatableChecks");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3526,22 +2372,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/entityDatatableChecks/" + entityDatatableCheckId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3810,22 +2641,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/users");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3864,22 +2680,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/users/" + userId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3888,22 +2689,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/users/" + userId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3912,22 +2698,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/roles/" + roleId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                System.out.println(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3942,21 +2713,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/roles/" + roleId + "?command=disable");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -3971,21 +2728,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/roles/" + roleId + "?command=enable");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -4004,21 +2747,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/roles/" + roleId + "/permissions");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -4034,21 +2763,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/surveys");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -4064,21 +2779,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/surveys/" + surveyId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -4087,21 +2788,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/surveys/" + surveyId + "?command=deactivate");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -4110,21 +2797,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setUri(this.baseUrl + "/surveys/" + surveyId + "?command=activate");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -4140,21 +2813,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/surveys/scorecards/" + surveyId);
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -4170,21 +2829,7 @@ public class FineractClient implements Closeable,
         requestBuilder.addHeader("Authorization", "Basic " + token);
         requestBuilder.setEntity(entity);
         requestBuilder.setUri(this.baseUrl + "/surveys/" + surveyId + "/lookuptables");
-        HttpUriRequest request = requestBuilder.build();
-        try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, FineractResponse.class);
-            } else {
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
-                } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
-                }
-            }
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.pages.TodoPage;
 import com.angkorteam.fintech.pages.admin.system.code.CodeBrowsePage;
 import com.angkorteam.fintech.pages.admin.system.configuration.ConfigurationBrowsePage;
+import com.angkorteam.fintech.pages.admin.system.makerchecker.MakerCheckerBrowsePage;
 import com.angkorteam.fintech.pages.admin.system.role.RoleBrowsePage;
 import com.angkorteam.fintech.pages.admin.system.table.DataTableBrowsePage;
 import com.angkorteam.webui.frmk.common.Bookmark;
@@ -64,7 +65,7 @@ public class SystemPage extends MasterPage {
         this.schedulerJobsLink = new BookmarkablePageLink<>("schedulerJobsLink", TodoPage.class);
         body.add(this.schedulerJobsLink);
 
-        this.configureMakerCheckerTasksLink = new BookmarkablePageLink<>("configureMakerCheckerTasksLink", TodoPage.class);
+        this.configureMakerCheckerTasksLink = new BookmarkablePageLink<>("configureMakerCheckerTasksLink", MakerCheckerBrowsePage.class);
         body.add(this.configureMakerCheckerTasksLink);
 
         this.configurationsLink = new BookmarkablePageLink<>("configurationsLink", ConfigurationBrowsePage.class);
