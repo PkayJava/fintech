@@ -6,25 +6,25 @@ import java.util.List;
 
 public class PostScoreRequest {
 
-    private Long id;
+    private long id;
 
-    private Long userId;
+    private long userId;
 
     private String username;
 
-    private Long clientId;
+    private long clientId;
 
-    private Long surveyId;
+    private long surveyId;
 
     private String surveyName;
 
-    private List<ScorecardValue> scorecardValues;
+    private List<ScorecardValue> scorecardValues = new ArrayList<>();
 
     public PostScoreRequest() {
     }
 
-    private PostScoreRequest(final Long id, final Long userId, final String username, final Long surveyId, final String surveyName,
-                             final Long clientId) {
+    private PostScoreRequest(final long id, final long userId, final String username, final long surveyId, final String surveyName,
+                             final long clientId) {
         this.id = id;
         this.userId = userId;
         this.clientId = clientId;
@@ -34,16 +34,16 @@ public class PostScoreRequest {
         this.username = username;
     }
 
-    public static PostScoreRequest instance(final Long id, final Long userId, final String username, final Long surveyId,
-                                            final String surveyName, final Long clientId) {
+    public static PostScoreRequest instance(final long id, final long userId, final String username, final long surveyId,
+                                            final String surveyName, final long clientId) {
         return new PostScoreRequest(id, userId, username, surveyId, surveyName, clientId);
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public Long getClientId() {
+    public long getClientId() {
         return clientId;
     }
 
@@ -62,7 +62,7 @@ public class PostScoreRequest {
         return this.username;
     }
 
-    public Long getSurveyId() {
+    public long getSurveyId() {
         return this.surveyId;
     }
 
@@ -70,15 +70,15 @@ public class PostScoreRequest {
         return this.surveyName;
     }
 
-    public Long getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -86,11 +86,11 @@ public class PostScoreRequest {
         this.username = username;
     }
 
-    public void setClientId(Long clientId) {
+    public void setClientId(long clientId) {
         this.clientId = clientId;
     }
 
-    public void setSurveyId(Long surveyId) {
+    public void setSurveyId(long surveyId) {
         this.surveyId = surveyId;
     }
 
@@ -100,49 +100,49 @@ public class PostScoreRequest {
 
     public static class ScorecardValue {
 
-        private Long questionId;
+        private long questionId;
 
-        private Long responseId;
+        private long responseId;
 
-        private Integer value;
+        private int value;
 
         private Date createdOn;
 
         public ScorecardValue() {
         }
 
-        private ScorecardValue(final Long questionId, final Long responseId, final Integer value, final Date createdOn) {
+        private ScorecardValue(final long questionId, final long responseId, final int value, final Date createdOn) {
             this.questionId = questionId;
             this.responseId = responseId;
             this.value = value;
             this.createdOn = createdOn;
         }
 
-        public static ScorecardValue instance(final Long questionId, final Long responseId, final Integer value, final Date createdOn) {
+        public static ScorecardValue instance(final long questionId, final long responseId, final int value, final Date createdOn) {
             return new ScorecardValue(questionId, responseId, value, createdOn);
         }
 
-        public Long getQuestionId() {
+        public long getQuestionId() {
             return questionId;
         }
 
-        public void setQuestionId(Long questionId) {
+        public void setQuestionId(long questionId) {
             this.questionId = questionId;
         }
 
-        public Long getResponseId() {
+        public long getResponseId() {
             return responseId;
         }
 
-        public void setResponseId(Long responseId) {
+        public void setResponseId(long responseId) {
             this.responseId = responseId;
         }
 
-        public Integer getValue() {
+        public int getValue() {
             return value;
         }
 
-        public void setValue(Integer value) {
+        public void setValue(int value) {
             this.value = value;
         }
 

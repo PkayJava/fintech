@@ -121,11 +121,11 @@ public interface InfrastructureApi {
 
     FineractResponse imageDelete(String tenant, String token);
 
-    FineractResponse entityCreate(String tenant, String token);
+    FineractResponse entityToEntityCreate(String tenant, String token, long relId, EntityToEntityRequest requestBody);
 
-    FineractResponse entityUpdate(String tenant, String token);
+    FineractResponse entityToEntityUpdate(String tenant, String token, long mapId, EntityToEntityRequest requestBody);
 
-    FineractResponse entityDelete(String tenant, String token);
+    FineractResponse entityToEntityDelete(String tenant, String token, long mapId);
 
     FineractResponse deviceRegistration(String tenant, String token);
 
@@ -170,11 +170,5 @@ public interface InfrastructureApi {
     FineractResponse smsDelete(String tenant, String token);
 
     FineractResponse likelihoodUpdate(String tenant, String token);
-
-    FineractResponse surveyCreate(String tenant, String token);
-
-    FineractResponse surveyRegister(String tenant, String token);
-
-    FineractResponse surveyDelete(String tenant, String token);
 
 }

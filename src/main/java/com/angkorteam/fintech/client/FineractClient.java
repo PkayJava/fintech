@@ -72,16 +72,20 @@ public class FineractClient implements Closeable,
 
     protected <T> T execute(Class<T> classOfT, HttpUriRequest request) {
         try (CloseableHttpResponse response = this.client.execute(request)) {
-            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
-                return this.gson.fromJson(responseText, classOfT);
-            } else {
-                LOGGER.info(responseText);
-                if (responseText.contains("developerMessage")) {
-                    throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+            if (response.getEntity() != null) {
+                String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+                if (response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299) {
+                    return this.gson.fromJson(responseText, classOfT);
                 } else {
-                    throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                    LOGGER.info(responseText);
+                    if (responseText.contains("developerMessage")) {
+                        throw new AppException(responseText, this.gson.fromJson(responseText, AppError.class));
+                    } else {
+                        throw new SysException(responseText, this.gson.fromJson(responseText, SysError.class));
+                    }
                 }
+            } else {
+                return null;
             }
         } catch (IOException e) {
             throw new WicketRuntimeException(e);
@@ -352,6 +356,8 @@ public class FineractClient implements Closeable,
         internalRequestBody.put("extendTermForRepaymentsOnHolidays", requestBody.isExtendTermForRepaymentsOnHolidays());
         if (requestBody.getRepaymentRescheduleType() != null) {
             internalRequestBody.put("repaymentRescheduleType", Long.valueOf(requestBody.getRepaymentRescheduleType().getLiteral()));
+        } else {
+            internalRequestBody.put("repaymentRescheduleType", null);
         }
 
         EntityBuilder entityBuilder = EntityBuilder.create();
@@ -805,6 +811,8 @@ public class FineractClient implements Closeable,
                 }
                 taxComponents.add(taxComponent);
             }
+        } else {
+            internalRequestBody.put("taxComponents", null);
         }
 
         EntityBuilder entityBuilder = EntityBuilder.create();
@@ -843,6 +851,8 @@ public class FineractClient implements Closeable,
                 ratePeriod.put("isDifferentialToBaseLendingRate", o.isDifferentialToBaseLendingRate());
                 ratePeriods.add(ratePeriod);
             }
+        } else {
+            internalRequestBody.put("interestRate", null);
         }
 
         EntityBuilder entityBuilder = EntityBuilder.create();
@@ -2133,6 +2143,8 @@ public class FineractClient implements Closeable,
                 }
                 columns.add(column);
             }
+        } else {
+            internalRequestBody.put("columns", null);
         }
 
         EntityBuilder entityBuilder = EntityBuilder.create();
@@ -2344,12 +2356,18 @@ public class FineractClient implements Closeable,
         internalRequestBody.put("datatableName", requestBody.getDatatableName());
         if (requestBody.getEntity() != null) {
             internalRequestBody.put("entity", requestBody.getEntity().getLiteral());
+        } else {
+            internalRequestBody.put("entity", null);
         }
         if (requestBody.getStatus() != null) {
             internalRequestBody.put("status", Integer.valueOf(requestBody.getStatus().getLiteral()));
+        } else {
+            internalRequestBody.put("status", null);
         }
         if (requestBody.getProductId() > 0) {
             internalRequestBody.put("productId", requestBody.getProductId());
+        } else {
+            internalRequestBody.put("productId", null);
         }
 
         EntityBuilder entityBuilder = EntityBuilder.create();
@@ -2431,18 +2449,92 @@ public class FineractClient implements Closeable,
     }
 
     @Override
-    public FineractResponse entityCreate(String tenant, String token) {
-        return null;
+    public FineractResponse entityToEntityCreate(String tenant, String token, long relId, EntityToEntityRequest requestBody) {
+        Map<String, Object> internalRequestBody = new HashMap<>();
+        internalRequestBody.put(LOCALE_KEY, LOCALE_VALUE);
+        internalRequestBody.put(DATE_FORMAT_KEY, DATE_FORMAT_VALUE);
+        if (requestBody.getFromId() > 0) {
+            internalRequestBody.put("fromId", requestBody.getFromId());
+        } else {
+            internalRequestBody.put("fromId", null);
+        }
+        if (requestBody.getToId() > 0) {
+            internalRequestBody.put("toId", requestBody.getToId());
+        } else {
+            internalRequestBody.put("toId", null);
+        }
+        if (requestBody.getStartDate() != null) {
+            internalRequestBody.put("startDate", DateFormatUtils.format(requestBody.getStartDate(), DATE_FORMAT_VALUE));
+        } else {
+            internalRequestBody.put("startDate", null);
+        }
+        if (requestBody.getEndDate() != null) {
+            internalRequestBody.put("endDate", DateFormatUtils.format(requestBody.getEndDate(), DATE_FORMAT_VALUE));
+        } else {
+            internalRequestBody.put("endDate", null);
+        }
+
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(internalRequestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/entitytoentitymapping/" + relId);
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
-    public FineractResponse entityUpdate(String tenant, String token) {
-        return null;
+    public FineractResponse entityToEntityUpdate(String tenant, String token, long mapId, EntityToEntityRequest requestBody) {
+        Map<String, Object> internalRequestBody = new HashMap<>();
+        internalRequestBody.put(LOCALE_KEY, LOCALE_VALUE);
+        internalRequestBody.put(DATE_FORMAT_KEY, DATE_FORMAT_VALUE);
+        if (requestBody.getFromId() > 0) {
+            internalRequestBody.put("fromId", requestBody.getFromId());
+        } else {
+            internalRequestBody.put("fromId", null);
+        }
+        if (requestBody.getToId() > 0) {
+            internalRequestBody.put("toId", requestBody.getToId());
+        } else {
+            internalRequestBody.put("toId", null);
+        }
+        if (requestBody.getStartDate() != null) {
+            internalRequestBody.put("startDate", DateFormatUtils.format(requestBody.getStartDate(), DATE_FORMAT_VALUE));
+        } else {
+            internalRequestBody.put("startDate", null);
+        }
+        if (requestBody.getEndDate() != null) {
+            internalRequestBody.put("endDate", DateFormatUtils.format(requestBody.getEndDate(), DATE_FORMAT_VALUE));
+        } else {
+            internalRequestBody.put("endDate", null);
+        }
+
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(internalRequestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("PUT");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/entitytoentitymapping/" + mapId);
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
-    public FineractResponse entityDelete(String tenant, String token) {
-        return null;
+    public FineractResponse entityToEntityDelete(String tenant, String token, long mapId) {
+        RequestBuilder requestBuilder = RequestBuilder.create("DELETE");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setUri(this.baseUrl + "/entitytoentitymapping/" + mapId);
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
@@ -2467,13 +2559,19 @@ public class FineractClient implements Closeable,
         internalRequestBody.put("name", requestBody.getName());
         if (requestBody.getConfig() != null && !requestBody.getConfig().isEmpty()) {
             internalRequestBody.put("config", requestBody.getConfig());
+        } else {
+            internalRequestBody.put("config", null);
         }
         if (requestBody.getEvents() != null && !requestBody.getEvents().isEmpty()) {
             internalRequestBody.put("events", requestBody.getEvents());
+        } else {
+            internalRequestBody.put("events", null);
         }
         internalRequestBody.put("isActive", requestBody.isActive());
         if (requestBody.getTemplateId() > 0) {
             internalRequestBody.put("templateId", requestBody.getTemplateId());
+        } else {
+            internalRequestBody.put("templateId", null);
         }
 
         EntityBuilder entityBuilder = EntityBuilder.create();
@@ -2497,13 +2595,19 @@ public class FineractClient implements Closeable,
         internalRequestBody.put("name", requestBody.getName());
         if (requestBody.getConfig() != null && !requestBody.getConfig().isEmpty()) {
             internalRequestBody.put("config", requestBody.getConfig());
+        } else {
+            internalRequestBody.put("config", null);
         }
         if (requestBody.getEvents() != null && !requestBody.getEvents().isEmpty()) {
             internalRequestBody.put("events", requestBody.getEvents());
+        } else {
+            internalRequestBody.put("events", null);
         }
         internalRequestBody.put("isActive", requestBody.isActive());
         if (requestBody.getTemplateId() > 0) {
             internalRequestBody.put("templateId", requestBody.getTemplateId());
+        } else {
+            internalRequestBody.put("templateId", null);
         }
 
         EntityBuilder entityBuilder = EntityBuilder.create();
@@ -2605,21 +2709,6 @@ public class FineractClient implements Closeable,
     }
 
     @Override
-    public FineractResponse surveyCreate(String tenant, String token) {
-        return null;
-    }
-
-    @Override
-    public FineractResponse surveyRegister(String tenant, String token) {
-        return null;
-    }
-
-    @Override
-    public FineractResponse surveyDelete(String tenant, String token) {
-        return null;
-    }
-
-    @Override
     public FineractResponse interoperationTransfer(String tenant, String token, long staffId, PutStaffRequest requestBody) {
         return null;
     }
@@ -2664,16 +2753,24 @@ public class FineractClient implements Closeable,
         Map<String, Object> internalRequestBody = new HashMap<>();
         if (requestBody.getOfficeId() > 0) {
             internalRequestBody.put("officeId", requestBody.getOfficeId());
+        } else {
+            internalRequestBody.put("officeId", null);
         }
         if (requestBody.getStaffId() > 0) {
             internalRequestBody.put("staffId", requestBody.getStaffId());
+        } else {
+            internalRequestBody.put("staffId", null);
         }
         if (requestBody.getRoles() != null && !requestBody.getRoles().isEmpty()) {
             internalRequestBody.put("roles", requestBody.getRoles());
+        } else {
+            internalRequestBody.put("roles", null);
         }
         internalRequestBody.put("isSelfServiceUser", requestBody.isSelfServiceUser());
         if (requestBody.getClients() != null && !requestBody.getClients().isEmpty()) {
             internalRequestBody.put("clients", requestBody.getClients());
+        } else {
+            internalRequestBody.put("clients", null);
         }
         internalRequestBody.put("sendPasswordToEmail", requestBody.isSendPasswordToEmail());
         internalRequestBody.put("username", requestBody.getUsername());
@@ -2703,16 +2800,24 @@ public class FineractClient implements Closeable,
         Map<String, Object> internalRequestBody = new HashMap<>();
         if (requestBody.getOfficeId() > 0) {
             internalRequestBody.put("officeId", requestBody.getOfficeId());
+        } else {
+            internalRequestBody.put("officeId", null);
         }
         if (requestBody.getStaffId() > 0) {
             internalRequestBody.put("staffId", requestBody.getStaffId());
+        } else {
+            internalRequestBody.put("staffId", null);
         }
         if (requestBody.getRoles() != null && !requestBody.getRoles().isEmpty()) {
             internalRequestBody.put("roles", requestBody.getRoles());
+        } else {
+            internalRequestBody.put("roles", null);
         }
         internalRequestBody.put("isSelfServiceUser", requestBody.isSelfServiceUser());
         if (requestBody.getClients() != null && !requestBody.getClients().isEmpty()) {
             internalRequestBody.put("clients", requestBody.getClients());
+        } else {
+            internalRequestBody.put("clients", null);
         }
         internalRequestBody.put("sendPasswordToEmail", requestBody.isSendPasswordToEmail());
         internalRequestBody.put("username", requestBody.getUsername());
@@ -2856,10 +2961,34 @@ public class FineractClient implements Closeable,
 
     @Override
     public FineractResponse surveyScoreCreate(String tenant, String token, long surveyId, PostScoreRequest requestBody) {
+        Map<String, Object> internalRequestBody = new HashMap<>();
+        if (requestBody.getClientId() > 0) {
+            internalRequestBody.put("clientId", requestBody.getClientId());
+        } else {
+            internalRequestBody.put("clientId", null);
+        }
+        internalRequestBody.put("id", requestBody.getId());
+        internalRequestBody.put("surveyId", requestBody.getSurveyId());
+        internalRequestBody.put("surveyName", requestBody.getSurveyName());
+        internalRequestBody.put("userId", requestBody.getUserId());
+        internalRequestBody.put("username", requestBody.getUsername());
+        if (requestBody.getScorecardValues() != null && !requestBody.getScorecardValues().isEmpty()) {
+            List<Map<String, Object>> scorecardValues = new ArrayList<>();
+            internalRequestBody.put("scorecardValues", scorecardValues);
+            for (PostScoreRequest.ScorecardValue v : requestBody.getScorecardValues()) {
+                Map<String, Object> scorecardValue = new HashMap<>();
+                scorecardValue.put("value", v.getValue());
+                scorecardValue.put("questionId", v.getQuestionId());
+                scorecardValue.put("responseId", v.getResponseId());
+                scorecardValue.put("createdOn", DateFormatUtils.format(v.getCreatedOn(), "yyyy-MM-dd"));
+                scorecardValues.add(scorecardValue);
+            }
+        }
+
         EntityBuilder entityBuilder = EntityBuilder.create();
         entityBuilder.setContentType(ContentType.APPLICATION_JSON);
         entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
-        entityBuilder.setText(this.gson.toJson(requestBody));
+        entityBuilder.setText(this.gson.toJson(internalRequestBody));
         HttpEntity entity = entityBuilder.build();
 
         RequestBuilder requestBuilder = RequestBuilder.create("POST");
@@ -2885,6 +3014,7 @@ public class FineractClient implements Closeable,
         requestBuilder.setUri(this.baseUrl + "/surveys/" + surveyId + "/lookuptables");
         return execute(FineractResponse.class, requestBuilder.build());
     }
+
 
     @Override
     public void close() throws IOException {

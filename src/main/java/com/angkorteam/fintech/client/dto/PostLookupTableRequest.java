@@ -1,19 +1,20 @@
 package com.angkorteam.fintech.client.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostLookupTableRequest {
 
     private String key;
 
-    private String description;
+    private long description;
 
-    private List<LookupTableEntry> entries;
+    private List<LookupTableEntry> entries = new ArrayList<>();
 
     public PostLookupTableRequest() {
     }
 
-    public PostLookupTableRequest(final String key, final String description, final List<LookupTableEntry> entries) {
+    public PostLookupTableRequest(final String key, final long description, final List<LookupTableEntry> entries) {
         this.key = key;
         this.description = description;
         this.entries = entries;
@@ -27,11 +28,11 @@ public class PostLookupTableRequest {
         this.key = key;
     }
 
-    public String getDescription() {
+    public long getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(long description) {
         this.description = description;
     }
 
@@ -45,42 +46,42 @@ public class PostLookupTableRequest {
 
     public static class LookupTableEntry {
 
-        private Integer valueFrom;
+        private int valueFrom;
 
-        private Integer valueTo;
+        private int valueTo;
 
-        private Double score;
+        private double score;
 
         public LookupTableEntry() {
         }
 
-        public LookupTableEntry(final Integer valueFrom, final Integer valueTo, final Double score) {
+        public LookupTableEntry(final int valueFrom, final int valueTo, final double score) {
             this.valueFrom = valueFrom;
             this.valueTo = valueTo;
             this.score = score;
         }
 
-        public Integer getValueFrom() {
+        public int getValueFrom() {
             return valueFrom;
         }
 
-        public void setValueFrom(Integer valueFrom) {
+        public void setValueFrom(int valueFrom) {
             this.valueFrom = valueFrom;
         }
 
-        public Integer getValueTo() {
+        public int getValueTo() {
             return valueTo;
         }
 
-        public void setValueTo(Integer valueTo) {
+        public void setValueTo(int valueTo) {
             this.valueTo = valueTo;
         }
 
-        public Double getScore() {
+        public double getScore() {
             return score;
         }
 
-        public void setScore(Double score) {
+        public void setScore(double score) {
             this.score = score;
         }
     }
