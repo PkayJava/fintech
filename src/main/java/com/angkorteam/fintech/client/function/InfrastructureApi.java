@@ -133,11 +133,11 @@ public interface InfrastructureApi {
 
     FineractResponse deviceDelete(String tenant, String token);
 
-    FineractResponse hookCreate(String tenant, String token);
+    FineractResponse hookCreate(String tenant, String token, PostHookRequest requestBody);
 
-    FineractResponse hookUpdate(String tenant, String token);
+    FineractResponse hookUpdate(String tenant, String token, long hookId, PutHookRequest requestBody);
 
-    FineractResponse hookDelete(String tenant, String token);
+    FineractResponse hookDelete(String tenant, String token, long hookId);
 
     FineractResponse jobStart(String tenant, String token);
 

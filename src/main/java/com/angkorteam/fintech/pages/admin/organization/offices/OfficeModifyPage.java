@@ -5,7 +5,7 @@ import com.angkorteam.fintech.MifosDataContextManager;
 import com.angkorteam.fintech.MifosDataSourceManager;
 import com.angkorteam.fintech.client.FineractClient;
 import com.angkorteam.fintech.client.dto.PutOfficeRequest;
-import com.angkorteam.fintech.data.OptionMapper;
+import com.angkorteam.fintech.data.OptionUtilities;
 import com.angkorteam.fintech.data.SingleChoiceProvider;
 import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.factory.WebSession;
@@ -106,7 +106,7 @@ public class OfficeModifyPage extends MasterPage {
             selectQuery.addField(mOffice.ID.getName() + " as id");
             selectQuery.addField(mOffice.NAME.getName() + " as text");
             try {
-                this.parentOfficeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.toParam(), new OptionMapper());
+                this.parentOfficeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.toParam(), new OptionUtilities());
             } catch (EmptyResultDataAccessException e) {
             }
         }

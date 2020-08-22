@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:panel>
+    <div wicket:id="row">
+        <div wicket:id="rowColumn">
+            <wicket:container wicket:id="rowContainer">
+                <div class="form-group">
+                    <label wicket:for="itemField">
+                        <wicket:container wicket:id="itemLabel"/>
+                    </label>
+                    <input type="text" wicket:id="itemField" class="form-control"/>
+                    <span wicket:id="itemFeedback"/>
+                </div>
+            </wicket:container>
+        </div>
+        <div wicket:id="lastColumn"/>
+    </div>
+</wicket:panel>
+</body>
+</html>

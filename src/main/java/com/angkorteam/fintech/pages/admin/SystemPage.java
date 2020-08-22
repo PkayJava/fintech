@@ -5,6 +5,7 @@ import com.angkorteam.fintech.client.Function;
 import com.angkorteam.fintech.pages.TodoPage;
 import com.angkorteam.fintech.pages.admin.system.code.CodeBrowsePage;
 import com.angkorteam.fintech.pages.admin.system.configuration.ConfigurationBrowsePage;
+import com.angkorteam.fintech.pages.admin.system.hook.HookBrowsePage;
 import com.angkorteam.fintech.pages.admin.system.makerchecker.MakerCheckerBrowsePage;
 import com.angkorteam.fintech.pages.admin.system.role.RoleBrowsePage;
 import com.angkorteam.fintech.pages.admin.system.table.DataTableBrowsePage;
@@ -71,7 +72,7 @@ public class SystemPage extends MasterPage {
         this.configurationsLink = new BookmarkablePageLink<>("configurationsLink", ConfigurationBrowsePage.class);
         body.add(this.configurationsLink);
 
-        this.manageHooksLink = new BookmarkablePageLink<>("manageHooksLink", TodoPage.class);
+        this.manageHooksLink = new BookmarkablePageLink<>("manageHooksLink", HookBrowsePage.class);
         body.add(this.manageHooksLink);
 
         this.accountNumberPreferencesLink = new BookmarkablePageLink<>("accountNumberPreferencesLink", TodoPage.class);

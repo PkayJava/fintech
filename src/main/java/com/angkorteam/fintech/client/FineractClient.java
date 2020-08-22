@@ -2461,18 +2461,72 @@ public class FineractClient implements Closeable,
     }
 
     @Override
-    public FineractResponse hookCreate(String tenant, String token) {
-        return null;
+    public FineractResponse hookCreate(String tenant, String token, PostHookRequest requestBody) {
+        Map<String, Object> internalRequestBody = new HashMap<>();
+        internalRequestBody.put("displayName", requestBody.getDisplayName());
+        internalRequestBody.put("name", requestBody.getName());
+        if (requestBody.getConfig() != null && !requestBody.getConfig().isEmpty()) {
+            internalRequestBody.put("config", requestBody.getConfig());
+        }
+        if (requestBody.getEvents() != null && !requestBody.getEvents().isEmpty()) {
+            internalRequestBody.put("events", requestBody.getEvents());
+        }
+        internalRequestBody.put("isActive", requestBody.isActive());
+        if (requestBody.getTemplateId() > 0) {
+            internalRequestBody.put("templateId", requestBody.getTemplateId());
+        }
+
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(internalRequestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("POST");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/hooks");
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
-    public FineractResponse hookUpdate(String tenant, String token) {
-        return null;
+    public FineractResponse hookUpdate(String tenant, String token, long hookId, PutHookRequest requestBody) {
+        Map<String, Object> internalRequestBody = new HashMap<>();
+        internalRequestBody.put("displayName", requestBody.getDisplayName());
+        internalRequestBody.put("name", requestBody.getName());
+        if (requestBody.getConfig() != null && !requestBody.getConfig().isEmpty()) {
+            internalRequestBody.put("config", requestBody.getConfig());
+        }
+        if (requestBody.getEvents() != null && !requestBody.getEvents().isEmpty()) {
+            internalRequestBody.put("events", requestBody.getEvents());
+        }
+        internalRequestBody.put("isActive", requestBody.isActive());
+        if (requestBody.getTemplateId() > 0) {
+            internalRequestBody.put("templateId", requestBody.getTemplateId());
+        }
+
+        EntityBuilder entityBuilder = EntityBuilder.create();
+        entityBuilder.setContentType(ContentType.APPLICATION_JSON);
+        entityBuilder.setContentEncoding(StandardCharsets.UTF_8.name());
+        entityBuilder.setText(this.gson.toJson(internalRequestBody));
+        HttpEntity entity = entityBuilder.build();
+
+        RequestBuilder requestBuilder = RequestBuilder.create("PUT");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setEntity(entity);
+        requestBuilder.setUri(this.baseUrl + "/hooks/" + hookId);
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
-    public FineractResponse hookDelete(String tenant, String token) {
-        return null;
+    public FineractResponse hookDelete(String tenant, String token, long hookId) {
+        RequestBuilder requestBuilder = RequestBuilder.create("DELETE");
+        requestBuilder.addHeader("Fineract-Platform-TenantId", tenant);
+        requestBuilder.addHeader("Authorization", "Basic " + token);
+        requestBuilder.setUri(this.baseUrl + "/hooks/" + hookId);
+        return execute(FineractResponse.class, requestBuilder.build());
     }
 
     @Override
