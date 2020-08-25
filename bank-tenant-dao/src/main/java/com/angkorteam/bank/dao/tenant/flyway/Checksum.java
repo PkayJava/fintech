@@ -14,4 +14,10 @@ public interface Checksum {
 
     int V10__InterestPostingFieldsForSavings = -916724567;
 
+    int V13__AddGroupAndClientPendingConfiguration = -59598579;
+
+    int V14__RenameStatusIdToEnum = 276001307;
+
+    int V15__CenterPermissions = 2141241325;
+
 }

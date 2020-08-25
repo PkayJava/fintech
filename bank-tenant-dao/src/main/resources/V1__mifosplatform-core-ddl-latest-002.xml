@@ -1,25 +1,25 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
     <!-- drop accounting subsystem -->
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-001">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-1">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="acc_gl_account"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="acc_gl_account"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-002">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-2">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="acc_gl_closure"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="acc_gl_closure"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-003">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-3">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="acc_gl_journal_entry"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="acc_gl_journal_entry"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-004">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-4">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="acc_product_mapping"/>
         </preConditions>
@@ -27,259 +27,259 @@
     </changeSet>
 
     <!-- drop portfolio subsystem  -->
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-005">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-5">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="c_configuration"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="c_configuration"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-006">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-6">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_appuser"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_appuser"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-007">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-7">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_appuser_role"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_appuser_role"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-008">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-8">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_calendar"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_calendar"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-009">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-9">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_calendar_instance"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_calendar_instance"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-010">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-10">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_charge"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_charge"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-011">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-11">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_client"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_client"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-012">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-12">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_client_identifier"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_client_identifier"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-013">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-13">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_code"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_code"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-014">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-14">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_code_value"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_code_value"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-015">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-15">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_currency"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_currency"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-016">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-16">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_deposit_account"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_deposit_account"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-017">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-17">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_deposit_account_transaction"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_deposit_account_transaction"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-018">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-18">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_document"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_document"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-019">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-19">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_fund"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_fund"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-020">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-20">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_group"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_group"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-021">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-21">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_group_level"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_group_level"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-022">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-22">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_group_client"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_group_client"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-023">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-23">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_guarantor"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_guarantor"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-024">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-24">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_loan"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_loan"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-025">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-25">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_loan_charge"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_loan_charge"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-026">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-26">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_loan_arrears_aging"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_loan_arrears_aging"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-027">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-27">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_loan_collateral"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_loan_collateral"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-028">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-28">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_loan_officer_assignment_history"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_loan_officer_assignment_history"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-029">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-29">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_loan_repayment_schedule"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_loan_repayment_schedule"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-030">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-30">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_loan_transaction"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_loan_transaction"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-031">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-31">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_note"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_note"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-032">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-32">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_office"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_office"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-033">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-33">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_office_transaction"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_office_transaction"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-034">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-34">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_organisation_currency"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_organisation_currency"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-035">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-35">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_permission"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_permission"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-036">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-36">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_portfolio_command_source"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_portfolio_command_source"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-037">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-37">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_product_deposit"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_product_deposit"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-038">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-38">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_product_loan"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_product_loan"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-039">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-39">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_product_loan_charge"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_product_loan_charge"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-040">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-40">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_role"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_role"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-041">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-41">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_role_permission"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_role_permission"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-042">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-42">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_savings_account"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_savings_account"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-043">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-43">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_savings_account_transaction"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_savings_account_transaction"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-044">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-44">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_savings_product"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_savings_product"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-045">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-45">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="m_staff"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="m_staff"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-046">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-46">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="ref_loan_transaction_processing_strategy"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="ref_loan_transaction_processing_strategy"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-047">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-47">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="x_registered_table"/>
         </preConditions>
@@ -287,31 +287,31 @@
     </changeSet>
 
     <!-- drop portfolio subsystem -->
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-048">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-48">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="r_enum_value"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="r_enum_value"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-049">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-49">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="rpt_sequence"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="rpt_sequence"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-050">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-50">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="stretchy_parameter"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="stretchy_parameter"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-051">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-51">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="stretchy_report"/>
         </preConditions>
         <dropTable cascadeConstraints="true" tableName="stretchy_report"/>
     </changeSet>
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-052">
+    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-002-52">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="stretchy_report_parameter"/>
         </preConditions>

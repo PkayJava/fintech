@@ -1,5 +1,5 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    <changeSet author="Socheat KHAUV" id="V5__update-savings-product-and-account-tables">
+    <changeSet author="Socheat KHAUV" id="V5__update-savings-product-and-account-tables-1">
         <dropColumn columnName="nominal_interest_rate_period_frequency_enum" tableName="m_savings_product"/>
         <renameColumn columnDataType="DECIMAL(19, 6)" newColumnName="nominal_annual_interest_rate" oldColumnName="nominal_interest_rate_per_period" tableName="m_savings_product"/>
         <renameColumn columnDataType="SMALLINT" newColumnName="interest_compounding_period_enum" oldColumnName="interest_period_enum" tableName="m_savings_product"/>
