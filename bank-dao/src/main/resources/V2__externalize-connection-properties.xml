@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V2__externalize-connection-properties">
+        <addColumn tableName="tenants">
+            <column defaultValueNumeric="5" name="pool_initial_size" type="INT"/>
+            <column defaultValueNumeric="30000" name="pool_validation_interval" type="INT"/>
+            <column defaultValueNumeric="1" name="pool_remove_abandoned" type="TINYINT(3)"/>
+            <column defaultValueNumeric="60" name="pool_remove_abandoned_timeout" type="INT"/>
+            <column defaultValueNumeric="1" name="pool_log_abandoned" type="TINYINT(3)"/>
+            <column defaultValueNumeric="50" name="pool_abandon_when_percentage_full" type="INT"/>
+            <column defaultValueNumeric="1" name="pool_test_on_borrow" type="TINYINT(3)"/>
+            <column defaultValueNumeric="40" name="pool_max_active" type="INT"/>
+            <column defaultValueNumeric="20" name="pool_min_idle" type="INT"/>
+            <column defaultValueNumeric="10" name="pool_max_idle" type="INT"/>
+            <column defaultValueNumeric="60" name="pool_suspect_timeout" type="INT"/>
+            <column defaultValueNumeric="34000" name="pool_time_between_eviction_runs_millis" type="INT"/>
+            <column defaultValueNumeric="60000" name="pool_min_evictable_idle_time_millis" type="INT"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

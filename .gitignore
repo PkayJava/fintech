@@ -1,35 +1,6 @@
-# Compiled class file
-*.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-/.idea
-/.settings
-/target
+.idea/
+/target/
 .classpath
 .project
-fintech.iml
-.DS_Store
-/projectFilesBackup/
-/fintech.ipr
-/fintech.iws
-/.gradle/
-/logs/
-/tomcat.8080/
+/.settings/
+bank-master.iml

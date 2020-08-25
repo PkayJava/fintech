@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV"
+               id="V4__introduced_oltpId_reportId_columns_and_tenants_server_connection_table-005">
+        <createIndex indexName="index_1" tableName="tenants">
+            <column name="oltp_id"/>
+        </createIndex>
+        <createIndex indexName="index_2" tableName="tenants">
+            <column name="report_id"/>
+        </createIndex>
+        <addForeignKeyConstraint baseColumnNames="oltp_id" baseTableName="tenants" constraintName="constraint_1"
+                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="tenant_server_connections"
+                                 validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="report_id" baseTableName="tenants" constraintName="constraint_2"
+                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="tenant_server_connections"
+                                 validate="true"/>
+        <dropTable tableName="temp_tenants"/>
+    </changeSet>
+</databaseChangeLog>

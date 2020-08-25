@@ -1,0 +1,45 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V1__mifos-platform-shared-tenants-001">
+        <createTable tableName="tenants">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints notNullConstraintName="null_key_16" nullable="false" primaryKey="true"
+                             primaryKeyName="primary_key_3"/>
+            </column>
+            <column name="identifier" type="VARCHAR(100)">
+                <constraints notNullConstraintName="null_key_17" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints notNullConstraintName="null_key_18" nullable="false"/>
+            </column>
+            <column name="schema_name" type="VARCHAR(100)">
+                <constraints notNullConstraintName="null_key_18" nullable="false"/>
+            </column>
+            <column name="timezone_id" type="VARCHAR(100)">
+                <constraints notNullConstraintName="null_key_19" nullable="false"/>
+            </column>
+            <column name="country_id" type="INT"/>
+            <column name="joined_date" type="date"/>
+            <column name="created_date" type="datetime"/>
+            <column name="lastmodified_date" type="datetime"/>
+            <column name="schema_server" type="VARCHAR(100)" defaultValue="localhost">
+                <constraints notNullConstraintName="null_key_19" nullable="false"/>
+            </column>
+            <column name="schema_server_port" type="VARCHAR(10)" defaultValue="3306">
+                <constraints notNullConstraintName="null_key_19" nullable="false"/>
+            </column>
+            <column name="schema_username" type="VARCHAR(100)" defaultValue="root">
+                <constraints notNullConstraintName="null_key_19" nullable="false"/>
+            </column>
+            <column name="schema_password" type="VARCHAR(100)" defaultValue="mysql">
+                <constraints notNullConstraintName="null_key_19" nullable="false"/>
+            </column>
+            <column name="auto_update" type="TINYINT(3)" defaultValue="1">
+                <constraints notNullConstraintName="null_key_19" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

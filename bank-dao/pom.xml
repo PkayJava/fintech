@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.angkorteam.bank</groupId>
+    <artifactId>bank-dao</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
+    <name>bank-dao</name>
+
+
+    <properties>
+        <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <wtp.version>2.0</wtp.version>
+        <metamodel.version>5.3.2</metamodel.version>
+        <flyway.version>6.5.5</flyway.version>
+        <liquibase.version>4.0.0</liquibase.version>
+        <commons-io.version>2.7</commons-io.version>
+        <guava.version>29.0-jre</guava.version>
+        <mysql.version>8.0.21</mysql.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.angkorteam.bank</groupId>
+            <artifactId>bank-base-dao</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>${maven-eclipse-plugin.version}</version>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <wtpversion>${wtp.version}</wtpversion>
+                    <additionalConfig>
+                        <file>
+                            <name>.settings/org.eclipse.core.resources.prefs</name>
+                            <content><![CDATA[eclipse.preferences.version=1${line.separator}encoding/<project>=${project.build.sourceEncoding}${line.separator}]]></content>
+                        </file>
+                    </additionalConfig>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>${flyway.version}</version>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.version}</version>
+                    </dependency>
+                </dependencies>
+
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>migrate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <schemas>${db.name}</schemas>
+                    <url>${db.url}</url>
+                    <user>${db.user}</user>
+                    <driver>${db.driver}</driver>
+                    <password>${db.password}</password>
+                    <locations>
+                        <location>classpath:com/angkorteam/bank/dao/infrastructure/flyway</location>
+                    </locations>
+                    <cleanDisabled>false</cleanDisabled>
+                    <cleanOnValidationError>true</cleanOnValidationError>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>

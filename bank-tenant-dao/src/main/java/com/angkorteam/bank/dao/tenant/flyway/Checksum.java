@@ -1,0 +1,15 @@
+package com.angkorteam.bank.dao.tenant.flyway;
+
+public interface Checksum {
+
+    int V2__MifosXBaseReferenceDataUTF8 = -1230292539;
+
+    int V3__MifosXPermissionsAndAuthorisationUTF8 = -1291043467;
+
+    int V4__MifosXCoreReportsUTF8 = 1073664848;
+
+    int V7__RemoveReadMakerCheckerPermission = 1717046313;
+
+    int V8__DepositTransactionPermissionsIfTheyExist = 1;
+
+}
