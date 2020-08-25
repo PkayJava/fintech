@@ -18,13 +18,14 @@ import java.io.IOException;
 
 public class RepairProgram {
     public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException, TransformerException {
-        File folder = new File("C:/github/fintech/bank-tenant-dao/src/main/resources");
+        File folder = new File("bank-tenant-dao/src/main/resources");
 
         int notNullConstraintName = 1;
         int primaryKeyName = 1;
         int uniqueConstraintName = 1;
         int constraintName = 1;
         int indexName = 1;
+        int foreignKeyConstraint = 1;
 
         for (File file : folder.listFiles()) {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory
@@ -44,6 +45,8 @@ public class RepairProgram {
                             Element element = (Element) changeSet.getChildNodes().item(j);
                             if ("addNotNullConstraint".equals(element.getNodeName())) {
                                 element.setAttribute("constraintName", "null_key_" + notNullConstraintName++);
+                            } else if ("addForeignKeyConstraint".equals(element.getNodeName())) {
+                                element.setAttribute("constraintName", "fk_key_" + foreignKeyConstraint++);
                             } else if ("createTable".equals(element.getNodeName()) || "addColumn".equals(element.getNodeName())) {
                                 for (int k = 0; k < element.getChildNodes().getLength(); k++) {
                                     if (element.getChildNodes().item(k).getNodeType() == Node.ELEMENT_NODE) {

@@ -9,6 +9,7 @@ import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.DatabaseException;
+import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.apache.commons.io.IOUtils;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
@@ -70,6 +71,26 @@ public abstract class LiquibaseJavaMigration extends BaseJavaMigration {
         properties.put("username", driver.getUser());
         properties.put("password", driver.getPassword());
         return (JdbcDataContext) DataContextFactoryRegistryImpl.getDefaultInstance().createDataContext(properties);
+    }
+
+    protected void updateLiquibase(Database database, String changeset) throws LiquibaseException {
+        Liquibase liquibase = new Liquibase(changeset, new ClassLoaderResourceAccessor(), database);
+        try {
+            liquibase.update(new Contexts(), new LabelExpression());
+        } catch (Exception e) {
+            Throwable throwable = e;
+            while (throwable != null) {
+                if (throwable instanceof DatabaseException) {
+                    break;
+                } else {
+                    throwable = throwable.getCause();
+                }
+            }
+            if (throwable != null) {
+                System.out.println(throwable.getMessage());
+            }
+            throw e;
+        }
     }
 
 }

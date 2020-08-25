@@ -21,23 +21,7 @@ public class V6__AddMinMaxPrincipalColumnToLoan extends LiquibaseJavaMigration {
         Database database = lookupDatabase(context);
         {
             // sub change 001
-            Liquibase liquibase = new Liquibase("V6__add_min_max_principal_column_to_loan.xml", new ClassLoaderResourceAccessor(), database);
-            try {
-                liquibase.update(new Contexts(), new LabelExpression());
-            } catch (Exception e) {
-                Throwable throwable = e;
-                while (throwable != null) {
-                    if (throwable instanceof DatabaseException) {
-                        break;
-                    } else {
-                        throwable = throwable.getCause();
-                    }
-                }
-                if (throwable != null) {
-                    System.out.println(throwable.getMessage());
-                }
-                throw e;
-            }
+            updateLiquibase(database, "V6__add_min_max_principal_column_to_loan.xml");
         }
     }
 

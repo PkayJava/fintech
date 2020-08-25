@@ -10,6 +10,8 @@ public interface Checksum {
 
     int V7__RemoveReadMakerCheckerPermission = 1717046313;
 
-    int V8__DepositTransactionPermissionsIfTheyExist = 1;
+    int V8__DepositTransactionPermissionsIfTheyExist = 1160110223;
+
+    int V10__InterestPostingFieldsForSavings = -916724567;
 
 }

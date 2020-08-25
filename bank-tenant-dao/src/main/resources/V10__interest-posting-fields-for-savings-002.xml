@@ -1,0 +1,12 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V10__interest-posting-fields-for-savings-002">
+        <addColumn tableName="m_savings_product">
+            <column name="interest_posting_period_enum" type="SMALLINT"/>
+        </addColumn>
+        <addColumn tableName="m_savings_account">
+            <column name="interest_posting_period_enum" type="SMALLINT"/>
+        </addColumn>
+        <addNotNullConstraint columnDataType="SMALLINT" columnName="interest_posting_period_enum" constraintName="null_key_1" tableName="m_savings_product"/>
+        <addNotNullConstraint columnDataType="SMALLINT" columnName="interest_posting_period_enum" constraintName="null_key_2" tableName="m_savings_account"/>
+    </changeSet>
+</databaseChangeLog>
