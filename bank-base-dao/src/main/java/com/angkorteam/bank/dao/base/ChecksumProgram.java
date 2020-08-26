@@ -12,8 +12,8 @@ import java.util.List;
 public class ChecksumProgram {
     public static void main(String[] args) throws IOException {
         List<String> files = new ArrayList<>();
-        files.add("V15__CenterPermissions.java");
-        File folder = new File("bank-tenant-dao/src/main/java/com/angkorteam/bank/dao/tenant/flyway");
+        files.add("V19__ReportMaintenancePermissions.java");
+        File folder = new File("bank-base-dao/src/main/java/com/angkorteam/bank/dao/base/flyway");
         int checksum = 0;
         for (String file : files) {
             HashCode hashCode = Hashing.crc32().hashBytes(FileUtils.readFileToByteArray(new File(folder, file)));

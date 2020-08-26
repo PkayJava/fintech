@@ -2,22 +2,26 @@ package com.angkorteam.bank.dao.base;
 
 public interface Checksum {
 
-    int V2__MifosXBaseReferenceDataUTF8 = -1230292539;
+    int V2__MifosXBaseReferenceDataUTF8 = 955904516;
 
-    int V3__MifosXPermissionsAndAuthorisationUTF8 = -1291043467;
+    int V3__MifosXPermissionsAndAuthorisationUTF8 = -375986414;
 
-    int V4__MifosXCoreReportsUTF8 = 1073664848;
+    int V4__MifosXCoreReportsUTF8 = 343514626;
 
-    int V7__RemoveReadMakerCheckerPermission = 1717046313;
+    int V7__RemoveReadMakerCheckerPermission = 1414977132;
 
-    int V8__DepositTransactionPermissionsIfTheyExist = 1160110223;
+    int V8__DepositTransactionPermissionsIfTheyExist = 2098835639;
 
-    int V10__InterestPostingFieldsForSavings = -916724567;
+    int V10__InterestPostingFieldsForSavings = 1900768817;
 
-    int V13__AddGroupAndClientPendingConfiguration = -59598579;
+    int V13__AddGroupAndClientPendingConfiguration = -595839764;
 
-    int V14__RenameStatusIdToEnum = 276001307;
+    int V14__RenameStatusIdToEnum = -280367782;
 
-    int V15__CenterPermissions = 2141241325;
+    int V15__CenterPermissions = -260473219;
+
+    int V18__UpdateStretchyReportingReportSql = 1766858329;
+
+    int V19__ReportMaintenancePermissions = -1313969157;
 
 }
