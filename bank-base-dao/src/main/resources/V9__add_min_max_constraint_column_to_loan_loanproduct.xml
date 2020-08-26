@@ -26,12 +26,12 @@
         <dropDefaultValue columnName="min_principal_amount" tableName="m_loan"/>
         <dropDefaultValue columnName="max_principal_amount" tableName="m_loan"/>
 
-        <dropNotNullConstraint columnName="min_principal_amount" tableName="m_loan"/>
-        <dropNotNullConstraint columnName="max_principal_amount" tableName="m_loan"/>
-        <dropNotNullConstraint columnName="min_nominal_interest_rate_per_period" tableName="m_loan"/>
-        <dropNotNullConstraint columnName="max_nominal_interest_rate_per_period" tableName="m_loan"/>
-        <dropNotNullConstraint columnName="min_number_of_repayments" tableName="m_loan"/>
-        <dropNotNullConstraint columnName="max_number_of_repayments" tableName="m_loan"/>
+        <dropNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="min_principal_amount" tableName="m_loan"/>
+        <dropNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="max_principal_amount" tableName="m_loan"/>
+        <dropNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="min_nominal_interest_rate_per_period" tableName="m_loan"/>
+        <dropNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="max_nominal_interest_rate_per_period" tableName="m_loan"/>
+        <dropNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="min_number_of_repayments" tableName="m_loan"/>
+        <dropNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="max_number_of_repayments" tableName="m_loan"/>
 
         <dropDefaultValue columnName="min_principal_amount" tableName="m_product_loan"/>
         <dropDefaultValue columnName="max_principal_amount" tableName="m_product_loan"/>
@@ -40,11 +40,11 @@
         <dropDefaultValue columnName="min_number_of_repayments" tableName="m_product_loan"/>
         <dropDefaultValue columnName="max_number_of_repayments" tableName="m_product_loan"/>
 
-        <dropNotNullConstraint columnName="min_principal_amount" tableName="m_product_loan"/>
-        <dropNotNullConstraint columnName="max_principal_amount" tableName="m_product_loan"/>
-        <dropNotNullConstraint columnName="min_nominal_interest_rate_per_period" tableName="m_product_loan"/>
-        <dropNotNullConstraint columnName="max_nominal_interest_rate_per_period" tableName="m_product_loan"/>
-        <dropNotNullConstraint columnName="min_number_of_repayments" tableName="m_product_loan"/>
-        <dropNotNullConstraint columnName="max_number_of_repayments" tableName="m_product_loan"/>
+        <dropNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="min_principal_amount" tableName="m_product_loan"/>
+        <dropNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="max_principal_amount" tableName="m_product_loan"/>
+        <dropNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="min_nominal_interest_rate_per_period" tableName="m_product_loan"/>
+        <dropNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="max_nominal_interest_rate_per_period" tableName="m_product_loan"/>
+        <dropNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="min_number_of_repayments" tableName="m_product_loan"/>
+        <dropNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="max_number_of_repayments" tableName="m_product_loan"/>
     </changeSet>
 </databaseChangeLog>
