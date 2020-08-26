@@ -24,4 +24,6 @@ public interface Checksum {
 
     int V19__ReportMaintenancePermissions = -1313969157;
 
+    int V20__ReportMaintPermsReallyConfiguration = 1125203025;
+
 }
