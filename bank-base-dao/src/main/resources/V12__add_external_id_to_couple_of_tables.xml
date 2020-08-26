@@ -1,0 +1,20 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V12__add_external_id_to_couple_of_tables-1">
+        <addColumn tableName="m_product_loan">
+            <column name="external_id" type="VARCHAR(100)"/>
+        </addColumn>
+        <addUniqueConstraint columnNames="external_id" constraintName="unique_index_27" tableName="m_product_loan"/>
+        <addColumn tableName="m_staff">
+            <column name="external_id" type="VARCHAR(100)"/>
+        </addColumn>
+        <addUniqueConstraint columnNames="external_id" constraintName="unique_index_28" tableName="m_staff"/>
+        <addColumn tableName="m_client">
+            <column defaultValueNumeric="300" name="status_id" type="INT"/>
+        </addColumn>
+        <addNotNullConstraint columnDataType="INT" columnName="status_id" constraintName="notnull_key_278" tableName="m_client"/>
+        <addColumn tableName="m_group">
+            <column defaultValueNumeric="300" name="status_id" type="INT"/>
+        </addColumn>
+        <addNotNullConstraint columnDataType="INT" columnName="status_id" constraintName="notnull_key_279" tableName="m_group"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,50 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V9__add_min_max_constraint_column_to_loan_loanproduct-1">
+
+        <addColumn tableName="m_product_loan">
+            <column name="min_nominal_interest_rate_per_period" type="DECIMAL(19, 6)"/>
+            <column name="max_nominal_interest_rate_per_period" type="DECIMAL(19, 6)"/>
+            <column name="min_number_of_repayments" type="SMALLINT"/>
+            <column name="max_number_of_repayments" type="SMALLINT"/>
+        </addColumn>
+        <addNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="min_nominal_interest_rate_per_period" constraintName="notnull_key_266" tableName="m_product_loan"/>
+        <addNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="max_nominal_interest_rate_per_period" constraintName="notnull_key_267" tableName="m_product_loan"/>
+        <addNotNullConstraint columnDataType="SMALLINT" columnName="min_number_of_repayments" constraintName="notnull_key_268" tableName="m_product_loan"/>
+        <addNotNullConstraint columnDataType="SMALLINT" columnName="max_number_of_repayments" constraintName="notnull_key_269" tableName="m_product_loan"/>
+
+        <addColumn tableName="m_loan">
+            <column name="min_nominal_interest_rate_per_period" type="DECIMAL(19, 6)"/>
+            <column name="max_nominal_interest_rate_per_period" type="DECIMAL(19, 6)"/>
+            <column name="min_number_of_repayments" type="SMALLINT"/>
+            <column name="max_number_of_repayments" type="SMALLINT"/>
+        </addColumn>
+        <addNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="min_nominal_interest_rate_per_period" constraintName="notnull_key_270" tableName="m_loan"/>
+        <addNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="max_nominal_interest_rate_per_period" constraintName="notnull_key_271" tableName="m_loan"/>
+        <addNotNullConstraint columnDataType="SMALLINT" columnName="min_number_of_repayments" constraintName="notnull_key_272" tableName="m_loan"/>
+        <addNotNullConstraint columnDataType="SMALLINT" columnName="max_number_of_repayments" constraintName="notnull_key_273" tableName="m_loan"/>
+
+        <dropDefaultValue columnName="min_principal_amount" tableName="m_loan"/>
+        <dropDefaultValue columnName="max_principal_amount" tableName="m_loan"/>
+
+        <dropNotNullConstraint columnName="min_principal_amount" tableName="m_loan"/>
+        <dropNotNullConstraint columnName="max_principal_amount" tableName="m_loan"/>
+        <dropNotNullConstraint columnName="min_nominal_interest_rate_per_period" tableName="m_loan"/>
+        <dropNotNullConstraint columnName="max_nominal_interest_rate_per_period" tableName="m_loan"/>
+        <dropNotNullConstraint columnName="min_number_of_repayments" tableName="m_loan"/>
+        <dropNotNullConstraint columnName="max_number_of_repayments" tableName="m_loan"/>
+
+        <dropDefaultValue columnName="min_principal_amount" tableName="m_product_loan"/>
+        <dropDefaultValue columnName="max_principal_amount" tableName="m_product_loan"/>
+        <dropDefaultValue columnName="min_nominal_interest_rate_per_period" tableName="m_product_loan"/>
+        <dropDefaultValue columnName="max_nominal_interest_rate_per_period" tableName="m_product_loan"/>
+        <dropDefaultValue columnName="min_number_of_repayments" tableName="m_product_loan"/>
+        <dropDefaultValue columnName="max_number_of_repayments" tableName="m_product_loan"/>
+
+        <dropNotNullConstraint columnName="min_principal_amount" tableName="m_product_loan"/>
+        <dropNotNullConstraint columnName="max_principal_amount" tableName="m_product_loan"/>
+        <dropNotNullConstraint columnName="min_nominal_interest_rate_per_period" tableName="m_product_loan"/>
+        <dropNotNullConstraint columnName="max_nominal_interest_rate_per_period" tableName="m_product_loan"/>
+        <dropNotNullConstraint columnName="min_number_of_repayments" tableName="m_product_loan"/>
+        <dropNotNullConstraint columnName="max_number_of_repayments" tableName="m_product_loan"/>
+    </changeSet>
+</databaseChangeLog>

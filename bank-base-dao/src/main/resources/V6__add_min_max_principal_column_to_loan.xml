@@ -1,0 +1,16 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V6__add_min_max_principal_column_to_loan-1">
+        <addColumn tableName="m_product_loan">
+            <column name="min_principal_amount" type="DECIMAL(19, 6)"/>
+            <column name="max_principal_amount" type="DECIMAL(19, 6)"/>
+        </addColumn>
+        <addNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="min_principal_amount" constraintName="notnull_key_262" tableName="m_product_loan"/>
+        <addNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="max_principal_amount" constraintName="notnull_key_263" tableName="m_product_loan"/>
+        <addColumn tableName="m_loan">
+            <column name="min_principal_amount" type="DECIMAL(19, 6)"/>
+            <column name="max_principal_amount" type="DECIMAL(19, 6)"/>
+        </addColumn>
+        <addNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="min_principal_amount" constraintName="notnull_key_264" tableName="m_loan"/>
+        <addNotNullConstraint columnDataType="DECIMAL(19, 6)" columnName="max_principal_amount" constraintName="notnull_key_265" tableName="m_loan"/>
+    </changeSet>
+</databaseChangeLog>

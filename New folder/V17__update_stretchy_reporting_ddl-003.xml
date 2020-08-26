@@ -1,0 +1,30 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V17__update_stretchy_reporting_ddl-003-1">
+        <createTable tableName="stretchy_parameter_tmp">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints notNullConstraintName="" nullable="false" primaryKey="true" primaryKeyName=""/>
+            </column>
+            <column name="parameter_name" type="VARCHAR(45)">
+                <constraints notNullConstraintName="" nullable="false" unique="true" uniqueConstraintName=""/>
+            </column>
+            <column name="parameter_variable" type="VARCHAR(45)"/>
+            <column name="parameter_label" type="VARCHAR(45)">
+                <constraints notNullConstraintName="" nullable="false"/>
+            </column>
+            <column name="parameter_displayType" type="VARCHAR(45)">
+                <constraints notNullConstraintName="" nullable="false"/>
+            </column>
+            <column name="parameter_FormatType" type="VARCHAR(10)">
+                <constraints notNullConstraintName="" nullable="false"/>
+            </column>
+            <column name="parameter_default" type="VARCHAR(45)">
+                <constraints notNullConstraintName="" nullable="false"/>
+            </column>
+            <column name="special" type="VARCHAR(1)"/>
+            <column name="selectOne" type="VARCHAR(1)"/>
+            <column name="selectAll" type="VARCHAR(1)"/>
+            <column name="parameter_sql" type="TEXT"/>
+            <column name="parent_id" type="INT"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

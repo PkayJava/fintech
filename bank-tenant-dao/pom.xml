@@ -10,9 +10,6 @@
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>bank-tenant-dao</name>
-
-
     <properties>
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -30,9 +27,9 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.angkorteam.bank</groupId>
-            <artifactId>bank-base-dao</artifactId>
-            <version>1.0</version>
+            <groupId>com.angkorteam.webui</groupId>
+            <artifactId>metamodel</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
@@ -99,11 +96,11 @@
                 </executions>
 
                 <configuration>
-                    <schemas>${db.tenant.name}</schemas>
-                    <url>${db.tenant.url}</url>
-                    <user>${db.tenant.user}</user>
-                    <driver>${db.tenant.driver}</driver>
-                    <password>${db.tenant.password}</password>
+                    <schemas>${db.name}</schemas>
+                    <url>${db.url}</url>
+                    <user>${db.user}</user>
+                    <driver>${db.driver}</driver>
+                    <password>${db.password}</password>
                     <locations>
                         <location>classpath:com/angkorteam/bank/dao/tenant/flyway</location>
                     </locations>

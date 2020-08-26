@@ -1,0 +1,21 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V17__update_stretchy_reporting_ddl-001-1">
+        <createTable tableName="stretchy_report_tmp">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints notNullConstraintName="" nullable="false" primaryKey="true" primaryKeyName=""/>
+            </column>
+            <column name="report_name" type="VARCHAR(100)">
+                <constraints notNullConstraintName="" nullable="false" unique="true" uniqueConstraintName=""/>
+            </column>
+            <column name="report_type" type="VARCHAR(20)">
+                <constraints notNullConstraintName="" nullable="false"/>
+            </column>
+            <column name="report_subtype" type="VARCHAR(20)"/>
+            <column name="report_category" type="VARCHAR(45)"/>
+            <column name="report_sql" type="text"/>
+            <column name="description" type="text"/>
+            <column defaultValueNumeric="0" name="core_report" type="tinyint"/>
+            <column defaultValueNumeric="0" name="use_report" type="tinyint"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

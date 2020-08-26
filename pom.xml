@@ -27,7 +27,6 @@
     </properties>
 
     <modules>
-        <module>bank-dao</module>
         <module>bank-base-dao</module>
         <module>bank-tenant-dao</module>
         <!--        <module>bank-api</module>-->

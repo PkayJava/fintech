@@ -10,9 +10,6 @@
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>bank-base-dao</name>
-
-
     <properties>
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -24,38 +21,21 @@
         <liquibase.version>4.0.0</liquibase.version>
         <commons-io.version>2.7</commons-io.version>
         <guava.version>29.0-jre</guava.version>
+        <mysql.version>8.0.21</mysql.version>
     </properties>
 
     <dependencies>
 
         <dependency>
-            <groupId>org.apache.metamodel</groupId>
-            <artifactId>MetaModel-full</artifactId>
-            <version>${metamodel.version}</version>
+            <groupId>com.angkorteam.webui</groupId>
+            <artifactId>metamodel</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-            <version>${flyway.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <version>${liquibase.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
         </dependency>
 
     </dependencies>
@@ -87,10 +67,45 @@
                     <additionalConfig>
                         <file>
                             <name>.settings/org.eclipse.core.resources.prefs</name>
-                            <content>
-                                <![CDATA[eclipse.preferences.version=1${line.separator}encoding/<project>=${project.build.sourceEncoding}${line.separator}]]></content>
+                            <content><![CDATA[eclipse.preferences.version=1${line.separator}encoding/<project>=${project.build.sourceEncoding}${line.separator}]]></content>
                         </file>
                     </additionalConfig>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>${flyway.version}</version>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.version}</version>
+                    </dependency>
+                </dependencies>
+
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>migrate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <schemas>${db.tenant.name}</schemas>
+                    <url>${db.tenant.url}</url>
+                    <user>${db.tenant.user}</user>
+                    <driver>${db.tenant.driver}</driver>
+                    <password>${db.tenant.password}</password>
+                    <locations>
+                        <location>classpath:com/angkorteam/bank/dao/base/flyway</location>
+                    </locations>
+                    <cleanDisabled>false</cleanDisabled>
+                    <cleanOnValidationError>true</cleanOnValidationError>
                 </configuration>
             </plugin>
 

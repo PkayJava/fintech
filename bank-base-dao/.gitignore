@@ -3,4 +3,4 @@
 .classpath
 .project
 /.settings/
-bank-base-dao.iml
+bank-tenant-dao.iml
