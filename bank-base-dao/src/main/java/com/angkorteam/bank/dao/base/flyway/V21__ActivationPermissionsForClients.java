@@ -2,6 +2,7 @@ package com.angkorteam.bank.dao.base.flyway;
 
 import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
+import liquibase.database.Database;
 import org.apache.metamodel.insert.RowInsertable;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.apache.metamodel.schema.Table;
@@ -16,14 +17,20 @@ public class V21__ActivationPermissionsForClients extends LiquibaseJavaMigration
 
     @Override
     public void migrate(Context context) throws Exception {
+        Database database = lookupDatabase(context);
         JdbcDataContext dataContext = lookupDataContext(context);
         {
+            // sub change 001
             dataContext.refreshSchemas();
             Table m_permission = dataContext.getDefaultSchema().getTableByName("m_permission");
             dataContext.executeUpdate(callback -> {
                 insert_m_permission(m_permission, callback, "portfolio", "ACTIVATE_CLIENT", "CLIENT", "ACTIVATE", 1);
                 insert_m_permission(m_permission, callback, "portfolio", "ACTIVATE_CLIENT_CHECKER", "CLIENT", "ACTIVATE", 0);
             });
+        }
+        {
+            // sub change 002
+            updateLiquibase(database, "V21__activation-permissions-for-clients-002.xml");
         }
     }
 
