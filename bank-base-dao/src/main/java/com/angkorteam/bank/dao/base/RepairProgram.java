@@ -52,6 +52,7 @@ public class RepairProgram {
         files.add("V17__update_stretchy_reporting_ddl-003.xml");
         files.add("V17__update_stretchy_reporting_ddl-005.xml");
         files.add("V17__update_stretchy_reporting_ddl-007.xml");
+        files.add("V21__activation-permissions-for-clients-002.xml");
 
         for (String file : files) {
             System.out.println(file);
