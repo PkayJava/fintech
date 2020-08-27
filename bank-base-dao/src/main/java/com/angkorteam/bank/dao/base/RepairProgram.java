@@ -60,6 +60,10 @@ public class RepairProgram {
         files.add("V27__add-loan-type-column-to-loan-table.xml");
         files.add("V28__accounting-abstractions-and-autoposting.xml");
         files.add("V30__add-referenceNumber-to-acc_gl_journal_entry.xml");
+        files.add("V31__drop-autopostings.xml");
+        files.add("V33__drop_unique_check_on_stretchy_report_parameter.xml");
+        files.add("V34__add_unique_check_on_stretchy_report_parameter.xml");
+        files.add("V35__add_hierarchy_column_for_acc_gl_account.xml");
 
         for (String file : files) {
             System.out.println(file);

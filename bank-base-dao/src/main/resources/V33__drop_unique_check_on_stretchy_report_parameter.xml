@@ -1,0 +1,10 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V33__drop_unique_check_on_stretchy_report_parameter-1">
+
+        <dropIndex indexName="unique_index_31" tableName="stretchy_report_parameter"/>
+
+        <dropIndex indexName="index_3" tableName="stretchy_report_parameter"/>
+        <dropIndex indexName="index_4" tableName="stretchy_report_parameter"/>
+
+    </changeSet>
+</databaseChangeLog>

@@ -34,4 +34,6 @@ public interface Checksum {
 
     int V25__UpdateClientReportsForStatusAndActivationChange = -46129458;
 
+    int V32__AssociateDisassociateClientsFromGroupPermissions = -1296677379;
+
 }
