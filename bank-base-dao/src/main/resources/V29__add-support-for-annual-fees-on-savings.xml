@@ -1,0 +1,19 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V29__add-support-for-annual-fees-on-savings-1">
+
+        <addColumn tableName="m_savings_product">
+            <column name="annual_fee_amount" type="DECIMAL(19,6)"/>
+            <column name="annual_fee_on_month" type="SMALLINT"/>
+            <column name="annual_fee_on_day" type="SMALLINT"/>
+        </addColumn>
+
+        <addColumn tableName="m_savings_account">
+            <column name="annual_fee_amount" type="DECIMAL(19,6)"/>
+            <column name="annual_fee_on_month" type="SMALLINT"/>
+            <column name="annual_fee_on_day" type="SMALLINT"/>
+            <column name="annual_fee_next_due_date" type="DATE"/>
+            <column name="total_annual_fees_derived" type="DECIMAL(19,6)"/>
+        </addColumn>
+
+    </changeSet>
+</databaseChangeLog>

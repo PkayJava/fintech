@@ -53,6 +53,13 @@ public class RepairProgram {
         files.add("V17__update_stretchy_reporting_ddl-005.xml");
         files.add("V17__update_stretchy_reporting_ddl-007.xml");
         files.add("V21__activation-permissions-for-clients-002.xml");
+        files.add("V22__alter-group-for-consistency-add-permissions-002.xml");
+        files.add("V23__remove-enable-disable-configuration-for-client-group-status-002.xml");
+        files.add("V24__add-group-client-foreign-key-constraint-in-loan-table.xml");
+        files.add("V26__add-support-for-withdrawal-fees-on-savings.xml");
+        files.add("V27__add-loan-type-column-to-loan-table.xml");
+        files.add("V28__accounting-abstractions-and-autoposting.xml");
+        files.add("V30__add-referenceNumber-to-acc_gl_journal_entry.xml");
 
         for (String file : files) {
             System.out.println(file);

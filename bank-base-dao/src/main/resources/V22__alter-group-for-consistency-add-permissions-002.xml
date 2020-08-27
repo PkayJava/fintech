@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V22__alter-group-for-consistency-add-permissions-002-1">
+
+        <dropNotNullConstraint columnDataType="VARCHAR(100)" columnName="external_id" tableName="m_group"/>
+
+        <addNotNullConstraint columnDataType="INT" columnName="status_enum" constraintName="notnull_key_292" tableName="m_group"/>
+
+        <addDefaultValue columnName="status_enum" defaultValueNumeric="300" tableName="m_group"/>
+
+        <renameColumn columnDataType="VARCHAR(100)" newColumnName="display_name" oldColumnName="name" tableName="m_group"/>
+
+        <addNotNullConstraint columnDataType="VARCHAR(100)" columnName="display_name" constraintName="notnull_key_293" tableName="m_group"/>
+
+        <addNotNullConstraint columnDataType="INT" columnName="level_Id" constraintName="notnull_key_294" tableName="m_group"/>
+
+        <dropColumn columnName="is_deleted" tableName="m_group"/>
+
+        <addColumn tableName="m_group">
+            <column name="activation_date" type="DATE"/>
+        </addColumn>
+
+    </changeSet>
+</databaseChangeLog>

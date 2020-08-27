@@ -1,0 +1,83 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V28__accounting-abstractions-and-autoposting-1">
+
+        <createTable tableName="acc_accounting_rule">
+            <column name="id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_296" nullable="false" primaryKey="true" primaryKeyName="primary_key_58"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints unique="true" uniqueConstraintName="unique_index_32"/>
+            </column>
+            <column name="office_id" type="BIGINT"/>
+            <column name="debit_account_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_297" nullable="false"/>
+            </column>
+            <column name="credit_account_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_298" nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(500)"/>
+            <column defaultValueNumeric="0" name="system_defined" type="tinyint">
+                <constraints notNullConstraintName="notnull_key_299" nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="index_7" tableName="acc_accounting_rule">
+            <column name="debit_account_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_8" tableName="acc_accounting_rule">
+            <column name="credit_account_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_9" tableName="acc_accounting_rule">
+            <column name="office_id"/>
+        </createIndex>
+
+        <createTable tableName="acc_auto_posting">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_300" nullable="false" primaryKey="true" primaryKeyName="primary_key_59"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints unique="true" uniqueConstraintName="unique_index_33"/>
+            </column>
+            <column name="description" type="VARCHAR(500)"/>
+            <column name="office_id" type="BIGINT"/>
+
+            <column name="product_type_enum" type="SMALLINT">
+                <constraints notNullConstraintName="notnull_key_301" nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT"/>
+            <column name="charge_id" type="BIGINT"/>
+
+            <column name="event" type="INT">
+                <constraints notNullConstraintName="notnull_key_302" nullable="false"/>
+            </column>
+            <column name="event_attribute" type="INT"/>
+
+            <column name="accounting_rule_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_303" nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="index_10" tableName="acc_auto_posting">
+            <column name="office_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_11" tableName="acc_auto_posting">
+            <column name="accounting_rule_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_12" tableName="acc_auto_posting">
+            <column name="event"/>
+        </createIndex>
+
+        <createIndex indexName="index_13" tableName="acc_auto_posting">
+            <column name="charge_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_14" tableName="acc_auto_posting">
+            <column name="event_attribute"/>
+        </createIndex>
+
+    </changeSet>
+</databaseChangeLog>

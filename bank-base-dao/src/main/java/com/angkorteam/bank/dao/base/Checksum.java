@@ -28,4 +28,10 @@ public interface Checksum {
 
     int V21__ActivationPermissionsForClients = -1231248410;
 
+    int V22__AlterGroupForConsistencyAddPermissions = -157838332;
+
+    int V23__RemoveEnableDisableConfigurationForClientGroupStatus = 2106456881;
+
+    int V25__UpdateClientReportsForStatusAndActivationChange = -46129458;
+
 }

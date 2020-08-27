@@ -12,7 +12,7 @@ import java.util.List;
 public class ChecksumProgram {
     public static void main(String[] args) throws IOException {
         List<String> files = new ArrayList<>();
-        files.add("V21__ActivationPermissionsForClients.java");
+        files.add("V25__UpdateClientReportsForStatusAndActivationChange.java");
         File folder = new File("bank-base-dao/src/main/java/com/angkorteam/bank/dao/base/flyway");
         int checksum = 0;
         for (String file : files) {

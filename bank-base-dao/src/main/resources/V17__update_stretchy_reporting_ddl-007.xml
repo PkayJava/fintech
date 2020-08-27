@@ -3,7 +3,6 @@
         <createIndex indexName="index_2" tableName="stretchy_parameter_tmp">
             <column name="parent_id"/>
         </createIndex>
-        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="stretchy_parameter_tmp" constraintName="foreign_key_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="stretchy_parameter_tmp" validate="true"/>
 
         <createIndex indexName="index_3" tableName="stretchy_report_parameter_tmp">
             <column name="report_id"/>
@@ -12,10 +11,6 @@
         <createIndex indexName="index_4" tableName="stretchy_report_parameter_tmp">
             <column name="parameter_id"/>
         </createIndex>
-
-        <addForeignKeyConstraint baseColumnNames="report_id" baseTableName="stretchy_report_parameter_tmp" constraintName="foreign_key_3" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="stretchy_report_tmp" validate="true"/>
-
-        <addForeignKeyConstraint baseColumnNames="parameter_id" baseTableName="stretchy_report_parameter_tmp" constraintName="foreign_key_4" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="stretchy_parameter_tmp" validate="true"/>
 
         <dropTable cascadeConstraints="true" tableName="stretchy_report_parameter"/>
         <dropTable cascadeConstraints="true" tableName="stretchy_report"/>

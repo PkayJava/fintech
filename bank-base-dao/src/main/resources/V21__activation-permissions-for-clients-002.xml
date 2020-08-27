@@ -9,6 +9,6 @@
 
         <dropDefaultValue columnName="joined_date" tableName="m_client"/>
         <renameColumn columnDataType="DATE" newColumnName="activation_date" oldColumnName="joined_date" tableName="m_client"/>
-
+        
     </changeSet>
 </databaseChangeLog>

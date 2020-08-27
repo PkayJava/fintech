@@ -19,6 +19,5 @@
         <createIndex indexName="index_1" tableName="m_loan_transaction">
             <column name="payment_detail_id"/>
         </createIndex>
-        <addForeignKeyConstraint baseColumnNames="payment_detail_id" baseTableName="m_loan_transaction" constraintName="foreign_key_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="m_payment_detail" validate="true"/>
     </changeSet>
 </databaseChangeLog>

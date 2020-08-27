@@ -1,0 +1,13 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V24__add-group-client-foreign-key-constraint-in-loan-table-1">
+
+        <createIndex indexName="index_5" tableName="m_loan">
+            <column name="group_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_6" tableName="m_loan">
+            <column name="client_id"/>
+        </createIndex>
+
+    </changeSet>
+</databaseChangeLog>

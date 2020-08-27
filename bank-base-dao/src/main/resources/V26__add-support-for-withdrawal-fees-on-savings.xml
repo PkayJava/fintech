@@ -1,0 +1,16 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V26__add-support-for-withdrawal-fees-on-savings-1">
+
+        <addColumn tableName="m_savings_product">
+            <column name="withdrawal_fee_amount" type="DECIMAL(19,6)"/>
+            <column name="withdrawal_fee_type_enum" type="SMALLINT"/>
+        </addColumn>
+
+        <addColumn tableName="m_savings_account">
+            <column name="withdrawal_fee_amount" type="DECIMAL(19,6)"/>
+            <column name="withdrawal_fee_type_enum" type="SMALLINT"/>
+            <column name="total_withdrawal_fees_derived" type="DECIMAL(19,6)"/>
+        </addColumn>
+
+    </changeSet>
+</databaseChangeLog>
