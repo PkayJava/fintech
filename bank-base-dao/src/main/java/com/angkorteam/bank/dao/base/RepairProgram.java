@@ -65,6 +65,9 @@ public class RepairProgram {
         files.add("V39__payment-channels-updates-002.xml");
         files.add("V39__payment-channels-updates-004.xml");
         files.add("V42__Add_default_value_for_id_for_acc_accounting_rule.xml");
+        files.add("V43__accounting-for-savings-001.xml");
+        files.add("V43__accounting-for-savings-002.xml");
+
 
         for (String file : files) {
             System.out.println(file);

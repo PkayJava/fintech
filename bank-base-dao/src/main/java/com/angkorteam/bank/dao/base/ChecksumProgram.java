@@ -36,6 +36,7 @@ public class ChecksumProgram {
         files.add("V39__PaymentChannelsUpdates");
         files.add("V40__AddPermissionsForAccountingRule");
         files.add("V41__GroupSummaryReports");
+        files.add("V43__AccountingForSavings");
         File folder = new File("bank-base-dao/src/main/java/com/angkorteam/bank/dao/base/flyway");
 
         for (String file : files) {

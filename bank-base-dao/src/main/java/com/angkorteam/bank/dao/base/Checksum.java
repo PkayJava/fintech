@@ -50,4 +50,6 @@ public interface Checksum {
 
     int V41__GroupSummaryReports = -398441789;
 
+    int V43__AccountingForSavings = -434327219;
+
 }
