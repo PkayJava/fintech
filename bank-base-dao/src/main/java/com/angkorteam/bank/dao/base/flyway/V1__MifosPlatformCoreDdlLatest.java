@@ -1,37 +1,43 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import liquibase.database.Database;
+import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class V1__MifosPlatformCoreDdlLatest extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V1__mifosplatform-core-ddl-latest-001.xml",
-                "V1__mifosplatform-core-ddl-latest-002.xml",
-                "V1__mifosplatform-core-ddl-latest-003.xml",
-                "V1__mifosplatform-core-ddl-latest-004.xml");
+        return Checksum.V1__MifosPlatformCoreDdlLatest + getInternalChecksum("V1__mifosplatform-core-ddl-latest-002.xml");
     }
 
     @Override
     public void migrate(Context context) throws Exception {
         Database database = lookupDatabase(context);
+        JdbcDataContext dataContext = lookupDataContext(context);
         {
             // sub change 001
-            updateLiquibase(database, "V1__mifosplatform-core-ddl-latest-001.xml");
+            List<String> tables = new ArrayList<>();
+            for (String table : dataContext.getDefaultSchema().getTableNames()) {
+                tables.add(table);
+            }
+            for (String table : tables) {
+                if (!"DATABASECHANGELOG".equals(table) && !"DATABASECHANGELOGLOCK".equals(table) && !"flyway_schema_history".equals(table)) {
+                    dataContext.executeUpdate(callback -> {
+                        callback.dropTable(table);
+                    });
+                }
+            }
         }
+
         {
             // sub change 002
             updateLiquibase(database, "V1__mifosplatform-core-ddl-latest-002.xml");
-        }
-        {
-            // sub change 003
-            updateLiquibase(database, "V1__mifosplatform-core-ddl-latest-003.xml");
-        }
-        {
-            // sub change 004
-            updateLiquibase(database, "V1__mifosplatform-core-ddl-latest-004.xml");
         }
     }
 }

@@ -1,8 +1,9 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    <changeSet author="Socheat KHAUV" id="V1__mifosplatform-core-ddl-latest-003-1">
-        <preConditions>
-            <dbms type="mysql"/>
-        </preConditions>
-        <sql>SET FOREIGN_KEY_CHECKS=1;</sql>
+    <changeSet author="Socheat KHAUV" id="V39__payment-channels-updates-004-1">
+
+        <addColumn tableName="acc_product_mapping">
+            <column name="payment_type" type="INT"/>
+        </addColumn>
+
     </changeSet>
 </databaseChangeLog>

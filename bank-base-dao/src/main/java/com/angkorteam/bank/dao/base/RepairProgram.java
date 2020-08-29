@@ -36,10 +36,7 @@ public class RepairProgram {
         int foreignKeyRotation = 1;
 
         List<String> files = new ArrayList<>();
-        files.add("V1__mifosplatform-core-ddl-latest-001.xml");
         files.add("V1__mifosplatform-core-ddl-latest-002.xml");
-        files.add("V1__mifosplatform-core-ddl-latest-003.xml");
-        files.add("V1__mifosplatform-core-ddl-latest-004.xml");
         files.add("V5__update-savings-product-and-account-tables.xml");
         files.add("V6__add_min_max_principal_column_to_loan.xml");
         files.add("V9__add_min_max_constraint_column_to_loan_loanproduct.xml");
@@ -64,6 +61,10 @@ public class RepairProgram {
         files.add("V33__drop_unique_check_on_stretchy_report_parameter.xml");
         files.add("V34__add_unique_check_on_stretchy_report_parameter.xml");
         files.add("V35__add_hierarchy_column_for_acc_gl_account.xml");
+        files.add("V36__add_tag_id_column_for_acc_gl_account-001.xml");
+        files.add("V39__payment-channels-updates-002.xml");
+        files.add("V39__payment-channels-updates-004.xml");
+        files.add("V42__Add_default_value_for_id_for_acc_accounting_rule.xml");
 
         for (String file : files) {
             System.out.println(file);
