@@ -37,6 +37,11 @@ public class ChecksumProgram {
         files.add("V40__AddPermissionsForAccountingRule");
         files.add("V41__GroupSummaryReports");
         files.add("V43__AccountingForSavings");
+        files.add("V44__DocumentIncreaseSizeOfColumnType");
+        files.add("V45__CreateAccRuleTagsTable");
+        files.add("V46__ExtendDatatablesApi");
+        files.add("V47__StaffHierarchyLinkToUsers");
+        files.add("V48__AddingS3Support");
         File folder = new File("bank-base-dao/src/main/java/com/angkorteam/bank/dao/base/flyway");
 
         for (String file : files) {

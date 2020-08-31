@@ -1,14 +1,11 @@
-<?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    <changeSet author="Socheat KHAUV" id="V42__Add_default_value_for_id_for_acc_accounting_rule-1">
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V43__accounting-for-savings-001-1">
 
         <addColumn tableName="m_savings_product">
             <column name="accounting_type" type="SMALLINT"/>
         </addColumn>
 
-        <addNotNullConstraint tableName="m_savings_product" columnName="accounting_type" columnDataType="SMALLINT"/>
+        <addNotNullConstraint columnDataType="SMALLINT" columnName="accounting_type" constraintName="notnull_key_304" tableName="m_savings_product"/>
 
     </changeSet>
 </databaseChangeLog>

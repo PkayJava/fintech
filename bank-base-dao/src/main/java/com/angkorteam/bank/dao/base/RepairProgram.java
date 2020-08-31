@@ -66,8 +66,13 @@ public class RepairProgram {
         files.add("V39__payment-channels-updates-004.xml");
         files.add("V42__Add_default_value_for_id_for_acc_accounting_rule.xml");
         files.add("V43__accounting-for-savings-001.xml");
-        files.add("V43__accounting-for-savings-002.xml");
-
+        files.add("V43__accounting-for-savings-003.xml");
+        files.add("V44__document-increase-size-of-column-type.xml");
+        files.add("V45__create_acc_rule_tags_table.xml");
+        files.add("V47__staff-hierarchy-link-to-users.xml");
+        files.add("V48__adding-S3-Support-002.xml");
+        files.add("V48__adding-S3-Support-004.xml");
+        files.add("V48__adding-S3-Support-005.xml");
 
         for (String file : files) {
             System.out.println(file);

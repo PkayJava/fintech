@@ -1,9 +1,7 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    <changeSet author="Socheat KHAUV" id="V43__accounting-for-savings-003-1">
+    <changeSet author="Socheat KHAUV" id="V44__document-increase-size-of-column-type-1">
 
-        <addColumn tableName="m_savings_account_transaction">
-            <column name="payment_detail_id" type="BIGINT"/>
-        </addColumn>
+        <modifyDataType columnName="type" newDataType="VARCHAR(500)" tableName="m_document"/>
 
     </changeSet>
 </databaseChangeLog>

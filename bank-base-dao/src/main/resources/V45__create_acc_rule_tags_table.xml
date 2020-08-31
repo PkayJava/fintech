@@ -1,0 +1,20 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V45__create_acc_rule_tags_table-1">
+
+        <createTable tableName="acc_rule_tags">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_305" nullable="false" primaryKey="true" primaryKeyName="primary_key_60"/>
+            </column>
+            <column name="acc_rule_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_306" nullable="false"/>
+            </column>
+            <column name="tag_id" type="INT">
+                <constraints notNullConstraintName="notnull_key_307" nullable="false"/>
+            </column>
+            <column name="acc_type_enum" type="SMALLINT">
+                <constraints notNullConstraintName="notnull_key_308" nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>

@@ -52,4 +52,8 @@ public interface Checksum {
 
     int V43__AccountingForSavings = -434327219;
 
+    int V46__ExtendDatatablesApi = -1446471810;
+
+    int V48__AddingS3Support = 1;
+
 }
