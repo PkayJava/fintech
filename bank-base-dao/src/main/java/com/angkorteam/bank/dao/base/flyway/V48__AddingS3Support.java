@@ -6,6 +6,7 @@ import liquibase.database.Database;
 import org.apache.metamodel.data.DataSet;
 import org.apache.metamodel.insert.RowInsertable;
 import org.apache.metamodel.jdbc.JdbcDataContext;
+import org.apache.metamodel.query.FunctionType;
 import org.apache.metamodel.schema.Table;
 import org.flywaydb.core.api.migration.Context;
 
@@ -49,15 +50,71 @@ public class V48__AddingS3Support extends LiquibaseJavaMigration {
         {
             dataContext.refreshSchemas();
             Table m_client = dataContext.getDefaultSchema().getTableByName("m_client");
-            int v_counter = 0;
-            long num_of_clients = 0;
+            Table m_image = dataContext.getDefaultSchema().getTableByName("m_image");
             int curr_image = 0;
             int prev_image = 0;
+            long num_of_clients = 0;
             try (DataSet rows = dataContext.query().from(m_client).selectAll().execute()) {
                 rows.next();
                 num_of_clients = (long) rows.getRow().getValue(0);
             }
+            int curr_client = 0;
+            for (int v_counter = 0; v_counter < num_of_clients; v_counter++) {
+                try (DataSet rows = dataContext.query()
+                        .from(m_client)
+                        .selectAll()
+                        .where(m_client.getColumnByName("image_key")).isNull()
+                        .offset(v_counter).limit(1)
+                        .execute()) {
+                    rows.next();
+                    dataContext.executeUpdate(callback -> {
+                        callback.insertInto(m_image)
+                                .value(m_image.getColumnByName("location"), rows.getRow().getValue(m_client.getColumnByName("image_key")))
+                                .value(m_image.getColumnByName("storage_type_enum"), 1)
+                                .execute();
+                    });
+                }
+
+                try (DataSet rows = dataContext.query()
+                        .from(m_image)
+                        .select(FunctionType.MAX, m_image.getColumnByName("id"))
+                        .execute()) {
+                    if (rows.next()) {
+                        curr_image = (int) rows.getRow().getValue(0);
+                    } else {
+                        curr_image = 0;
+                    }
+                }
+
+                try (DataSet rows = dataContext.query()
+                        .from(m_client)
+                        .select(m_client.getColumnByName("id"))
+                        .where(m_client.getColumnByName("image_key")).isNotNull()
+                        .offset(v_counter).limit(1)
+                        .execute()) {
+                    rows.next();
+                    curr_client = (int) rows.getRow().getValue(0);
+                }
+
+                if (prev_image != curr_image) {
+                    int finalCurr_image = curr_image;
+                    int finalCurr_client = curr_client;
+                    dataContext.executeUpdate(callback -> {
+                        callback.update(m_client)
+                                .value(m_client.getColumnByName("image_id"), finalCurr_image)
+                                .where(m_client.getColumnByName("id")).eq(finalCurr_client)
+                                .execute();
+                    });
+                }
+                prev_image = curr_image;
+            }
+            dataContext.executeUpdate(callback -> {
+                callback.deleteFrom(m_image)
+                        .where(m_image.getColumnByName("location")).isNull()
+                        .execute();
+            });
         }
+
     }
 
     protected void insert_c_external_service(Table table, RowInsertable callback, String name) {
