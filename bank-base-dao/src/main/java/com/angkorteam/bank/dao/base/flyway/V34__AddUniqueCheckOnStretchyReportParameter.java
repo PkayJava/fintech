@@ -1,7 +1,7 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.metamodel.Database;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
-import liquibase.database.Database;
 import org.flywaydb.core.api.migration.Context;
 
 public class V34__AddUniqueCheckOnStretchyReportParameter extends LiquibaseJavaMigration {
@@ -13,8 +13,7 @@ public class V34__AddUniqueCheckOnStretchyReportParameter extends LiquibaseJavaM
 
     @Override
     public void migrate(Context context) throws Exception {
-        Database database = lookupDatabase(context);
-        {
+        try (Database database = lookupDatabase(context)) {
             updateLiquibase(database, "V34__add_unique_check_on_stretchy_report_parameter.xml");
         }
     }

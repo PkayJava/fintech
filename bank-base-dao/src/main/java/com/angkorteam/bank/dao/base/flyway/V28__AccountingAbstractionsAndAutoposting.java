@@ -1,7 +1,7 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.metamodel.Database;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
-import liquibase.database.Database;
 import org.flywaydb.core.api.migration.Context;
 
 public class V28__AccountingAbstractionsAndAutoposting extends LiquibaseJavaMigration {
@@ -13,8 +13,7 @@ public class V28__AccountingAbstractionsAndAutoposting extends LiquibaseJavaMigr
 
     @Override
     public void migrate(Context context) throws Exception {
-        Database database = lookupDatabase(context);
-        {
+        try (Database database = lookupDatabase(context)) {
             updateLiquibase(database, "V28__accounting-abstractions-and-autoposting.xml");
         }
     }

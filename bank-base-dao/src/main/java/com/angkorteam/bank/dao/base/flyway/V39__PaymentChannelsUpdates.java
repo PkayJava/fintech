@@ -8,6 +8,9 @@ import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.apache.metamodel.schema.Table;
 import org.flywaydb.core.api.migration.Context;
 
+/**
+ * TODO
+ */
 public class V39__PaymentChannelsUpdates extends LiquibaseJavaMigration {
 
     @Override

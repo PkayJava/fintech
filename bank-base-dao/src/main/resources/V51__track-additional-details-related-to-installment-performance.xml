@@ -1,9 +1,11 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    <changeSet author="Socheat KHAUV" id="V48__adding-S3-Support-005-1">
+    <changeSet author="Socheat KHAUV" id="V51__track-additional-details-related-to-installment-performance-1">
 
-        <addColumn tableName="m_client">
-            <column name="image_id" type="BIGINT"/>
+        <addColumn tableName="m_loan_repayment_schedule">
+            <column name="obligations_met_on_date" type="DATE"/>
         </addColumn>
+
+        <modifyDataType columnName="interest_waived_derived" newDataType="DECIMAL(19,6)" tableName="m_loan_repayment_schedule"/>
 
     </changeSet>
 </databaseChangeLog>

@@ -73,6 +73,12 @@ public class RepairProgram {
         files.add("V48__adding-S3-Support-002.xml");
         files.add("V48__adding-S3-Support-004.xml");
         files.add("V48__adding-S3-Support-005.xml");
+        files.add("V49__track-loan-charge-payment-transactions.xml");
+        files.add("V50__add-grace-settings-to-loan-product.xml");
+        files.add("V51__track-additional-details-related-to-installment-performance.xml");
+        files.add("V52__add_boolean_support_cols_to_acc_accounting_rule.xml");
+        files.add("V53__track-advance-and-late-payments-on-installment.xml");
+        files.add("V54__charge-to-income-account-mappings.xml");
 
         for (String file : files) {
             System.out.println(file);

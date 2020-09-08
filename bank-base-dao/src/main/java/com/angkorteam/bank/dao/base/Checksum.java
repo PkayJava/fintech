@@ -54,6 +54,8 @@ public interface Checksum {
 
     int V46__ExtendDatatablesApi = -1446471810;
 
-    int V48__AddingS3Support = 1;
+    int V48__AddingS3Support = -881322586;
+
+    int V55__AddAdditionalTransactionProcessingStrategies = 1;
 
 }

@@ -1,11 +1,15 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.jdbc.query.InsertQuery;
+import com.angkorteam.jdbc.query.SelectQuery;
+import com.angkorteam.metamodel.Database;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
-import liquibase.database.Database;
-import org.apache.metamodel.data.DataSet;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.apache.metamodel.schema.Table;
 import org.flywaydb.core.api.migration.Context;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
+import java.util.Map;
 
 public class V17__UpdateStretchyReportingDdl extends LiquibaseJavaMigration {
 
@@ -20,90 +24,119 @@ public class V17__UpdateStretchyReportingDdl extends LiquibaseJavaMigration {
 
     @Override
     public void migrate(Context context) throws Exception {
-        Database database = lookupDatabase(context);
-        JdbcDataContext dataContext = lookupDataContext(context);
-        {
-            // sub change 001
-            updateLiquibase(database, "V17__update_stretchy_reporting_ddl-001.xml");
-        }
-        {
-            // sub change 002
-            dataContext.refreshSchemas();
-            Table stretchy_report = dataContext.getDefaultSchema().getTableByName("stretchy_report");
-            Table stretchy_report_tmp = dataContext.getDefaultSchema().getTableByName("stretchy_report_tmp");
-            try (DataSet rows = dataContext.query().from(stretchy_report).selectAll().execute()) {
-                while (rows.next()) {
-                    dataContext.executeUpdate(callback -> {
-                        callback.insertInto(stretchy_report_tmp)
-                                .value(stretchy_report_tmp.getColumnByName("id"), rows.getRow().getValue(stretchy_report.getColumnByName("report_id")))
-                                .value(stretchy_report_tmp.getColumnByName("report_name"), rows.getRow().getValue(stretchy_report.getColumnByName("report_name")))
-                                .value(stretchy_report_tmp.getColumnByName("report_type"), rows.getRow().getValue(stretchy_report.getColumnByName("report_type")))
-                                .value(stretchy_report_tmp.getColumnByName("report_subtype"), rows.getRow().getValue(stretchy_report.getColumnByName("report_subtype")))
-                                .value(stretchy_report_tmp.getColumnByName("report_category"), rows.getRow().getValue(stretchy_report.getColumnByName("report_category")))
-                                .value(stretchy_report_tmp.getColumnByName("report_sql"), rows.getRow().getValue(stretchy_report.getColumnByName("report_sql")))
-                                .value(stretchy_report_tmp.getColumnByName("description"), rows.getRow().getValue(stretchy_report.getColumnByName("description")))
-                                .value(stretchy_report_tmp.getColumnByName("core_report"), rows.getRow().getValue(stretchy_report.getColumnByName("core_report")))
-                                .value(stretchy_report_tmp.getColumnByName("use_report"), rows.getRow().getValue(stretchy_report.getColumnByName("use_report")))
-                                .execute();
-                    });
+        try (Database database = lookupDatabase(context)) {
+            JdbcDataContext dataContext = lookupDataContext(context);
+            NamedParameterJdbcTemplate named = lookJdbcTemplate(context);
+            SelectQuery selectQuery = null;
+            {
+                // sub change 001
+                updateLiquibase(database, "V17__update_stretchy_reporting_ddl-001.xml");
+            }
+            {
+                // sub change 002
+                dataContext.refreshSchemas();
+                Table stretchy_report = dataContext.getDefaultSchema().getTableByName("stretchy_report");
+                Table stretchy_report_tmp = dataContext.getDefaultSchema().getTableByName("stretchy_report_tmp");
+                selectQuery = new SelectQuery(stretchy_report.getName());
+                for (Map<String, Object> record : named.queryForList(selectQuery.toSQL(), selectQuery.toParam())) {
+                    String report_id = (String) record.get(stretchy_report.getColumnByName("report_id").getName());
+                    String report_name = (String) record.get(stretchy_report.getColumnByName("report_name").getName());
+                    String report_type = (String) record.get(stretchy_report.getColumnByName("report_type").getName());
+                    String report_subtype = (String) record.get(stretchy_report.getColumnByName("report_subtype").getName());
+                    String report_category = (String) record.get(stretchy_report.getColumnByName("report_category").getName());
+                    String report_sql = (String) record.get(stretchy_report.getColumnByName("report_sql").getName());
+                    String description = (String) record.get(stretchy_report.getColumnByName("description").getName());
+                    String core_report = (String) record.get(stretchy_report.getColumnByName("core_report").getName());
+                    String use_report = (String) record.get(stretchy_report.getColumnByName("use_report").getName());
+                    insert_stretchy_report_tmp(named, stretchy_report_tmp, report_id, report_name, report_type, report_subtype, report_category, report_sql, description, core_report, use_report);
                 }
             }
-        }
-        {
-            // sub change 003
-            updateLiquibase(database, "V17__update_stretchy_reporting_ddl-003.xml");
-        }
-        {
-            // sub change 004
-            dataContext.refreshSchemas();
-            Table stretchy_parameter = dataContext.getDefaultSchema().getTableByName("stretchy_parameter");
-            Table stretchy_parameter_tmp = dataContext.getDefaultSchema().getTableByName("stretchy_parameter_tmp");
-            try (DataSet rows = dataContext.query().from(stretchy_parameter).selectAll().execute()) {
-                while (rows.next()) {
-                    dataContext.executeUpdate(callback -> {
-                        callback.insertInto(stretchy_parameter_tmp)
-                                .value(stretchy_parameter_tmp.getColumnByName("id"), rows.getRow().getValue(stretchy_parameter.getColumnByName("parameter_id")))
-                                .value(stretchy_parameter_tmp.getColumnByName("parameter_name"), rows.getRow().getValue(stretchy_parameter.getColumnByName("parameter_name")))
-                                .value(stretchy_parameter_tmp.getColumnByName("parameter_variable"), rows.getRow().getValue(stretchy_parameter.getColumnByName("parameter_variable")))
-                                .value(stretchy_parameter_tmp.getColumnByName("parameter_label"), rows.getRow().getValue(stretchy_parameter.getColumnByName("parameter_label")))
-                                .value(stretchy_parameter_tmp.getColumnByName("parameter_displayType"), rows.getRow().getValue(stretchy_parameter.getColumnByName("parameter_displayType")))
-                                .value(stretchy_parameter_tmp.getColumnByName("parameter_FormatType"), rows.getRow().getValue(stretchy_parameter.getColumnByName("parameter_FormatType")))
-                                .value(stretchy_parameter_tmp.getColumnByName("parameter_default"), rows.getRow().getValue(stretchy_parameter.getColumnByName("parameter_default")))
-                                .value(stretchy_parameter_tmp.getColumnByName("special"), rows.getRow().getValue(stretchy_parameter.getColumnByName("special")))
-                                .value(stretchy_parameter_tmp.getColumnByName("selectOne"), rows.getRow().getValue(stretchy_parameter.getColumnByName("selectOne")))
-                                .value(stretchy_parameter_tmp.getColumnByName("selectAll"), rows.getRow().getValue(stretchy_parameter.getColumnByName("selectAll")))
-                                .value(stretchy_parameter_tmp.getColumnByName("parameter_sql"), rows.getRow().getValue(stretchy_parameter.getColumnByName("parameter_sql")))
-                                .value(stretchy_parameter_tmp.getColumnByName("parent_id"), rows.getRow().getValue(stretchy_parameter.getColumnByName("parent_parameter_id")))
-                                .execute();
-                    });
+            {
+                // sub change 003
+                updateLiquibase(database, "V17__update_stretchy_reporting_ddl-003.xml");
+            }
+            {
+                // sub change 004
+                dataContext.refreshSchemas();
+                Table stretchy_parameter = dataContext.getDefaultSchema().getTableByName("stretchy_parameter");
+                Table stretchy_parameter_tmp = dataContext.getDefaultSchema().getTableByName("stretchy_parameter_tmp");
+                selectQuery = new SelectQuery(stretchy_parameter.getName());
+                for (Map<String, Object> record : named.queryForList(selectQuery.toSQL(), selectQuery.toParam())) {
+                    String parameter_id = (String) record.get("parameter_id");
+                    String parameter_name = (String) record.get("parameter_name");
+                    String parameter_variable = (String) record.get("parameter_variable");
+                    String parameter_label = (String) record.get("parameter_label");
+                    String parameter_displayType = (String) record.get("parameter_displayType");
+                    String parameter_FormatType = (String) record.get("parameter_FormatType");
+                    String parameter_default = (String) record.get("parameter_default");
+                    String special = (String) record.get("special");
+                    String selectOne = (String) record.get("selectOne");
+                    String selectAll = (String) record.get("selectAll");
+                    String parameter_sql = (String) record.get("parameter_sql");
+                    String parent_parameter_id = (String) record.get("parent_parameter_id");
+                    insert_stretchy_parameter_tmp(named, stretchy_parameter_tmp, parameter_id, parameter_name, parameter_variable, parameter_label, parameter_displayType, parameter_FormatType, parameter_default, special, selectOne, selectAll, parameter_sql, parent_parameter_id);
                 }
             }
-        }
-        {
-            // sub change 005
-            updateLiquibase(database, "V17__update_stretchy_reporting_ddl-005.xml");
-        }
-        {
-            // sub change 006
-            dataContext.refreshSchemas();
-            Table stretchy_report_parameter = dataContext.getDefaultSchema().getTableByName("stretchy_report_parameter");
-            Table stretchy_report_parameter_tmp = dataContext.getDefaultSchema().getTableByName("stretchy_report_parameter_tmp");
-            try (DataSet rows = dataContext.query().from(stretchy_report_parameter).selectAll().execute()) {
-                while (rows.next()) {
-                    dataContext.executeUpdate(callback -> {
-                        callback.insertInto(stretchy_report_parameter_tmp)
-                                .value(stretchy_report_parameter_tmp.getColumnByName("report_id"), rows.getRow().getValue(stretchy_report_parameter.getColumnByName("report_id")))
-                                .value(stretchy_report_parameter_tmp.getColumnByName("parameter_id"), rows.getRow().getValue(stretchy_report_parameter.getColumnByName("parameter_id")))
-                                .value(stretchy_report_parameter_tmp.getColumnByName("report_parameter_name"), rows.getRow().getValue(stretchy_report_parameter.getColumnByName("report_parameter_name")))
-                                .execute();
-                    });
+            {
+                // sub change 005
+                updateLiquibase(database, "V17__update_stretchy_reporting_ddl-005.xml");
+            }
+            {
+                // sub change 006
+                dataContext.refreshSchemas();
+                Table stretchy_report_parameter = dataContext.getDefaultSchema().getTableByName("stretchy_report_parameter");
+                Table stretchy_report_parameter_tmp = dataContext.getDefaultSchema().getTableByName("stretchy_report_parameter_tmp");
+                selectQuery = new SelectQuery(stretchy_report_parameter.getName());
+                for (Map<String, Object> record : named.queryForList(selectQuery.toSQL(), selectQuery.toParam())) {
+                    String report_id = (String) record.get(stretchy_report_parameter.getColumnByName("report_id").getName());
+                    String parameter_id = (String) record.get(stretchy_report_parameter.getColumnByName("parameter_id").getName());
+                    String report_parameter_name = (String) record.get(stretchy_report_parameter.getColumnByName("report_parameter_name").getName());
+                    insert_stretchy_report_parameter_tmp(named, stretchy_report_parameter_tmp, report_id, parameter_id, report_parameter_name);
                 }
             }
-        }
-        {
-            // sub change 007
-            updateLiquibase(database, "V17__update_stretchy_reporting_ddl-007.xml");
+            {
+                // sub change 007
+                updateLiquibase(database, "V17__update_stretchy_reporting_ddl-007.xml");
+            }
         }
     }
 
+    protected void insert_stretchy_parameter_tmp(NamedParameterJdbcTemplate named, Table table, String id, String parameter_name, String parameter_variable, String parameter_label, String parameter_displayType, String parameter_FormatType, String parameter_default, String special, String selectOne, String selectAll, String parameter_sql, String parent_id) {
+        InsertQuery insertQuery = new InsertQuery(table.getName());
+        insertQuery.addValue(table.getColumnByName("id").getName(), id);
+        insertQuery.addValue(table.getColumnByName("parameter_name").getName(), parameter_name);
+        insertQuery.addValue(table.getColumnByName("parameter_variable").getName(), parameter_variable);
+        insertQuery.addValue(table.getColumnByName("parameter_label").getName(), parameter_label);
+        insertQuery.addValue(table.getColumnByName("parameter_displayType").getName(), parameter_displayType);
+        insertQuery.addValue(table.getColumnByName("parameter_FormatType").getName(), parameter_FormatType);
+        insertQuery.addValue(table.getColumnByName("parameter_default").getName(), parameter_default);
+        insertQuery.addValue(table.getColumnByName("special").getName(), special);
+        insertQuery.addValue(table.getColumnByName("selectOne").getName(), selectOne);
+        insertQuery.addValue(table.getColumnByName("selectAll").getName(), selectAll);
+        insertQuery.addValue(table.getColumnByName("parameter_sql").getName(), parameter_sql);
+        insertQuery.addValue(table.getColumnByName("parent_id").getName(), parent_id);
+        named.update(insertQuery.toSQL(), insertQuery.toParam());
+    }
+
+    protected void insert_stretchy_report_tmp(NamedParameterJdbcTemplate named, Table table, String id, String report_name, String report_type, String report_subtype, String report_category, String report_sql, String description, String core_report, String use_report) {
+        InsertQuery insertQuery = new InsertQuery(table.getName());
+        insertQuery.addValue(table.getColumnByName("id").getName(), id);
+        insertQuery.addValue(table.getColumnByName("report_name").getName(), report_name);
+        insertQuery.addValue(table.getColumnByName("report_type").getName(), report_type);
+        insertQuery.addValue(table.getColumnByName("report_subtype").getName(), report_subtype);
+        insertQuery.addValue(table.getColumnByName("report_category").getName(), report_category);
+        insertQuery.addValue(table.getColumnByName("report_sql").getName(), report_sql);
+        insertQuery.addValue(table.getColumnByName("description").getName(), description);
+        insertQuery.addValue(table.getColumnByName("core_report").getName(), core_report);
+        insertQuery.addValue(table.getColumnByName("use_report").getName(), use_report);
+        named.update(insertQuery.toSQL(), insertQuery.toParam());
+    }
+
+    protected void insert_stretchy_report_parameter_tmp(NamedParameterJdbcTemplate named, Table table, String report_id, String parameter_id, String report_parameter_name) {
+        InsertQuery insertQuery = new InsertQuery(table.getName());
+        insertQuery.addValue(table.getColumnByName("report_id").getName(), report_id);
+        insertQuery.addValue(table.getColumnByName("parameter_id").getName(), parameter_id);
+        insertQuery.addValue(table.getColumnByName("report_parameter_name").getName(), report_parameter_name);
+        named.update(insertQuery.toSQL(), insertQuery.toParam());
+    }
 }

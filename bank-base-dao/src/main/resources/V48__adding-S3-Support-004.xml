@@ -1,13 +1,9 @@
-<?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    <changeSet author="Socheat KHAUV" id="V47__staff-hierarchy-link-to-users-1">
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V48__adding-S3-Support-004-1">
 
         <createTable tableName="m_image">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="null_key_385" nullable="false" primaryKey="true"
-                             primaryKeyName="primary_key_81"/>
+                <constraints notNullConstraintName="notnull_key_310" nullable="false" primaryKey="true" primaryKeyName="primary_key_61"/>
             </column>
             <column name="location" type="VARCHAR(500)"/>
             <column name="storage_type_enum" type="SMALLINT"/>
