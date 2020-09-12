@@ -2,32 +2,31 @@ package com.angkorteam.bank.dao.base.flyway;
 
 import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.jdbc.query.InsertQuery;
+import com.angkorteam.metamodel.Database;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.apache.metamodel.schema.Table;
 import org.flywaydb.core.api.migration.Context;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-public class V46__ExtendDatatablesApi extends LiquibaseJavaMigration {
+public class V58__CreateHolidayTablesChanged extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return Checksum.V46__ExtendDatatablesApi;
+        return Checksum.V58__CreateHolidayTablesChanged + getInternalChecksum("V58__create-holiday-tables_changed.xml");
     }
 
     @Override
     public void migrate(Context context) throws Exception {
-        JdbcDataContext dataContext = lookupDataContext(context);
-        NamedParameterJdbcTemplate named = lookJdbcTemplate(context);
-        {
+        try (Database database = lookupDatabase(context)) {
+            JdbcDataContext dataContext = lookupDataContext(context);
+            NamedParameterJdbcTemplate named = lookJdbcTemplate(context);
+
+            updateLiquibase(database, "V58__create-holiday-tables_changed.xml");
+
             dataContext.refreshSchemas();
             Table m_permission = dataContext.getDefaultSchema().getTableByName("m_permission");
-            insert_m_permission(named, m_permission, "configuration", "CREATE_DATATABLE", "DATATABLE", "CREATE", 0);
-            insert_m_permission(named, m_permission, "configuration", "CREATE_DATATABLE_CHECKER", "DATATABLE", "CREATE", 0);
-            insert_m_permission(named, m_permission, "configuration", "UPDATE_DATATABLE", "DATATABLE", "UPDATE", 0);
-            insert_m_permission(named, m_permission, "configuration", "UPDATE_DATATABLE_CHECKER", "DATATABLE", "UPDATE", 0);
-            insert_m_permission(named, m_permission, "configuration", "DELETE_DATATABLE", "DATATABLE", "DELETE", 0);
-            insert_m_permission(named, m_permission, "configuration", "DELETE_DATATABLE_CHECKER", "DATATABLE", "DELETE", 0);
+            insert_m_permission(named, m_permission, "organisation", "CREATE_HOLIDAY", "HOLIDAY", "CREATE", 0);
         }
     }
 

@@ -4,17 +4,17 @@ import com.angkorteam.metamodel.Database;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.flywaydb.core.api.migration.Context;
 
-public class V42__AddDefaultValueForIdForAccAccountingRule extends LiquibaseJavaMigration {
+public class V56__TrackOverpaidAmountOnLoans extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V42__Add_default_value_for_id_for_acc_accounting_rule.xml");
+        return getInternalChecksum("V56__track-overpaid-amount-on-loans.xml");
     }
 
     @Override
     public void migrate(Context context) throws Exception {
         try (Database database = lookupDatabase(context)) {
-            updateLiquibase(database, "V42__Add_default_value_for_id_for_acc_accounting_rule.xml");
+            updateLiquibase(database, "V56__track-overpaid-amount-on-loans.xml");
         }
     }
 

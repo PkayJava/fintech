@@ -58,4 +58,8 @@ public interface Checksum {
 
     int V55__AddAdditionalTransactionProcessingStrategies = 1;
 
+    int V58__CreateHolidayTablesChanged = 1;
+
+    int V59__AddGroupRolesSchemaAndPermissions = 1;
+
 }
