@@ -1,19 +1,16 @@
-<?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    <changeSet author="Socheat KHAUV" id="V54__charge-to-income-account-mappings-1">
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V59__add_group_roles_schema_and_permissions-1">
 
         <createTable tableName="m_group_roles">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true" nullable="false"/>
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_324" nullable="false" primaryKey="true" primaryKeyName="primary_key_64"/>
             </column>
             <column name="client_id" type="BIGINT"/>
             <column name="group_id" type="BIGINT"/>
             <column name="role_cv_id" type="BIGINT"/>
         </createTable>
 
-        <addUniqueConstraint tableName="m_group_roles" columnNames="client_id,group_id,role_cv_id"/>
+        <addUniqueConstraint columnNames="client_id,group_id,role_cv_id" constraintName="unique_index_38" tableName="m_group_roles"/>
 
     </changeSet>
 </databaseChangeLog>

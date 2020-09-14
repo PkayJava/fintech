@@ -67,11 +67,23 @@ public class ChecksumProgram {
         files.add("V53__TrackAdvanceAndLatePaymentsOnInstallment");
         files.add("V54__ChargeToIncomeAccountMappings");
         files.add("V55__AddAdditionalTransactionProcessingStrategies");
+        files.add("V56__TrackOverpaidAmountOnLoans");
+        files.add("V57__AddDefaultValuesToDebitAndCreditAccountsAccAccountingRule");
+        files.add("V58__CreateHolidayTablesChanged");
+        files.add("V59__AddGroupRolesSchemaAndPermissions");
+        files.add("V60__QuipoDashboardReports");
+        files.add("V61__TxnRunningBalanceExample");
+        files.add("V62__AddStaffIdToMClientChanged");
+        files.add("V63__AddSyncDisbursementWithMeetingColumnToLoan");
+        files.add("V64__AddPermissionForAssignStaff");
+        files.add("V65__FixRupeeSymbolIssues");
+        files.add("V66__ClientCloseFunctionality");
+        files.add("V67__LoansInAdvanceTable");
         File folder = new File("bank-base-dao/src/main/java/com/angkorteam/bank/dao/base/flyway");
 
         for (String file : files) {
             HashCode hashCode = Hashing.crc32().hashBytes(FileUtils.readFileToByteArray(new File(folder, file + ".java")));
-            System.out.println(file + " -> " + hashCode.asInt());
+            System.out.println(file + " -> " + Math.abs(hashCode.asInt()));
         }
     }
 }

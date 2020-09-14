@@ -79,6 +79,12 @@ public class RepairProgram {
         files.add("V52__add_boolean_support_cols_to_acc_accounting_rule.xml");
         files.add("V53__track-advance-and-late-payments-on-installment.xml");
         files.add("V54__charge-to-income-account-mappings.xml");
+        files.add("V55__add-additional-transaction-processing-strategies.xml");
+        files.add("V56__track-overpaid-amount-on-loans.xml");
+        files.add("V57__add_default_values_to_debit_and_credit_accounts_acc_accounting_rule.xml");
+        files.add("V58__create-holiday-tables_changed.xml");
+        files.add("V59__add_group_roles_schema_and_permissions.xml");
+        files.add("V62__add_staff_id_to_m_client_changed.xml");
 
         for (String file : files) {
             System.out.println(file);

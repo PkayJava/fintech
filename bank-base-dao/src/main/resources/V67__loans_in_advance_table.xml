@@ -1,0 +1,29 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V62__add_staff_id_to_m_client_changed-1">
+
+        <createTable tableName="m_loan_paid_in_advance">
+            <column name="loan_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="principal_in_advance_derived" type="DECIMAL(19,6)" defaultValueNumeric="0.000000">
+                <constraints nullable="false"/>
+            </column>
+            <column name="interest_in_advance_derived" type="DECIMAL(19,6)" defaultValueNumeric="0.000000">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fee_charges_in_advance_derived" type="DECIMAL(19,6)" defaultValueNumeric="0.000000">
+                <constraints nullable="false"/>
+            </column>
+            <column name="penalty_charges_in_advance_derived" type="DECIMAL(19,6)" defaultValueNumeric="0.000000">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_in_advance_derived" type="DECIMAL(19,6)" defaultValueNumeric="0.000000">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>

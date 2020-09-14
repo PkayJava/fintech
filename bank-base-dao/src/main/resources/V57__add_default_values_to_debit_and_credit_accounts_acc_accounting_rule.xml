@@ -1,12 +1,9 @@
-<?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    <changeSet author="Socheat KHAUV" id="V54__charge-to-income-account-mappings-1">
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V57__add_default_values_to_debit_and_credit_accounts_acc_accounting_rule-1">
 
-        <dropNotNullConstraint tableName="acc_accounting_rule" columnName="debit_account_id" columnDataType="BIGINT"/>
+        <dropNotNullConstraint columnDataType="BIGINT" columnName="debit_account_id" tableName="acc_accounting_rule"/>
 
-        <dropNotNullConstraint tableName="acc_accounting_rule" columnName="credit_account_id" columnDataType="BIGINT"/>
+        <dropNotNullConstraint columnDataType="BIGINT" columnName="credit_account_id" tableName="acc_accounting_rule"/>
 
     </changeSet>
 </databaseChangeLog>
