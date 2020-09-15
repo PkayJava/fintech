@@ -1,27 +1,24 @@
-<?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    <changeSet author="Socheat KHAUV" id="V62__add_staff_id_to_m_client_changed-1">
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V67__loans_in_advance_table-1">
 
         <createTable tableName="m_loan_paid_in_advance">
             <column name="loan_id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints notNullConstraintName="notnull_key_310" nullable="false" primaryKey="true" primaryKeyName="primary_key_61"/>
             </column>
-            <column name="principal_in_advance_derived" type="DECIMAL(19,6)" defaultValueNumeric="0.000000">
-                <constraints nullable="false"/>
+            <column defaultValueNumeric="0.000000" name="principal_in_advance_derived" type="DECIMAL(19,6)">
+                <constraints notNullConstraintName="notnull_key_311" nullable="false"/>
             </column>
-            <column name="interest_in_advance_derived" type="DECIMAL(19,6)" defaultValueNumeric="0.000000">
-                <constraints nullable="false"/>
+            <column defaultValueNumeric="0.000000" name="interest_in_advance_derived" type="DECIMAL(19,6)">
+                <constraints notNullConstraintName="notnull_key_312" nullable="false"/>
             </column>
-            <column name="fee_charges_in_advance_derived" type="DECIMAL(19,6)" defaultValueNumeric="0.000000">
-                <constraints nullable="false"/>
+            <column defaultValueNumeric="0.000000" name="fee_charges_in_advance_derived" type="DECIMAL(19,6)">
+                <constraints notNullConstraintName="notnull_key_313" nullable="false"/>
             </column>
-            <column name="penalty_charges_in_advance_derived" type="DECIMAL(19,6)" defaultValueNumeric="0.000000">
-                <constraints nullable="false"/>
+            <column defaultValueNumeric="0.000000" name="penalty_charges_in_advance_derived" type="DECIMAL(19,6)">
+                <constraints notNullConstraintName="notnull_key_314" nullable="false"/>
             </column>
-            <column name="total_in_advance_derived" type="DECIMAL(19,6)" defaultValueNumeric="0.000000">
-                <constraints nullable="false"/>
+            <column defaultValueNumeric="0.000000" name="total_in_advance_derived" type="DECIMAL(19,6)">
+                <constraints notNullConstraintName="notnull_key_315" nullable="false"/>
             </column>
         </createTable>
 

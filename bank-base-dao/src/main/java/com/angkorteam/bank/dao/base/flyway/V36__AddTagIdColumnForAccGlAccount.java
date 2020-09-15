@@ -2,12 +2,13 @@ package com.angkorteam.bank.dao.base.flyway;
 
 import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.jdbc.query.InsertQuery;
-import com.angkorteam.metamodel.Database;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.apache.metamodel.schema.Table;
 import org.flywaydb.core.api.migration.Context;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
+import javax.sql.DataSource;
 
 public class V36__AddTagIdColumnForAccGlAccount extends LiquibaseJavaMigration {
 
@@ -17,22 +18,18 @@ public class V36__AddTagIdColumnForAccGlAccount extends LiquibaseJavaMigration {
     }
 
     @Override
-    public void migrate(Context context) throws Exception {
-        try (Database database = lookupDatabase(context)) {
-            JdbcDataContext dataContext = lookupDataContext(context);
-            NamedParameterJdbcTemplate named = lookJdbcTemplate(context);
-            {
-                updateLiquibase(database, "V36__add_tag_id_column_for_acc_gl_account-001.xml");
-            }
-            {
-                dataContext.refreshSchemas();
-                Table m_code = dataContext.getDefaultSchema().getTableByName("m_code");
-                insert_m_code(named, m_code, "AssetAccountTags", 1);
-                insert_m_code(named, m_code, "LiabilityAccountTags", 1);
-                insert_m_code(named, m_code, "EquityAccountTags", 1);
-                insert_m_code(named, m_code, "IncomeAccountTags", 1);
-                insert_m_code(named, m_code, "ExpenseAccountTags", 1);
-            }
+    protected void doMigrate(Context context, DataSource dataSource, NamedParameterJdbcTemplate named, JdbcDataContext dataContext) throws Exception {
+        {
+            updateLiquibase("V36__add_tag_id_column_for_acc_gl_account-001.xml");
+        }
+        {
+            dataContext.refreshSchemas();
+            Table m_code = dataContext.getDefaultSchema().getTableByName("m_code");
+            insert_m_code(named, m_code, "AssetAccountTags", 1);
+            insert_m_code(named, m_code, "LiabilityAccountTags", 1);
+            insert_m_code(named, m_code, "EquityAccountTags", 1);
+            insert_m_code(named, m_code, "IncomeAccountTags", 1);
+            insert_m_code(named, m_code, "ExpenseAccountTags", 1);
         }
     }
 

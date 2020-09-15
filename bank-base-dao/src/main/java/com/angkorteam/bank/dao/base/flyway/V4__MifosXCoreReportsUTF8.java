@@ -9,6 +9,7 @@ import org.apache.metamodel.schema.Table;
 import org.flywaydb.core.api.migration.Context;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import javax.sql.DataSource;
 import java.util.Map;
 
 public class V4__MifosXCoreReportsUTF8 extends LiquibaseJavaMigration {
@@ -19,9 +20,7 @@ public class V4__MifosXCoreReportsUTF8 extends LiquibaseJavaMigration {
     }
 
     @Override
-    public void migrate(Context context) throws Exception {
-        JdbcDataContext dataContext = lookupDataContext(context);
-        NamedParameterJdbcTemplate named = lookJdbcTemplate(context);
+    protected void doMigrate(Context context, DataSource dataSource, NamedParameterJdbcTemplate named, JdbcDataContext dataContext) throws Exception {
         {
             dataContext.refreshSchemas();
             Table stretchy_report = dataContext.getDefaultSchema().getTableByName("stretchy_report");
@@ -259,7 +258,7 @@ public class V4__MifosXCoreReportsUTF8 extends LiquibaseJavaMigration {
 
     protected void insert_m_permission(NamedParameterJdbcTemplate named, Table table, String grouping, String code, String entity_name, String action_name, long can_maker_checker) {
         InsertQuery insertQuery = new InsertQuery(table.getName());
-        insertQuery.addValue(table.getColumnByName("grouping").getName(), grouping);
+        insertQuery.addValue(table.getColumnByName("grouping").getQualifiedLabel(), grouping);
         insertQuery.addValue(table.getColumnByName("code").getName(), code);
         insertQuery.addValue(table.getColumnByName("entity_name").getName(), entity_name);
         insertQuery.addValue(table.getColumnByName("action_name").getName(), action_name);

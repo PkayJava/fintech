@@ -1,8 +1,11 @@
 package com.angkorteam.bank.dao.base.flyway;
 
-import com.angkorteam.metamodel.Database;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
+import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
+import javax.sql.DataSource;
 
 public class V9__AddMinMaxConstraintColumnToLoanLoanProduct extends LiquibaseJavaMigration {
 
@@ -12,10 +15,8 @@ public class V9__AddMinMaxConstraintColumnToLoanLoanProduct extends LiquibaseJav
     }
 
     @Override
-    public void migrate(Context context) throws Exception {
-        try (Database database = lookupDatabase(context)) {
-            updateLiquibase(database, "V9__add_min_max_constraint_column_to_loan_loanproduct.xml");
-        }
+    protected void doMigrate(Context context, DataSource dataSource, NamedParameterJdbcTemplate named, JdbcDataContext dataContext) throws Exception {
+        updateLiquibase("V9__add_min_max_constraint_column_to_loan_loanproduct.xml");
     }
 
 }

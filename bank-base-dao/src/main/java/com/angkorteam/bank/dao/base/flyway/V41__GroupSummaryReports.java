@@ -9,6 +9,8 @@ import org.apache.metamodel.schema.Table;
 import org.flywaydb.core.api.migration.Context;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import javax.sql.DataSource;
+
 public class V41__GroupSummaryReports extends LiquibaseJavaMigration {
 
     @Override
@@ -17,9 +19,7 @@ public class V41__GroupSummaryReports extends LiquibaseJavaMigration {
     }
 
     @Override
-    public void migrate(Context context) throws Exception {
-        JdbcDataContext dataContext = lookupDataContext(context);
-        NamedParameterJdbcTemplate named = lookJdbcTemplate(context);
+    protected void doMigrate(Context context, DataSource dataSource, NamedParameterJdbcTemplate named, JdbcDataContext dataContext) throws Exception {
         DeleteQuery deleteQuery = null;
         {
             dataContext.refreshSchemas();
@@ -39,13 +39,12 @@ public class V41__GroupSummaryReports extends LiquibaseJavaMigration {
             insert_stretchy_report(named, stretchy_report, "GroupSummaryAmounts", "Table", 1, 0, "Utility query for getting group summary currency amount details for a group_id", "\nselect ifnull(cur.display_symbol, l.currency_code) as currency,\nifnull(sum(l.principal_disbursed_derived),0) as totalDisbursedAmount,\nifnull(sum(l.principal_outstanding_derived),0) as totalLoanOutstandingAmount,\ncount(laa.loan_id) as overdueLoans, ifnull(sum(laa.total_overdue_derived), 0) as totalLoanOverdueAmount\nfrom m_group topgroup\njoin m_office o on o.id = topgroup.office_id and o.hierarchy like concat('${currentUserHierarchy}', '%')\njoin m_group g on g.hierarchy like concat(topgroup.hierarchy, '%')\njoin m_loan l on l.group_id = g.id\nleft join m_loan_arrears_aging laa on laa.loan_id = l.id\nleft join m_currency cur on cur.code = l.currency_code\nwhere topgroup.id = ${groupId}\nand l.disbursedon_date is not null\ngroup by l.currency_code\n");
 
             insert_m_permission(named, m_permission, "report", "READ_GroupSummaryAmounts", "GroupSummaryAmounts", "READ", 0);
-
         }
     }
 
     protected void insert_m_permission(NamedParameterJdbcTemplate named, Table table, String grouping, String code, String entity_name, String action_name, long can_maker_checker) {
         InsertQuery insertQuery = new InsertQuery(table.getName());
-        insertQuery.addValue(table.getColumnByName("grouping").getName(), grouping);
+        insertQuery.addValue(table.getColumnByName("grouping").getQualifiedLabel(), grouping);
         insertQuery.addValue(table.getColumnByName("code").getName(), code);
         insertQuery.addValue(table.getColumnByName("entity_name").getName(), entity_name);
         insertQuery.addValue(table.getColumnByName("action_name").getName(), action_name);

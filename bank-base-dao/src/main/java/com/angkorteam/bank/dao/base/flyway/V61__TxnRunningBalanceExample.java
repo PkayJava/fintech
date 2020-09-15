@@ -8,8 +8,10 @@ import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.apache.metamodel.schema.Table;
 import org.flywaydb.core.api.migration.Context;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 
 public class V61__TxnRunningBalanceExample extends LiquibaseJavaMigration {
@@ -20,9 +22,7 @@ public class V61__TxnRunningBalanceExample extends LiquibaseJavaMigration {
     }
 
     @Override
-    public void migrate(Context context) throws Exception {
-        JdbcDataContext dataContext = lookupDataContext(context);
-        NamedParameterJdbcTemplate named = lookJdbcTemplate(context);
+    protected void doMigrate(Context context, DataSource dataSource, NamedParameterJdbcTemplate named, JdbcDataContext dataContext) throws Exception {
         DeleteQuery deleteQuery = null;
         SelectQuery selectQuery = null;
 
@@ -34,7 +34,11 @@ public class V61__TxnRunningBalanceExample extends LiquibaseJavaMigration {
         selectQuery = new SelectQuery(stretchy_report.getName());
         selectQuery.addField(stretchy_report.getColumnByName("id").getName());
         selectQuery.addWhere(stretchy_report.getColumnByName("report_name").getName() + " = :name", "TxnRunningBalances");
-        Long id = named.queryForObject(selectQuery.toSQL(), selectQuery.toParam(), Long.class);
+        Long id = null;
+        try {
+            id = named.queryForObject(selectQuery.toSQL(), selectQuery.toParam(), Long.class);
+        } catch (EmptyResultDataAccessException e) {
+        }
         if (id != null) {
             deleteQuery = new DeleteQuery(stretchy_report_parameter.getName());
             deleteQuery.addWhere(stretchy_report_parameter.getColumnByName("report_id").getName() + " = :id", id);
@@ -79,7 +83,7 @@ public class V61__TxnRunningBalanceExample extends LiquibaseJavaMigration {
 
     protected void insert_m_permission(NamedParameterJdbcTemplate named, Table table, String grouping, String code, String entity_name, String action_name, long can_maker_checker) {
         InsertQuery insertQuery = new InsertQuery(table.getName());
-        insertQuery.addValue(table.getColumnByName("grouping").getName(), grouping);
+        insertQuery.addValue(table.getColumnByName("grouping").getQualifiedLabel(), grouping);
         insertQuery.addValue(table.getColumnByName("code").getName(), code);
         insertQuery.addValue(table.getColumnByName("entity_name").getName(), entity_name);
         insertQuery.addValue(table.getColumnByName("action_name").getName(), action_name);

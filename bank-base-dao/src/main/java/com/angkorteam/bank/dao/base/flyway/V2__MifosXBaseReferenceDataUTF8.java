@@ -10,6 +10,8 @@ import org.apache.metamodel.schema.Table;
 import org.flywaydb.core.api.migration.Context;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import javax.sql.DataSource;
+
 public class V2__MifosXBaseReferenceDataUTF8 extends LiquibaseJavaMigration {
 
     @Override
@@ -18,9 +20,7 @@ public class V2__MifosXBaseReferenceDataUTF8 extends LiquibaseJavaMigration {
     }
 
     @Override
-    public void migrate(Context context) throws Exception {
-        JdbcDataContext dataContext = lookupDataContext(context);
-        NamedParameterJdbcTemplate named = lookJdbcTemplate(context);
+    protected void doMigrate(Context context, DataSource dataSource, NamedParameterJdbcTemplate named, JdbcDataContext dataContext) throws Exception {
         {
             dataContext.refreshSchemas();
             Table ref_loan_transaction_processing_strategy = dataContext.getDefaultSchema().getTableByName("ref_loan_transaction_processing_strategy");

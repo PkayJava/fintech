@@ -2,76 +2,74 @@ package com.angkorteam.bank.dao.base;
 
 public interface Checksum {
 
-    int V1__MifosPlatformCoreDdlLatest = 2068161286;
-
-    int V2__MifosXBaseReferenceDataUTF8 = 2028452919;
-
-    int V3__MifosXPermissionsAndAuthorisationUTF8 = 713517202;
-
-    int V4__MifosXCoreReportsUTF8 = 1345444376;
-
-    int V7__RemoveReadMakerCheckerPermission = 422725521;
-
-    int V8__DepositTransactionPermissionsIfTheyExist = 727189004;
-
-    int V10__InterestPostingFieldsForSavings = 1641432997;
-
-    int V13__AddGroupAndClientPendingConfiguration = 1836247539;
-
-    int V14__RenameStatusIdToEnum = 1320955691;
-
-    int V15__CenterPermissions = 541024245;
-
-    int V18__UpdateStretchyReportingReportSql = 1459977460;
-
-    int V19__ReportMaintenancePermissions = 134489621;
-
-    int V20__ReportMaintPermsReallyConfiguration = 2129698769;
-
-    int V21__ActivationPermissionsForClients = 1440758926;
-
-    int V22__AlterGroupForConsistencyAddPermissions = 965571418;
-
-    int V23__RemoveEnableDisableConfigurationForClientGroupStatus = 1046048332;
-
-    int V25__UpdateClientReportsForStatusAndActivationChange = 1372308061;
-
-    int V32__AssociateDisassociateClientsFromGroupPermissions = 1668149327;
-
-    int V36__AddTagIdColumnForAccGlAccount = 37050478;
-
-    int V37__AddCenterGroupCollectionSheetPermissions = 1042627170;
-
-    int V38__AddGroupSummaryDetailsReport = 1567235764;
-
-    int V39__PaymentChannelsUpdates = 1839659580;
-
-    int V40__AddPermissionsForAccountingRule = 1275801672;
-
-    int V41__GroupSummaryReports = 740892863;
-
-    int V43__AccountingForSavings = 1963901650;
-
-    int V46__ExtendDatatablesApi = 221956399;
-
-    int V48__AddingS3Support = 572538909;
-
-    int V55__AddAdditionalTransactionProcessingStrategies = 647545488;
-
-    int V58__CreateHolidayTablesChanged = 1037218745;
-
-    int V59__AddGroupRolesSchemaAndPermissions = 1884682362;
-
-    int V60__QuipoDashboardReports = 403650618;
-
-    int V61__TxnRunningBalanceExample = 568287815;
-
-    int V62__AddStaffIdToMClientChanged = 1460317728;
-
-    int V64__AddPermissionForAssignStaff = 124967568;
-
-    int V65__FixRupeeSymbolIssues = 434211233;
-
-    int V66__ClientCloseFunctionality = 1436824295;
+    int V1__MifosPlatformCoreDdlLatest = 1610818147;
+    int V2__MifosXBaseReferenceDataUTF8 = 1540588471;
+    int V3__MifosXPermissionsAndAuthorisationUTF8 = 33750921;
+    int V4__MifosXCoreReportsUTF8 = 1543833427;
+    int V5__UpdateSavingsProductAndAccountTables = 1386194089;
+    int V6__AddMinMaxPrincipalColumnToLoan = 1618708202;
+    int V7__RemoveReadMakerCheckerPermission = 1258010895;
+    int V8__DepositTransactionPermissionsIfTheyExist = 1621734394;
+    int V9__AddMinMaxConstraintColumnToLoanLoanProduct = 742407018;
+    int V10__InterestPostingFieldsForSavings = 5812887;
+    int V11__AddPaymentDetails = 1799699691;
+    int V12__AddExternalIdToCoupleOfTables = 2054641064;
+    int V13__AddGroupAndClientPendingConfiguration = 995909342;
+    int V14__RenameStatusIdToEnum = 1660607143;
+    int V15__CenterPermissions = 35146547;
+    int V16__DropMinMaxColumnOnLoanTable = 1915857992;
+    int V17__UpdateStretchyReportingDdl = 1035556386;
+    int V18__UpdateStretchyReportingReportSql = 1634215522;
+    int V19__ReportMaintenancePermissions = 758735700;
+    int V20__ReportMaintPermsReallyConfiguration = 1452132524;
+    int V21__ActivationPermissionsForClients = 1340534023;
+    int V22__AlterGroupForConsistencyAddPermissions = 1106789813;
+    int V23__RemoveEnableDisableConfigurationForClientGroupStatus = 1616323194;
+    int V24__AddGroupClientForeignKeyConstraintInLoanTable = 925741129;
+    int V25__UpdateClientReportsForStatusAndActivationChange = 1897558787;
+    int V26__AddSupportForWithdrawalFeesOnSavings = 1040752316;
+    int V27__AddLoanTypeColumnToLoanTable = 2126259639;
+    int V28__AccountingAbstractionsAndAutoposting = 1290567565;
+    int V29__AddSupportForAnnualFeesOnSavings = 1568454752;
+    int V30__AddReferenceNumberToAccGlJournalEntry = 1692776186;
+    int V31__DropAutoPostings = 1854163702;
+    int V32__AssociateDisassociateClientsFromGroupPermissions = 138643961;
+    int V33__DropUniqueCheckOnStretchyReportParameter = 880866948;
+    int V34__AddUniqueCheckOnStretchyReportParameter = 1326377004;
+    int V35__AddHierarchyColumnForAccGlAccount = 1980688708;
+    int V36__AddTagIdColumnForAccGlAccount = 1283477813;
+    int V37__AddCenterGroupCollectionSheetPermissions = 260889461;
+    int V38__AddGroupSummaryDetailsReport = 2039479177;
+    int V39__PaymentChannelsUpdates = 825254787;
+    int V40__AddPermissionsForAccountingRule = 1410606579;
+    int V41__GroupSummaryReports = 729206647;
+    int V42__AddDefaultValueForIdForAccAccountingRule = 939564316;
+    int V43__AccountingForSavings = 330347487;
+    int V44__DocumentIncreaseSizeOfColumnType = 389431178;
+    int V45__CreateAccRuleTagsTable = 526342339;
+    int V46__ExtendDatatablesApi = 1970051581;
+    int V47__StaffHierarchyLinkToUsers = 85343800;
+    int V48__AddingS3Support = 1155332625;
+    int V49__TrackLoanChargePaymentTransactions = 1618759782;
+    int V50__AddGraceSettingsToLoanProduct = 1816736466;
+    int V51__TrackAdditionalDetailsRelatedToInstallmentPerformance = 1965023759;
+    int V52__AddBooleanSupportColsToAccAccountingRule = 1033829919;
+    int V53__TrackAdvanceAndLatePaymentsOnInstallment = 2086260549;
+    int V54__ChargeToIncomeAccountMappings = 2125386041;
+    int V55__AddAdditionalTransactionProcessingStrategies = 1293786558;
+    int V56__TrackOverpaidAmountOnLoans = 901221621;
+    int V57__AddDefaultValuesToDebitAndCreditAccountsAccAccountingRule = 25899625;
+    int V58__CreateHolidayTablesChanged = 1893161030;
+    int V59__AddGroupRolesSchemaAndPermissions = 1229944660;
+    int V60__QuipoDashboardReports = 2049503456;
+    int V61__TxnRunningBalanceExample = 500965528;
+    int V62__AddStaffIdToMClientChanged = 482866705;
+    int V63__AddSyncDisbursementWithMeetingColumnToLoan = 284361871;
+    int V64__AddPermissionForAssignStaff = 125809768;
+    int V65__FixRupeeSymbolIssues = 1838802865;
+    int V66__ClientCloseFunctionality = 2099331862;
+    int V67__LoansInAdvanceTable = 103729071;
+    int V68__QuipoDashboardReportsUpdated = 1654730496;
+    int V69__LoansInAdvanceInitialise = 856654107;
 
 }

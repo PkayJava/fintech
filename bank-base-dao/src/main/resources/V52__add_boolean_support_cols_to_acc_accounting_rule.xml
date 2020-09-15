@@ -6,13 +6,13 @@
             <column defaultValueNumeric="0" name="allow_multiple_credits" type="TINYINT"/>
         </addColumn>
 
-        <addNotNullConstraint columnDataType="TINYINT" columnName="allow_multiple_debits" constraintName="notnull_key_315" tableName="acc_accounting_rule"/>
+        <addNotNullConstraint columnDataType="TINYINT" columnName="allow_multiple_debits" constraintName="notnull_key_300" tableName="acc_accounting_rule"/>
 
-        <addNotNullConstraint columnDataType="TINYINT" columnName="allow_multiple_credits" constraintName="notnull_key_316" tableName="acc_accounting_rule"/>
+        <addNotNullConstraint columnDataType="TINYINT" columnName="allow_multiple_credits" constraintName="notnull_key_301" tableName="acc_accounting_rule"/>
 
         <modifyDataType columnName="interest_waived_derived" newDataType="DECIMAL(19,6)" tableName="m_loan_repayment_schedule"/>
 
-        <addUniqueConstraint columnNames="acc_rule_id,tag_id,acc_type_enum" constraintName="unique_index_36" tableName="acc_rule_tags"/>
+        <addUniqueConstraint columnNames="acc_rule_id,tag_id,acc_type_enum" constraintName="unique_index_32" tableName="acc_rule_tags"/>
 
     </changeSet>
 </databaseChangeLog>

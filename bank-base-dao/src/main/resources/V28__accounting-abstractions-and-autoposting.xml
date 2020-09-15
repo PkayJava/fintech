@@ -3,21 +3,21 @@
 
         <createTable tableName="acc_accounting_rule">
             <column name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_296" nullable="false" primaryKey="true" primaryKeyName="primary_key_58"/>
+                <constraints notNullConstraintName="notnull_key_284" nullable="false" primaryKey="true" primaryKeyName="primary_key_55"/>
             </column>
             <column name="name" type="VARCHAR(100)">
-                <constraints unique="true" uniqueConstraintName="unique_index_32"/>
+                <constraints unique="true" uniqueConstraintName="unique_index_29"/>
             </column>
             <column name="office_id" type="BIGINT"/>
             <column name="debit_account_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_297" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_285" nullable="false"/>
             </column>
             <column name="credit_account_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_298" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_286" nullable="false"/>
             </column>
             <column name="description" type="VARCHAR(500)"/>
             <column defaultValueNumeric="0" name="system_defined" type="tinyint">
-                <constraints notNullConstraintName="notnull_key_299" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_287" nullable="false"/>
             </column>
         </createTable>
 
@@ -35,27 +35,27 @@
 
         <createTable tableName="acc_auto_posting">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_300" nullable="false" primaryKey="true" primaryKeyName="primary_key_59"/>
+                <constraints notNullConstraintName="notnull_key_288" nullable="false" primaryKey="true" primaryKeyName="primary_key_56"/>
             </column>
             <column name="name" type="VARCHAR(100)">
-                <constraints unique="true" uniqueConstraintName="unique_index_33"/>
+                <constraints unique="true" uniqueConstraintName="unique_index_30"/>
             </column>
             <column name="description" type="VARCHAR(500)"/>
             <column name="office_id" type="BIGINT"/>
 
             <column name="product_type_enum" type="SMALLINT">
-                <constraints notNullConstraintName="notnull_key_301" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_289" nullable="false"/>
             </column>
             <column name="product_id" type="BIGINT"/>
             <column name="charge_id" type="BIGINT"/>
 
             <column name="event" type="INT">
-                <constraints notNullConstraintName="notnull_key_302" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_290" nullable="false"/>
             </column>
             <column name="event_attribute" type="INT"/>
 
             <column name="accounting_rule_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_303" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_291" nullable="false"/>
             </column>
         </createTable>
 

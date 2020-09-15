@@ -3,14 +3,14 @@
 
         <createTable tableName="m_group_roles">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_324" nullable="false" primaryKey="true" primaryKeyName="primary_key_64"/>
+                <constraints notNullConstraintName="notnull_key_309" nullable="false" primaryKey="true" primaryKeyName="primary_key_60"/>
             </column>
             <column name="client_id" type="BIGINT"/>
             <column name="group_id" type="BIGINT"/>
             <column name="role_cv_id" type="BIGINT"/>
         </createTable>
 
-        <addUniqueConstraint columnNames="client_id,group_id,role_cv_id" constraintName="unique_index_38" tableName="m_group_roles"/>
+        <addUniqueConstraint columnNames="client_id,group_id,role_cv_id" constraintName="unique_index_34" tableName="m_group_roles"/>
 
     </changeSet>
 </databaseChangeLog>

@@ -8,6 +8,8 @@ import org.apache.metamodel.schema.Table;
 import org.flywaydb.core.api.migration.Context;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import javax.sql.DataSource;
+
 public class V8__DepositTransactionPermissionsIfTheyExist extends LiquibaseJavaMigration {
 
     @Override
@@ -16,9 +18,7 @@ public class V8__DepositTransactionPermissionsIfTheyExist extends LiquibaseJavaM
     }
 
     @Override
-    public void migrate(Context context) throws Exception {
-        JdbcDataContext dataContext = lookupDataContext(context);
-        NamedParameterJdbcTemplate named = lookJdbcTemplate(context);
+    protected void doMigrate(Context context, DataSource dataSource, NamedParameterJdbcTemplate named, JdbcDataContext dataContext) throws Exception {
         {
             dataContext.refreshSchemas();
             Table m_permission = dataContext.getDefaultSchema().getTableByName("m_permission");
@@ -26,7 +26,7 @@ public class V8__DepositTransactionPermissionsIfTheyExist extends LiquibaseJavaM
             DeleteQuery deleteQuery = null;
 
             deleteQuery = new DeleteQuery(m_permission.getName());
-            deleteQuery.addWhere(m_permission.getColumnByName("grouping").getName() + " = :grouping", "transaction_deposit");
+            deleteQuery.addWhere(m_permission.getColumnByName("grouping").getQualifiedLabel() + " = :grouping", "transaction_deposit");
             named.update(deleteQuery.toSQL(), deleteQuery.toParam());
         }
     }

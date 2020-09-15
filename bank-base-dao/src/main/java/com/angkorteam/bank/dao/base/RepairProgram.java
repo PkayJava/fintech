@@ -1,6 +1,7 @@
 package com.angkorteam.bank.dao.base;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -16,8 +17,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.DecimalFormat;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class RepairProgram {
     public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException, TransformerException {
@@ -35,58 +37,21 @@ public class RepairProgram {
         int indexRotation = 1;
         int foreignKeyRotation = 1;
 
-        List<String> files = new ArrayList<>();
-        files.add("V1__mifosplatform-core-ddl-latest-002.xml");
-        files.add("V5__update-savings-product-and-account-tables.xml");
-        files.add("V6__add_min_max_principal_column_to_loan.xml");
-        files.add("V9__add_min_max_constraint_column_to_loan_loanproduct.xml");
-        files.add("V10__interest-posting-fields-for-savings-002.xml");
-        files.add("V11__add-payment-details.xml");
-        files.add("V12__add_external_id_to_couple_of_tables.xml");
-        files.add("V14__rename_status_id_to_enum-001.xml");
-        files.add("V16__drop_min_max_column_on_loan_table.xml");
-        files.add("V17__update_stretchy_reporting_ddl-001.xml");
-        files.add("V17__update_stretchy_reporting_ddl-003.xml");
-        files.add("V17__update_stretchy_reporting_ddl-005.xml");
-        files.add("V17__update_stretchy_reporting_ddl-007.xml");
-        files.add("V21__activation-permissions-for-clients-002.xml");
-        files.add("V22__alter-group-for-consistency-add-permissions-002.xml");
-        files.add("V23__remove-enable-disable-configuration-for-client-group-status-002.xml");
-        files.add("V24__add-group-client-foreign-key-constraint-in-loan-table.xml");
-        files.add("V26__add-support-for-withdrawal-fees-on-savings.xml");
-        files.add("V27__add-loan-type-column-to-loan-table.xml");
-        files.add("V28__accounting-abstractions-and-autoposting.xml");
-        files.add("V30__add-referenceNumber-to-acc_gl_journal_entry.xml");
-        files.add("V31__drop-autopostings.xml");
-        files.add("V33__drop_unique_check_on_stretchy_report_parameter.xml");
-        files.add("V34__add_unique_check_on_stretchy_report_parameter.xml");
-        files.add("V35__add_hierarchy_column_for_acc_gl_account.xml");
-        files.add("V36__add_tag_id_column_for_acc_gl_account-001.xml");
-        files.add("V39__payment-channels-updates-002.xml");
-        files.add("V39__payment-channels-updates-004.xml");
-        files.add("V42__Add_default_value_for_id_for_acc_accounting_rule.xml");
-        files.add("V43__accounting-for-savings-001.xml");
-        files.add("V43__accounting-for-savings-003.xml");
-        files.add("V44__document-increase-size-of-column-type.xml");
-        files.add("V45__create_acc_rule_tags_table.xml");
-        files.add("V47__staff-hierarchy-link-to-users.xml");
-        files.add("V48__adding-S3-Support-002.xml");
-        files.add("V48__adding-S3-Support-004.xml");
-        files.add("V48__adding-S3-Support-005.xml");
-        files.add("V49__track-loan-charge-payment-transactions.xml");
-        files.add("V50__add-grace-settings-to-loan-product.xml");
-        files.add("V51__track-additional-details-related-to-installment-performance.xml");
-        files.add("V52__add_boolean_support_cols_to_acc_accounting_rule.xml");
-        files.add("V53__track-advance-and-late-payments-on-installment.xml");
-        files.add("V54__charge-to-income-account-mappings.xml");
-        files.add("V55__add-additional-transaction-processing-strategies.xml");
-        files.add("V56__track-overpaid-amount-on-loans.xml");
-        files.add("V57__add_default_values_to_debit_and_credit_accounts_acc_accounting_rule.xml");
-        files.add("V58__create-holiday-tables_changed.xml");
-        files.add("V59__add_group_roles_schema_and_permissions.xml");
-        files.add("V62__add_staff_id_to_m_client_changed.xml");
+        Map<String, String> files = new TreeMap<>();
+        int numberSize = 0;
+        for (File temp : folder.listFiles()) {
+            int i = temp.getName().indexOf('_');
+            numberSize = Math.max(temp.getName().substring(1, i).length(), numberSize);
+        }
+        String zero = StringUtils.repeat("0", numberSize);
+        DecimalFormat format = new DecimalFormat(zero);
+        for (File temp : folder.listFiles()) {
+            int i = temp.getName().indexOf('_');
+            int ver = Integer.valueOf(temp.getName().substring(1, i));
+            files.put(format.format(ver), temp.getName());
+        }
 
-        for (String file : files) {
+        for (String file : files.values()) {
             System.out.println(file);
             int changesets = 1;
             DocumentBuilderFactory docFactory = DocumentBuilderFactory
