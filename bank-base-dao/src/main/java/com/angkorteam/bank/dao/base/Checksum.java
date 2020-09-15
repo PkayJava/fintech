@@ -71,5 +71,7 @@ public interface Checksum {
     int V67__LoansInAdvanceTable = 103729071;
     int V68__QuipoDashboardReportsUpdated = 1654730496;
     int V69__LoansInAdvanceInitialise = 856654107;
+    int V70__QuipoProgramDetailQueryFix = 427266315;
+    int V71__InsertRescheduleRepaymentToConfiguration = 1279385237;
 
 }
