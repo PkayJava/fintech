@@ -1,0 +1,40 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V72__add_m_loan_counter_changes-1">
+
+        <addColumn tableName="m_product_loan">
+            <column defaultValueNumeric="0" name="include_in_borrower_cycle" type="TINYINT"/>
+        </addColumn>
+        <addNotNullConstraint columnDataType="TINYINT" columnName="include_in_borrower_cycle" constraintName="notnull_key_316" tableName="m_product_loan"/>
+
+        <createTable tableName="m_client_loan_counter">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_317" nullable="false" primaryKey="true" primaryKeyName="primary_key_62"/>
+            </column>
+            <column name="client_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_318" nullable="false"/>
+            </column>
+            <column name="loan_product_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_319" nullable="false"/>
+            </column>
+            <column name="loan_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_320" nullable="false"/>
+            </column>
+            <column name="running_count" type="SMALLINT">
+                <constraints notNullConstraintName="notnull_key_321" nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="index_18" tableName="m_client_loan_counter">
+            <column name="client_id" type="BIGINT"/>
+        </createIndex>
+
+        <createIndex indexName="index_19" tableName="m_client_loan_counter">
+            <column name="loan_product_id" type="BIGINT"/>
+        </createIndex>
+
+        <createIndex indexName="index_20" tableName="m_client_loan_counter">
+            <column name="loan_id" type="BIGINT"/>
+        </createIndex>
+
+    </changeSet>
+</databaseChangeLog>

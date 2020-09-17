@@ -1,0 +1,12 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V73__add_repayments_rescheduled_to_and_processed_column_to_holiday-1">
+
+        <addColumn tableName="m_holiday">
+            <column name="repayments_rescheduled_to" type="DATETIME"/>
+            <column defaultValueNumeric="0" name="processed" type="TINYINT"/>
+        </addColumn>
+        <addNotNullConstraint columnDataType="DATETIME" columnName="repayments_rescheduled_to" constraintName="notnull_key_322" tableName="m_holiday"/>
+        <addNotNullConstraint columnDataType="TINYINT" columnName="processed" constraintName="notnull_key_323" tableName="m_holiday"/>
+
+    </changeSet>
+</databaseChangeLog>

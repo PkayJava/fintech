@@ -73,5 +73,11 @@ public interface Checksum {
     int V69__LoansInAdvanceInitialise = 856654107;
     int V70__QuipoProgramDetailQueryFix = 427266315;
     int V71__InsertRescheduleRepaymentToConfiguration = 1279385237;
+    int V72__AddMLoanCounterChanges = 1972054217;
+    int V73__AddRepaymentsRescheduledToAndProcessedColumnToHoliday = 1266747600;
+    int V74__AlterMLoanCounterTableAddGroup = 956701077;
+    int V75__AddRescheduleRepaymentsOnHolidaysToConfiguration = 630802840;
+    int V76__RenamePermissionGrouping = 24826155;
+    int V78__BreakdownPortfolioGrouping = 1486629142;
 
 }
