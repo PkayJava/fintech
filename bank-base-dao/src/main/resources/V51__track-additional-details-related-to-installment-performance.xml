@@ -5,7 +5,7 @@
             <column name="obligations_met_on_date" type="DATE"/>
         </addColumn>
 
-        <modifyDataType columnName="interest_waived_derived" newDataType="DECIMAL(19,6)" tableName="m_loan_repayment_schedule"/>
+        <dropNotNullConstraint columnDataType="DECIMAL(19,6)" columnName="interest_waived_derived" tableName="m_loan_repayment_schedule"/>
 
     </changeSet>
 </databaseChangeLog>

@@ -45,9 +45,9 @@
             </column>
             <column name="name" type="VARCHAR(255)"/>
             <column name="createdby_id" type="BIGINT"/>
-            <column name="created_date" type="datetime"/>
+            <column name="created_date" type="DATETIME"/>
             <column name="lastmodifiedby_id" type="BIGINT"/>
-            <column name="lastmodified_date" type="datetime"/>
+            <column name="lastmodified_date" type="DATETIME"/>
         </createTable>
         <createTable tableName="c_configuration">
             <column autoIncrement="true" name="id" type="BIGINT">
@@ -137,10 +137,10 @@
             </column>
             <column name="description" type="VARCHAR(100)"/>
             <column name="location" type="VARCHAR(50)"/>
-            <column name="start_date" type="date">
+            <column name="start_date" type="DATE">
                 <constraints notNullConstraintName="notnull_key_33" nullable="false"/>
             </column>
-            <column name="end_date" type="date"/>
+            <column name="end_date" type="DATE"/>
             <column name="duration" type="SMALLINT"/>
             <column name="calendar_type_enum" type="SMALLINT">
                 <constraints notNullConstraintName="notnull_key_34" nullable="false"/>
@@ -154,8 +154,8 @@
             <column name="second_reminder" type="SMALLINT"/>
             <column name="createdby_id" type="BIGINT"/>
             <column name="lastmodifiedby_id" type="BIGINT"/>
-            <column name="created_date" type="datetime"/>
-            <column name="lastmodified_date" type="datetime"/>
+            <column name="created_date" type="DATETIME"/>
+            <column name="lastmodified_date" type="DATETIME"/>
         </createTable>
         <createTable tableName="m_calendar_instance">
             <column autoIncrement="true" name="id" type="BIGINT">
@@ -183,7 +183,7 @@
             <column name="name" type="VARCHAR(50)">
                 <constraints notNullConstraintName="notnull_key_41" nullable="false" unique="true" uniqueConstraintName="unique_index_6"/>
             </column>
-            <column name="opening_date" type="date">
+            <column name="opening_date" type="DATE">
                 <constraints notNullConstraintName="notnull_key_42" nullable="false"/>
             </column>
         </createTable>
@@ -202,7 +202,7 @@
             <column name="transaction_amount" type="DECIMAL(19, 6)">
                 <constraints notNullConstraintName="notnull_key_46" nullable="false"/>
             </column>
-            <column name="transaction_date" type="date">
+            <column name="transaction_date" type="DATE">
                 <constraints notNullConstraintName="notnull_key_47" nullable="false"/>
             </column>
             <column name="description" type="VARCHAR(100)"/>
@@ -313,11 +313,11 @@
             <column name="maker_id" type="BIGINT">
                 <constraints notNullConstraintName="notnull_key_75" nullable="false"/>
             </column>
-            <column name="made_on_date" type="datetime">
+            <column name="made_on_date" type="DATETIME">
                 <constraints notNullConstraintName="notnull_key_76" nullable="false"/>
             </column>
             <column name="checker_id" type="BIGINT"/>
-            <column name="checked_on_date" type="datetime"/>
+            <column name="checked_on_date" type="DATETIME"/>
             <column name="processing_result_enum" type="SMALLINT">
                 <constraints notNullConstraintName="notnull_key_77" nullable="false"/>
             </column>
@@ -435,7 +435,7 @@
             <column name="lastname" type="VARCHAR(50)"/>
             <column name="fullname" type="VARCHAR(100)"/>
             <column name="image_key" type="VARCHAR(500)"/>
-            <column name="joined_date" type="date"/>
+            <column name="joined_date" type="DATE"/>
             <column defaultValueNumeric="0" name="is_deleted" type="TINYINT(3)">
                 <constraints notNullConstraintName="notnull_key_102" nullable="false"/>
             </column>
@@ -456,8 +456,8 @@
             <column name="description" type="VARCHAR(500)"/>
             <column name="createdby_id" type="BIGINT"/>
             <column name="lastmodifiedby_id" type="BIGINT"/>
-            <column name="created_date" type="datetime"/>
-            <column name="lastmodified_date" type="datetime"/>
+            <column name="created_date" type="DATETIME"/>
+            <column name="lastmodified_date" type="DATETIME"/>
         </createTable>
         <createTable tableName="m_group_client">
             <column name="group_id" type="BIGINT">
@@ -574,18 +574,18 @@
             <column name="amortization_method_enum" type="SMALLINT">
                 <constraints notNullConstraintName="notnull_key_135" nullable="false"/>
             </column>
-            <column name="submittedon_date" type="date"/>
+            <column name="submittedon_date" type="DATE"/>
             <column name="submittedon_userid" type="BIGINT"/>
-            <column name="approvedon_date" type="date"/>
+            <column name="approvedon_date" type="DATE"/>
             <column name="approvedon_userid" type="BIGINT"/>
-            <column name="expected_disbursedon_date" type="date"/>
-            <column name="expected_firstrepaymenton_date" type="date"/>
-            <column name="interest_calculated_from_date" type="date"/>
-            <column name="disbursedon_date" type="date"/>
+            <column name="expected_disbursedon_date" type="DATE"/>
+            <column name="expected_firstrepaymenton_date" type="DATE"/>
+            <column name="interest_calculated_from_date" type="DATE"/>
+            <column name="disbursedon_date" type="DATE"/>
             <column name="disbursedon_userid" type="BIGINT"/>
-            <column name="expected_maturedon_date" type="date"/>
-            <column name="maturedon_date" type="date"/>
-            <column name="closedon_date" type="date"/>
+            <column name="expected_maturedon_date" type="DATE"/>
+            <column name="maturedon_date" type="DATE"/>
+            <column name="closedon_date" type="DATE"/>
             <column name="closedon_userid" type="BIGINT"/>
             <column name="total_charges_due_at_disbursement_derived" type="DECIMAL(19, 6)"/>
             <column defaultValueNumeric="0.000000" name="principal_disbursed_derived" type="DECIMAL(19, 6)">
@@ -666,12 +666,12 @@
             <column defaultValueNumeric="0.000000" name="total_outstanding_derived" type="DECIMAL(19, 6)">
                 <constraints notNullConstraintName="notnull_key_161" nullable="false"/>
             </column>
-            <column name="rejectedon_date" type="date"/>
+            <column name="rejectedon_date" type="DATE"/>
             <column name="rejectedon_userid" type="BIGINT"/>
-            <column name="rescheduledon_date" type="date"/>
-            <column name="withdrawnon_date" type="date"/>
+            <column name="rescheduledon_date" type="DATE"/>
+            <column name="withdrawnon_date" type="DATE"/>
             <column name="withdrawnon_userid" type="BIGINT"/>
-            <column name="writtenoffon_date" type="date"/>
+            <column name="writtenoffon_date" type="DATE"/>
             <column name="loan_transaction_strategy_id" type="BIGINT"/>
         </createTable>
         <createTable tableName="m_loan_arrears_aging">
@@ -693,7 +693,7 @@
             <column defaultValueNumeric="0.000000" name="total_overdue_derived" type="DECIMAL(19, 6)">
                 <constraints notNullConstraintName="notnull_key_167" nullable="false"/>
             </column>
-            <column name="overdue_since_date_derived" type="date"/>
+            <column name="overdue_since_date_derived" type="DATE"/>
         </createTable>
         <createTable tableName="m_guarantor">
             <column autoIncrement="true" name="id" type="BIGINT">
@@ -709,7 +709,7 @@
             <column name="entity_id" type="BIGINT"/>
             <column name="firstname" type="VARCHAR(50)"/>
             <column name="lastname" type="VARCHAR(50)"/>
-            <column name="dob" type="date"/>
+            <column name="dob" type="DATE"/>
             <column name="address_line_1" type="VARCHAR(500)"/>
             <column name="address_line_2" type="VARCHAR(500)"/>
             <column name="city" type="VARCHAR(50)"/>
@@ -736,7 +736,7 @@
             <column name="charge_time_enum" type="SMALLINT">
                 <constraints notNullConstraintName="notnull_key_175" nullable="false"/>
             </column>
-            <column name="due_for_collection_as_of_date" type="date"/>
+            <column name="due_for_collection_as_of_date" type="DATE"/>
             <column name="charge_calculation_enum" type="SMALLINT">
                 <constraints notNullConstraintName="notnull_key_176" nullable="false"/>
             </column>
@@ -779,13 +779,13 @@
                 <constraints notNullConstraintName="notnull_key_185" nullable="false"/>
             </column>
             <column name="loan_officer_id" type="BIGINT"/>
-            <column name="start_date" type="date">
+            <column name="start_date" type="DATE">
                 <constraints notNullConstraintName="notnull_key_186" nullable="false"/>
             </column>
-            <column name="end_date" type="date"/>
+            <column name="end_date" type="DATE"/>
             <column name="createdby_id" type="BIGINT"/>
-            <column name="created_date" type="datetime"/>
-            <column name="lastmodified_date" type="datetime"/>
+            <column name="created_date" type="DATETIME"/>
+            <column name="lastmodified_date" type="DATETIME"/>
             <column name="lastmodifiedby_id" type="BIGINT"/>
         </createTable>
         <createTable tableName="m_loan_repayment_schedule">
@@ -795,8 +795,8 @@
             <column name="loan_id" type="BIGINT">
                 <constraints notNullConstraintName="notnull_key_188" nullable="false"/>
             </column>
-            <column name="fromdate" type="date"/>
-            <column name="duedate" type="date">
+            <column name="fromdate" type="DATE"/>
+            <column name="duedate" type="DATE">
                 <constraints notNullConstraintName="notnull_key_189" nullable="false"/>
             </column>
             <column name="installment" type="SMALLINT">
@@ -820,8 +820,8 @@
                 <constraints notNullConstraintName="notnull_key_191" nullable="false"/>
             </column>
             <column name="createdby_id" type="BIGINT"/>
-            <column name="created_date" type="datetime"/>
-            <column name="lastmodified_date" type="datetime"/>
+            <column name="created_date" type="DATETIME"/>
+            <column name="lastmodified_date" type="DATETIME"/>
             <column name="lastmodifiedby_id" type="BIGINT"/>
             <column name="interest_waived_derived" type="DECIMAL(19, 6)"/>
         </createTable>
@@ -838,7 +838,7 @@
             <column name="transaction_type_enum" type="SMALLINT">
                 <constraints notNullConstraintName="notnull_key_195" nullable="false"/>
             </column>
-            <column name="transaction_date" type="date">
+            <column name="transaction_date" type="DATE">
                 <constraints notNullConstraintName="notnull_key_196" nullable="false"/>
             </column>
             <column name="amount" type="DECIMAL(19, 6)">
@@ -894,7 +894,7 @@
             <column defaultValueNumeric="300" name="status_enum" type="SMALLINT">
                 <constraints notNullConstraintName="notnull_key_207" nullable="false"/>
             </column>
-            <column name="activation_date" type="date"/>
+            <column name="activation_date" type="DATE"/>
             <column name="currency_code" type="VARCHAR(3)">
                 <constraints notNullConstraintName="notnull_key_208" nullable="false"/>
             </column>
@@ -922,7 +922,7 @@
             <column name="min_required_opening_balance" type="DECIMAL(19, 6)"/>
             <column name="lockin_period_frequency" type="DECIMAL(19, 6)"/>
             <column name="lockin_period_frequency_enum" type="SMALLINT"/>
-            <column name="lockedin_until_date_derived" type="date"/>
+            <column name="lockedin_until_date_derived" type="DATE"/>
             <column name="total_deposits_derived" type="DECIMAL(19, 6)"/>
             <column name="total_withdrawals_derived" type="DECIMAL(19, 6)"/>
             <column name="total_interest_earned_derived" type="DECIMAL(19, 6)"/>
@@ -941,7 +941,7 @@
             <column name="transaction_type_enum" type="SMALLINT">
                 <constraints notNullConstraintName="notnull_key_219" nullable="false"/>
             </column>
-            <column name="transaction_date" type="date">
+            <column name="transaction_date" type="DATE">
                 <constraints notNullConstraintName="notnull_key_220" nullable="false"/>
             </column>
             <column name="amount" type="DECIMAL(19, 6)">
@@ -952,7 +952,7 @@
             </column>
             <column name="running_balance_derived" type="DECIMAL(19, 6)"/>
             <column name="balance_number_of_days_derived" type="INT"/>
-            <column name="balance_end_date_derived" type="date"/>
+            <column name="balance_end_date_derived" type="DATE"/>
             <column name="cumulative_balance_derived" type="DECIMAL(19, 6)"/>
         </createTable>
         <createTable tableName="m_note">
@@ -967,9 +967,9 @@
                 <constraints notNullConstraintName="notnull_key_224" nullable="false"/>
             </column>
             <column name="note" type="VARCHAR(1000)"/>
-            <column name="created_date" type="datetime"/>
+            <column name="created_date" type="DATETIME"/>
             <column name="createdby_id" type="BIGINT"/>
-            <column name="lastmodified_date" type="datetime"/>
+            <column name="lastmodified_date" type="DATETIME"/>
             <column name="lastmodifiedby_id" type="BIGINT"/>
         </createTable>
         <createTable tableName="acc_gl_account">
@@ -1004,16 +1004,16 @@
             <column name="office_id" type="BIGINT">
                 <constraints notNullConstraintName="notnull_key_233" nullable="false"/>
             </column>
-            <column name="closing_date" type="date">
+            <column name="closing_date" type="DATE">
                 <constraints notNullConstraintName="notnull_key_234" nullable="false"/>
             </column>
             <column defaultValueNumeric="0" name="is_deleted" type="INT">
                 <constraints notNullConstraintName="notnull_key_235" nullable="false"/>
             </column>
             <column name="createdby_id" type="BIGINT"/>
-            <column name="created_date" type="datetime"/>
+            <column name="created_date" type="DATETIME"/>
             <column name="lastmodifiedby_id" type="BIGINT"/>
-            <column name="lastmodified_date" type="datetime"/>
+            <column name="lastmodified_date" type="DATETIME"/>
             <column name="comments" type="VARCHAR(500)"/>
         </createTable>
         <createTable tableName="acc_gl_journal_entry">
@@ -1036,7 +1036,7 @@
             <column defaultValueNumeric="0" name="manual_entry" type="TINYINT(3)">
                 <constraints notNullConstraintName="notnull_key_241" nullable="false"/>
             </column>
-            <column name="entry_date" type="date">
+            <column name="entry_date" type="DATE">
                 <constraints notNullConstraintName="notnull_key_242" nullable="false"/>
             </column>
             <column name="type_enum" type="SMALLINT">
@@ -1054,10 +1054,10 @@
             <column name="lastmodifiedby_id" type="BIGINT">
                 <constraints notNullConstraintName="notnull_key_246" nullable="false"/>
             </column>
-            <column name="created_date" type="datetime">
+            <column name="created_date" type="DATETIME">
                 <constraints notNullConstraintName="notnull_key_247" nullable="false"/>
             </column>
-            <column name="lastmodified_date" type="datetime">
+            <column name="lastmodified_date" type="DATETIME">
                 <constraints notNullConstraintName="notnull_key_248" nullable="false"/>
             </column>
         </createTable>

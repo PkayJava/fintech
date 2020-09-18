@@ -1,0 +1,20 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V80__schedule_jobs_tables_updates-1">
+
+        <renameTable newTableName="job" oldTableName="scheduled_jobs"/>
+        <renameTable newTableName="job_run_history" oldTableName="scheduled_job_runhistory"/>
+
+        <dropDefaultValue columnName="job_name" tableName="job"/>
+        <dropDefaultValue columnName="job_display_name" tableName="job"/>
+
+        <renameColumn columnDataType="VARCHAR(50)" newColumnName="name" oldColumnName="job_name" tableName="job"/>
+        <renameColumn columnDataType="VARCHAR(50)" newColumnName="display_name" oldColumnName="job_display_name" tableName="job"/>
+        <renameColumn columnDataType="TEXT" newColumnName="initializing_errorlog" oldColumnName="job_initializing_errorlog" tableName="job"/>
+
+        <dropDefaultValue columnName="triggertype" tableName="job_run_history"/>
+        <renameColumn columnDataType="VARCHAR(500)" newColumnName="error_message" oldColumnName="errormessage" tableName="job_run_history"/>
+        <renameColumn columnDataType="VARCHAR(25)" newColumnName="trigger_type" oldColumnName="triggertype" tableName="job_run_history"/>
+        <renameColumn columnDataType="TEXT" newColumnName="error_log" oldColumnName="errorlog" tableName="job_run_history"/>
+
+    </changeSet>
+</databaseChangeLog>

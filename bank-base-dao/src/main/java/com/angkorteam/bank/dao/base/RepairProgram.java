@@ -1,7 +1,6 @@
 package com.angkorteam.bank.dao.base;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -17,7 +16,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -37,18 +35,16 @@ public class RepairProgram {
         int indexRotation = 1;
         int foreignKeyRotation = 1;
 
-        Map<String, String> files = new TreeMap<>();
+        Map<Double, String> files = new TreeMap<>();
         int numberSize = 0;
         for (File temp : folder.listFiles()) {
-            int i = temp.getName().indexOf('_');
+            int i = temp.getName().indexOf("__");
             numberSize = Math.max(temp.getName().substring(1, i).length(), numberSize);
         }
-        String zero = StringUtils.repeat("0", numberSize);
-        DecimalFormat format = new DecimalFormat(zero);
         for (File temp : folder.listFiles()) {
-            int i = temp.getName().indexOf('_');
-            int ver = Integer.valueOf(temp.getName().substring(1, i));
-            files.put(format.format(ver), temp.getName());
+            int i = temp.getName().indexOf("__");
+            double ver = Double.parseDouble(temp.getName().substring(1, i).replace('_', '.'));
+            files.put(ver, temp.getName());
         }
 
         for (String file : files.values()) {

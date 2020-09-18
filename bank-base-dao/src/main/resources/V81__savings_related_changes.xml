@@ -1,0 +1,36 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V81__savings_related_changes-1">
+
+        <addColumn tableName="m_note">
+            <column name="savings_account_id" type="BIGINT"/>
+            <column name="savings_account_transaction_id" type="BIGINT"/>
+        </addColumn>
+
+        <addNotNullConstraint columnDataType="TINYINT" columnName="is_reversed" constraintName="notnull_key_338" tableName="m_savings_account_transaction"/>
+        <dropNotNullConstraint columnDataType="DATE" columnName="balance_end_date_derived" tableName="m_savings_account_transaction"/>
+        <dropNotNullConstraint columnDataType="INT" columnName="balance_number_of_days_derived" tableName="m_savings_account_transaction"/>
+
+        <addColumn tableName="m_savings_account">
+            <column name="field_officer_id" type="BIGINT"/>
+            <column name="submittedon_date" type="DATE"/>
+            <column name="submittedon_userid" type="BIGINT"/>
+            <column name="approvedon_date" type="DATE"/>
+            <column name="approvedon_userid" type="BIGINT"/>
+            <column name="rejectedon_date" type="DATE"/>
+            <column name="rejectedon_userid" type="BIGINT"/>
+            <column name="withdrawnon_date" type="DATE"/>
+            <column name="withdrawnon_userid" type="BIGINT"/>
+        </addColumn>
+
+        <addNotNullConstraint columnDataType="DATE" columnName="submittedon_date" constraintName="notnull_key_339" tableName="m_savings_account"/>
+
+        <renameColumn newColumnName="activatedon_date" oldColumnName="activation_date" tableName="m_savings_account" columnDataType="DATE"/>
+
+        <addColumn tableName="m_savings_account">
+            <column name="activatedon_userid" type="BIGINT"/>
+            <column name="closedon_date" type="DATE"/>
+            <column name="closedon_userid" type="BIGINT"/>
+        </addColumn>
+
+    </changeSet>
+</databaseChangeLog>

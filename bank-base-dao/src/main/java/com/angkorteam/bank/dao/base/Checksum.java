@@ -79,5 +79,8 @@ public interface Checksum {
     int V75__AddRescheduleRepaymentsOnHolidaysToConfiguration = 630802840;
     int V76__RenamePermissionGrouping = 24826155;
     int V78__BreakdownPortfolioGrouping = 1486629142;
+    int V79__ScheduleJobsTables = 1915891645;
+    int V80__ScheduleJobsTablesUpdates = 776673621;
+    int V81__SavingsRelatedChanges = 1899199537;
 
 }

@@ -2,7 +2,6 @@
     <changeSet author="Socheat KHAUV" id="V21__activation-permissions-for-clients-002-1">
 
         <dropNotNullConstraint columnDataType="VARCHAR(100)" columnName="external_id" tableName="m_client"/>
-        <modifyDataType columnName="external_id" newDataType="VARCHAR(100)" tableName="m_client"/>
 
         <dropDefaultValue columnName="status_enum" tableName="m_client"/>
         <addDefaultValue columnName="status_enum" defaultValueNumeric="300" tableName="m_client"/>
