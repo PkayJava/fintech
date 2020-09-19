@@ -44,12 +44,12 @@ public interface Checksum {
     int V40__AddPermissionsForAccountingRule = 1366923295;
     int V41__GroupSummaryReports = 729206647;
     int V42__AddDefaultValueForIdForAccAccountingRule = 939564316;
-    int V43__AccountingForSavings = 330347487;
+    int V43__AccountingForSavings = 854664164;
     int V44__DocumentIncreaseSizeOfColumnType = 389431178;
     int V45__CreateAccRuleTagsTable = 526342339;
     int V46__ExtendDatatablesApi = 1970051581;
     int V47__StaffHierarchyLinkToUsers = 85343800;
-    int V48__AddingS3Support = 1155332625;
+    int V48__AddingS3Support = 501312073;
     int V49__TrackLoanChargePaymentTransactions = 1618759782;
     int V50__AddGraceSettingsToLoanProduct = 1816736466;
     int V51__TrackAdditionalDetailsRelatedToInstallmentPerformance = 1965023759;
@@ -98,14 +98,14 @@ public interface Checksum {
     int V93__LoanTransactionExternalId = 819252443;
     int V94__AddedSavingsAccontType = 506623153;
     int V95__BatchJobPostInterest = 1885038589;
-    int V96__SavingsAccountsTransfersTable = 497407523;
-    int V97__AddPermissionForAdjustSavingsTransaction = 2025829316;
+    int V96__SavingsAccountsTransfersTable = 1221642367;
+    int V97__AddPermissionForAdjustSavingsTransaction = 1083527706;
     int V98__AddedCurrencyRoundOfForMultipleOf = 765196189;
     int V100__GroupSavingSummaryReport = 1066454837;
     int V101__AddMulitplesOfToAccountTransfersTable = 1079097773;
     int V102__ClientAttendanceTables = 278383497;
     int V103__ClusterSupportForBatchJobs = 327230309;
     int V104__PermissionsForTransfers = 687258886;
-    int V105__TrackLoanTransactionAgainstOffice = 1435193114;
+    int V105__TrackLoanTransactionAgainstOffice = 1723894394;
 
 }
