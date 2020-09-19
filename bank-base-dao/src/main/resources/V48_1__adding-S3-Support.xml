@@ -1,9 +1,9 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    <changeSet author="Socheat KHAUV" id="V48__adding-S3-Support-002-1">
+    <changeSet author="Socheat KHAUV" id="V48_1__adding-S3-Support-1">
 
         <createTable tableName="c_external_service">
             <column name="name" type="VARCHAR(150)">
-                <constraints notNullConstraintName="notnull_key_309" nullable="false" unique="true" uniqueConstraintName="unique_index_35"/>
+                <constraints notNullConstraintName="notnull_key_297" nullable="false" unique="true" uniqueConstraintName="unique_index_32"/>
             </column>
             <column name="value" type="VARCHAR(250)"/>
         </createTable>

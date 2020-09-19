@@ -4,23 +4,23 @@
         <addColumn tableName="m_product_loan">
             <column defaultValueNumeric="0" name="include_in_borrower_cycle" type="TINYINT"/>
         </addColumn>
-        <addNotNullConstraint columnDataType="TINYINT" columnName="include_in_borrower_cycle" constraintName="notnull_key_316" tableName="m_product_loan"/>
+        <addNotNullConstraint columnDataType="TINYINT" columnName="include_in_borrower_cycle" constraintName="notnull_key_319" tableName="m_product_loan"/>
 
         <createTable tableName="m_client_loan_counter">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_317" nullable="false" primaryKey="true" primaryKeyName="primary_key_62"/>
+                <constraints notNullConstraintName="notnull_key_320" nullable="false" primaryKey="true" primaryKeyName="primary_key_63"/>
             </column>
             <column name="client_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_318" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_321" nullable="false"/>
             </column>
             <column name="loan_product_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_319" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_322" nullable="false"/>
             </column>
             <column name="loan_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_320" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_323" nullable="false"/>
             </column>
             <column name="running_count" type="SMALLINT">
-                <constraints notNullConstraintName="notnull_key_321" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_324" nullable="false"/>
             </column>
         </createTable>
 

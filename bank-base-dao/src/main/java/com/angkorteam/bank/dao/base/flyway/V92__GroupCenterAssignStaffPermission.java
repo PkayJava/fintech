@@ -10,20 +10,18 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
 
-public class V40__AddPermissionsForAccountingRule extends LiquibaseJavaMigration {
+public class V92__GroupCenterAssignStaffPermission extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return Checksum.V40__AddPermissionsForAccountingRule;
+        return Checksum.V92__GroupCenterAssignStaffPermission;
     }
 
     @Override
     protected void doMigrate(Context context, DataSource dataSource, NamedParameterJdbcTemplate named, JdbcDataContext dataContext) throws Exception {
         dataContext.refreshSchemas();
         Table m_permission = dataContext.getDefaultSchema().getTableByName("m_permission");
-        insert_m_permission(named, m_permission, "organistion", "DELETE_ACCOUNTINGRULE", "ACCOUNTINGRULE", "DELETE", 0);
-        insert_m_permission(named, m_permission, "organistion", "CREATE_ACCOUNTINGRULE", "ACCOUNTINGRULE", "CREATE", 0);
-        insert_m_permission(named, m_permission, "organistion", "UPDATE_ACCOUNTINGRULE", "ACCOUNTINGRULE", "UPDATE", 0);
+        insert_m_permission(named, m_permission, "portfolio_group", "ASSIGNSTAFF_GROUP", "GROUP", "ASSIGNSTAFF", 0);
     }
 
     protected void insert_m_permission(NamedParameterJdbcTemplate named, Table table, String grouping, String code, String entity_name, String action_name, long can_maker_checker) {
@@ -35,5 +33,4 @@ public class V40__AddPermissionsForAccountingRule extends LiquibaseJavaMigration
         insertQuery.addValue(table.getColumnByName("can_maker_checker").getName(), can_maker_checker);
         named.update(insertQuery.toSQL(), insertQuery.toParam());
     }
-
 }

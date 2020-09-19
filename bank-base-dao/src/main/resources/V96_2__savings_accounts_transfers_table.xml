@@ -1,0 +1,97 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V96_2__savings_accounts_transfers_table-1">
+
+        <createTable tableName="m_savings_account_transfer">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_351" nullable="false" primaryKey="true" primaryKeyName="primary_key_68"/>
+            </column>
+            <column name="from_office_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_352" nullable="false"/>
+            </column>
+            <column name="to_office_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_353" nullable="false"/>
+            </column>
+            <column name="from_client_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_354" nullable="false"/>
+            </column>
+            <column name="to_client_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_355" nullable="false"/>
+            </column>
+            <column name="from_savings_account_id" type="BIGINT"/>
+            <column name="to_savings_account_id" type="BIGINT"/>
+            <column name="from_loan_account_id" type="BIGINT"/>
+            <column name="to_loan_account_id" type="BIGINT"/>
+            <column name="from_savings_transaction_id" type="BIGINT"/>
+            <column name="from_loan_transaction_id" type="BIGINT"/>
+            <column name="to_savings_transaction_id" type="BIGINT"/>
+            <column name="to_loan_transaction_id" type="BIGINT"/>
+            <column name="is_reversed" type="TINYINT">
+                <constraints notNullConstraintName="notnull_key_356" nullable="false"/>
+            </column>
+            <column name="transaction_date" type="DATE">
+                <constraints notNullConstraintName="notnull_key_357" nullable="false"/>
+            </column>
+            <column name="currency_code" type="VARCHAR(3)">
+                <constraints notNullConstraintName="notnull_key_358" nullable="false"/>
+            </column>
+            <column name="currency_digits" type="SMALLINT">
+                <constraints notNullConstraintName="notnull_key_359" nullable="false"/>
+            </column>
+            <column name="amount" type="DECIMAL(19,6)">
+                <constraints notNullConstraintName="notnull_key_360" nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(200)">
+                <constraints notNullConstraintName="notnull_key_361" nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="index_24" tableName="m_savings_account_transfer">
+            <column name="from_office_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_25" tableName="m_savings_account_transfer">
+            <column name="from_client_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_26" tableName="m_savings_account_transfer">
+            <column name="from_savings_account_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_27" tableName="m_savings_account_transfer">
+            <column name="to_office_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_28" tableName="m_savings_account_transfer">
+            <column name="to_client_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_29" tableName="m_savings_account_transfer">
+            <column name="to_savings_account_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_30" tableName="m_savings_account_transfer">
+            <column name="to_loan_account_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_31" tableName="m_savings_account_transfer">
+            <column name="from_savings_transaction_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_32" tableName="m_savings_account_transfer">
+            <column name="to_savings_transaction_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_33" tableName="m_savings_account_transfer">
+            <column name="to_loan_transaction_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_34" tableName="m_savings_account_transfer">
+            <column name="from_loan_account_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_35" tableName="m_savings_account_transfer">
+            <column name="from_loan_transaction_id"/>
+        </createIndex>
+
+    </changeSet>
+</databaseChangeLog>

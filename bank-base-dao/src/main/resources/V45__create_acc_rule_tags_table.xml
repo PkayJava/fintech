@@ -3,16 +3,16 @@
 
         <createTable tableName="acc_rule_tags">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_292" nullable="false" primaryKey="true" primaryKeyName="primary_key_57"/>
+                <constraints notNullConstraintName="notnull_key_293" nullable="false" primaryKey="true" primaryKeyName="primary_key_57"/>
             </column>
             <column name="acc_rule_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_293" nullable="false"/>
-            </column>
-            <column name="tag_id" type="INT">
                 <constraints notNullConstraintName="notnull_key_294" nullable="false"/>
             </column>
-            <column name="acc_type_enum" type="SMALLINT">
+            <column name="tag_id" type="INT">
                 <constraints notNullConstraintName="notnull_key_295" nullable="false"/>
+            </column>
+            <column name="acc_type_enum" type="SMALLINT">
+                <constraints notNullConstraintName="notnull_key_296" nullable="false"/>
             </column>
         </createTable>
 

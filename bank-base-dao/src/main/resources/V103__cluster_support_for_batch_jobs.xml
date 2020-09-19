@@ -1,0 +1,26 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V103__cluster_support_for_batch_jobs-1">
+
+        <addColumn tableName="job">
+            <column defaultValueNumeric="0" name="is_misfired" type="TINYINT"/>
+        </addColumn>
+
+        <addNotNullConstraint columnDataType="TINYINT" columnName="is_misfired" constraintName="notnull_key_369" tableName="job"/>
+
+        <createTable tableName="scheduler_detail">
+            <column autoIncrement="true" name="id" type="SMALLINT">
+                <constraints notNullConstraintName="notnull_key_370" nullable="false" primaryKey="true" primaryKeyName="primary_key_71"/>
+            </column>
+            <column defaultValueNumeric="0" name="is_suspended" type="TINYINT">
+                <constraints notNullConstraintName="notnull_key_371" nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="execute_misfired_jobs" type="TINYINT">
+                <constraints notNullConstraintName="notnull_key_372" nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="reset_scheduler_on_bootup" type="TINYINT">
+                <constraints notNullConstraintName="notnull_key_373" nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>

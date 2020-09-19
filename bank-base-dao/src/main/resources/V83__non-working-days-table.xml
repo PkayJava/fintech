@@ -1,12 +1,12 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    <changeSet author="Socheat KHAUV" id="V48__adding-S3-Support-004-1">
+    <changeSet author="Socheat KHAUV" id="V83__non-working-days-table-1">
 
-        <createTable tableName="m_image">
+        <createTable tableName="m_working_days">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_310" nullable="false" primaryKey="true" primaryKeyName="primary_key_61"/>
+                <constraints notNullConstraintName="notnull_key_344" nullable="false" primaryKey="true" primaryKeyName="primary_key_66"/>
             </column>
-            <column name="location" type="VARCHAR(500)"/>
-            <column name="storage_type_enum" type="SMALLINT"/>
+            <column name="recurrence" type="VARCHAR(100)"/>
+            <column name="repayment_rescheduling_enum" type="SMALLINT"/>
         </createTable>
 
     </changeSet>

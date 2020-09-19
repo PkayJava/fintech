@@ -1,0 +1,29 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V85__product_mix_related_changes-1">
+
+        <addColumn tableName="m_portfolio_command_source">
+            <column name="product_id" type="BIGINT"/>
+        </addColumn>
+
+        <createTable tableName="m_product_mix">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_345" nullable="false" primaryKey="true" primaryKeyName="primary_key_67"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_346" nullable="false"/>
+            </column>
+            <column name="restricted_product_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_347" nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="index_22" tableName="m_product_mix">
+            <column name="product_id"/>
+        </createIndex>
+
+        <createIndex indexName="index_23" tableName="m_product_mix">
+            <column name="restricted_product_id"/>
+        </createIndex>
+
+    </changeSet>
+</databaseChangeLog>

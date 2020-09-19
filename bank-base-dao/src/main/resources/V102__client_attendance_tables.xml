@@ -1,0 +1,40 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V102__client_attendance_tables-1">
+
+        <createTable tableName="m_meeting">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_362" nullable="false" primaryKey="true" primaryKeyName="primary_key_69"/>
+            </column>
+            <column name="calendar_instance_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_363" nullable="false"/>
+            </column>
+            <column name="meeting_date" type="DATE">
+                <constraints notNullConstraintName="notnull_key_364" nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint columnNames="calendar_instance_id,meeting_date" constraintName="unique_index_37" tableName="m_meeting"/>
+
+        <createTable tableName="m_client_attendance">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_365" nullable="false" primaryKey="true" primaryKeyName="primary_key_70"/>
+            </column>
+            <column defaultValueNumeric="0" name="client_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_366" nullable="false"/>
+            </column>
+            <column name="meeting_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_367" nullable="false"/>
+            </column>
+            <column name="attendance_type_enum" type="SMALLINT">
+                <constraints notNullConstraintName="notnull_key_368" nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint columnNames="client_id,meeting_id" constraintName="unique_index_38" tableName="m_client_attendance"/>
+
+        <createIndex indexName="index_36" tableName="m_client_attendance">
+            <column name="meeting_id"/>
+        </createIndex>
+
+    </changeSet>
+</databaseChangeLog>

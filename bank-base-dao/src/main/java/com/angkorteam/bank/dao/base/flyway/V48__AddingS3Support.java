@@ -19,7 +19,7 @@ public class V48__AddingS3Support extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return Checksum.V48__AddingS3Support + getInternalChecksum("V48__adding-S3-Support-002.xml", "V48__adding-S3-Support-004.xml");
+        return Checksum.V48__AddingS3Support + getInternalChecksum("V48_1__adding-S3-Support.xml", "V48_2__adding-S3-Support.xml");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class V48__AddingS3Support extends LiquibaseJavaMigration {
         }
         {
             dataContext.refreshSchemas();
-            updateLiquibase("V48__adding-S3-Support-002.xml");
+            updateLiquibase("V48_1__adding-S3-Support.xml");
         }
         {
             dataContext.refreshSchemas();
@@ -44,10 +44,10 @@ public class V48__AddingS3Support extends LiquibaseJavaMigration {
         {
             dataContext.refreshSchemas();
             if (dataContext.getDefaultSchema().getTableByName("m_image") == null) {
-                updateLiquibase("V48__adding-S3-Support-004.xml");
+                updateLiquibase("V48_2__adding-S3-Support.xml");
             }
             dataContext.refreshSchemas();
-            updateLiquibase("V48__adding-S3-Support-005.xml");
+            updateLiquibase("V48_3__adding-S3-Support.xml");
         }
         {
             dataContext.refreshSchemas();

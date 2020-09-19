@@ -1,0 +1,13 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V82__schedule_jobs_tables_updates_for_running_status-1">
+
+        <addColumn tableName="job">
+            <column defaultValueNumeric="0" name="currently_running" type="TINYINT"/>
+        </addColumn>
+
+        <addNotNullConstraint columnDataType="TINYINT" columnName="currently_running" constraintName="notnull_key_343" tableName="job"/>
+
+        <renameColumn columnDataType="VARCHAR(500)" newColumnName="job_key" oldColumnName="trigger_key" tableName="job"/>
+
+    </changeSet>
+</databaseChangeLog>

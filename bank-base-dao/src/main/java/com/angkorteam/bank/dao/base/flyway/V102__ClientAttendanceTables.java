@@ -10,20 +10,21 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
 
-public class V40__AddPermissionsForAccountingRule extends LiquibaseJavaMigration {
+public class V102__ClientAttendanceTables extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return Checksum.V40__AddPermissionsForAccountingRule;
+        return Checksum.V102__ClientAttendanceTables + getInternalChecksum("V102__client_attendance_tables.xml");
     }
 
     @Override
     protected void doMigrate(Context context, DataSource dataSource, NamedParameterJdbcTemplate named, JdbcDataContext dataContext) throws Exception {
-        dataContext.refreshSchemas();
+        updateLiquibase("V102__client_attendance_tables.xml");
         Table m_permission = dataContext.getDefaultSchema().getTableByName("m_permission");
-        insert_m_permission(named, m_permission, "organistion", "DELETE_ACCOUNTINGRULE", "ACCOUNTINGRULE", "DELETE", 0);
-        insert_m_permission(named, m_permission, "organistion", "CREATE_ACCOUNTINGRULE", "ACCOUNTINGRULE", "CREATE", 0);
-        insert_m_permission(named, m_permission, "organistion", "UPDATE_ACCOUNTINGRULE", "ACCOUNTINGRULE", "UPDATE", 0);
+        insert_m_permission(named, m_permission, "portfolio", "CREATE_MEETING", "MEETING", "CREATE", 0);
+        insert_m_permission(named, m_permission, "portfolio", "UPDATE_MEETING", "MEETING", "UPDATE", 0);
+        insert_m_permission(named, m_permission, "portfolio", "DELETE_MEETING", "MEETING", "DELETE", 0);
+        insert_m_permission(named, m_permission, "portfolio", "SAVEORUPDATEATTENDANCE_MEETING", "MEETING", "SAVEORUPDATEATTENDANCE", 0);
     }
 
     protected void insert_m_permission(NamedParameterJdbcTemplate named, Table table, String grouping, String code, String entity_name, String action_name, long can_maker_checker) {

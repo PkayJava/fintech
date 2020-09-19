@@ -3,22 +3,22 @@
 
         <createTable tableName="m_loan_paid_in_advance">
             <column name="loan_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_310" nullable="false" primaryKey="true" primaryKeyName="primary_key_61"/>
+                <constraints notNullConstraintName="notnull_key_313" nullable="false" primaryKey="true" primaryKeyName="primary_key_62"/>
             </column>
             <column defaultValueNumeric="0.000000" name="principal_in_advance_derived" type="DECIMAL(19,6)">
-                <constraints notNullConstraintName="notnull_key_311" nullable="false"/>
-            </column>
-            <column defaultValueNumeric="0.000000" name="interest_in_advance_derived" type="DECIMAL(19,6)">
-                <constraints notNullConstraintName="notnull_key_312" nullable="false"/>
-            </column>
-            <column defaultValueNumeric="0.000000" name="fee_charges_in_advance_derived" type="DECIMAL(19,6)">
-                <constraints notNullConstraintName="notnull_key_313" nullable="false"/>
-            </column>
-            <column defaultValueNumeric="0.000000" name="penalty_charges_in_advance_derived" type="DECIMAL(19,6)">
                 <constraints notNullConstraintName="notnull_key_314" nullable="false"/>
             </column>
-            <column defaultValueNumeric="0.000000" name="total_in_advance_derived" type="DECIMAL(19,6)">
+            <column defaultValueNumeric="0.000000" name="interest_in_advance_derived" type="DECIMAL(19,6)">
                 <constraints notNullConstraintName="notnull_key_315" nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0.000000" name="fee_charges_in_advance_derived" type="DECIMAL(19,6)">
+                <constraints notNullConstraintName="notnull_key_316" nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0.000000" name="penalty_charges_in_advance_derived" type="DECIMAL(19,6)">
+                <constraints notNullConstraintName="notnull_key_317" nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0.000000" name="total_in_advance_derived" type="DECIMAL(19,6)">
+                <constraints notNullConstraintName="notnull_key_318" nullable="false"/>
             </column>
         </createTable>
 

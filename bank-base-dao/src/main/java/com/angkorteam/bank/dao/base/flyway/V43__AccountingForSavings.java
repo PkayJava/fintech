@@ -14,14 +14,14 @@ public class V43__AccountingForSavings extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return Checksum.V43__AccountingForSavings + getInternalChecksum("V43__accounting-for-savings-001.xml", "V43__accounting-for-savings-003.xml");
+        return Checksum.V43__AccountingForSavings + getInternalChecksum("V43_1__accounting-for-savings.xml", "V43_2__accounting-for-savings.xml");
     }
 
     @Override
     protected void doMigrate(Context context, DataSource dataSource, NamedParameterJdbcTemplate named, JdbcDataContext dataContext) throws Exception {
         UpdateQuery updateQuery = null;
         {
-            updateLiquibase("V43__accounting-for-savings-001.xml");
+            updateLiquibase("V43_1__accounting-for-savings.xml");
         }
         {
             Table m_savings_product = dataContext.getDefaultSchema().getTableByName("m_savings_product");
@@ -30,7 +30,7 @@ public class V43__AccountingForSavings extends LiquibaseJavaMigration {
             named.update(updateQuery.toSQL(), updateQuery.toParam());
         }
         {
-            updateLiquibase("V43__accounting-for-savings-003.xml");
+            updateLiquibase("V43_2__accounting-for-savings.xml");
         }
     }
 

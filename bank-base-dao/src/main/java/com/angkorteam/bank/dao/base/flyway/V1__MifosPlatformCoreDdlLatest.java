@@ -19,23 +19,19 @@ public class V1__MifosPlatformCoreDdlLatest extends LiquibaseJavaMigration {
 
     @Override
     protected void doMigrate(Context context, DataSource dataSource, NamedParameterJdbcTemplate named, JdbcDataContext dataContext) throws Exception {
-        {
-            // sub change 001
-            List<String> tables = new ArrayList<>();
-            tables.addAll(dataContext.getDefaultSchema().getTableNames());
-            for (String table : tables) {
-                if (!"DATABASECHANGELOG".equals(table) && !"DATABASECHANGELOGLOCK".equals(table) && !"flyway_schema_history".equals(table)) {
-                    dataContext.executeUpdate(callback -> {
-                        callback.dropTable(table);
-                    });
-                }
+        // sub change 001
+        List<String> tables = new ArrayList<>();
+        tables.addAll(dataContext.getDefaultSchema().getTableNames());
+        for (String table : tables) {
+            if (!"DATABASECHANGELOG".equals(table) && !"DATABASECHANGELOGLOCK".equals(table) && !"flyway_schema_history".equals(table)) {
+                dataContext.executeUpdate(callback -> {
+                    callback.dropTable(table);
+                });
             }
         }
-
-        {
-            // sub change 002
-            updateLiquibase("V1__mifosplatform-core-ddl-latest-002.xml");
-        }
+        
+        // sub change 002
+        updateLiquibase("V1__mifosplatform-core-ddl-latest-002.xml");
     }
 
 }

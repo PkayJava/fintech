@@ -1,0 +1,11 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V93__loan_transaction_external_id-1">
+
+        <addColumn tableName="m_loan_transaction">
+            <column name="external_id" type="VARCHAR(100)"/>
+        </addColumn>
+
+        <addUniqueConstraint columnNames="external_id" constraintName="unique_index_36" tableName="m_loan_transaction"/>
+
+    </changeSet>
+</databaseChangeLog>

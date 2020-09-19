@@ -3,16 +3,16 @@
 
         <createTable tableName="m_loan_charge_paid_by">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_296" nullable="false" primaryKey="true" primaryKeyName="primary_key_58"/>
+                <constraints notNullConstraintName="notnull_key_299" nullable="false" primaryKey="true" primaryKeyName="primary_key_59"/>
             </column>
             <column name="loan_transaction_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_297" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_300" nullable="false"/>
             </column>
             <column name="loan_charge_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_298" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_301" nullable="false"/>
             </column>
             <column name="amount" type="DECIMAL(19,6)">
-                <constraints notNullConstraintName="notnull_key_299" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_302" nullable="false"/>
             </column>
         </createTable>
 

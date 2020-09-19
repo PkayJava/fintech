@@ -1,0 +1,13 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V48_2__adding-S3-Support-1">
+
+        <createTable tableName="m_image">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_298" nullable="false" primaryKey="true" primaryKeyName="primary_key_58"/>
+            </column>
+            <column name="location" type="VARCHAR(500)"/>
+            <column name="storage_type_enum" type="SMALLINT"/>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>

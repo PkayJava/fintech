@@ -1,0 +1,9 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V101__add_mulitplesof_to_account_transfers_table-1">
+
+        <addColumn tableName="m_savings_account_transfer">
+            <column name="currency_multiplesof" type="SMALLINT"/>
+        </addColumn>
+
+    </changeSet>
+</databaseChangeLog>

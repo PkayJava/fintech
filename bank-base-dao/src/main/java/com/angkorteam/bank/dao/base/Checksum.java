@@ -2,7 +2,7 @@ package com.angkorteam.bank.dao.base;
 
 public interface Checksum {
 
-    int V1__MifosPlatformCoreDdlLatest = 1610818147;
+    int V1__MifosPlatformCoreDdlLatest = 435049561;
     int V2__MifosXBaseReferenceDataUTF8 = 1540588471;
     int V3__MifosXPermissionsAndAuthorisationUTF8 = 33750921;
     int V4__MifosXCoreReportsUTF8 = 1543833427;
@@ -41,7 +41,7 @@ public interface Checksum {
     int V37__AddCenterGroupCollectionSheetPermissions = 260889461;
     int V38__AddGroupSummaryDetailsReport = 2039479177;
     int V39__PaymentChannelsUpdates = 825254787;
-    int V40__AddPermissionsForAccountingRule = 1410606579;
+    int V40__AddPermissionsForAccountingRule = 1366923295;
     int V41__GroupSummaryReports = 729206647;
     int V42__AddDefaultValueForIdForAccAccountingRule = 939564316;
     int V43__AccountingForSavings = 330347487;
@@ -78,9 +78,34 @@ public interface Checksum {
     int V74__AlterMLoanCounterTableAddGroup = 956701077;
     int V75__AddRescheduleRepaymentsOnHolidaysToConfiguration = 630802840;
     int V76__RenamePermissionGrouping = 24826155;
+    int V77__AlterMProductLoanChanges = 1477047181;
     int V78__BreakdownPortfolioGrouping = 1486629142;
     int V79__ScheduleJobsTables = 1915891645;
     int V80__ScheduleJobsTablesUpdates = 776673621;
     int V81__SavingsRelatedChanges = 1899199537;
+    int V82__ScheduleJobsTablesUpdatesForRunningStatus = 477363238;
+    int V83__NonWorkingDaysTable = 1310435883;
+    int V84__UndoSavingsTransactionPermission = 1493949016;
+    int V85__ProductMixRelatedChanges = 1718485801;
+    int V86__UpdateWorkingDays = 1833245011;
+    int V87__AddPermissionForScheduler = 1347716546;
+    int V88__AddedUpdateConstrainForSchedulerJobs = 1461173727;
+    int V89__AddedSchedulerGroup = 1754760806;
+    int V90__ClientPerformanceHistoryReports = 1845235625;
+    int V91_1__ApplyAnnualFeesPermission = 224420182;
+    int V91_2__ConfigurationSettingsForHolidayAndNonWorkingday = 854809951;
+    int V92__GroupCenterAssignStaffPermission = 1117486358;
+    int V93__LoanTransactionExternalId = 819252443;
+    int V94__AddedSavingsAccontType = 506623153;
+    int V95__BatchJobPostInterest = 1885038589;
+    int V96__SavingsAccountsTransfersTable = 497407523;
+    int V97__AddPermissionForAdjustSavingsTransaction = 2025829316;
+    int V98__AddedCurrencyRoundOfForMultipleOf = 765196189;
+    int V100__GroupSavingSummaryReport = 1066454837;
+    int V101__AddMulitplesOfToAccountTransfersTable = 1079097773;
+    int V102__ClientAttendanceTables = 278383497;
+    int V103__ClusterSupportForBatchJobs = 327230309;
+    int V104__PermissionsForTransfers = 687258886;
+    int V105__TrackLoanTransactionAgainstOffice = 1435193114;
 
 }

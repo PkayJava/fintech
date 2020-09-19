@@ -6,11 +6,11 @@
             <column defaultValueNumeric="0" name="allow_multiple_credits" type="TINYINT"/>
         </addColumn>
 
-        <addNotNullConstraint columnDataType="TINYINT" columnName="allow_multiple_debits" constraintName="notnull_key_300" tableName="acc_accounting_rule"/>
+        <addNotNullConstraint columnDataType="TINYINT" columnName="allow_multiple_debits" constraintName="notnull_key_303" tableName="acc_accounting_rule"/>
 
-        <addNotNullConstraint columnDataType="TINYINT" columnName="allow_multiple_credits" constraintName="notnull_key_301" tableName="acc_accounting_rule"/>
+        <addNotNullConstraint columnDataType="TINYINT" columnName="allow_multiple_credits" constraintName="notnull_key_304" tableName="acc_accounting_rule"/>
 
-        <addUniqueConstraint columnNames="acc_rule_id,tag_id,acc_type_enum" constraintName="unique_index_32" tableName="acc_rule_tags"/>
+        <addUniqueConstraint columnNames="acc_rule_id,tag_id,acc_type_enum" constraintName="unique_index_33" tableName="acc_rule_tags"/>
 
     </changeSet>
 </databaseChangeLog>

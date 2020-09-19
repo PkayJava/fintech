@@ -5,8 +5,8 @@
             <column name="repayments_rescheduled_to" type="DATETIME"/>
             <column defaultValueNumeric="0" name="processed" type="TINYINT"/>
         </addColumn>
-        <addNotNullConstraint columnDataType="DATETIME" columnName="repayments_rescheduled_to" constraintName="notnull_key_322" tableName="m_holiday"/>
-        <addNotNullConstraint columnDataType="TINYINT" columnName="processed" constraintName="notnull_key_323" tableName="m_holiday"/>
+        <addNotNullConstraint columnDataType="DATETIME" columnName="repayments_rescheduled_to" constraintName="notnull_key_325" tableName="m_holiday"/>
+        <addNotNullConstraint columnDataType="TINYINT" columnName="processed" constraintName="notnull_key_326" tableName="m_holiday"/>
 
     </changeSet>
 </databaseChangeLog>
