@@ -106,6 +106,10 @@ public interface Checksum {
     int V102__ClientAttendanceTables = 1455273187;
     int V103__ClusterSupportForBatchJobs = 1970673459;
     int V104__PermissionsForTransfers = 176080358;
-    int V105__TrackLoanTransactionAgainstOffice = 32875021;
+    int V105__TrackLoanTransactionAgainstOffice = 1786384468;
+    int V106__MorePermissionsForTransfers = 2026915254;
+    int V107__DatatableCodeMappings = 945286699;
+    int V108__ClientHasTransferOffice = 939937454;
+    int V109__AccountTransferWithdrawalFeeConfiguration = 1661616198;
 
 }

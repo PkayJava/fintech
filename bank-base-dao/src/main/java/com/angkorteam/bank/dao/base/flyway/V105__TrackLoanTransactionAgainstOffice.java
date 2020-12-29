@@ -14,7 +14,9 @@ public class V105__TrackLoanTransactionAgainstOffice extends LiquibaseJavaMigrat
 
     @Override
     public Integer getChecksum() {
-        return Checksum.V105__TrackLoanTransactionAgainstOffice + getInternalChecksum("V105_1__track_loan_transaction_against_office.xml", "V105_2__track_loan_transaction_against_office.xml");
+        return Checksum.V105__TrackLoanTransactionAgainstOffice +
+                getInternalChecksum("V105_1__track_loan_transaction_against_office.xml",
+                        "V105_2__track_loan_transaction_against_office.xml");
     }
 
     @Override

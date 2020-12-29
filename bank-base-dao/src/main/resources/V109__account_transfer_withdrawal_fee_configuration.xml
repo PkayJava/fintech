@@ -1,0 +1,15 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V105_2__track_loan_transaction_against_office-1">
+
+        <addColumn tableName="m_savings_product">
+            <column name="withdrawal_fee_for_transfer" type="TINYINT" defaultValueNumeric="1"/>
+        </addColumn>
+        <addColumn tableName="m_savings_account">
+            <column name="withdrawal_fee_for_transfer" type="TINYINT" defaultValueNumeric="1"/>
+        </addColumn>
+
+    </changeSet>
+</databaseChangeLog>
