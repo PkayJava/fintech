@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V28__AccountingAbstractionsAndAutoposting extends LiquibaseJavaMigr
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V28__accounting-abstractions-and-autoposting.xml");
+        return Checksum.V28__AccountingAbstractionsAndAutoposting + getInternalChecksum("V28__accounting-abstractions-and-autoposting.xml");
     }
 
     @Override

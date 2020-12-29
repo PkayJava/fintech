@@ -5,7 +5,7 @@
             <column name="loan_type_enum" type="SMALLINT"/>
         </addColumn>
 
-        <addNotNullConstraint columnDataType="SMALLINT" columnName="loan_type_enum" constraintName="notnull_key_283" tableName="m_loan"/>
+        <addNotNullConstraint columnDataType="SMALLINT" columnName="loan_type_enum" constraintName="notnull_key_286" tableName="m_loan"/>
 
     </changeSet>
 </databaseChangeLog>

@@ -5,7 +5,7 @@
             <column defaultValueNumeric="1" name="account_type_enum" type="SMALLINT"/>
         </addColumn>
 
-        <addNotNullConstraint columnDataType="SMALLINT" columnName="account_type_enum" constraintName="notnull_key_350" tableName="m_savings_account"/>
+        <addNotNullConstraint columnDataType="SMALLINT" columnName="account_type_enum" constraintName="notnull_key_353" tableName="m_savings_account"/>
 
     </changeSet>
 </databaseChangeLog>

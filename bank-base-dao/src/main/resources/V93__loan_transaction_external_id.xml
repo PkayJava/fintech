@@ -5,7 +5,7 @@
             <column name="external_id" type="VARCHAR(100)"/>
         </addColumn>
 
-        <addUniqueConstraint columnNames="external_id" constraintName="unique_index_36" tableName="m_loan_transaction"/>
+        <addUniqueConstraint columnNames="external_id" constraintName="unique_index_37" tableName="m_loan_transaction"/>
 
     </changeSet>
 </databaseChangeLog>

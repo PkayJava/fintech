@@ -3,7 +3,7 @@
 
         <createTable tableName="c_external_service">
             <column name="name" type="VARCHAR(150)">
-                <constraints notNullConstraintName="notnull_key_297" nullable="false" unique="true" uniqueConstraintName="unique_index_32"/>
+                <constraints notNullConstraintName="notnull_key_300" nullable="false" unique="true" uniqueConstraintName="unique_index_33"/>
             </column>
             <column name="value" type="VARCHAR(250)"/>
         </createTable>

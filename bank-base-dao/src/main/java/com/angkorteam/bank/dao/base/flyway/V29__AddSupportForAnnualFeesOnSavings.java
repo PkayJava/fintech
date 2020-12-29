@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V29__AddSupportForAnnualFeesOnSavings extends LiquibaseJavaMigratio
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V29__add-support-for-annual-fees-on-savings.xml");
+        return Checksum.V29__AddSupportForAnnualFeesOnSavings + getInternalChecksum("V29__add-support-for-annual-fees-on-savings.xml");
     }
 
     @Override

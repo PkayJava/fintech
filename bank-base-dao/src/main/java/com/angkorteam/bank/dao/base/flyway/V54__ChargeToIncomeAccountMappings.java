@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V54__ChargeToIncomeAccountMappings extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V54__charge-to-income-account-mappings.xml");
+        return Checksum.V54__ChargeToIncomeAccountMappings + getInternalChecksum("V54__charge-to-income-account-mappings.xml");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V94__AddedSavingsAccontType extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V94__added_savings_accont_type.xml");
+        return Checksum.V94__AddedSavingsAccontType + getInternalChecksum("V94__added_savings_accont_type.xml");
     }
 
     @Override

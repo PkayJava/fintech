@@ -7,21 +7,21 @@
 
         <createTable tableName="m_product_mix">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_345" nullable="false" primaryKey="true" primaryKeyName="primary_key_67"/>
+                <constraints notNullConstraintName="notnull_key_348" nullable="false" primaryKey="true" primaryKeyName="primary_key_68"/>
             </column>
             <column name="product_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_346" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_349" nullable="false"/>
             </column>
             <column name="restricted_product_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_347" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_350" nullable="false"/>
             </column>
         </createTable>
 
-        <createIndex indexName="index_22" tableName="m_product_mix">
+        <createIndex indexName="index_19" tableName="m_product_mix">
             <column name="product_id"/>
         </createIndex>
 
-        <createIndex indexName="index_23" tableName="m_product_mix">
+        <createIndex indexName="index_20" tableName="m_product_mix">
             <column name="restricted_product_id"/>
         </createIndex>
 

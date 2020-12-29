@@ -5,7 +5,7 @@
             <column defaultValueNumeric="0" name="currently_running" type="TINYINT"/>
         </addColumn>
 
-        <addNotNullConstraint columnDataType="TINYINT" columnName="currently_running" constraintName="notnull_key_343" tableName="job"/>
+        <addNotNullConstraint columnDataType="TINYINT" columnName="currently_running" constraintName="notnull_key_346" tableName="job"/>
 
         <renameColumn columnDataType="VARCHAR(500)" newColumnName="job_key" oldColumnName="trigger_key" tableName="job"/>
 

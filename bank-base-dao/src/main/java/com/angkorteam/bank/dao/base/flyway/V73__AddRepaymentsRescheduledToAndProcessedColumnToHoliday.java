@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V73__AddRepaymentsRescheduledToAndProcessedColumnToHoliday extends 
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V73__add_repayments_rescheduled_to_and_processed_column_to_holiday.xml");
+        return Checksum.V73__AddRepaymentsRescheduledToAndProcessedColumnToHoliday + getInternalChecksum("V73__add_repayments_rescheduled_to_and_processed_column_to_holiday.xml");
     }
 
     @Override

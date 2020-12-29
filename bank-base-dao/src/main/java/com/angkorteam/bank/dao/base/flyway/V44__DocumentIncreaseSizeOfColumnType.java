@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V44__DocumentIncreaseSizeOfColumnType extends LiquibaseJavaMigratio
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V44__document-increase-size-of-column-type.xml");
+        return Checksum.V44__DocumentIncreaseSizeOfColumnType + getInternalChecksum("V44__document-increase-size-of-column-type.xml");
     }
 
     @Override

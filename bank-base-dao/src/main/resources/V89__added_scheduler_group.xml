@@ -5,7 +5,7 @@
             <column defaultValueNumeric="0" name="scheduler_group" type="SMALLINT"/>
         </addColumn>
 
-        <addNotNullConstraint columnDataType="SMALLINT" columnName="scheduler_group" constraintName="notnull_key_349" tableName="job"/>
+        <addNotNullConstraint columnDataType="SMALLINT" columnName="scheduler_group" constraintName="notnull_key_352" tableName="job"/>
 
     </changeSet>
 </databaseChangeLog>

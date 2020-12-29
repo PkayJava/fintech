@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.jdbc.query.InsertQuery;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
@@ -13,7 +14,7 @@ public class V83__NonWorkingDaysTable extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V83__non-working-days-table.xml");
+        return Checksum.V83__NonWorkingDaysTable + getInternalChecksum("V83__non-working-days-table.xml");
     }
 
     @Override

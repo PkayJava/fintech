@@ -5,20 +5,20 @@
             <column defaultValueNumeric="0" name="is_misfired" type="TINYINT"/>
         </addColumn>
 
-        <addNotNullConstraint columnDataType="TINYINT" columnName="is_misfired" constraintName="notnull_key_369" tableName="job"/>
+        <addNotNullConstraint columnDataType="TINYINT" columnName="is_misfired" constraintName="notnull_key_372" tableName="job"/>
 
         <createTable tableName="scheduler_detail">
             <column autoIncrement="true" name="id" type="SMALLINT">
-                <constraints notNullConstraintName="notnull_key_370" nullable="false" primaryKey="true" primaryKeyName="primary_key_71"/>
+                <constraints notNullConstraintName="notnull_key_373" nullable="false" primaryKey="true" primaryKeyName="primary_key_72"/>
             </column>
             <column defaultValueNumeric="0" name="is_suspended" type="TINYINT">
-                <constraints notNullConstraintName="notnull_key_371" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_374" nullable="false"/>
             </column>
             <column defaultValueNumeric="1" name="execute_misfired_jobs" type="TINYINT">
-                <constraints notNullConstraintName="notnull_key_372" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_375" nullable="false"/>
             </column>
             <column defaultValueNumeric="1" name="reset_scheduler_on_bootup" type="TINYINT">
-                <constraints notNullConstraintName="notnull_key_373" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_376" nullable="false"/>
             </column>
         </createTable>
 

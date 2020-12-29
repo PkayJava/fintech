@@ -5,7 +5,7 @@
             <column defaultValueNumeric="1" name="updates_allowed" type="TINYINT"/>
         </addColumn>
 
-        <addNotNullConstraint columnDataType="TINYINT" columnName="updates_allowed" constraintName="notnull_key_348" tableName="job"/>
+        <addNotNullConstraint columnDataType="TINYINT" columnName="updates_allowed" constraintName="notnull_key_351" tableName="job"/>
 
     </changeSet>
 </databaseChangeLog>

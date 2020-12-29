@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V12__AddExternalIdToCoupleOfTables extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V12__add_external_id_to_couple_of_tables.xml");
+        return Checksum.V12__AddExternalIdToCoupleOfTables + getInternalChecksum("V12__add_external_id_to_couple_of_tables.xml");
     }
 
     @Override

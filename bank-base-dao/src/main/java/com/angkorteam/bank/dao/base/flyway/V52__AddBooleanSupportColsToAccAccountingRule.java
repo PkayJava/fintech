@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V52__AddBooleanSupportColsToAccAccountingRule extends LiquibaseJava
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V52__add_boolean_support_cols_to_acc_accounting_rule.xml");
+        return Checksum.V52__AddBooleanSupportColsToAccAccountingRule + getInternalChecksum("V52__add_boolean_support_cols_to_acc_accounting_rule.xml");
     }
 
     @Override

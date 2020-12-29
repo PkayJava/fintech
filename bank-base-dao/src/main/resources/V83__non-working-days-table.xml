@@ -3,7 +3,7 @@
 
         <createTable tableName="m_working_days">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_344" nullable="false" primaryKey="true" primaryKeyName="primary_key_66"/>
+                <constraints notNullConstraintName="notnull_key_347" nullable="false" primaryKey="true" primaryKeyName="primary_key_67"/>
             </column>
             <column name="recurrence" type="VARCHAR(100)"/>
             <column name="repayment_rescheduling_enum" type="SMALLINT"/>

@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V33__DropUniqueCheckOnStretchyReportParameter extends LiquibaseJava
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V33__drop_unique_check_on_stretchy_report_parameter.xml");
+        return Checksum.V33__DropUniqueCheckOnStretchyReportParameter + getInternalChecksum("V33__drop_unique_check_on_stretchy_report_parameter.xml");
     }
 
     @Override

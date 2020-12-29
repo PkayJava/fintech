@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V30__AddReferenceNumberToAccGlJournalEntry extends LiquibaseJavaMig
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V30__add-referenceNumber-to-acc_gl_journal_entry.xml");
+        return Checksum.V30__AddReferenceNumberToAccGlJournalEntry + getInternalChecksum("V30__add-referenceNumber-to-acc_gl_journal_entry.xml");
     }
 
     @Override

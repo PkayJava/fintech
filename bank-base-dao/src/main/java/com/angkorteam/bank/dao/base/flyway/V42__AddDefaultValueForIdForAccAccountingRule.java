@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V42__AddDefaultValueForIdForAccAccountingRule extends LiquibaseJava
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V42__Add_default_value_for_id_for_acc_accounting_rule.xml");
+        return Checksum.V42__AddDefaultValueForIdForAccAccountingRule + getInternalChecksum("V42__Add_default_value_for_id_for_acc_accounting_rule.xml");
     }
 
     @Override

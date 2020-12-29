@@ -3,79 +3,79 @@
 
         <createTable tableName="acc_accounting_rule">
             <column name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_284" nullable="false" primaryKey="true" primaryKeyName="primary_key_55"/>
+                <constraints notNullConstraintName="notnull_key_287" nullable="false" primaryKey="true" primaryKeyName="primary_key_56"/>
             </column>
             <column name="name" type="VARCHAR(100)">
-                <constraints unique="true" uniqueConstraintName="unique_index_29"/>
+                <constraints unique="true" uniqueConstraintName="unique_index_30"/>
             </column>
             <column name="office_id" type="BIGINT"/>
             <column name="debit_account_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_285" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_288" nullable="false"/>
             </column>
             <column name="credit_account_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_286" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_289" nullable="false"/>
             </column>
             <column name="description" type="VARCHAR(500)"/>
             <column defaultValueNumeric="0" name="system_defined" type="tinyint">
-                <constraints notNullConstraintName="notnull_key_287" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_290" nullable="false"/>
             </column>
         </createTable>
 
-        <createIndex indexName="index_7" tableName="acc_accounting_rule">
+        <createIndex indexName="index_4" tableName="acc_accounting_rule">
             <column name="debit_account_id"/>
         </createIndex>
 
-        <createIndex indexName="index_8" tableName="acc_accounting_rule">
+        <createIndex indexName="index_5" tableName="acc_accounting_rule">
             <column name="credit_account_id"/>
         </createIndex>
 
-        <createIndex indexName="index_9" tableName="acc_accounting_rule">
+        <createIndex indexName="index_6" tableName="acc_accounting_rule">
             <column name="office_id"/>
         </createIndex>
 
         <createTable tableName="acc_auto_posting">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_288" nullable="false" primaryKey="true" primaryKeyName="primary_key_56"/>
+                <constraints notNullConstraintName="notnull_key_291" nullable="false" primaryKey="true" primaryKeyName="primary_key_57"/>
             </column>
             <column name="name" type="VARCHAR(100)">
-                <constraints unique="true" uniqueConstraintName="unique_index_30"/>
+                <constraints unique="true" uniqueConstraintName="unique_index_31"/>
             </column>
             <column name="description" type="VARCHAR(500)"/>
             <column name="office_id" type="BIGINT"/>
 
             <column name="product_type_enum" type="SMALLINT">
-                <constraints notNullConstraintName="notnull_key_289" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_292" nullable="false"/>
             </column>
             <column name="product_id" type="BIGINT"/>
             <column name="charge_id" type="BIGINT"/>
 
             <column name="event" type="INT">
-                <constraints notNullConstraintName="notnull_key_290" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_293" nullable="false"/>
             </column>
             <column name="event_attribute" type="INT"/>
 
             <column name="accounting_rule_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_291" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_294" nullable="false"/>
             </column>
         </createTable>
 
-        <createIndex indexName="index_10" tableName="acc_auto_posting">
+        <createIndex indexName="index_7" tableName="acc_auto_posting">
             <column name="office_id"/>
         </createIndex>
 
-        <createIndex indexName="index_11" tableName="acc_auto_posting">
+        <createIndex indexName="index_8" tableName="acc_auto_posting">
             <column name="accounting_rule_id"/>
         </createIndex>
 
-        <createIndex indexName="index_12" tableName="acc_auto_posting">
+        <createIndex indexName="index_9" tableName="acc_auto_posting">
             <column name="event"/>
         </createIndex>
 
-        <createIndex indexName="index_13" tableName="acc_auto_posting">
+        <createIndex indexName="index_10" tableName="acc_auto_posting">
             <column name="charge_id"/>
         </createIndex>
 
-        <createIndex indexName="index_14" tableName="acc_auto_posting">
+        <createIndex indexName="index_11" tableName="acc_auto_posting">
             <column name="event_attribute"/>
         </createIndex>
 

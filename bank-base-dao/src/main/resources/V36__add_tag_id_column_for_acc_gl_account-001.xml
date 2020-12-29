@@ -5,7 +5,7 @@
             <column name="tag_id" type="INT"/>
         </addColumn>
 
-        <createIndex indexName="index_15" tableName="acc_gl_account">
+        <createIndex indexName="index_12" tableName="acc_gl_account">
             <column name="tag_id"/>
         </createIndex>
 

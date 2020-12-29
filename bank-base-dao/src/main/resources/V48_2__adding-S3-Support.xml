@@ -3,7 +3,7 @@
 
         <createTable tableName="m_image">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_298" nullable="false" primaryKey="true" primaryKeyName="primary_key_58"/>
+                <constraints notNullConstraintName="notnull_key_301" nullable="false" primaryKey="true" primaryKeyName="primary_key_59"/>
             </column>
             <column name="location" type="VARCHAR(500)"/>
             <column name="storage_type_enum" type="SMALLINT"/>

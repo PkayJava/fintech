@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V5__UpdateSavingsProductAndAccountTables extends LiquibaseJavaMigra
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V5__update-savings-product-and-account-tables.xml");
+        return Checksum.V5__UpdateSavingsProductAndAccountTables + getInternalChecksum("V5__update-savings-product-and-account-tables.xml");
     }
 
     @Override

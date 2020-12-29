@@ -4,35 +4,35 @@
         <addColumn tableName="m_product_loan">
             <column defaultValueNumeric="0" name="include_in_borrower_cycle" type="TINYINT"/>
         </addColumn>
-        <addNotNullConstraint columnDataType="TINYINT" columnName="include_in_borrower_cycle" constraintName="notnull_key_319" tableName="m_product_loan"/>
+        <addNotNullConstraint columnDataType="TINYINT" columnName="include_in_borrower_cycle" constraintName="notnull_key_322" tableName="m_product_loan"/>
 
         <createTable tableName="m_client_loan_counter">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_320" nullable="false" primaryKey="true" primaryKeyName="primary_key_63"/>
+                <constraints notNullConstraintName="notnull_key_323" nullable="false" primaryKey="true" primaryKeyName="primary_key_64"/>
             </column>
             <column name="client_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_321" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_324" nullable="false"/>
             </column>
             <column name="loan_product_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_322" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_325" nullable="false"/>
             </column>
             <column name="loan_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_323" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_326" nullable="false"/>
             </column>
             <column name="running_count" type="SMALLINT">
-                <constraints notNullConstraintName="notnull_key_324" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_327" nullable="false"/>
             </column>
         </createTable>
 
-        <createIndex indexName="index_18" tableName="m_client_loan_counter">
+        <createIndex indexName="index_15" tableName="m_client_loan_counter">
             <column name="client_id" type="BIGINT"/>
         </createIndex>
 
-        <createIndex indexName="index_19" tableName="m_client_loan_counter">
+        <createIndex indexName="index_16" tableName="m_client_loan_counter">
             <column name="loan_product_id" type="BIGINT"/>
         </createIndex>
 
-        <createIndex indexName="index_20" tableName="m_client_loan_counter">
+        <createIndex indexName="index_17" tableName="m_client_loan_counter">
             <column name="loan_id" type="BIGINT"/>
         </createIndex>
 

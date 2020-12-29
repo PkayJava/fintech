@@ -3,15 +3,15 @@
 
         <dropNotNullConstraint columnDataType="VARCHAR(100)" columnName="external_id" tableName="m_group"/>
 
-        <addNotNullConstraint columnDataType="INT" columnName="status_enum" constraintName="notnull_key_280" tableName="m_group"/>
+        <addNotNullConstraint columnDataType="INT" columnName="status_enum" constraintName="notnull_key_283" tableName="m_group"/>
 
         <addDefaultValue columnName="status_enum" defaultValueNumeric="300" tableName="m_group"/>
 
         <renameColumn columnDataType="VARCHAR(100)" newColumnName="display_name" oldColumnName="name" tableName="m_group"/>
 
-        <addNotNullConstraint columnDataType="VARCHAR(100)" columnName="display_name" constraintName="notnull_key_281" tableName="m_group"/>
+        <addNotNullConstraint columnDataType="VARCHAR(100)" columnName="display_name" constraintName="notnull_key_284" tableName="m_group"/>
 
-        <addNotNullConstraint columnDataType="INT" columnName="level_Id" constraintName="notnull_key_282" tableName="m_group"/>
+        <addNotNullConstraint columnDataType="INT" columnName="level_Id" constraintName="notnull_key_285" tableName="m_group"/>
 
         <dropColumn columnName="is_deleted" tableName="m_group"/>
 

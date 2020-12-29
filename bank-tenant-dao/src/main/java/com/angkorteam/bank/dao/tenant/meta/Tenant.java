@@ -1,4 +1,4 @@
-package com.angkorteam.bank.dao.base.meta;
+package com.angkorteam.bank.dao.tenant.meta;
 
 import com.angkorteam.metamodel.AbstractTable;
 import org.apache.metamodel.DataContext;

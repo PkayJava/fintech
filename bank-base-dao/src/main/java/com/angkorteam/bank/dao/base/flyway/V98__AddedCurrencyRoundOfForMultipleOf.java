@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V98__AddedCurrencyRoundOfForMultipleOf extends LiquibaseJavaMigrati
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V98__added_currency_roundof_for_multipleof.xml");
+        return Checksum.V98__AddedCurrencyRoundOfForMultipleOf + getInternalChecksum("V98__added_currency_roundof_for_multipleof.xml");
     }
 
     @Override

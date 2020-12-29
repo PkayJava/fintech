@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.jdbc.query.InsertQuery;
 import com.angkorteam.jdbc.query.SelectQuery;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
@@ -15,7 +16,7 @@ public class V17__UpdateStretchyReportingDdl extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum(
+        return Checksum.V17__UpdateStretchyReportingDdl + getInternalChecksum(
                 "V17__update_stretchy_reporting_ddl-001.xml",
                 "V17__update_stretchy_reporting_ddl-003.xml",
                 "V17__update_stretchy_reporting_ddl-005.xml",

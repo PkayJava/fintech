@@ -3,22 +3,22 @@
 
         <createTable tableName="scheduled_jobs">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_327" nullable="false" primaryKey="true" primaryKeyName="primary_key_64"/>
+                <constraints notNullConstraintName="notnull_key_330" nullable="false" primaryKey="true" primaryKeyName="primary_key_65"/>
             </column>
             <column name="job_name" type="VARCHAR(50)">
-                <constraints notNullConstraintName="notnull_key_328" nullable="false"/>
-            </column>
-            <column name="job_display_name" type="VARCHAR(50)">
-                <constraints notNullConstraintName="notnull_key_329" nullable="false"/>
-            </column>
-            <column name="cron_expression" type="VARCHAR(50)">
-                <constraints notNullConstraintName="notnull_key_330" nullable="false"/>
-            </column>
-            <column name="create_time" type="DATETIME">
                 <constraints notNullConstraintName="notnull_key_331" nullable="false"/>
             </column>
-            <column defaultValueNumeric="5" name="task_priority" type="SMALLINT">
+            <column name="job_display_name" type="VARCHAR(50)">
                 <constraints notNullConstraintName="notnull_key_332" nullable="false"/>
+            </column>
+            <column name="cron_expression" type="VARCHAR(50)">
+                <constraints notNullConstraintName="notnull_key_333" nullable="false"/>
+            </column>
+            <column name="create_time" type="DATETIME">
+                <constraints notNullConstraintName="notnull_key_334" nullable="false"/>
+            </column>
+            <column defaultValueNumeric="5" name="task_priority" type="SMALLINT">
+                <constraints notNullConstraintName="notnull_key_335" nullable="false"/>
             </column>
             <column name="group_name" type="VARCHAR(50)"/>
             <column name="previous_run_start_time" type="DATETIME"/>
@@ -26,37 +26,37 @@
             <column name="trigger_key" type="VARCHAR(500)"/>
             <column name="job_initializing_errorlog" type="TEXT"/>
             <column defaultValueNumeric="1" name="is_active" type="TINYINT">
-                <constraints notNullConstraintName="notnull_key_333" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_336" nullable="false"/>
             </column>
         </createTable>
 
         <createTable tableName="scheduled_job_runhistory">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_334" nullable="false" primaryKey="true" primaryKeyName="primary_key_65"/>
+                <constraints notNullConstraintName="notnull_key_337" nullable="false" primaryKey="true" primaryKeyName="primary_key_66"/>
             </column>
             <column name="job_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_335" nullable="false"/>
-            </column>
-            <column name="version" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_336" nullable="false"/>
-            </column>
-            <column name="start_time" type="DATETIME">
-                <constraints notNullConstraintName="notnull_key_337" nullable="false"/>
-            </column>
-            <column name="end_time" type="DATETIME">
                 <constraints notNullConstraintName="notnull_key_338" nullable="false"/>
             </column>
-            <column name="status" type="VARCHAR(10)">
+            <column name="version" type="BIGINT">
                 <constraints notNullConstraintName="notnull_key_339" nullable="false"/>
+            </column>
+            <column name="start_time" type="DATETIME">
+                <constraints notNullConstraintName="notnull_key_340" nullable="false"/>
+            </column>
+            <column name="end_time" type="DATETIME">
+                <constraints notNullConstraintName="notnull_key_341" nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(10)">
+                <constraints notNullConstraintName="notnull_key_342" nullable="false"/>
             </column>
             <column name="errormessage" type="VARCHAR(500)"/>
             <column name="triggertype" type="VARCHAR(25)">
-                <constraints notNullConstraintName="notnull_key_340" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_343" nullable="false"/>
             </column>
             <column name="errorlog" type="TEXT"/>
         </createTable>
 
-        <createIndex indexName="index_21" tableName="scheduled_job_runhistory">
+        <createIndex indexName="index_18" tableName="scheduled_job_runhistory">
             <column name="job_id"/>
         </createIndex>
 

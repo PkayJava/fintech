@@ -1,8 +1,7 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    <changeSet author="Socheat KHAUV" id="V3__deadlock-retry-properties-1">
-        <addColumn tableName="tenants">
-            <column defaultValueNumeric="0" name="deadlock_max_retries" type="INT"/>
-            <column defaultValueNumeric="1" name="deadlock_max_retry_interval" type="INT"/>
+    <changeSet author="Socheat KHAUV" id="V5__add_schema_connection_parameters-1">
+        <addColumn tableName="tenant_server_connections">
+            <column name="schema_connection_parameters" type="TEXT"/>
         </addColumn>
     </changeSet>
 </databaseChangeLog>

@@ -1,25 +1,23 @@
 package com.angkorteam.bank.dao.tenant.flyway;
 
-import com.angkorteam.metamodel.Database;
+import com.angkorteam.bank.dao.tenant.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
-import liquibase.Contexts;
-import liquibase.LabelExpression;
-import liquibase.Liquibase;
-import liquibase.resource.ClassLoaderResourceAccessor;
+import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
+import javax.sql.DataSource;
 
 public class V2__ExternalizeConnectionProperties extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V2__externalize-connection-properties.xml");
+        return Checksum.V2__ExternalizeConnectionProperties + getInternalChecksum("V2__externalize-connection-properties.xml");
     }
 
     @Override
-    public void migrate(Context context) throws Exception {
-        try (Database database = lookupDatabase(context)) {
-            Liquibase liquibase = new Liquibase("V2__externalize-connection-properties.xml", new ClassLoaderResourceAccessor(), database);
-            liquibase.update(new Contexts(), new LabelExpression());
-        }
+    protected void doMigrate(Context context, DataSource dataSource, NamedParameterJdbcTemplate namedParameterJdbcTemplate, JdbcDataContext jdbcDataContext) throws Exception {
+        updateLiquibase("V2__externalize-connection-properties.xml");
     }
+
 }

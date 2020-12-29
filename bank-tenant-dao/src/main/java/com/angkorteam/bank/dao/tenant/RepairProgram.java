@@ -1,4 +1,4 @@
-package com.angkorteam.bank.dao.base;
+package com.angkorteam.bank.dao.tenant;
 
 import com.angkorteam.metamodel.utility.LiquibaseUtility;
 import org.xml.sax.SAXException;
@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class RepairProgram {
     public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException, TransformerException {
-        File folder = new File("bank-base-dao/src/main/resources");
+        File folder = new File("bank-tenant-dao/src/main/resources");
         LiquibaseUtility.process(folder);
     }
 }

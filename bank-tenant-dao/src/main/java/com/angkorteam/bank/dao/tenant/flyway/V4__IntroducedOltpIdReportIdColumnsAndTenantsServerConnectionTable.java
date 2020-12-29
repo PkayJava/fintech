@@ -1,103 +1,93 @@
 package com.angkorteam.bank.dao.tenant.flyway;
 
+import com.angkorteam.bank.dao.tenant.Checksum;
 import com.angkorteam.jdbc.query.InsertQuery;
 import com.angkorteam.jdbc.query.SelectQuery;
-import com.angkorteam.metamodel.Database;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
-import liquibase.Contexts;
-import liquibase.LabelExpression;
-import liquibase.Liquibase;
-import liquibase.resource.ClassLoaderResourceAccessor;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.apache.metamodel.schema.Table;
 import org.flywaydb.core.api.migration.Context;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import javax.sql.DataSource;
 import java.util.Map;
 
 public class V4__IntroducedOltpIdReportIdColumnsAndTenantsServerConnectionTable extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V4__introduced_oltpId_reportId_columns_and_tenants_server_connection_table-001.xml",
+        return Checksum.V4__IntroducedOltpIdReportIdColumnsAndTenantsServerConnectionTable + getInternalChecksum("V4__introduced_oltpId_reportId_columns_and_tenants_server_connection_table-001.xml",
                 "V4__introduced_oltpId_reportId_columns_and_tenants_server_connection_table-003.xml",
                 "V4__introduced_oltpId_reportId_columns_and_tenants_server_connection_table-005.xml");
     }
 
     @Override
-    public void migrate(Context context) throws Exception {
-        try (Database database = lookupDatabase(context)) {
-            JdbcDataContext dataContext = lookupDataContext(context);
-            NamedParameterJdbcTemplate named = lookJdbcTemplate(context);
-            SelectQuery selectQuery = null;
-            {
-                // sub change 001
-                Liquibase liquibase = new Liquibase("V4__introduced_oltpId_reportId_columns_and_tenants_server_connection_table-001.xml", new ClassLoaderResourceAccessor(), database);
-                liquibase.update(new Contexts(), new LabelExpression());
-            }
-            {
-                // sub change 002
-                dataContext.refreshSchemas();
-                Table tenant_server_connections = dataContext.getDefaultSchema().getTableByName("tenant_server_connections");
-                Table temp_tenants = dataContext.getDefaultSchema().getTableByName("temp_tenants");
-                selectQuery = new SelectQuery(temp_tenants.getName());
-                for (Map<String, Object> record : named.queryForList(selectQuery.toSQL(), selectQuery.toParam())) {
-                    String id = (String) record.get(temp_tenants.getColumnByName("id").getName());
-                    String schema_name = (String) record.get(temp_tenants.getColumnByName("schema_name").getName());
-                    String schema_server = (String) record.get(temp_tenants.getColumnByName("schema_server").getName());
-                    String schema_server_port = (String) record.get(temp_tenants.getColumnByName("schema_server_port").getName());
-                    String schema_username = (String) record.get(temp_tenants.getColumnByName("schema_username").getName());
-                    String schema_password = (String) record.get(temp_tenants.getColumnByName("schema_password").getName());
-                    String auto_update = (String) record.get(temp_tenants.getColumnByName("auto_update").getName());
-                    String pool_initial_size = (String) record.get(temp_tenants.getColumnByName("pool_initial_size").getName());
-                    String pool_validation_interval = (String) record.get(temp_tenants.getColumnByName("pool_validation_interval").getName());
-                    String pool_remove_abandoned = (String) record.get(temp_tenants.getColumnByName("pool_remove_abandoned").getName());
-                    String pool_remove_abandoned_timeout = (String) record.get(temp_tenants.getColumnByName("pool_remove_abandoned_timeout").getName());
-                    String pool_log_abandoned = (String) record.get(temp_tenants.getColumnByName("pool_log_abandoned").getName());
-                    String pool_abandon_when_percentage_full = (String) record.get(temp_tenants.getColumnByName("pool_abandon_when_percentage_full").getName());
-                    String pool_test_on_borrow = (String) record.get(temp_tenants.getColumnByName("pool_test_on_borrow").getName());
-                    String pool_max_active = (String) record.get(temp_tenants.getColumnByName("pool_max_active").getName());
-                    String pool_min_idle = (String) record.get(temp_tenants.getColumnByName("pool_min_idle").getName());
-                    String pool_max_idle = (String) record.get(temp_tenants.getColumnByName("pool_max_idle").getName());
-                    String pool_suspect_timeout = (String) record.get(temp_tenants.getColumnByName("pool_suspect_timeout").getName());
-                    String pool_time_between_eviction_runs_millis = (String) record.get(temp_tenants.getColumnByName("pool_time_between_eviction_runs_millis").getName());
-                    String pool_min_evictable_idle_time_millis = (String) record.get(temp_tenants.getColumnByName("pool_min_evictable_idle_time_millis").getName());
-                    String deadlock_max_retries = (String) record.get(temp_tenants.getColumnByName("deadlock_max_retries").getName());
-                    String deadlock_max_retry_interval = (String) record.get(temp_tenants.getColumnByName("deadlock_max_retry_interval").getName());
-                    insert_tenant_server_connections(named, tenant_server_connections, id, schema_name, schema_server, schema_server_port, schema_username, schema_password, auto_update, pool_initial_size, pool_validation_interval, pool_remove_abandoned, pool_remove_abandoned_timeout, pool_log_abandoned, pool_abandon_when_percentage_full, pool_test_on_borrow, pool_max_active, pool_min_idle, pool_max_idle, pool_suspect_timeout, pool_time_between_eviction_runs_millis, pool_min_evictable_idle_time_millis, deadlock_max_retries, deadlock_max_retry_interval);
-                }
-            }
-            {
-                // sub change 003
-                Liquibase liquibase = new Liquibase("V4__introduced_oltpId_reportId_columns_and_tenants_server_connection_table-003.xml", new ClassLoaderResourceAccessor(), database);
-                liquibase.update(new Contexts(), new LabelExpression());
-            }
-            {
-                // sub change 004
-                dataContext.refreshSchemas();
-                Table tenants = dataContext.getDefaultSchema().getTableByName("tenants");
-                Table temp_tenants = dataContext.getDefaultSchema().getTableByName("temp_tenants");
-                selectQuery = new SelectQuery(temp_tenants.getName());
-                for (Map<String, Object> record : named.queryForList(selectQuery.toSQL(), selectQuery.toParam())) {
-                    String id = (String) record.get(temp_tenants.getColumnByName("id").getName());
-                    String identifier = (String) record.get(temp_tenants.getColumnByName("identifier").getName());
-                    String name = (String) record.get(temp_tenants.getColumnByName("name").getName());
-                    String timezone_id = (String) record.get(temp_tenants.getColumnByName("timezone_id").getName());
-                    String country_id = (String) record.get(temp_tenants.getColumnByName("country_id").getName());
-                    String joined_date = (String) record.get(temp_tenants.getColumnByName("joined_date").getName());
-                    String created_date = (String) record.get(temp_tenants.getColumnByName("created_date").getName());
-                    String lastmodified_date = (String) record.get(temp_tenants.getColumnByName("lastmodified_date").getName());
-                    String oltp_id = (String) record.get(temp_tenants.getColumnByName("id").getName());
-                    String report_id = (String) record.get(temp_tenants.getColumnByName("id").getName());
-                    insert_tenants(named, tenants, id, identifier, name, timezone_id, country_id, joined_date, created_date, lastmodified_date, oltp_id, report_id);
-                }
-            }
-            {
-                // sub change 005
-                Liquibase liquibase = new Liquibase("V4__introduced_oltpId_reportId_columns_and_tenants_server_connection_table-005.xml", new ClassLoaderResourceAccessor(), database);
-                liquibase.update(new Contexts(), new LabelExpression());
+    protected void doMigrate(Context context, DataSource dataSource, NamedParameterJdbcTemplate named, JdbcDataContext dataContext) throws Exception {
+        SelectQuery selectQuery = null;
+
+        // sub change 001
+        updateLiquibase("V4__introduced_oltpId_reportId_columns_and_tenants_server_connection_table-001.xml");
+
+        // sub change 002
+        {
+            dataContext.refreshSchemas();
+            Table tenant_server_connections = dataContext.getDefaultSchema().getTableByName("tenant_server_connections");
+            Table temp_tenants = dataContext.getDefaultSchema().getTableByName("temp_tenants");
+            selectQuery = new SelectQuery(temp_tenants.getName());
+            for (Map<String, Object> record : named.queryForList(selectQuery.toSQL(), selectQuery.toParam())) {
+                String id = (String) record.get(temp_tenants.getColumnByName("id").getName());
+                String schema_name = (String) record.get(temp_tenants.getColumnByName("schema_name").getName());
+                String schema_server = (String) record.get(temp_tenants.getColumnByName("schema_server").getName());
+                String schema_server_port = (String) record.get(temp_tenants.getColumnByName("schema_server_port").getName());
+                String schema_username = (String) record.get(temp_tenants.getColumnByName("schema_username").getName());
+                String schema_password = (String) record.get(temp_tenants.getColumnByName("schema_password").getName());
+                String auto_update = (String) record.get(temp_tenants.getColumnByName("auto_update").getName());
+                String pool_initial_size = (String) record.get(temp_tenants.getColumnByName("pool_initial_size").getName());
+                String pool_validation_interval = (String) record.get(temp_tenants.getColumnByName("pool_validation_interval").getName());
+                String pool_remove_abandoned = (String) record.get(temp_tenants.getColumnByName("pool_remove_abandoned").getName());
+                String pool_remove_abandoned_timeout = (String) record.get(temp_tenants.getColumnByName("pool_remove_abandoned_timeout").getName());
+                String pool_log_abandoned = (String) record.get(temp_tenants.getColumnByName("pool_log_abandoned").getName());
+                String pool_abandon_when_percentage_full = (String) record.get(temp_tenants.getColumnByName("pool_abandon_when_percentage_full").getName());
+                String pool_test_on_borrow = (String) record.get(temp_tenants.getColumnByName("pool_test_on_borrow").getName());
+                String pool_max_active = (String) record.get(temp_tenants.getColumnByName("pool_max_active").getName());
+                String pool_min_idle = (String) record.get(temp_tenants.getColumnByName("pool_min_idle").getName());
+                String pool_max_idle = (String) record.get(temp_tenants.getColumnByName("pool_max_idle").getName());
+                String pool_suspect_timeout = (String) record.get(temp_tenants.getColumnByName("pool_suspect_timeout").getName());
+                String pool_time_between_eviction_runs_millis = (String) record.get(temp_tenants.getColumnByName("pool_time_between_eviction_runs_millis").getName());
+                String pool_min_evictable_idle_time_millis = (String) record.get(temp_tenants.getColumnByName("pool_min_evictable_idle_time_millis").getName());
+                String deadlock_max_retries = (String) record.get(temp_tenants.getColumnByName("deadlock_max_retries").getName());
+                String deadlock_max_retry_interval = (String) record.get(temp_tenants.getColumnByName("deadlock_max_retry_interval").getName());
+                insert_tenant_server_connections(named, tenant_server_connections, id, schema_name, schema_server, schema_server_port, schema_username, schema_password, auto_update, pool_initial_size, pool_validation_interval, pool_remove_abandoned, pool_remove_abandoned_timeout, pool_log_abandoned, pool_abandon_when_percentage_full, pool_test_on_borrow, pool_max_active, pool_min_idle, pool_max_idle, pool_suspect_timeout, pool_time_between_eviction_runs_millis, pool_min_evictable_idle_time_millis, deadlock_max_retries, deadlock_max_retry_interval);
             }
         }
+
+        // sub change 003
+        updateLiquibase("V4__introduced_oltpId_reportId_columns_and_tenants_server_connection_table-003.xml");
+
+
+        // sub change 004
+        {
+            dataContext.refreshSchemas();
+            Table tenants = dataContext.getDefaultSchema().getTableByName("tenants");
+            Table temp_tenants = dataContext.getDefaultSchema().getTableByName("temp_tenants");
+            selectQuery = new SelectQuery(temp_tenants.getName());
+            for (Map<String, Object> record : named.queryForList(selectQuery.toSQL(), selectQuery.toParam())) {
+                String id = (String) record.get(temp_tenants.getColumnByName("id").getName());
+                String identifier = (String) record.get(temp_tenants.getColumnByName("identifier").getName());
+                String name = (String) record.get(temp_tenants.getColumnByName("name").getName());
+                String timezone_id = (String) record.get(temp_tenants.getColumnByName("timezone_id").getName());
+                String country_id = (String) record.get(temp_tenants.getColumnByName("country_id").getName());
+                String joined_date = (String) record.get(temp_tenants.getColumnByName("joined_date").getName());
+                String created_date = (String) record.get(temp_tenants.getColumnByName("created_date").getName());
+                String lastmodified_date = (String) record.get(temp_tenants.getColumnByName("lastmodified_date").getName());
+                String oltp_id = (String) record.get(temp_tenants.getColumnByName("id").getName());
+                String report_id = (String) record.get(temp_tenants.getColumnByName("id").getName());
+                insert_tenants(named, tenants, id, identifier, name, timezone_id, country_id, joined_date, created_date, lastmodified_date, oltp_id, report_id);
+            }
+        }
+
+        // sub change 005
+        updateLiquibase("V4__introduced_oltpId_reportId_columns_and_tenants_server_connection_table-005.xml");
     }
 
     protected static void insert_tenants(NamedParameterJdbcTemplate named, Table table, String id, String identifier, String name, String timezone_id, String country_id, String joined_date, String created_date, String lastmodified_date, String oltp_id, String report_id) {

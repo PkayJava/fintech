@@ -5,7 +5,7 @@
             <column name="staff_id" type="BIGINT"/>
         </addColumn>
 
-        <createIndex indexName="index_16" tableName="m_appuser">
+        <createIndex indexName="index_13" tableName="m_appuser">
             <column name="staff_id"/>
         </createIndex>
 

@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V47__StaffHierarchyLinkToUsers extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V47__staff-hierarchy-link-to-users.xml");
+        return Checksum.V47__StaffHierarchyLinkToUsers + getInternalChecksum("V47__staff-hierarchy-link-to-users.xml");
     }
 
     @Override

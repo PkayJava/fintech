@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V72__AddMLoanCounterChanges extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V72__add_m_loan_counter_changes.xml");
+        return Checksum.V72__AddMLoanCounterChanges + getInternalChecksum("V72__add_m_loan_counter_changes.xml");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V56__TrackOverpaidAmountOnLoans extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V56__track-overpaid-amount-on-loans.xml");
+        return Checksum.V56__TrackOverpaidAmountOnLoans + getInternalChecksum("V56__track-overpaid-amount-on-loans.xml");
     }
 
     @Override

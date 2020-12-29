@@ -5,7 +5,7 @@
             <column name="accounting_type" type="SMALLINT"/>
         </addColumn>
 
-        <addNotNullConstraint columnDataType="SMALLINT" columnName="accounting_type" constraintName="notnull_key_292" tableName="m_savings_product"/>
+        <addNotNullConstraint columnDataType="SMALLINT" columnName="accounting_type" constraintName="notnull_key_295" tableName="m_savings_product"/>
 
     </changeSet>
 </databaseChangeLog>

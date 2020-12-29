@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V35__AddHierarchyColumnForAccGlAccount extends LiquibaseJavaMigrati
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V35__add_hierarchy_column_for_acc_gl_account.xml");
+        return Checksum.V35__AddHierarchyColumnForAccGlAccount + getInternalChecksum("V35__add_hierarchy_column_for_acc_gl_account.xml");
     }
 
     @Override

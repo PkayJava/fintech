@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V51__TrackAdditionalDetailsRelatedToInstallmentPerformance extends 
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V51__track-additional-details-related-to-installment-performance.xml");
+        return Checksum.V51__TrackAdditionalDetailsRelatedToInstallmentPerformance + getInternalChecksum("V51__track-additional-details-related-to-installment-performance.xml");
     }
 
     @Override

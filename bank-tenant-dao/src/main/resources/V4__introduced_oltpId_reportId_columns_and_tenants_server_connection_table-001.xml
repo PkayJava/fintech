@@ -1,33 +1,27 @@
-<?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    <changeSet author="Socheat KHAUV"
-               id="V4__introduced_oltpId_reportId_columns_and_tenants_server_connection_table-001">
-        <renameTable oldTableName="tenants" newTableName="temp_tenants"/>
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Socheat KHAUV" id="V4__introduced_oltpId_reportId_columns_and_tenants_server_connection_table-001-1">
+        <renameTable newTableName="temp_tenants" oldTableName="tenants"/>
         <createTable tableName="tenant_server_connections">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="null_key_9" nullable="false" primaryKey="true"
-                             primaryKeyName="primary_key_2"/>
+                <constraints notNullConstraintName="notnull_key_4" nullable="false" primaryKey="true" primaryKeyName="primary_key_2"/>
             </column>
             <column defaultValue="localhost" name="schema_server" type="VARCHAR(100)">
-                <constraints notNullConstraintName="null_key_10" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_5" nullable="false"/>
             </column>
             <column name="schema_name" type="VARCHAR(100)">
-                <constraints notNullConstraintName="null_key_11" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_6" nullable="false"/>
             </column>
             <column defaultValue="3306" name="schema_server_port" type="VARCHAR(10)">
-                <constraints notNullConstraintName="null_key_12" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_7" nullable="false"/>
             </column>
             <column defaultValue="root" name="schema_username" type="VARCHAR(100)">
-                <constraints notNullConstraintName="null_key_13" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_8" nullable="false"/>
             </column>
             <column defaultValue="mysql" name="schema_password" type="VARCHAR(100)">
-                <constraints notNullConstraintName="null_key_14" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_9" nullable="false"/>
             </column>
             <column defaultValueNumeric="1" name="auto_update" type="TINYINT(3)">
-                <constraints notNullConstraintName="null_key_15" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_10" nullable="false"/>
             </column>
             <column defaultValueNumeric="5" name="pool_initial_size" type="INT"/>
             <column defaultValueNumeric="30000" name="pool_validation_interval" type="INT"/>

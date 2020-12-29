@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V16__DropMinMaxColumnOnLoanTable extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V16__drop_min_max_column_on_loan_table.xml");
+        return Checksum.V16__DropMinMaxColumnOnLoanTable + getInternalChecksum("V16__drop_min_max_column_on_loan_table.xml");
     }
 
     @Override

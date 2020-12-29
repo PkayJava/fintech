@@ -3,28 +3,28 @@
 
         <createTable tableName="m_holiday">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_305" nullable="false" primaryKey="true" primaryKeyName="primary_key_60"/>
+                <constraints notNullConstraintName="notnull_key_308" nullable="false" primaryKey="true" primaryKeyName="primary_key_61"/>
             </column>
             <column name="name" type="VARCHAR(100)">
-                <constraints notNullConstraintName="notnull_key_306" nullable="false" unique="true" uniqueConstraintName="unique_index_34"/>
+                <constraints notNullConstraintName="notnull_key_309" nullable="false" unique="true" uniqueConstraintName="unique_index_35"/>
             </column>
             <column name="from_date" type="DATETIME">
-                <constraints notNullConstraintName="notnull_key_307" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_310" nullable="false"/>
             </column>
             <column name="to_date" type="DATETIME">
-                <constraints notNullConstraintName="notnull_key_308" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_311" nullable="false"/>
             </column>
             <column name="description" type="VARCHAR(100)">
-                <constraints notNullConstraintName="notnull_key_309" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_312" nullable="false"/>
             </column>
         </createTable>
 
         <createTable tableName="m_holiday_office">
             <column name="holiday_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_310" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_313" nullable="false"/>
             </column>
             <column name="office_id" type="BIGINT">
-                <constraints notNullConstraintName="notnull_key_311" nullable="false"/>
+                <constraints notNullConstraintName="notnull_key_314" nullable="false"/>
             </column>
         </createTable>
 

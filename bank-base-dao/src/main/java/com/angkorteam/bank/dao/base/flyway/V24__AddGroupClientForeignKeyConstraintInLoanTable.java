@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V24__AddGroupClientForeignKeyConstraintInLoanTable extends Liquibas
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V24__add-group-client-foreign-key-constraint-in-loan-table.xml");
+        return Checksum.V24__AddGroupClientForeignKeyConstraintInLoanTable + getInternalChecksum("V24__add-group-client-foreign-key-constraint-in-loan-table.xml");
     }
 
     @Override

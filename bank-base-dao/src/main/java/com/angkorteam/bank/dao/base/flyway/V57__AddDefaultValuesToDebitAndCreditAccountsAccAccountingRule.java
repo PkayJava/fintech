@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V57__AddDefaultValuesToDebitAndCreditAccountsAccAccountingRule exte
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V57__add_default_values_to_debit_and_credit_accounts_acc_accounting_rule.xml");
+        return Checksum.V57__AddDefaultValuesToDebitAndCreditAccountsAccAccountingRule + getInternalChecksum("V57__add_default_values_to_debit_and_credit_accounts_acc_accounting_rule.xml");
     }
 
     @Override

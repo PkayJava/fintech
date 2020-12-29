@@ -1,5 +1,6 @@
 package com.angkorteam.bank.dao.base.flyway;
 
+import com.angkorteam.bank.dao.base.Checksum;
 import com.angkorteam.metamodel.LiquibaseJavaMigration;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 import org.flywaydb.core.api.migration.Context;
@@ -11,7 +12,7 @@ public class V80__ScheduleJobsTablesUpdates extends LiquibaseJavaMigration {
 
     @Override
     public Integer getChecksum() {
-        return getInternalChecksum("V80__schedule_jobs_tables_updates.xml");
+        return Checksum.V80__ScheduleJobsTablesUpdates + getInternalChecksum("V80__schedule_jobs_tables_updates.xml");
     }
 
     @Override
